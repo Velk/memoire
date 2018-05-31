@@ -1,20 +1,28 @@
+(function ($) {
+  Drupal.behaviors.galleryformatter = {
+    attach: function (context, settings) {
+      var $images = $('.galleryformatter img', context);
+      var total_images = $images.length;
+      var loaded_images = 0;
+      $images.each(function () {
+        var img = new Image();
+        img.onload = function () {
+          loaded_images++;
+          if (loaded_images == total_images) {
+            $('.galleryformatter:not(.gallery-processed)', context).each(function () {
+              Drupal.galleryformatter.prepare(this);
+            }).addClass('gallery-processed');
+          }
+        }
+        img.src = $(this, context).attr('src');
+      });
+    }
+  };
 
-Drupal.behaviors.galleryformatter = {
-  attach: function (context) {
-    // We must wait for everything to load in order to get images' dimensions.
-    (jQuery)(window).bind('load', function() {
-      (jQuery)('.galleryformatter:not(.gallery-processed)', context).each(function(){
-        Drupal.galleryformatter.prepare(this);
-      }).addClass('gallery-processed');
-    });
-  }
-};
+  Drupal.galleryformatter = Drupal.galleryformatter || {};
 
-Drupal.galleryformatter = Drupal.galleryformatter || {};
-
-// setting up the main behaviour
-Drupal.galleryformatter.prepare = function(el) {
-  (function ($) {
+  // setting up the main behaviour
+  Drupal.galleryformatter.prepare = function(el) {
     // var $settings = Drupal.settings.galleryformatter;
     $el = $(el);
     var $slides = $('li.gallery-slide', $el);
@@ -165,5 +173,5 @@ Drupal.galleryformatter.prepare = function(el) {
         $thumbs.trigger('showNext');
       });
     }
-  })(jQuery);
-}
+  }
+})(jQuery);

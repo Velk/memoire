@@ -244,7 +244,7 @@ class QuickSet {
   public function getActiveTab() {
     $active_tab = isset($this->settings['default_tab']) ? $this->settings['default_tab'] : key($this->contents);
     $active_tab = isset($_GET['qt-' . $this->name]) ? $_GET['qt-' . $this->name] : $active_tab;
-    $active_tab = (isset($active_tab) && isset($this->contents[$active_tab])) ? $active_tab : 0;
+    $active_tab = (isset($active_tab) && isset($this->contents[$active_tab])) ? $active_tab : QUICKTABS_DELTA_NONE;
     return $active_tab;
   }
 }
@@ -343,6 +343,11 @@ interface QuickContentRenderable {
    */
   public function getAjaxKeys();
   
+  /**
+   * Returns an array of keys, sufficient to represent the content uniquely.
+   */
+  public function getUniqueKeys();
+
 }
 
 /**
@@ -461,6 +466,13 @@ class QuickPreRenderedContent implements QuickContentRenderable {
    */
   protected $rendered_content;
 
+  /**
+   * An array containing the information that defines the tab content, specific
+   * to its type.
+   * @var array
+   */
+  protected $settings;
+
 
   /**
    * Constructor
@@ -474,6 +486,9 @@ class QuickPreRenderedContent implements QuickContentRenderable {
     $this->rendered_content = $contents;
 
     $this->title = isset($item['title']) ? $item['title'] : '';
+
+    unset($item['title'], $item['contents']);
+    $this->settings = $item;
   }
   
   /**
@@ -484,10 +499,10 @@ class QuickPreRenderedContent implements QuickContentRenderable {
   }
 
   /**
-   * Prerendered content doesn't need any extra settings.
+   * Accessor for the tab settings.
    */
   public function getSettings() {
-    return array();
+    return $this->settings;
   }
 
 
@@ -504,6 +519,10 @@ class QuickPreRenderedContent implements QuickContentRenderable {
    */
   public function getAjaxKeys() {
     return array();
+  }
+
+  public function getUniqueKeys() {
+    return array('class_suffix');
   }
 
 }

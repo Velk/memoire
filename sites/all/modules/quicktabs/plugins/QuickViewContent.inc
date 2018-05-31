@@ -47,6 +47,13 @@ class QuickViewContent extends QuickContent {
       '#default_value' => isset($tab['args']) ? $tab['args'] : '',
       '#description' => t('Additional arguments to send to the view as if they were part of the URL in the form of arg1/arg2/arg3. You may use %0, %1, ..., %N to grab arguments from the URL.'),
     );
+    $form['view']['use_title'] = array(
+      '#type' => 'checkbox',
+      '#return_value'=>TRUE,
+      '#title' => 'Use display title',
+      '#default_value' => isset($tab['use_title']) ? $tab['use_title'] : FALSE,
+      '#description' => t('Should quicktabs use the rendered title of the view?'),
+    );
     return $form;
   }
   
@@ -55,6 +62,8 @@ class QuickViewContent extends QuickContent {
     if (module_exists('views')) views_add_js('ajax_view');
     $this->settings['view_path'] = rawurlencode($_GET['q']);
     $this->settings['view_dom_id'] = self::$view_dom_id++;
+    $args_array = array();
+    $ajax_args = '';
     if (isset($item['args'])) {
       $url_args = arg();
       $args = $item['args'];
@@ -64,15 +73,12 @@ class QuickViewContent extends QuickContent {
       }
       $args = preg_replace(',/?(%\d),', '', $args);
       if (!empty($args)) {
-        $this->settings['ajax_args'] = rawurlencode($args);
+        $ajax_args = rawurlencode($args);
         $args_array = explode('/', $args);
       }
-      else {
-        $this->settings['ajax_args'] = '';
-        $args_array = array();
-      }
-      $this->settings['actual_args'] = $args_array;
     }
+    $this->settings['ajax_args'] = $ajax_args;
+    $this->settings['actual_args'] = $args_array;
   }
 
   public function render($hide_empty = FALSE, $args = array()) {
@@ -124,6 +130,9 @@ class QuickViewContent extends QuickContent {
           elseif (!$hide_empty) {
             $output['#markup'] = theme('quicktabs_tab_access_denied', array('tab' => $item));
           }
+          if(isset($this->settings['use_title']) && $this->settings['use_title'] > 0){
+            $this->title=$view->get_title();
+          }
           $view->destroy();
         }
       }
@@ -137,5 +146,9 @@ class QuickViewContent extends QuickContent {
 
   public function getAjaxKeys() {
     return array('vid', 'display', 'view_dom_id', 'view_path', 'ajax_args');
+  }
+
+  public function getUniqueKeys() {
+    return array('vid', 'display');
   }
 }
