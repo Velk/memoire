@@ -174,31 +174,36 @@ div#page {
     padding: 18px 0;
 }
 
+div#menu-bar-wrapper > div > div {
+    background-color: transparent;
+    background-image:none;
+}
+
 #menu-bar-wrapper ul {
     width: 100% !important;
 }
 
-div#menu-bar-wrapper > div > ul > li {
+div#menu-bar-wrapper > div > div > div > ul > li {
     margin: 0 7px;
 }
 
-div#menu-bar-wrapper > div > ul > li > a {
+div#menu-bar-wrapper > div > div > div > ul > li > a {
     background: #fff;
     color: #BDBDBD;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
-div#menu-bar-wrapper > div > ul > li > a:hover {
+div#menu-bar-wrapper > div > div > div > ul > li > a:hover {
     border-bottom: 1px solid #424242;
     color: #424242;
 }
-div#menu-bar-wrapper > div > ul > li > a.active {
+div#menu-bar-wrapper > div > div > div > ul > li.active > a {
     color: #263238;
     background: #F5F5F5;
 }
 
-div#menu-bar-wrapper > div > ul > li ul{
+div#menu-bar-wrapper > div > div > div > ul > li ul{
     background: #fff;
     color: #BDBDBD;
     border-right: 1px solid #BDBDBD;
@@ -208,14 +213,14 @@ div#menu-bar-wrapper > div > ul > li ul{
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
-div#menu-bar-wrapper > div > ul > li ul > li{
+div#menu-bar-wrapper > div > div > div > ul > li ul > li{
     border: none;
 }
-div#menu-bar-wrapper > div > ul > li ul > li > a{
+div#menu-bar-wrapper > div > div > div > ul > li ul > li > a{
     border: none;
     border-bottom: 1px solid #EEEEEE;
 }
-div#menu-bar-wrapper > div > ul > li ul > li > a:hover{
+div#menu-bar-wrapper > div > div > div > ul > li ul > li > a:hover{
     background: #F5F5F5;
     color: #424242;
 }
@@ -228,7 +233,7 @@ div#menu-bar-wrapper > div > ul > li ul > li > a:hover{
 	width: 100%;
 }
 
-div#menu-bar-wrapper > div > ul > li > a {
+div#menu-bar-wrapper > div > div > div > ul > li > a {
     padding: 10px 30px;
 }
 
