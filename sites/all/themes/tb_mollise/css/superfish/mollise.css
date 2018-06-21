@@ -9,9 +9,9 @@
 }
 
 .sf-menu.sf-style-mollise li {
-  background: url(../../images/line-1.gif) 100% 50% no-repeat;
+  /*background: url(../../images/line-1.gif) 100% 50% no-repeat;*/
   margin: 0;
-  padding: 0 7px;
+  padding: 0;
 }
 
 .sf-menu.sf-style-mollise li.last { 
@@ -37,14 +37,14 @@
 /* Child Menu */
 .sf-menu.sf-style-mollise ul {
   background: #000;
-  margin-left: 7px;
-  margin-top: -2px;
-  padding: 1.25em;
+  margin-left: 0;
+  margin-top: 0;
+  padding: 0;
 }
 
 .sf-menu.sf-style-mollise ul li {
   background: none;
-  margin-bottom: 5px;
+  margin-bottom: 0;
   padding: 0;
 }
 
@@ -97,7 +97,6 @@
 	background: #fcce0a;
 	color: #000;
 }
-
 
 .sf-sub-indicator {
   background: url(../../images/arrows-1.gif) 0 0 no-repeat !important;

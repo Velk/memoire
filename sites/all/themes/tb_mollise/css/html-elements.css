@@ -5,8 +5,8 @@ html {
 }
 
 body {
-  background: #1c1e1e;
-  color: #949494;
+  background: #fff;
+  color: #424242;
   line-height: 1.5; /* Unit-less line-height means line height can scale. */
 }
 

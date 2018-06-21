@@ -35,6 +35,7 @@ stylesheets-conditional[IE 7][all][] = css/ie7.css
 
 ; Scripts in this theme
 scripts[] = 'js/tb_mollise.js'
+scripts[] = 'js/memory.js'
 
 ; Core regions
 regions[content] = 'Main content'

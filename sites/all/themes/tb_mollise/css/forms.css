@@ -142,21 +142,21 @@ span.button {
 }
 
 span.button input.form-submit {
-  background:url(../images/bg-readmore.gif) 0 0 repeat-x;
-  border: 1px solid #010101;
-  color: #999;
+  background: #424242;
+  border: 1px solid #424242;
+  color: #fff;
   cursor: pointer;
   font-size: 0.917em;
-  text-transform: uppercase; 
-  padding: 5px 10px; 
+  text-transform: uppercase;
+  padding: 5px 15px;
   vertical-align: middle;
 }
 
 span.button input.form-submit:hover,
 span.button input.form-submit:focus {
-  background: #000;
-  border-bottom: 1px solid #2E3131;
-  color: #FFF;
+  background: #fff;
+  border: 1px solid #424242;
+  color: #424242;
 }
 
 /* --- Checkbox --- */
@@ -335,6 +335,19 @@ div.resizable-textarea textarea {
 
 #search-block-form.active span.button input.form-submit {
   background:url(../images/btn-search.png) 0 -22px no-repeat;
+}
+
+#header-top-wrapper #search-block-form {
+  position: relative;
+  background: #616161;
+  margin: 0;
+  width: 185px;
+  height: 22px;
+  color: #fff;
+  border: none;
+}
+#header-top-wrapper #search-block-form .form-text {
+  padding: 2px 20px 0 15px;
 }
 
 /* Advanced search form */

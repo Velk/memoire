@@ -4,16 +4,6 @@
   -webkit-border-radius : 1px;
 }
 
-.form-newsletter fieldset {
-  border-radius : 5px;
-  -webkit-border-radius : 5px;
-}
-
-.form-newsletter .form-submit {
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-}
-
 #search-block-form span.button input.form-submit {
   box-shadow: none;
 }
@@ -31,34 +21,34 @@ span.button input.form-submit,
 .article ul.links li a,
 .comment ul.links li a,
 .page-blog ul.action-links li a {
-  box-shadow: 0 0 5px #111;
-  -webkit-box-shadow: 0 0 5px #111;
-  border-radius : 5px;
-  -webkit-border-radius : 5px;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  border-radius: 0;
+  -webkit-border-radius: 0;
 }
 
 ul.pager li a {
-  box-shadow: 0 0 3px #111;
-  -webkit-box-shadow: 0 0 3px #111;
-  border-radius : 3px;
-  -webkit-border-radius : 3px;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  border-radius: 0;
+  -webkit-border-radius: 0;
 }
 
 .item-list ul li.pager-current {
-  border-radius : 3px;
-  -webkit-border-radius : 3px;
+  border-radius : 0;
+  -webkit-border-radius : 0;
 }
 
 /* Quicktabs */
 .quicktabs-style-mollise ul.quicktabs-tabs li a {
-  box-shadow: 0 0 5px #111;
-  -webkit-box-shadow: 0 0 5px #111;
-  border-radius : 5px;
-  -webkit-border-radius : 5px;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  border-radius: 0;
+  -webkit-border-radius: 0;
 }
 
 .quicktabs-style-mollise ul.quicktabs-tabs li.active a {
-  box-shadow: inset 0 0 5px #0f1011;
+  box-shadow: none;
 }
 
 .quick-accordion-mollise .ui-accordion-header {

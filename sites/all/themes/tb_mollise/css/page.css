@@ -1,3 +1,7 @@
+div#page {
+    margin-top: 80px;
+}
+
 .wrapper {
 }
 
@@ -52,30 +56,42 @@
  * Header top
  */
 #header-top-wrapper {
-  background: #fff;
+    background: #424242;
+    position: fixed;
+    z-index: 3;
+    width: 100%;
+    display: none;
+    top: 0;
+    left: 0;
 }
 
 #header-top-wrapper .grid-inner {
   padding-bottom: 6px;
   padding-top: 6px;
 }
+
 /**
  * Header
  */
 #header-wrapper {
-  background: #141a1e;
-  position: relative;
+    background: #fff;
+    position: fixed;
+    width: 100%;
+    box-shadow: 0px 0px 5px #E0E0E0;
+    z-index: 2;
+    top: 0;
+    left: 0;
 }
 
 .accordion { 
-  background: url(../images/overlay_trigger.png) 0 0 no-repeat;
-  width: 31px; 
-  height: 15px; 
-  position:absolute; 
-  right: 30px; 
-  top: 0; 
-  text-indent: -999em; 
-  overflow:hidden; 
+    background: url(../images/overlay_trigger.png) 0 0 no-repeat;
+    width: 31px;
+    height: 15px;
+    position: absolute;
+    right: 0;
+    top: 5px;
+    text-indent: -999em;
+    overflow: hidden;
 }
 
 .accordion.active { 
@@ -83,7 +99,7 @@
 }
 
 #header-wrapper .container {
-	padding: 10px 0;
+	padding: 5px 0;
 }
 
 #header {
@@ -94,7 +110,10 @@
 #logo {
 	display:block;
 	float: left;
-	margin: 5px 10px 5px 0;
+	margin: 0;
+}
+#logo > img {
+    height: 70px;
 }
 
 #name-and-slogan {
@@ -148,12 +167,57 @@
  * Main Navigation
  */
 #menu-bar-wrapper {
-  float: right;
-  padding: 36px 0 0 0;
-  position: relative;
-  width: 70%;
-  z-index: 499; /* Drupal toolbar index is 600 */
-  
+    float: right;
+    position: relative;
+    width: calc(100% - 150px);
+    z-index: 499;
+    padding: 18px 0;
+}
+
+#menu-bar-wrapper ul {
+    width: 100% !important;
+}
+
+div#menu-bar-wrapper > div > ul > li {
+    margin: 0 7px;
+}
+
+div#menu-bar-wrapper > div > ul > li > a {
+    background: #fff;
+    color: #BDBDBD;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+div#menu-bar-wrapper > div > ul > li > a:hover {
+    border-bottom: 1px solid #424242;
+    color: #424242;
+}
+div#menu-bar-wrapper > div > ul > li > a.active {
+    color: #263238;
+    background: #F5F5F5;
+}
+
+div#menu-bar-wrapper > div > ul > li ul{
+    background: #fff;
+    color: #BDBDBD;
+    border-right: 1px solid #BDBDBD;
+    border-left: 1px solid #BDBDBD;
+    border-bottom: 1px solid #BDBDBD;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+div#menu-bar-wrapper > div > ul > li ul > li{
+    border: none;
+}
+div#menu-bar-wrapper > div > ul > li ul > li > a{
+    border: none;
+    border-bottom: 1px solid #EEEEEE;
+}
+div#menu-bar-wrapper > div > ul > li ul > li > a:hover{
+    background: #F5F5F5;
+    color: #424242;
 }
 
 #menu-bar-wrapper .menu-bar {
@@ -162,6 +226,10 @@
 
 #menu-bar-wrapper .region-menu-bar {
 	width: 100%;
+}
+
+div#menu-bar-wrapper > div > ul > li > a {
+    padding: 10px 30px;
 }
 
 /* Region */
@@ -202,13 +270,11 @@ body.not-front #main-content .region-content {
 
 /* Page Title */
 .page-title-wrap {
-  background: url(../images/pattern.png) 0 0 repeat #fcce0a;
-  border-top: 5px solid #000;
-  border-bottom: 5px solid #000;
+    background: #26A69A;
 }
 
 .page-title-wrap #page-title {
-  color: #141a1e;
+  color: #fff;
   font-size: 2.5em;
   margin: 0;
   padding: 0 10px;
@@ -216,7 +282,8 @@ body.not-front #main-content .region-content {
 }
 
 #main-wrapper .page-title-wrap .container {
-  padding: 45px 0 13px 0;
+    padding: 10px 0;
+    text-align: right;
 }
 
 #page-title {
@@ -283,7 +350,7 @@ body.not-front #main-content .region-content {
 #slideshow-wrapper {
   background: #000;
   margin: 0;
-  padding: 4px 0;
+  padding: 0;
   position: relative;
   z-index: 1;
 }
@@ -307,7 +374,7 @@ body.not-front #main-content .region-content {
 #intro-wrapper h1 {
   font-family: 'oswaldregular';
   font-size: 2.66em;
-  color: #fff;
+  color: #424242;
   font-weight: normal;
   margin: 0 0 15px;
   text-transform: uppercase;
@@ -316,7 +383,7 @@ body.not-front #main-content .region-content {
 #intro-wrapper h2 {
   font-family: 'oswaldregular';
   font-size:1.5em;
-  color: #fcce0a;
+  color: #26A69A;
   font-weight: normal;
   margin: 0 0 8px;
   text-transform: uppercase;

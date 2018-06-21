@@ -33,29 +33,29 @@
 }
 
 .quicktabs-style-mollise ul.quicktabs-tabs li a {
-  background: url(../../images/bg-btn-quicktab.gif) repeat-x 0 0;
-  border: 1px solid #000;
-  color: #8b8b8b;
+  background: #424242;
+  border: 1px solid #424242;
+  color: #fff;
   display: block;
   float: left;
   margin-right: 10px;
-  padding:.5em  1em;
+  padding: 5px 20px;
   text-transform: uppercase;
 }
 
 .quicktabs-style-mollise ul.quicktabs-tabs li a:hover,
 .quicktabs-style-mollise ul.quicktabs-tabs li a:active,
 .quicktabs-style-mollise ul.quicktabs-tabs li a:focus {
-  background: #000;
-  border-bottom: 1px solid #2e3131;
-  color: #fff;
+  background: #fff;
+  border-bottom: 1px solid #424242;
+  color: #424242;
   text-decoration: none;
 }
 
 .quicktabs-style-mollise ul.quicktabs-tabs li.active a {
-  background: #ffcc00;
-  border: none;
-  color: #000;
+  background: #26A69A;
+  border: 1px solid #26A69A;
+  color: #fff;
 }
 
 /* --- Arcodion --- */

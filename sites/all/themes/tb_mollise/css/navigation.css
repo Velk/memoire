@@ -137,7 +137,7 @@ ul.menu li.leaf {
 /* Active Items */
 .block ul.menu li.active-trail > a,
 .block ul.menu li > a.active {
-  color: #fcce0a;
+  color: #26A69A;
 }
 
 .block ul.menu li.leaf a.active {
@@ -324,12 +324,17 @@ ul.pager li span {
   display: inline-block;
   padding: 3px 7px;
 }
+ul.pager li.pager-last a,
+ul.pager li.pager-next a {
+  display: inline-block;
+  padding: 3px 15px;
+}
 
 ul.pager li a {
-  background:url(../images/bg-readmore.gif) 0 0 repeat-x;
-  border: 1px solid #010101;
-  color: #a2a2a2;
-  text-transform: uppercase; 
+  background: #424242;
+  border: 1px solid #424242;
+  color: #fff;
+  text-transform: uppercase;
 }
 
 ul.pager li a:visited {
@@ -338,15 +343,17 @@ ul.pager li a:visited {
 ul.pager li a:hover,
 ul.pager li a:active,
 ul.pager li a:focus {
-  background: #ffcc00;
-  border: 1px solid #ffcc00;
-  color: #000;
+  background: #fff;
+  border: 1px solid #424242;
+  color: #424242;
   text-decoration: none;
 }
 
 .item-list ul li.pager-current {
-  background: #000;
-  border: 1px solid #010101;
+  background: #fff;
+  border: 1px solid #424242;
+  color: #424242;
+  text-transform: uppercase;
   padding: 3px 7px;
 }
 
