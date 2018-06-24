@@ -1155,3 +1155,64 @@ div.error {
   color: #949494;
 }
 
+/* User login block */
+div#block-user-login {
+  width: 600px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  box-shadow: 1px 1px 5px #e9e9e9;
+  margin: auto;
+  padding: 40px 100px;
+}
+
+div#block-user-login > div > h2 {
+  display: none;
+}
+
+div#block-user-login form {
+  margin: 0;
+}
+
+div#block-user-login form input.form-text {
+  background-color: #fff;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #424242;
+  padding: 10px 0;
+}
+
+div#block-user-login form div.form-item-name {
+  margin: 0 0 25px 0;
+}
+
+div#block-user-login form div.form-item-pass-tmp {
+  margin: 25px 0;
+}
+
+div#block-user-login form input.form-text:hover,
+div#block-user-login form input.form-text:focus {
+  border-bottom: 1px solid #26A69A;
+}
+
+div#block-user-login form .item-list {
+  margin: 25px 0;
+}
+div#block-user-login form .item-list li {
+  text-align: center;
+}
+div#block-user-login form .item-list a:hover {
+  color: #26A69A;
+}
+
+div#block-user-login form div#edit-actions {
+  margin: 25px 0 0 0;
+  text-align: center;
+}
+
+.openid-links{
+  display: none;
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 300px white inset;
+}

@@ -28,12 +28,14 @@
   border-top: 1px solid #eeeeee;
 }
 .tb-megamenu .mega > .mega-dropdown-menu {
-  min-width: 200px;
+  min-width: 0;
   display: none;
 }
 .tb-megamenu .mega.open > .mega-dropdown-menu,
 .tb-megamenu .mega.dropdown-submenu:hover > .mega-dropdown-menu {
-  display: block;
+	display: block;
+	width: 100%;
+	background-color: #fff;
 }
 .tb-megamenu .mega-group {
   *zoom: 1;
@@ -86,7 +88,7 @@
   padding: 0;
 }
 .tb-megamenu .span12.mega-col-nav .mega-inner {
-  padding: 10px;
+	padding: 0;
 }
 .tb-megamenu .mega-nav,
 .tb-megamenu .dropdown-menu .mega-nav {
