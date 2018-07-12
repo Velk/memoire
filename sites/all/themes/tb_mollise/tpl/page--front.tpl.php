@@ -66,7 +66,13 @@
  * @see template_process()
  */
 ?>
-
+<?php
+        if ($is_front)
+        {
+        $title = '';
+        $page['content']['system_main']['default_message'] = array();
+        }
+?>
 <div id="page" class="page-default"> <a name="Top" id="Top"></a>
   <?php if ($header_top = render($page['header_top'])): ?>
   <div id="header-top-wrapper" class="wrapper">
