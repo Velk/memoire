@@ -184,7 +184,7 @@
 }
 
 .row-type .views-field-title a {
-  color: #26A69A;
+  color: #26C6DA;
   font-weight: bold;
 }
 
@@ -231,7 +231,7 @@
 }
 
 #header-top-wrapper .block-search {
-  float: right;
+  float: left;
 }
 
 #header-top-wrapper .block-inner {
@@ -1005,7 +1005,7 @@ block-aggregator {
 }
 
 .jcarousel-skin-default .views-field-title {
-  background: #26A69A;
+  background: #26C6DA;
   bottom: 0;
   text-align: center;
   font-size: 0.917em;
@@ -1131,7 +1131,7 @@ block-aggregator {
 }
 
 .form-newsletter .form-submit {
-  background: #26A69A;
+  background: #26C6DA;
   border: none;
   height: 25px;
   cursor: pointer;
@@ -1191,7 +1191,7 @@ div#block-user-login form div.form-item-pass-tmp {
 
 div#block-user-login form input.form-text:hover,
 div#block-user-login form input.form-text:focus {
-  border-bottom: 1px solid #26A69A;
+  border-bottom: 1px solid #26C6DA;
 }
 
 div#block-user-login form .item-list {
@@ -1201,7 +1201,7 @@ div#block-user-login form .item-list li {
   text-align: center;
 }
 div#block-user-login form .item-list a:hover {
-  color: #26A69A;
+  color: #26C6DA;
 }
 
 div#block-user-login form div#edit-actions {
