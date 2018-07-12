@@ -1,0 +1,20 @@
+div#block-memory-blocks-social-networks {
+    float: right !important;
+}
+
+#social-networks > a {
+    display: inline-block;
+    height: auto;
+    width: auto;
+}
+
+#social-networks > a > i {
+    font-size: 16px;
+    margin: 0 20px;
+    padding: 2px 0;
+    color: #fff;
+}
+
+#social-networks > a > i:hover {
+    color: #bbb;
+}

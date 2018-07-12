@@ -36,6 +36,41 @@
             }
         });
 
+        $( "a:contains('Connexion')" ).parent("li").css({
+            "position": "absolute",
+            "right": "0",
+            "transform": "translateY(-15px)",
+        });
+        $( "a:contains('Connexion')" ).prepend('<i class="fa fa-sign-in" aria-hidden="true"></i>');
+        $( "a:contains('Connexion')" ).children("i").css({
+            "display": "block",
+            "text-align": "center",
+            "margin-bottom": "5px",
+            "font-size": "20px",
+        });
+
+        /* Scroll - Resize header menu */
+        $( window ).scroll(function() {
+
+            if($(window).scrollTop() > 0){
+               
+                $("#logo > img").css("height", "50px");
+                $("#menu-bar-wrapper").css("padding", "10px 0");
+                $("div#menu-bar-wrapper > div > div > div > ul > li > a").css("padding", "5px 30px");
+                $( "a:contains('Connexion')" ).parent("li").css("transform", "translateY(-13px)");
+            }
+            if($(window).scrollTop() == 0){
+                
+                $("#logo > img").css("height", "70px");
+                $("#menu-bar-wrapper").css("padding", "15px 0");
+                $("div#menu-bar-wrapper > div > div > div > ul > li > a").css("padding", "10px 30px");
+                $( "a:contains('Connexion')" ).parent("li").css("transform", "translateY(-15px)");
+            }
+            
+        });
+
+    
+
         // header_top_button.click(function() {
         //
         //     if(header_top_button.hasClass("active")) {

@@ -270,7 +270,7 @@
 }
 
 #sidebar-second-wrapper .lastest-view .views-field-title a {
-  color: #26A69A;
+  color: #26C6DA;
 }
 
 #sidebar-second-wrapper .lastest-view .views-field-title a:hover,
@@ -350,3 +350,12 @@
 #sidebar-second-wrapper .quick-accordion-mollise .photos-block .views-field-field-image {
   margin-left: 15px;
 }
+
+/* Slideshow */
+/*#slideshow-wrapper .view-id-slideshow,*/
+/*#slideshow-wrapper .view-content,*/
+/*#slideshow-wrapper .view-content > div,*/
+/*#slideshow-wrapper .view-content > div > div.views_slideshow_main,*/
+/*#slideshow-wrapper .view-content > div > div.views_slideshow_main * {*/
+  /*height: calc(100vh - 85.6px) !important;*/
+/*}*/

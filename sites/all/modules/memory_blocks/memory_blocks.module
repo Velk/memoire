@@ -1,0 +1,350 @@
+<?php
+
+/**
+ * Implementation of hook_menu()
+ *
+ * @return array
+ */
+function memory_blocks_menu() {
+    $items = array();
+
+    $items['admin/memory'] = array(
+        'title' => t('Memory'),
+        'description' => t('Memory - Tab'),
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('memory_blocks_admin_redirect'),
+        'access arguments' => array('administer site configuration'),
+        'type' => MENU_NORMAL_ITEM,
+    );
+
+    $items['admin/memory/social-networks-manager'] = array(
+        'title' => t('Memory - Social networks list'),
+        'description' => t('Memory - Social networks list manager'),
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('memory_blocks_admin_social_networks_list_form'),
+        'access arguments' => array('administer site configuration'),
+        'type' => MENU_NORMAL_ITEM,
+    );
+
+    $items['admin/memory/social-networks-manager/add'] = array(
+        'title' => t('Add - Social network'),
+        'description' => t('Add - Social network'),
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('memory_blocks_admin_social_network_add_form'),
+        'access arguments' => array('administer site configuration'),
+//        'type' => MENU_NORMAL_ITEM,
+    );
+
+    $items['admin/memory/social-networks-manager/social-network/%/edit'] = array(
+        'title' => t('Memory - Social network'),
+        'description' => t('Memory - Social network'),
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('memory_blocks_admin_social_network_form'),
+        'access arguments' => array('administer site configuration'),
+//        'type' => MENU_NORMAL_ITEM
+    );
+
+    return $items;
+}
+
+/**
+ * Implements memory_blocks_admin_redirect()
+ */
+function memory_blocks_admin_redirect(){
+    drupal_goto("admin/Memory/social-networks-manager");
+}
+
+/**
+ * @param $form
+ * @param $form_state
+ * @return mixed
+ */
+function memory_blocks_admin_social_networks_list_form($form, &$form_state) {
+
+    $header = array(
+        'id' => array('data' => t('id'), 'field' => 'msn.id'),
+        'name' => array('data' => t('name'), 'field' => 'msn.name'),
+        'url' => array('data' => t('url'), 'field' => 'msn.url'),
+        'icon' => array('data' => t('icon'), 'field' => 'msn.icon'),
+        'operations' => array('data' => t('Operations')),
+    );
+
+    $query = db_select('memory_social_networks', 'msn');
+    user_build_filter_query($query);
+
+    $count_query = clone $query;
+    $count_query->addExpression('COUNT(msn.id)');
+
+    $query = $query->extend('PagerDefault')->extend('TableSort');
+    $query
+        ->fields('msn', array('id', 'name', 'url', 'icon'))
+        ->limit(50)
+        ->orderByHeader($header)
+        ->setCountQuery($count_query);
+    $result = $query->execute();
+
+    $destination = drupal_get_destination();
+
+    foreach ($result as $social_network) {
+
+        $options[$social_network->id] = array(
+            'id' => $social_network->id,
+            'name' => $social_network->name,
+            'url' => $social_network->url,
+            'icon' => $social_network->icon,
+            'operations' => array('data' => array('#type' => 'link', '#title' => t('edit'), '#href' => "admin/memory/social-networks-manager/social-network/$social_network->id/edit", '#options' => array('query' => $destination))),
+        );
+    }
+
+    $form['accounts'] = array(
+        '#type' => 'tableselect',
+        '#header' => $header,
+        '#options' => $options,
+        '#empty' => t('No social network available.'),
+    );
+
+    return $form;
+}
+
+/**
+ * @param $form
+ * @param $form_state
+ * @return mixed
+ */
+function memory_blocks_admin_social_network_add_form($form, &$form_state){
+
+    $form['social_networks']['name'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Nom'),
+        '#weight' => 1,
+    );
+
+    $form['social_networks']['url'] = array(
+        '#type' => 'textfield',
+        '#title' => t('URL ou adresse e-mail'),
+        '#weight' => 2,
+    );
+
+    $form['social_networks']['icon'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Icône'),
+        '#description' => t(
+            'Choississez l\'icône représentant votre média sur : '.
+            '<em>https://fontawesome.com/v4.7.0/icons</em>'.
+            '<br> Puis renseigné le nom de l\'icône. '.
+            '<em>Exemple : fa-facebook</em>'
+        ),
+        '#weight' => 3,
+    );
+
+    $form['social_networks']['submit'] = array(
+        '#type' => 'submit',
+        '#value' => t('Valider'),
+        '#weight' => 10,
+    );
+
+    $form['social_networks']['submit']['#submit'][] = 'memory_blocks_admin_social_network_add_form_submit';
+
+    return $form;
+}
+
+/**
+ * @param $form
+ * @param $form_state
+ * @throws Exception
+ */
+function memory_blocks_admin_social_network_add_form_submit($form, &$form_state){
+
+    if(
+        $form_state['values']['name'] == "" ||
+        $form_state['values']['url'] == "" ||
+        $form_state['values']['icon'] == ""
+    ){
+        drupal_set_message(t('Veuillez remplir toutes les informations.'));
+    }else{
+
+        db_insert('memory_social_networks')->fields(
+            array(
+                'name' => $form_state['values']['name'],
+                'url' => $form_state['values']['url'],
+                'icon' => $form_state['values']['icon'],
+            )
+        )
+            ->execute();
+
+        // Display a message saying that datas are set in database.
+        drupal_set_message(t('Les données renseignées ont été enregistrées.'));
+    }
+
+
+}
+
+/**
+ * @param $form
+ * @param $form_state
+ * @return mixed
+ */
+function memory_blocks_admin_social_network_form($form, &$form_state){
+
+    $fullUrl  = $_SERVER["REQUEST_URI"];
+    $urlId = explode("/social-network/", $fullUrl)[1];
+    $urlId = explode("/", $urlId)[0];
+
+    $query = db_select('memory_social_networks', 'msn');
+    $query->fields('msn', array('id', 'name', 'url', 'icon'));
+    $query->condition('id', $urlId, '=');
+    $results = $query->execute();
+
+    foreach ($results as $result) {
+
+        $form['social_networks']['id'] = array(
+            '#type' => 'hidden',
+            '#value' => $result->id,
+        );
+
+        $form['social_networks']['name'] = array(
+            '#type' => 'textfield',
+            '#title' => t('Nom'),
+            '#default_value' => $result->name,
+            '#weight' => 1,
+        );
+
+        $form['social_networks']['url'] = array(
+            '#type' => 'textfield',
+            '#title' => t('URL ou adresse e-mail'),
+            '#default_value' => $result->url,
+            '#weight' => 2,
+        );
+
+        $form['social_networks']['icon'] = array(
+            '#type' => 'textfield',
+            '#title' => t('Icône'),
+            '#default_value' => $result->icon,
+            '#description' => t('Choississez l\'icône représentant votre média sur : https://fontawesome.com/v4.7.0/icons'),
+            '#weight' => 3,
+        );
+
+    }
+
+    $form['social_networks']['submit'] = array(
+        '#type' => 'submit',
+        '#value' => t('Valider'),
+        '#weight' => 10,
+    );
+
+    $form['social_networks']['delete'] = array(
+        '#type' => 'submit',
+        '#value' => t('Supprimer'),
+        '#weight' => 11,
+    );
+
+    $form['social_networks']['submit']['#submit'][] = 'memory_blocks_admin_social_networks_form_submit';
+    $form['social_networks']['delete']['#submit'][] = 'memory_blocks_admin_social_networks_form_delete';
+
+    return $form;
+}
+
+/**
+ * @param $form
+ * @param $form_state
+ */
+function memory_blocks_admin_social_networks_form_submit($form, &$form_state){
+
+    db_update('memory_social_networks')
+        ->condition('id', $form_state['values']['id'],'=')
+        ->fields(array(
+            'name' => $form_state['values']['name'],
+            'url' => $form_state['values']['url'],
+            'icon' => $form_state['values']['icon'],
+        ))
+        ->execute();
+
+    drupal_set_message("Les changements ont été pris en compte.");
+}
+
+/**
+ * @param $form
+ * @param $form_state
+ */
+function memory_blocks_admin_social_networks_form_delete($form, &$form_state){
+
+    db_delete('memory_social_networks')
+        ->condition('id', $form_state['values']['id'], '=')
+        ->execute();
+
+    drupal_set_message("Le média a été supprimé.");
+}
+
+/**
+ * Implement hook_theme()
+ *
+ * @param $existing
+ * @param $type
+ * @param $theme
+ * @param $path
+ * @return array
+ */
+function memory_blocks_theme($existing, $type, $theme, $path) {
+    return array(
+        'tpl_social_networks' => array(
+            'template' => 'tpl/social_networks',
+            'path' => drupal_get_path('module', 'memory_blocks'),
+            'variables' => array('infos' => NULL),
+        ),
+    );
+}
+
+/**
+ * @return mixed
+ */
+function memory_blocks_block_info() {
+
+    $blocks['social_networks'] = array(
+      'info' => t('Social Networks'),
+      'weight' => 1,
+      'status' => 1,
+      'region' => 'header_top',
+      'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+
+    );
+
+    return $blocks;
+}
+
+/**
+ * @param string $delta
+ * @return array
+ * @throws Exception
+ */
+function memory_blocks_block_view($delta = '') {
+
+    $block = array();
+
+    switch ($delta) {
+        case 'social_networks':
+
+            $query = db_select('memory_social_networks', 'msn');
+            $query->fields('msn', array('name','url','icon'));
+            $data['resultsSocialNetworks'] = $query->execute();
+
+            // Link the template
+            $block['content']['#markup'] = theme('tpl_social_networks', $data);
+
+            // Link a css file 
+            $block['content']['#attached']['css'][] = array(
+                'data' => drupal_get_path('module', 'memory_blocks').'/css/social_networks.css',
+                'type' => 'file'
+            );
+
+            // // Link a js file
+            // $block['content']['#attached']['js'][] = array(
+            //     'data' => drupal_get_path('module', 'bsconnexion').'/js/bs-cc-menu.js',
+            //     'type' => 'file'
+            // );
+
+            break;
+    }
+
+    return $block;
+}
+

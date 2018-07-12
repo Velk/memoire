@@ -1,0 +1,49 @@
+<?php
+
+function memory_blocks_schema() {
+
+    $schema['memory_social_networks'] = array(
+        'fields' => array(
+            'id' => array(
+                'description' => 'Primary Key: Unique social network ID.',
+                'type' => 'serial',
+                'unsigned' => TRUE,
+                'not null' => TRUE,
+            ),
+            'name' => array(
+                'type' => 'varchar',
+                'length' => 60,
+                'not null' => TRUE,
+                'default' => '',
+                'description' => 'Social networks name.',
+            ),
+            'url' => array(
+                'type' => 'varchar',
+                'length' => 200,
+                'not null' => TRUE,
+                'default' => '',
+                'description' => 'Social networks url.',
+            ),
+            'icon' => array(
+                'type' => 'varchar',
+                'length' => 100,
+                'not null' => TRUE,
+                'default' => '',
+                'description' => 'Social networks icon.',
+            ),
+        ),
+        'primary key' => array('id'),
+    );
+
+  return $schema;
+}
+
+function memory_blocks_install() {
+
+}
+
+function memory_blocks_uninstall() {
+    db_drop_table('memory_social_networks');
+}
+
+?>
