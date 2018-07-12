@@ -1,5 +1,5 @@
 div#page {
-    margin-top: 85.6px;
+    margin-top: 80px;
 }
 
 .wrapper {
@@ -109,9 +109,9 @@ div#page {
 
 /* Logo & Site name */
 #logo {
-	display:block;
-	float: left;
-	margin: 0;
+  display: block;
+  float: left;
+  margin: 0 50px;
 }
 #logo > img {
     height: 70px;
@@ -168,11 +168,11 @@ div#page {
  * Main Navigation
  */
 #menu-bar-wrapper {
-    float: right;
-    position: relative;
-    width: calc(100% - 150px);
-    z-index: 499;
-    padding: 18px 0;
+  position: absolute;
+  right: 0;
+  width: calc(100% - 200px);
+  z-index: 499;
+  padding: 15px 0;
 }
 
 div#menu-bar-wrapper > div > div {
@@ -278,7 +278,7 @@ body.not-front #main-content .region-content {
 
 /* Page Title */
 .page-title-wrap {
-    background: #26A69A;
+    background: #424242;
 }
 
 .page-title-wrap #page-title {
@@ -391,7 +391,7 @@ body.not-front #main-content .region-content {
 #intro-wrapper h2 {
   font-family: 'oswaldregular';
   font-size:1.5em;
-  color: #26A69A;
+  color: #424242;
   font-weight: normal;
   margin: 0 0 8px;
   text-transform: uppercase;

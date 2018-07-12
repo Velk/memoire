@@ -157,9 +157,9 @@
   <?php endif; ?>
   <div id="main-wrapper" class="wrapper">
   <?php print render($title_prefix); ?>
-        <?php if ($title): ?>
-        <div class="page-title-wrap"><div class="container"><h1 id="page-title" class="block-title"><?php print $title; ?></h1></div></div>
-        <?php endif; ?>
+        <?php //if ($title): ?>
+<!--        <div class="page-title-wrap"><div class="container"><h1 id="page-title" class="block-title">--><?php //print $title; ?><!--</h1></div></div>-->
+        <?php //endif; ?>
         <?php print render($title_suffix); ?>
     <div class="container <?php print $grid; ?> clearfix">
       

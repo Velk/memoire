@@ -1,0 +1,5 @@
+name = Memory Blocks
+description = Blocks for memory website
+package = Memory
+version = VERSION
+core = 7.x

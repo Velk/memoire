@@ -168,9 +168,9 @@
     <div class="container <?php print $grid; ?> clearfix">
       <div class="container-inner">
         <?php print render($title_prefix); ?>
-        <?php if ($title): ?>
-        <h1 id="page-title"><?php print $title; ?></h1>
-        <?php endif; ?>
+        <?php //if ($title): ?>
+        <!-- <h1 id="page-title"><?php //print $title; ?></h1> -->
+        <?php //endif; ?>
         <?php print render($title_suffix); ?>
         <div id="main-content-wrapper"> 
           <?php if ($content_width) :?>
