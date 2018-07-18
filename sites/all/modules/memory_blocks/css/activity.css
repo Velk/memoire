@@ -1,0 +1,38 @@
+div#page {
+    position: relative;
+}
+
+.node-activite .field-type-image {
+    margin: 0 !important;
+}
+
+.node-activite .field-type-image img {
+    width: 100%;
+    height: auto;
+}
+
+.node-activite .field-type-number-float {
+    float: right;
+    transform: translateY(-100%);
+    padding: 15px 50px;
+    color: #ffffff;
+    background-color: #00000087;
+    text-align: center;
+    border-top-left-radius: 50px;
+    box-shadow: -1px -1px 5px #00000087;
+}
+
+.node-activite .field-type-number-float h3.field-label{
+    font-weight: normal;
+    font-size: 14px;
+}
+.node-activite .field-type-number-float div.field-items{
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.node-activite .field-type-text-with-summary {
+    max-width: 1000px;
+    margin: 50px auto;
+}
