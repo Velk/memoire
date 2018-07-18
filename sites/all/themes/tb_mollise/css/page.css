@@ -20,6 +20,14 @@ div#page {
 }
 
 .region-content .block {
+    max-width: 1000px;
+    margin: 50px auto;
+}
+.region-content .block h2.block-title {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 25px;
+    color: #424242;
 }
 
 .sidebar .block {
@@ -41,7 +49,7 @@ div#page {
 
 #main-wrapper .container {
 	border-bottom: 1px solid #323232;
-	padding: 34px 0 0 0;	
+	padding: 0;
 }
 
 .not-front #main-wrapper .container {
@@ -49,7 +57,7 @@ div#page {
 }
 
 #main-wrapper .container-inner {
-  float: right;
+  /*float: right;*/
 }
 
 /**
@@ -251,7 +259,7 @@ div#menu-bar-wrapper > div > div > div > ul > li > a {
 }
 
 #main-content .grid-inner {
-	padding: 0 20px 20px 20px;
+	padding: 0;
 }
 
 #main-content .region-content {

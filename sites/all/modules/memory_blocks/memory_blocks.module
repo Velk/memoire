@@ -47,6 +47,21 @@ function memory_blocks_menu() {
     return $items;
 }
 
+function memory_blocks_init() {
+
+    // If user is on destinations page, link css file
+    if(preg_match("/^.*\/destinations\/.*$/", $_SERVER['REQUEST_URI'])){
+
+        drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/destination.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
+    }
+
+    // If user is on activity page, link css file
+    if(preg_match("/^.*\/content\/.*$/", $_SERVER['REQUEST_URI'])){
+
+        drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/activity.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
+    }
+}
+
 /**
  * Implements memory_blocks_admin_redirect()
  */

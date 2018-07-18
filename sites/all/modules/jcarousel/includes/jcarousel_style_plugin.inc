@@ -69,7 +69,7 @@ class jcarousel_style_plugin extends views_plugin_style {
       '#title' => t('Skin'),
       '#default_value' => $this->options['skin'],
       '#options' => $skins,
-      '#description' => t('Skins may be provided by other modules. Set to "None" if your theme includes carousel theming directly in style.css or another stylesheet. "None" does not include any built-in navigation, arrows, or positioning at all.'),
+      '#description' => t('Skins may be provided by other modules. Set to "None" if your theme includes carousel theming directly in destination-activity.css or another stylesheet. "None" does not include any built-in navigation, arrows, or positioning at all.'),
     );
     $form['responsive'] = array(
       '#type' => 'checkbox',

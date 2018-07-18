@@ -1,6 +1,6 @@
 /* --- Articles (nodes) --- */
 .article {
-  border-bottom: 1px solid #2e2e2e;
+  /*border-bottom: 1px solid #2e2e2e;*/
   margin-bottom: 20px; /* Articles spacing */
   padding-bottom: 20px;
 }

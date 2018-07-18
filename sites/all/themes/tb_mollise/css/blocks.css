@@ -1163,6 +1163,8 @@ div#block-user-login {
   box-shadow: 1px 1px 5px #e9e9e9;
   margin: auto;
   padding: 40px 100px;
+  margin-top: 50vh;
+  transform: translateY(calc(-50% - 40px));
 }
 
 div#block-user-login > div > h2 {

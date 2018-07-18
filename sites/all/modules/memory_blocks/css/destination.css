@@ -1,0 +1,102 @@
+.vocabulary-continent .field-type-image {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+.vocabulary-continent .field-type-image img {
+    width: 100%;
+    height: auto;
+}
+
+.vocabulary-continent .taxonomy-term-description {
+    padding: 20px 50px;
+    margin: 0 0 75px 0;
+}
+
+.vocabulary-continent .taxonomy-term-description p {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.block-content {
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+    grid-template-rows: auto;
+    grid-template-areas: "a a a a a";
+    margin-bottom: 50px;
+}
+
+.term-listing-heading {
+    grid-area: a;
+}
+
+.node-activite {
+    position: relative;
+    margin: 0 20px !important;
+    padding: 0 !important;
+}
+
+.node-activite .article-header {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.node-activite .article-header h2.node-title {
+    text-align: center;
+}
+
+.node-activite .article-header h2.node-title a {
+    display: block;
+    width: 80%;
+    margin: auto;
+    padding: 6px 10px;
+    box-sizing: border-box;
+    border: 2px solid transparent;
+    font-size: 16px;
+    text-align: center;
+}
+.node-activite .article-header h2.node-title a:hover {
+    display: block;
+    width: 80%;
+    margin: auto;
+    padding: 6px 10px;
+    box-sizing: border-box;
+    border: 2px solid #fff;
+    color: #fff;
+    background-color: #00000087;
+}
+
+@media screen and (max-width: 1215px){
+
+    .node-activite .article-header h2.node-title a {
+        font-size: 12px;
+    }
+}
+
+.node-activite .node-content .field-type-image {
+    margin: 0;
+}
+
+.node-activite .node-content .field-type-image img {
+    width: 100%;
+    height: auto;
+}
+
+.node-activite .node-links {
+    margin-top: 0 !important;
+    width: 100%;
+    background-color: #424242;
+    text-align: center;
+}
+
+.node-activite .node-links .node-readmore a {
+    width: 100%;
+    padding: 7px 20px;
+    box-sizing: border-box;
+}
