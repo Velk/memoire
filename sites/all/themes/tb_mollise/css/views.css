@@ -359,3 +359,58 @@
 /*#slideshow-wrapper .view-content > div > div.views_slideshow_main * {*/
   /*height: calc(100vh - 85.6px) !important;*/
 /*}*/
+
+/* Slideshow customisation */
+
+#slideshow-wrapper .views-slideshow-controls-bottom {
+  display: block;
+  text-align: center;
+  bottom: 0;
+  font-size: .92em;
+  height: auto;
+  padding: 10px 0 !important;
+  position: absolute;
+  right: 0;
+  width: 100%;
+  z-index: 20;
+  background: none !important;
+}
+
+#slideshow-wrapper .views-slideshow-pager-field-item .views-content-field-slideshow img {
+  background: #fff;
+  cursor: pointer;
+  border-radius: 50px;
+  width: 10px;
+  height: 10px;
+  border: 3px solid #424242;
+}
+
+#slideshow-wrapper .views-slideshow-pager-field-item {
+  float: left;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+#slideshow-wrapper .views-slideshow-controls-bottom {
+  display: block;
+  text-align: center;
+  background: url(../images/line-2.png) 0 0 repeat;
+  bottom: 0;
+  font-size: .92em;
+  height: auto;
+  padding: 15px 0;
+  position: absolute;
+  right: 0;
+  width: 100%;
+  z-index: 20;
+}
+#slideshow-wrapper .views-slideshow-pager-fields {
+  text-align: center;
+  display: inline-block;
+  width: auto;
+}
+
+.views_slideshow_controls_text_previous,
+.views_slideshow_controls_text_next {
+  display: none !important;
+}
