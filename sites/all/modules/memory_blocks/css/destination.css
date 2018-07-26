@@ -40,43 +40,40 @@
 .node-activite .article-header {
     position: absolute;
     left: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 0;
     width: 100%;
-    padding: 0 20px;
+    padding: 15px;
     box-sizing: border-box;
+    z-index: 10;
 }
 
 .node-activite .article-header h2.node-title {
-    text-align: center;
+    /*text-align: center;*/
 }
 
 .node-activite .article-header h2.node-title a {
     display: block;
-    width: 80%;
-    margin: auto;
-    padding: 6px 10px;
+    width: 100%;
     box-sizing: border-box;
-    border: 2px solid transparent;
     font-size: 16px;
-    text-align: center;
+    text-align: left;
+    font-weight: bold;
 }
-.node-activite .article-header h2.node-title a:hover {
-    display: block;
-    width: 80%;
-    margin: auto;
-    padding: 6px 10px;
-    box-sizing: border-box;
-    border: 2px solid #fff;
+.node-activite:hover .article-header h2.node-title a {
+    font-weight: bold;
     color: #fff;
-    background-color: #00000087;
 }
-
-@media screen and (max-width: 1215px){
-
-    .node-activite .article-header h2.node-title a {
-        font-size: 12px;
-    }
+.node-activite:hover {
+    cursor: pointer;
+}
+.node-activite:hover .node-links .node-readmore > a {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    text-decoration: none;
+    border: 1px solid #26C6DA;
+    color: #26C6DA;
+    background-color: #f2feff;
 }
 
 .node-activite .node-content .field-type-image {
@@ -86,6 +83,7 @@
 .node-activite .node-content .field-type-image img {
     width: 100%;
     height: auto;
+    z-index: 0;
 }
 
 .node-activite .node-links {
@@ -99,4 +97,6 @@
     width: 100%;
     padding: 7px 20px;
     box-sizing: border-box;
+    background-color: #26C6DA;
+    border: 1px solid #26C6DA;
 }

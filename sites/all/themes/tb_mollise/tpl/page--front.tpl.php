@@ -73,7 +73,7 @@
         $page['content']['system_main']['default_message'] = array();
         }
 ?>
-<div id="page" class="page-default"> <a name="Top" id="Top"></a>
+<div id="page" class="front-page page-default"> <a name="Top" id="Top"></a>
   <?php if ($header_top = render($page['header_top'])): ?>
   <div id="header-top-wrapper" class="wrapper">
     <div class="container <?php print $grid; ?>">

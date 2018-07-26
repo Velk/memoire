@@ -7,8 +7,13 @@
   margin: 0;
 }
 
-.block-inner {
-  padding: 0;
+.front-page .block-inner {
+  padding: 0 25px;
+  max-width: 1000px;
+  margin: auto;
+}
+.front-page .block-inner {
+  width: 100%;
 }
 
 .block-title {

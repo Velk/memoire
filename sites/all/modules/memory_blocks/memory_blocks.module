@@ -53,6 +53,7 @@ function memory_blocks_init() {
     if(preg_match("/^.*\/destinations\/.*$/", $_SERVER['REQUEST_URI'])){
 
         drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/destination.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
+        drupal_add_js(drupal_get_path('module', 'memory_blocks') . '/js/destination.js', array('group' => JS_DEFAULT, 'every_page' => TRUE));
     }
 
     // If user is on activity page, link css file
@@ -61,6 +62,7 @@ function memory_blocks_init() {
         drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/activity.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
     }
 }
+
 
 /**
  * Implements memory_blocks_admin_redirect()
