@@ -47,11 +47,12 @@ div#page {
             "a a a a a a"
             ". b b b b ."
             ". c c c d ."
-            ". e e e e .";
-    grid-template-columns: 10% 20% 20% 20% 20% 10%;
-    grid-gap: 50px 0;
+            ". e e e e ."
+            ". f f f f .";
+    grid-template-columns: 10% repeat(4, 1fr) 10%;
+    /*grid-gap: 50px 0;*/
     align-items: center;
-    justify-items: center;
+    /*justify-items: center;*/
 }
 
 .node-activite .field-name-field-img-activite {
@@ -66,11 +67,14 @@ div#page {
 .node-activite .field-name-field-prestation-base {
     grid-area: c;
 }
-.node-activite .field-name-field-price-activite {
+.node-activite fieldset.group-price {
     grid-area: d;
 }
-.node-activite .field-name-field-memory-opinion {
+.node-activite fieldset.group-options {
     grid-area: e;
+}
+.node-activite .field-name-field-memory-opinion {
+    grid-area: f;
 }
 
 .node-activite .field-name-field-img-activite img {
@@ -80,21 +84,22 @@ div#page {
 
 .node-activite .field-name-body,
 .node-activite .field-name-field-prestation-base,
-/*.node-activite .field-name-field-price-activite,*/
+.node-activite fieldset.group-options,
 .node-activite .field-name-field-memory-opinion {
-    margin: 0 10px;
+    margin: 40px 10px;
     text-align: justify;
 }
 
 .node-activite .field-name-body > h3,
 .node-activite .field-name-field-prestation-base > h3,
-/*.node-activite .field-name-field-price-activite > h3,*/
+.node-activite fieldset.group-options .field-name-field-titre-option .field-item,
 .node-activite .field-name-field-memory-opinion > h3 {
     color: #26C6DA;
     font-size: 16px;
     text-transform: uppercase;
     margin-bottom: 20px !important;
     padding-bottom: 5px !important;
+    font-weight: bold;
 }
 
 .node-activite .field-name-field-memory-opinion > h3 {
@@ -105,8 +110,107 @@ div#page {
     margin-bottom: 10px;
 }
 
+.node-activite .field-name-field-price-prefix > div.field-items {
+    color: #26C6DA;
+}
 .node-activite .field-name-field-price-activite > div.field-items {
-    font-size: 20px;
-    text-align: center;
+    font-size: 25px;
+    /* text-align: center; */
     font-weight: bold;
+    line-height: 1;
+    color: #26C6DA;
+}
+.node-activite .field-name-field-price-precision > div.field-items {
+    font-size: 12px;
+    font-style: italic;
+    color: #26C6DA;
+}
+
+/* Fieldset price */
+.node-activite .group-price {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+.node-activite .group-price > legend {
+    display: none;
+}
+
+.node-activite .group-price .fieldset-content {
+    display: grid;
+    grid-template-areas: "a b" "c c";
+}
+
+.node-activite .field-name-field-price-prefix {
+    grid-area: a;
+    text-align: right;
+    display: grid;
+    padding-right: 5px;
+    align-items: flex-end;
+    justify-items: end;
+}
+.node-activite .field-name-field-price-activite {
+    grid-area: b;
+    text-align: left;
+    display: grid;
+    padding-left: 5px;
+    align-items: flex-end;
+    justify-items: start;
+}
+.node-activite .field-name-field-price-precision {
+    grid-area: c;
+    width: 175px;
+    margin: 10px auto auto auto;
+}
+
+/* Options */
+.node-activite .group-options .paragraphs-item-activity-options > .content {
+    display: grid;
+    grid-template-areas:
+            "a a a a"
+            "b b b c";
+    grid-template-columns: repeat(4, 1fr);
+    /*justify-items: center;*/
+    align-items: center;
+}
+.node-activite .group-options .paragraphs-item-activity-options > .content > .field-name-field-titre-option {
+    grid-area: a;
+}
+.node-activite .group-options .paragraphs-item-activity-options > .content > .field-name-field-texte-option {
+    grid-area: b;
+}
+.node-activite .group-options .paragraphs-item-activity-options > .content > .field-name-field-prix-option {
+    grid-area: c;
+}
+
+.node-activite fieldset.group-options {
+    border: none;
+    border-left: 10px solid #26c6da26;
+    padding: 25px 0 0 25px;
+}
+.node-activite fieldset.group-options.collapsed {
+    border: none;
+    padding: 25px 0 0 0;
+}
+.node-activite fieldset.group-options > legend a  {
+    font-size: 20px;
+    color: #bebebe;
+    font-weight: bold;
+}
+
+.node-activite .group-options .field-name-field-options > div > div.field-item {
+    margin-bottom: 40px;
+}
+.node-activite .group-options .field-name-field-options > div > div.field-item:last-of-type {
+    margin-bottom: 0;
+}
+.node-activite .group-options .paragraphs-item-activity-options > .content > .field-name-field-titre-option .field-item {
+    margin-bottom: 20px !important;
+}
+.node-activite .group-options .paragraphs-item-activity-options > .content > .field-name-field-prix-option .field-item {
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+    line-height: 1;
+    color: #26C6DA;
 }

@@ -132,6 +132,10 @@
   overflow: hidden !important;
 }
 
+.front-page .views-slideshow-cycle-main-frame {
+  width: 100% !important;
+}
+
 #slideshow-wrapper .views-slideshow-controls-bottom {
   background: url(../images/line-2.png) 0 0 repeat;
   bottom: 0;
