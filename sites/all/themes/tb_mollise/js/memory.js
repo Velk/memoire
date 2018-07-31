@@ -2,39 +2,39 @@
 (function($) {
     $(document).ready(function($) {
 
-        var header_top = $("#header-top-wrapper");
-        var header_top_button = $("#header-wrapper a.accordion").addClass("active");
-        var header = $("#header-wrapper");
-        var clickToShow = true;
-
-        header_top_button.removeClass("active");
-
-
-        header_top_button.click(function(e){
-            e.preventDefault();
-            var heightToReach = "+="+ header_top.height();
-
-            header_top.slideToggle(600);
-            if(clickToShow){
-
-                header_top_button.addClass("active");
-
-                header.animate({
-                    top: heightToReach
-                }, 650);
-
-                clickToShow = false;
-            }else{
-
-                header_top_button.removeClass("active");
-
-                header.animate({
-                    top: "0"
-                }, 600);
-
-                clickToShow = true;
-            }
-        });
+        // var header_top = $("#header-top-wrapper");
+        // var header_top_button = $("#header-wrapper a.accordion").addClass("active");
+        // var header = $("#header-wrapper");
+        // var clickToShow = true;
+        //
+        // header_top_button.removeClass("active");
+        //
+        //
+        // header_top_button.click(function(e){
+        //     e.preventDefault();
+        //     var heightToReach = "+="+ header_top.height();
+        //
+        //     header_top.slideToggle(600);
+        //     if(clickToShow){
+        //
+        //         header_top_button.addClass("active");
+        //
+        //         header.animate({
+        //             top: heightToReach
+        //         }, 650);
+        //
+        //         clickToShow = false;
+        //     }else{
+        //
+        //         header_top_button.removeClass("active");
+        //
+        //         header.animate({
+        //             top: "0"
+        //         }, 600);
+        //
+        //         clickToShow = true;
+        //     }
+        // });
 
         $( "a:contains('Connexion')" ).parent("li").css({
             "position": "absolute",
