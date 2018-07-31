@@ -1,0 +1,12 @@
+.tb-megamenu li.tb-megamenu-item:hover > a {
+    color: #26C6DA !important;
+}
+
+.tb-megamenu .mega.open > .mega-dropdown-menu,
+.tb-megamenu .mega.dropdown-submenu:hover > .mega-dropdown-menu {
+    display: block;
+    width: 100%;
+    background-color: #fff;
+    border: none;
+    text-align: left;
+}
