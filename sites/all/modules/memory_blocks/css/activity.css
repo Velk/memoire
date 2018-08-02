@@ -41,16 +41,21 @@ div#page {
     margin-bottom: 50px !important;
 }
 
+.node-activite .section .field-item > p {
+    margin: 0;
+}
+
 .node-activite .node-content {
     display: grid;
     grid-template-areas:
             "a a a a a a"
             ". b b b b ."
-            ". c c c d ."
-            ". e e e e ."
+            ". c c c c ."
+            ". d d d e ."
             ". f f f f ."
             ". g g g g ."
-            ". h h h h .";
+            ". h h h h ."
+            ". i i i i .";
     grid-template-columns: 10% repeat(4, 1fr) 10%;
     /*grid-gap: 50px 0;*/
     align-items: center;
@@ -60,54 +65,72 @@ div#page {
 .node-activite .field-name-field-img-activite {
     grid-area: a;
     margin: 0 !important;
+    position: relative;
     width: 100%;
+    height: 500px;
+    overflow: hidden;
 }
 .node-activite .field-name-body {
     grid-area: b;
     margin: 50px 0;
 }
-.node-activite .field-name-field-prestation-base {
+.node-activite .field-name-field-prestation-title {
     grid-area: c;
 }
-.node-activite fieldset.group-price {
+.node-activite .field-name-field-prestation-base {
     grid-area: d;
 }
-.node-activite fieldset.group-options {
+.node-activite fieldset.group-price {
     grid-area: e;
 }
-.node-activite .field-name-field-memory-opinion {
+.node-activite fieldset.group-options {
     grid-area: f;
 }
-.node-activite .field-name-field-photo {
+.node-activite .field-name-field-memory-opinion {
     grid-area: g;
 }
-.node-activite .field-name-field-video {
+.node-activite .field-name-field-photo {
     grid-area: h;
+}
+.node-activite .field-name-field-video {
+    grid-area: i;
 }
 
 .node-activite .field-name-field-img-activite img {
     width: 100%;
     height: auto;
+    transform: translateY(calc(-100% + 50% + 250px));
 }
 
-.node-activite .field-name-body,
-.node-activite .field-name-field-prestation-base,
-.node-activite fieldset.group-options,
+.node-activite .field-name-body {
+    margin: 40px 10px;
+    text-align: justify;
+}
 .node-activite .field-name-field-memory-opinion,
 .node-activite .field-name-field-photo {
     margin: 40px 10px;
     text-align: justify;
 }
+.node-activite .field-name-field-prestation-base {
+    margin: 20px 10px;
+    text-align: justify;
+}
+.node-activite .field-name-field-prestation-title {
+    margin: 0 10px;
+    color: #26C6DA;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
 
 .node-activite .field-name-body > h3,
 .node-activite .field-name-field-prestation-base > h3,
-.node-activite fieldset.group-options .field-name-field-titre-option .field-item,
+/*.node-activite fieldset.group-options .field-name-field-titre-option .field-item,*/
 .node-activite .field-name-field-memory-opinion > h3 {
     color: #26C6DA;
     font-size: 16px;
     text-transform: uppercase;
     margin-bottom: 20px !important;
-    padding-bottom: 5px !important;
     font-weight: bold;
 }
 
@@ -140,6 +163,7 @@ div#page {
     border: none;
     padding: 0;
     margin: 0;
+    /*transform: translateY(-20px);*/
 }
 .node-activite .group-price > legend {
     display: none;
@@ -148,28 +172,30 @@ div#page {
 .node-activite .group-price .fieldset-content {
     display: grid;
     grid-template-areas: "a b" "c c";
+    width: 200px;
+    margin: auto;
 }
 
 .node-activite .field-name-field-price-prefix {
     grid-area: a;
-    text-align: right;
+    text-align: left;
     display: grid;
-    padding-right: 5px;
+    padding-left: 10px;
     align-items: flex-end;
-    justify-items: end;
 }
 .node-activite .field-name-field-price-activite {
     grid-area: b;
-    text-align: left;
+    text-align: right;
     display: grid;
-    padding-left: 5px;
+    padding: 0 10px 0 5px;
     align-items: flex-end;
-    justify-items: start;
 }
 .node-activite .field-name-field-price-precision {
     grid-area: c;
-    width: 175px;
-    margin: 10px auto auto auto;
+    width: 100%;
+    margin: 10px 0 0 0;
+    padding: 0 10px;
+    box-sizing: border-box;
 }
 
 /* Options */
@@ -177,7 +203,8 @@ div#page {
     display: grid;
     grid-template-areas:
             "a a a a"
-            "b b b c";
+            "b b b c"
+            "d d d d";
     grid-template-columns: repeat(4, 1fr);
     /*justify-items: center;*/
     align-items: center;
@@ -191,31 +218,39 @@ div#page {
 .node-activite .group-options .paragraphs-item-activity-options > .content > .field-name-field-prix-option {
     grid-area: c;
 }
+.node-activite .group-options .paragraphs-item-activity-options > .content > .group-informations {
+    grid-area: d;
+}
 
 .node-activite fieldset.group-options {
     border: none;
-    border-left: 10px solid #26c6da26;
-    padding: 25px 0 0 25px;
+    padding: 0;
+    margin: 40px 0;
+    /*border-left: 10px solid #26c6da26;*/
+    /*padding: 25px 0 0 25px;*/
 }
-.node-activite fieldset.group-options.collapsed {
-    border: none;
-    padding: 25px 0 0 0;
+.node-activite fieldset.group-options > legend {
+    display: none;
 }
-.node-activite fieldset.group-options > legend a  {
-    font-size: 20px;
-    color: #bebebe;
-    font-weight: bold;
-}
+/*.node-activite fieldset.group-options.collapsed {*/
+    /*border: none;*/
+    /*padding: 25px 0 0 0;*/
+/*}*/
+/*.node-activite fieldset.group-options > legend a  {*/
+    /*font-size: 20px;*/
+    /*color: #bebebe;*/
+    /*font-weight: bold;*/
+/*}*/
 
 .node-activite .group-options .field-name-field-options > div > div.field-item {
-    margin-bottom: 40px;
+    margin-bottom: 80px;
 }
 .node-activite .group-options .field-name-field-options > div > div.field-item:last-of-type {
     margin-bottom: 0;
 }
-.node-activite .group-options .paragraphs-item-activity-options > .content > .field-name-field-titre-option .field-item {
-    margin-bottom: 20px !important;
-}
+/*.node-activite .group-options .paragraphs-item-activity-options > .content > .field-name-field-titre-option .field-item {*/
+    /*margin-bottom: 20px !important;*/
+/*}*/
 .node-activite .group-options .paragraphs-item-activity-options > .content > .field-name-field-prix-option .field-item {
     text-align: center;
     font-size: 25px;
@@ -223,14 +258,141 @@ div#page {
     line-height: 1;
     color: #26C6DA;
 }
-
-/* Media - Image */
-.node-activite .field-name-field-photo img {
+.node-activite .group-options .field-name-field-titre-option {
+    margin: 0 10px;
+    color: #26C6DA;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+.node-activite .group-options .field-name-field-titre-option .field-item {
+    margin: 0;
+    padding: 0;
+}
+.node-activite .group-options .field-name-field-texte-option {
+    margin: 20px 10px;
+}
+.node-activite .group-option-price {
+    border: none;
+    padding: 0;
+    margin: 0;
+    /*transform: translateY(-20px);*/
+}
+.node-activite .group-option-price > legend {
+    display: none !important;
+}
+.node-activite .group-option-price .fieldset-content {
+    display: grid;
+    grid-template-areas: "a b" "c c";
+    width: 200px;
+    margin: auto;
+}
+.node-activite .field-name-field-option-price-prefix {
+    grid-area: a;
+    text-align: left;
+    display: grid;
+    padding-left: 10px;
+    align-items: flex-end;
+}
+.node-activite .field-name-field-prix-option {
+    grid-area: b;
+    text-align: right;
+    display: grid;
+    padding: 0 10px 0 5px;
+    align-items: flex-end;
+}
+.node-activite .field-name-field-option-price-precision {
+    grid-area: c;
     width: 100%;
-    height: auto;
+    margin: 10px 0 0 0;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+.node-activite .field-name-field-option-price-prefix > div.field-items {
+    color: #26C6DA;
+}
+.node-activite .field-name-field-prix-option > div.field-items {
+    font-size: 25px;
+    font-weight: bold;
+    line-height: 1;
+    color: #26C6DA;
+}
+.node-activite .field-name-field-option-price-precision > div.field-items {
+    font-size: 12px;
+    font-style: italic;
+    color: #26C6DA;
 }
 
-/* Media - Video */
-.node-activite .field-name-field-video {
-    margin: 40px auto;
+/* Fieldset - Groupe informations */
+.group-informations {
+    border: none;
+    margin: 20px 0 0 0;
+    padding: 0;
+    background-color: #fefefe;
+    box-shadow: 0px 0px 5px #f3f3f3;
+    border-radius: 5px;
+}
+.group-informations > legend {
+    display: none !important;
+}
+.group-informations > .fieldset-content {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-areas: "a b c";
+    grid-gap: 0 20px;
+}
+.group-informations > .fieldset-content .field-name-field-duration {
+    grid-area: a;
+}
+.group-informations > .fieldset-content .field-name-field-group {
+    grid-area: b;
+}
+.group-informations > .fieldset-content .field-name-field-availability {
+    grid-area: c;
+}
+.group-informations > .fieldset-content .field-name-field-duration,
+.group-informations > .fieldset-content .field-name-field-group,
+.group-informations > .fieldset-content .field-name-field-availability {
+    padding: 15px;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-areas: "a b b b b b b b" "c c c c c c c c";
+    grid-template-columns: repeat(8, 1fr);
+    align-items: flex-start;
+    align-content: flex-start;
+    grid-gap: 10px 0;
+}
+.group-informations > .fieldset-content .field-name-field-duration::before {
+    font-family: "FontAwesome";
+    content: "\f017";
+}
+.group-informations > .fieldset-content .field-name-field-group::before {
+    font-family: "FontAwesome";
+    content: "\f0c0";
+}
+.group-informations > .fieldset-content .field-name-field-availability::before {
+    font-family: "FontAwesome";
+    content: "\f133";
+}
+.group-informations > .fieldset-content .field-name-field-duration::before,
+.group-informations > .fieldset-content .field-name-field-group::before,
+.group-informations > .fieldset-content .field-name-field-availability::before {
+    grid-area: a;
+    font-size: 20px;
+    line-height: 1;
+    margin-right: 10px;
+    color: #424242;
+}
+.group-informations > .fieldset-content .field-name-field-duration > h3.field-label,
+.group-informations > .fieldset-content .field-name-field-group > h3.field-label,
+.group-informations > .fieldset-content .field-name-field-availability > h3.field-label {
+    grid-area: b;
+    font-size: 12px;
+    text-align: left;
+}
+.group-informations > .fieldset-content .field-name-field-duration > div.field-items,
+.group-informations > .fieldset-content .field-name-field-group > div.field-items,
+.group-informations > .fieldset-content .field-name-field-availability > div.field-items {
+    grid-area: c;
+    text-align: justify;
 }
