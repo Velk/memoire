@@ -180,8 +180,9 @@
 }
 
 #slideshow-wrapper .views-slideshow-pager-field-item.active .views-content-field-slideshow img {
-  border: 3px solid #fff;
-  background: #000;
+  border: 6px solid #fff;
+  background: #fff;
+  box-sizing: border-box;
 }
 
 #slideshow-wrapper .views-slideshow-controls-top {
@@ -386,7 +387,8 @@
   border-radius: 50px;
   width: 10px;
   height: 10px;
-  border: 3px solid #424242;
+  border: 6px solid #ffffff;
+  box-sizing: border-box;
 }
 
 #slideshow-wrapper .views-slideshow-pager-field-item {

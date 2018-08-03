@@ -1,8 +1,6 @@
 (function ($) {
-    Drupal.behaviors.memory_blocks = {
+    Drupal.behaviors.memory_blocks_destination = {
         attach: function (context, settings) {
-
-            console.log("qdfsgsr");
 
             $(".node-activite").mouseenter(function(){
 
@@ -18,8 +16,7 @@
 
             });
 
-            $(".node-activite .node-links .node-readmore > a").text("AJOUTER AU PANIER");
-                // ajouter au panier
+            $(".node-activite .node-links .node-readmore > a").text("PLUS D'INFORMATIONS");
 
         }
     };

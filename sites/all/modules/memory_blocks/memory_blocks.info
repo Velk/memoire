@@ -5,3 +5,4 @@ version = VERSION
 core = 7.x
 
 stylesheets[all][] = 'css/menu.css'
+scripts[] = js/script.js

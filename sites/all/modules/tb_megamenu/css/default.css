@@ -262,7 +262,7 @@
   color: #eee;
   text-decoration: none;
   outline: 0;
-  background-color: #e54e4b;
+  /*background-color: #e54e4b;*/
 }
 .tb-megamenu .dropdown-menu .disabled > a,
 .tb-megamenu .dropdown-menu .disabled > a:hover {
