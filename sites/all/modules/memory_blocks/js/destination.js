@@ -2,22 +2,19 @@
     Drupal.behaviors.memory_blocks_destination = {
         attach: function (context, settings) {
 
-            $(".node-activite").mouseenter(function(){
+            $(".block-views .views-col").mouseenter(function(){
 
-                $(".node-activite .node-content .field-type-image img").css("filter", "grayscale()");
+                $(".block-views .views-col .views-field-field-img-activite .field-content > img").css("filter", "grayscale()");
 
-                $(this).children(".node-content").children(".field-type-image").children(".field-items").children(".field-item").children("a").children("img").css("filter", "none");
-
-            });
-
-            $(".node-activite").mouseleave(function(){
-
-                $(".node-activite .node-content .field-type-image img").css("filter", "none");
+                $(this).children(".col-inner").children(".views-field-field-img-activite").children(".field-content").children("img").css("filter", "none");
 
             });
 
-            $(".node-activite .node-links .node-readmore > a").text("PLUS D'INFORMATIONS");
-            
+            $(".block-views .views-col").mouseleave(function(){
+
+                $(".block-views .views-col .views-field-field-img-activite .field-content > img").css("filter", "none");
+
+            });
         }
     };
 }(jQuery));
