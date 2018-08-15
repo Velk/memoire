@@ -156,12 +156,14 @@
 }
 .block-views .views-col {
     position: relative;
-    margin: 0 !important;
-    padding: 0 25px !important;
+    margin: 0 0 75px 0 !important;
+    padding: 0 !important;
     box-sizing: border-box;
 }
 .block-views .views-col .col-inner {
     position: relative;
+    max-width: 200px;
+    margin: auto;
 }
 
 /* Title */
@@ -212,6 +214,7 @@
     margin: 0;
     z-index: 0;
     overflow-x: hidden;
+    transform: translateX(calc(-50% + 100px));
 }
 
 /* Price */
