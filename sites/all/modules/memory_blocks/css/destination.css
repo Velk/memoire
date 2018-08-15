@@ -44,107 +44,215 @@
     font-size: 14px;
 }
 
-#main-content .block-content {
-    display: grid;
-    grid-template-columns: repeat(5,1fr);
-    grid-template-rows: auto;
-    grid-template-areas: "a a a a a";
-    margin-bottom: 50px;
-}
+/*#main-content .block-content {*/
+    /*display: grid;*/
+    /*grid-template-columns: repeat(5,1fr);*/
+    /*grid-template-rows: auto;*/
+    /*grid-template-areas: "a a a a a";*/
+    /*margin-bottom: 50px;*/
+/*}*/
 
-.term-listing-heading {
-    grid-area: a;
-}
+/*.term-listing-heading {*/
+    /*grid-area: a;*/
+/*}*/
 
-.node-activite {
+/*.node-activite {*/
+    /*position: relative;*/
+    /*margin: 0 50px !important;*/
+    /*padding: 0 !important;*/
+/*}*/
+
+/*.node-activite .article-header {*/
+    /*position: absolute;*/
+    /*left: 0;*/
+    /*top: 0;*/
+    /*width: 100%;*/
+    /*padding: 15px;*/
+    /*box-sizing: border-box;*/
+    /*z-index: 10;*/
+/*}*/
+
+/*.node-activite .article-header h2.node-title {*/
+    /*!*text-align: center;*!*/
+/*}*/
+
+/*.node-activite .article-header h2.node-title a {*/
+    /*display: block;*/
+    /*width: 100%;*/
+    /*box-sizing: border-box;*/
+    /*font-size: 16px;*/
+    /*text-align: center;*/
+    /*font-weight: bold;*/
+/*}*/
+/*.node-activite:hover .article-header h2.node-title a {*/
+    /*font-weight: bold;*/
+    /*color: #fff;*/
+/*}*/
+/*.node-activite:hover {*/
+    /*cursor: pointer;*/
+/*}*/
+/*.node-activite:hover .node-links .node-readmore > a {*/
+    /*-webkit-box-sizing: border-box;*/
+    /*-moz-box-sizing: border-box;*/
+    /*box-sizing: border-box;*/
+    /*text-decoration: none;*/
+    /*border: 1px solid #26C6DA;*/
+    /*color: #26C6DA;*/
+    /*background-color: #f2feff;*/
+/*}*/
+
+/*.node-activite .node-content {*/
+    /*height: 150px;*/
+/*}*/
+
+/*.node-activite .node-content .field-type-image {*/
+    /*margin: 0;*/
+    /*height: 100%;*/
+/*}*/
+/*.node-activite .node-content .field-type-image * {*/
+    /*margin: 0;*/
+    /*height: 100%;*/
+/*}*/
+/*.node-activite .node-content .field-type-image img {*/
+    /*width: auto;*/
+    /*!*width: 100%;*!*/
+    /*height: 100%;*/
+    /*!*height: auto;*!*/
+    /*z-index: 0;*/
+/*}*/
+
+/*.node-activite .node-content .field-name-field-price-prestation {*/
+    /*position: absolute;*/
+    /*top: 140px;*/
+    /*transform: translateY(-100%);*/
+    /*right: 10px;*/
+/*}*/
+/*.node-activite .node-content .field-name-field-price-prestation .field-item {*/
+    /*color: #fff;*/
+    /*font-size: 16px;*/
+    /*text-align: center;*/
+    /*font-weight: bold;*/
+/*}*/
+
+/*.node-activite .node-links {*/
+    /*margin-top: 0 !important;*/
+    /*width: 100%;*/
+    /*background-color: #424242;*/
+    /*text-align: center;*/
+/*}*/
+
+/*.node-activite .node-links .node-readmore a {*/
+    /*width: 100%;*/
+    /*padding: 7px 20px;*/
+    /*box-sizing: border-box;*/
+    /*background-color: #26C6DA;*/
+    /*border: 1px solid #26C6DA;*/
+/*}*/
+
+
+/* DST - Lyon */
+.block-views .block-title {
+    display: none;
+}
+.block-views .views-col {
     position: relative;
-    margin: 0 50px !important;
-    padding: 0 !important;
+    margin: 0 !important;
+    padding: 0 25px !important;
+    box-sizing: border-box;
+}
+.block-views .views-col .col-inner {
+    position: relative;
 }
 
-.node-activite .article-header {
+/* Title */
+.block-views .views-col .views-field-title {
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
+    height: calc(100% - 30px);
     padding: 15px;
     box-sizing: border-box;
     z-index: 10;
+    cursor: pointer;
 }
 
-.node-activite .article-header h2.node-title {
-    /*text-align: center;*/
-}
-
-.node-activite .article-header h2.node-title a {
+.block-views .views-col .views-field-title > span > a {
     display: block;
     width: 100%;
+    height: 100%;
     box-sizing: border-box;
     font-size: 16px;
     text-align: center;
     font-weight: bold;
+    text-decoration: none;
+    color: #fff;
 }
-.node-activite:hover .article-header h2.node-title a {
+.block-views .views-col:hover .views-field-title > span > a {
     font-weight: bold;
     color: #fff;
 }
-.node-activite:hover {
-    cursor: pointer;
-}
-.node-activite:hover .node-links .node-readmore > a {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    text-decoration: none;
-    border: 1px solid #26C6DA;
-    color: #26C6DA;
-    background-color: #f2feff;
-}
 
-.node-activite .node-content {
+/* Image */
+.block-views .views-field-field-img-activite {
+    position: relative;
     height: 150px;
+    width: 100%;
 }
 
-.node-activite .node-content .field-type-image {
+.block-views .views-field-field-img-activite .field-content {
+    position: relative;
     margin: 0;
     height: 100%;
+    overflow: hidden;
 }
-.node-activite .node-content .field-type-image * {
-    margin: 0;
-    height: 100%;
-}
-.node-activite .node-content .field-type-image img {
+.block-views .views-field-field-img-activite .field-content > img {
     width: auto;
-    /*width: 100%;*/
     height: 100%;
-    /*height: auto;*/
+    margin: 0;
     z-index: 0;
+    overflow-x: hidden;
 }
 
-.node-activite .node-content .field-name-field-price-prestation {
+/* Price */
+.block-views .views-field-field-price-prestation {
     position: absolute;
     top: 140px;
     transform: translateY(-100%);
     right: 10px;
 }
-.node-activite .node-content .field-name-field-price-prestation .field-item {
+.block-views .views-field-field-price-prestation .field-content {
     color: #fff;
     font-size: 16px;
     text-align: center;
     font-weight: bold;
 }
 
-.node-activite .node-links {
+/* See more */
+.block-views .views-field-view-node {
+    height: 30px;
+}
+.block-views .views-field-view-node .field-content {
     margin-top: 0 !important;
     width: 100%;
-    background-color: #424242;
     text-align: center;
+    box-sizing: border-box;
+    background: none !important;
+    border: none !important;
 }
-
-.node-activite .node-links .node-readmore a {
+.block-views .views-field-view-node a {
     width: 100%;
     padding: 7px 20px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
     box-sizing: border-box;
-    background-color: #26C6DA;
+    text-decoration: none;
     border: 1px solid #26C6DA;
+    color: #fff !important;
+    background-color: #26C6DA !important;
+}
+.block-views .views-field-view-node a:hover,
+.block-views .views-col .col-inner:hover .views-field-view-node a {
+    color: #26C6DA !important;
+    background-color: #f2feff !important;
 }
