@@ -1,0 +1,161 @@
+div#block-memory-cart-memory-cart {
+    position: fixed;
+    right: 0;
+    top: 114px;
+    width: 400px;
+    background-color: #fff;
+    padding: 0;
+    height: calc(100vh - 94px);
+    z-index: 50;
+    box-shadow: -1px 0px 5px #bababa;
+}
+
+button#btn-display {
+    position: absolute;
+    left: -30px;
+    top: calc(50% - 30px);
+    width: 30px;
+    height: 60px;
+    background-color: #f7f7f7;
+    font: bold 12px Arial;
+    border-bottom-left-radius: 100px;
+    border-top-left-radius: 100px;
+    color: #26C6DA;
+    text-transform: uppercase;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0px 2px 5px #bababa;
+}
+button#btn-display:hover {
+    background-color: #26C6DA;
+    color: #f7f7f7;
+}
+
+button#btn-display > i#icon-plus {
+    display: none;
+}
+
+div#cart-container {
+    z-index: 99;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f7f7f7;
+    border-left: 1px solid #fff;
+    box-sizing: border-box;
+}
+
+form#devis {
+    margin: auto;
+    width: 85%;
+    display: grid;
+    grid-template-areas: "a a b b" "c c c ." "d d d d" "e e e e" ". f f ." "g g g g" "h h h h";
+    grid-gap: 25px;
+}
+
+div#location {
+    grid-area: a;
+}
+div#date {
+    grid-area: b;
+}
+div#participants {
+    grid-area: c;
+}
+div#budget {
+    grid-area: d;
+}
+div#transport {
+    grid-area: e;
+}
+button#empty-cart {
+    grid-area: f;
+}
+div#trip {
+    grid-area: g;
+}
+div#wish {
+    grid-area: h;
+}
+
+div#cart-container > h1 {
+    margin: 25px 0 50px 0;
+    padding: 0 20px;
+    text-align: center;
+    color: #26C6DA;
+}
+
+/*form#devis > div {*/
+    /*position: relative;*/
+    /*width: 100%;*/
+    /*display: block;*/
+/*}*/
+
+form#devis input {
+    border: none;
+    border-bottom: 1px solid #26C6DA;
+    box-sizing: border-box;
+    padding: 8px 0;
+    background-color: transparent;
+    font-size: 14px;
+    width: calc(100% - 25px);
+}
+form#devis input:hover {
+    background-color: #fdfdfd;
+    padding: 8px 10px;
+    cursor: pointer;
+}
+form#devis i.fa {
+    font-size: 14px;
+    width: 20px;
+}
+
+form#devis select {
+    border: 1px solid #26C6DA;
+    box-sizing: border-box;
+    padding: 8px 15px;
+    background-color: transparent;
+    font-size: 14px;
+    width: 100%;
+}
+form#devis select:hover {
+    background-color: #fdfdfd;
+    cursor: pointer;
+}
+
+form#devis label {
+    margin-bottom: 10px;
+}
+
+button#empty-cart {
+    box-sizing: border-box;
+    padding: 7px;
+    border: 1px solid #26C6DA;
+    background-color: #26C6DA;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+}
+button#empty-cart:hover {
+    background-color: #fdfdfd;
+    color: #26C6DA;
+}
+
+form#devis textarea {
+    background: none;
+    background-color: transparent;
+    padding: 8px 15px;
+    width: 100%;
+    height: 75px;
+    font-size: 12px;
+    border: 1px solid #26C6DA;
+}
+
+form#devis textarea:hover {
+    background-color: #fdfdfd;
+    border: 1px solid #26C6DA;
+    cursor: pointer;
+}
