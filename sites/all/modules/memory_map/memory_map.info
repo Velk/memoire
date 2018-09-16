@@ -1,0 +1,5 @@
+name = Memory Map
+description = Map for memory website
+package = Memory
+version = VERSION
+core = 7.x

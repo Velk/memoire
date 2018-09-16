@@ -1,0 +1,91 @@
+<?php
+
+/**
+* Implementation of hook_menu()
+*
+* @return array
+*/
+function memory_map_menu() {
+    $items = array();
+
+    $items['map'] = array(
+        'title' => t('Memory map'),
+        'description' => t('Memory - map'),
+        'page callback' => 'memory_map_block_view',
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+
+    return $items;
+}
+
+/**
+ * Implement hook_theme()
+ *
+ * @param $existing
+ * @param $type
+ * @param $theme
+ * @param $path
+ * @return array
+ */
+function memory_map_theme($existing, $type, $theme, $path) {
+    return array(
+        'tpl_memory_map' => array(
+            'template' => 'tpl/memory_map',
+            'path' => drupal_get_path('module', 'memory_map'),
+            'variables' => array('infos' => NULL),
+        ),
+    );
+}
+
+/**
+ * @return mixed
+ */
+function memory_map_block_info() {
+
+    $blocks['memory_map'] = array(
+        'info' => t('Memory map'),
+        'weight' => 1,
+        'status' => 1,
+        'region' => 'content',
+        'visibility' => BLOCK_VISIBILITY_LISTED,
+        'pages' => 'map',
+    );
+
+    return $blocks;
+}
+
+/**
+ * @param string $delta
+ * @return array
+ * @throws Exception
+ */
+function memory_map_block_view($delta = '') {
+
+    $block = array();
+
+    switch ($delta) {
+        case 'memory_map':
+
+            $data['title'] = "Memory - World map";
+
+            // Link the template
+            $block['content']['#markup'] = theme('tpl_memory_map', $data);
+
+            // Link a css file
+            $block['content']['#attached']['css'][] = array(
+                'data' => drupal_get_path('module', 'memory_map').'/css/memory_map.css',
+                'type' => 'file'
+            );
+
+             // Link a js file
+             $block['content']['#attached']['js'][] = array(
+                 'data' => drupal_get_path('module', 'memory_map').'/js/memory_map.js',
+                 'type' => 'file'
+             );
+
+            break;
+    }
+
+    return $block;
+}

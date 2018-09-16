@@ -1,0 +1,38 @@
+svg#svg-container {
+    position: relative;
+    display: block;
+    width: 90%;
+    height: auto;
+    margin: auto;
+}
+
+svg#svg-container path {
+    stroke: #ffffff !important;
+    fill: #babec6 !important;
+}
+
+svg#svg-container path:hover {
+    cursor: pointer;
+    fill: #727272 !important;
+}
+
+div#info-map {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: auto;
+    background-color: #26C6DA;
+    border: 1px solid #fff;
+    z-index: 999;
+    padding: 7px 25px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+div#info-map > p {
+    color: #fff;
+    margin: 0;
+    text-align: center;
+    font-size: 14px;
+}
