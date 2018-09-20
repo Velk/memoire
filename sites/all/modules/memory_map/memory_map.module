@@ -19,6 +19,12 @@ function memory_map_menu() {
     return $items;
 }
 
+function memory_map_init() {
+
+    drupal_add_js(drupal_get_path('module', 'memory_map') . '/js/plugins/jquery.panzoom.js', array('group' => JS_DEFAULT, 'every_page' => TRUE));
+    drupal_add_js(drupal_get_path('module', 'memory_map') . '/js/plugins/panzoom.js', array('group' => JS_DEFAULT, 'every_page' => TRUE));
+}
+
 /**
  * Implement hook_theme()
  *

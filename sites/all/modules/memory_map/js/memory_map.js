@@ -35,6 +35,34 @@
                 }
             });
 
+            /* Zoom */
+            $(".world").click(function(){
+               $("svg#svg-container").css("transform", "translateX(-50%) scale(1)");
+            });
+            $(".europe").click(function(){
+               $("svg#svg-container").css("transform", "translateX(-50%) translateY(100%) scale(4)");
+            });
+            $(".north-america").click(function(){
+               $("svg#svg-container").css("transform", "translateX(20%) translateY(55%) scale(2.5)");
+            });
+            $(".central-america").click(function(){
+               $("svg#svg-container").css("transform", "translateX(100%) translateY(10%) scale(6)");
+            });
+            $(".south-america").click(function(){
+               $("svg#svg-container").css("transform", "translateX(-10%) translateY(-46%) scale(2.25)");
+            });
+            $(".asia").click(function(){
+               $("svg#svg-container").css("transform", "translateX(-110%) translateY(30%) scale(2.5)");
+            });
+            $(".africa").click(function(){
+               $("svg#svg-container").css("transform", "translateX(-60%) translateY(-10%) scale(2)");
+            });
+            $(".north-africa").click(function(){
+               $("svg#svg-container").css("transform", "translateX(-60%) translateY(40%) scale(3.5)");
+            });
+            $(".oceania").click(function(){
+               $("svg#svg-container").css("transform", "translateX(-140%) translateY(-50%) scale(2.5)");
+            });
         }
     };
 }(jQuery));
