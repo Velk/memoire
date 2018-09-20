@@ -1,9 +1,22 @@
-svg#svg-container {
+#world-map {
     position: relative;
     display: block;
     width: 90%;
-    height: auto;
+    height: 70vh;
     margin: auto;
+    overflow: hidden;
+    box-shadow: inset 0px 0px 5px #d8d8d8;
+}
+
+svg#svg-container {
+    position: relative;
+    width: auto;
+    height: 100%;
+    margin: auto;
+    display: block;
+    transform: translateX(-50%) scale(1);
+    margin-left: 50%;
+    /* transform-origin: center; */
 }
 
 svg#svg-container path {
@@ -35,4 +48,33 @@ div#info-map > p {
     margin: 0;
     text-align: center;
     font-size: 14px;
+}
+
+/* Map menu */
+div#menu-map {
+    position: relative;
+    display: block;
+    width: 90%;
+    margin: auto;
+    text-align: center;
+}
+
+div#menu-map > div:last-of-type {
+    padding: 0;
+}
+div#menu-map > div {
+    display: inline-block;
+    padding-right: 9px;
+}
+
+div#menu-map > div > button {
+    border: 1px solid #858585;
+    background: none;
+    padding: 5px 15px;
+    color: #858585;
+    cursor: pointer;
+}
+div#menu-map > div > button:hover {
+    border: 1px solid #26C6DA;
+    color: #26C6DA;
 }

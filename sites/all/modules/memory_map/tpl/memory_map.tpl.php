@@ -2,7 +2,7 @@
     <h1 style="text-align: center"><?php echo $title;?></h1>
 </div>
 
-<div>
+<div id="world-map">
     <!--
     *************Map created by Simplemaps.com********************
     *************Attribution is highly appreciated!***************
@@ -1580,4 +1580,43 @@
             style="fill:#f2f2f2;fill-rule:evenodd" />
     </svg>
 
+</div>
+<div id="menu-map">
+    <div>
+        <button type="button" class="world">
+            Monde
+        </button>
+    </div><div>
+        <button type="button" class="europe">
+            Europe
+        </button>
+    </div><div>
+        <button type="button" class="asia">
+            Asie
+        </button>
+    </div><div>
+        <button type="button" class="north-america">
+            Amérique du nord
+        </button>
+    </div><div>
+        <button type="button" class="central-america">
+            Amérique centrale
+        </button>
+    </div><div>
+        <button type="button" class="south-america">
+            Amérique du sud
+        </button>
+    </div><div>
+        <button type="button" class="africa">
+            Afrique
+        </button>
+    </div><div>
+        <button type="button" class="north-africa">
+            Afrique du Nord
+        </button>
+    </div><div>
+        <button type="button" class="oceania">
+            Océanie
+        </button>
+    </div>
 </div>
