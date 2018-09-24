@@ -82,6 +82,16 @@
                 $(this).text(priceVignette + " €");
             });
 
+            /* Hide title when menu's element is hovered */
+            var attrTitle = "";
+            $('.tb-megamenu-main-menu a').mouseenter(function(){
+                attrTitle = "";
+                attrTitle = $(this).attr("title");
+                $(this).attr("title", "");
+            });
+            $('.tb-megamenu-main-menu a').mouseleave(function(){
+                $(this).attr("title", attrTitle);
+            });
         }
     };
 }(jQuery));
