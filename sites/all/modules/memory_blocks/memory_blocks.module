@@ -61,6 +61,12 @@ function memory_blocks_init() {
 
         drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/activity.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
     }
+
+    // If user is on activity page, link css file
+    if(preg_match("/^.*\/contact$/", $_SERVER['REQUEST_URI'])){
+
+        drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/contact.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
+    }
 }
 
 
