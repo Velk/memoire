@@ -108,6 +108,13 @@ form.webform-client-form > div .grippie {
 .webform-component--arrival > .webform-datepicker,
 .webform-component--departure > .webform-datepicker {
     position: relative;
+    display: grid;
+    grid-template-areas: "a b c d";
+    align-items: center;
+}
+.webform-component--arrival > .webform-datepicker > div,
+.webform-component--departure > .webform-datepicker > div {
+    margin: 0;
 }
 .webform-component--arrival > .webform-datepicker:after,
 .webform-component--departure > .webform-datepicker:after {
@@ -115,10 +122,8 @@ form.webform-client-form > div .grippie {
     content: "\f133";
     display: inline-block;
     font-size: 20px;
-    /* position: absolute; */
     height: 30px;
     width: 30px;
-    /* transform: translateX(-30px); */
     text-align: center;
     color: #424242;
 }
@@ -131,6 +136,27 @@ form.webform-client-form > div .grippie {
     width: 30px;
     box-sizing: border-box;
     padding: 15px;
+}
+
+.webform-component--arrival > .webform-datepicker > div.form-item-submitted-arrival-month,
+.webform-component--departure > .webform-datepicker > div.form-item-submitted-departure-month {
+    grid-area: b;
+}
+.webform-component--arrival > .webform-datepicker > div.form-item-submitted-arrival-day,
+.webform-component--departure > .webform-datepicker > div.form-item-submitted-departure-day {
+    grid-area: a;
+}
+.webform-component--arrival > .webform-datepicker > div.form-item-submitted-arrival-year,
+.webform-component--departure > .webform-datepicker > div.form-item-submitted-departure-year {
+    grid-area: c;
+}
+.webform-component--arrival > .webform-datepicker > input[type="image"],
+.webform-component--departure > .webform-datepicker > input[type="image"] {
+    grid-area: d;
+}
+.webform-component--arrival > .webform-datepicker:after,
+.webform-component--departure > .webform-datepicker:after {
+    grid-area: d;
 }
 
 /* Autofill */
