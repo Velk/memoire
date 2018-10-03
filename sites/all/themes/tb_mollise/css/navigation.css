@@ -8,13 +8,13 @@ a:visited {
 }
 
 a:hover {
-  color: #fff;
-  text-decoration: underline;
+  color: #26C6DA;
+  text-decoration: none !important;
 }
 
 a:active,
 a:focus {
-  text-decoration: underline;
+  /*text-decoration: underline;*/
 }
 
 /* Any menu block in the menu-bar region */
