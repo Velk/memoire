@@ -44,6 +44,15 @@ function memory_blocks_menu() {
 //        'type' => MENU_NORMAL_ITEM
     );
 
+    $items['admin/memory/top-destinations-manager'] = array(
+        'title' => t('Memory - Top destinations'),
+        'description' => t('Memory - Top destinations manager'),
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('memory_blocks_top_destinations_admin_form'),
+        'access arguments' => array('administer site configuration'),
+        'type' => MENU_NORMAL_ITEM,
+    );
+
     return $items;
 }
 
@@ -319,6 +328,11 @@ function memory_blocks_theme($existing, $type, $theme, $path) {
             'path' => drupal_get_path('module', 'memory_blocks'),
             'variables' => array('infos' => NULL),
         ),
+        'tpl_memory_top_destinations' => array(
+            'template' => 'tpl/memory_top_destinations',
+            'path' => drupal_get_path('module', 'memory_blocks'),
+            'variables' => array('infos' => NULL),
+        ),
     );
 }
 
@@ -333,7 +347,6 @@ function memory_blocks_block_info() {
       'status' => 1,
       'region' => 'header_top',
       'visibility' => BLOCK_VISIBILITY_NOTLISTED,
-
     );
 
     $blocks['memory_reviews'] = array(
@@ -342,8 +355,16 @@ function memory_blocks_block_info() {
       'status' => 1,
       'region' => 'content',
       'visibility' => BLOCK_VISIBILITY_LISTED,
-        'pages' => '<front>',
+      'pages' => '<front>',
+    );
 
+    $blocks['memory_top_destinations'] = array(
+      'info' => t('Memory Top Destinations'),
+      'weight' => 3,
+      'status' => 1,
+      'region' => 'content',
+      'visibility' => BLOCK_VISIBILITY_LISTED,
+      'pages' => '<front>',
     );
 
     return $blocks;
@@ -393,8 +414,523 @@ function memory_blocks_block_view($delta = '') {
             );
 
             break;
+        case 'memory_top_destinations':
+
+            $data['title'] = variable_get("top_destinations_title");
+            $data['description'] = variable_get("top_destinations_description");
+
+            /* Initialize Top destination variables */
+            $top_destinations_1 = variable_get('top_destinations_1', array());
+            $top_destinations_2 = variable_get('top_destinations_2', array());
+            $top_destinations_3 = variable_get('top_destinations_3', array());
+            $top_destinations_4 = variable_get('top_destinations_4', array());
+            $top_destinations_5 = variable_get('top_destinations_5', array());
+            $top_destinations_6 = variable_get('top_destinations_6', array());
+            $top_destinations_7 = variable_get('top_destinations_7', array());
+            $top_destinations_8 = variable_get('top_destinations_8', array());
+            $top_destinations_9 = variable_get('top_destinations_9', array());
+
+//            drupal_set_message("<pre>". print_r($top_destinations_3, true) ."</pre>");
+
+            $arrayAll = array();
+
+            for( $i = 1 ; $i <= 9 ; $i++ ){
+
+                $stringArrayName = "top_destinations_" . $i;
+
+                // Check if the array is set
+                if(isset($$stringArrayName)){
+
+                    // If the array is set, copy the variable to use its values
+                    $arrayName = $$stringArrayName;
+
+                    // Check if all of its values are filled
+                    if(!empty($arrayName['name']) && !empty($arrayName['image']) && !empty($arrayName['url'])){
+
+                        /*
+                         * $arrayName['image'] correspond to the fid
+                         * Load the file by its fid.
+                         * Create the URL file by using the file URI
+                         */
+                        $file = file_load($arrayName['image']);
+                        $url = file_create_url($file->uri);
+                        $arrayName['image'] = $url;
+
+                        array_push($arrayAll, $arrayName);
+                    }
+                }
+            }
+
+//            drupal_set_message("<pre>". print_r($arrayAll, true) ."</pre>");
+
+            $data['arrayAllDatas'] = $arrayAll;
+
+            // Link the template
+            $block['content']['#markup'] = theme('tpl_memory_top_destinations', $data);
+
+            // Link a css file
+            $block['content']['#attached']['css'][] = array(
+                'data' => drupal_get_path('module', 'memory_blocks').'/css/memory_top_destinations.css',
+                'type' => 'file'
+            );
+
+            break;
     }
 
     return $block;
 }
 
+function memory_blocks_top_destinations_admin_form($form, &$form_state) {
+
+    $form['top_destinations_title'] = array(
+        '#type' => 'textfield',
+        '#default_value' => variable_get('top_destinations_title', 'Top destinations'),
+        '#title' => t('Titre'),
+        '#weight' => 1,
+        '#required' => TRUE,
+    );
+
+    $form['top_destinations_description'] = array(
+        '#type' => 'textarea',
+        '#default_value' => variable_get('top_destinations_description', 'Entrer ici votre description.'),
+        '#title' => t('Description'),
+        '#weight' => 2,
+        '#required' => TRUE,
+    );
+
+    /* Top destination n°1 */
+    $form['top_destinations_1'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Destination n°1'),
+        '#weight' => 3,
+        '#collapsible' => TRUE,
+        '#collapsed' => FALSE,
+        '#tree' => TRUE
+    );
+
+    $top_destinations_1 = variable_get('top_destinations_1', array());
+    $td1_name = $top_destinations_1['name'];
+    $td1_image = $top_destinations_1['image'];
+    $td1_url = $top_destinations_1['url'];
+
+    $form['top_destinations_1']['name'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Nom'),
+        '#default_value' => $td1_name,
+    );
+    $form['top_destinations_1']['image'] = array(
+        '#type'          => 'media',
+        '#title'         => 'Image',
+        '#theme'         => 'media_widget', // Without that, you only get text input
+        '#default_value' => $td1_image, //The fid
+//        '#default_value' => variable_get('image_saved', NULL), //The fid
+        '#media_options' => array(
+            'global' => array(
+                'file_directory'  => 'image_folder',
+                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
+                    'upload',
+                    'media_default--media_browser_my_files'
+                ),
+                'file_extensions' => 'png gif jpg jpeg',
+                'max_filesize'    => '2 MB',
+                'uri_scheme'      => 'public',
+                'types'           => array('image'),
+                'schemes'         => array(
+                    'public' => 'public',
+                ),
+            ),
+        ),
+    );
+    $form['top_destinations_1']['url'] = array(
+        '#type' => 'textfield',
+        '#title' => t('URL'),
+        '#default_value' => $td1_url,
+    );
+
+    /* Top destination n°2 */
+    $form['top_destinations_2'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Destination n°2'),
+        '#weight' => 4,
+        '#collapsible' => TRUE,
+        '#collapsed' => FALSE,
+        '#tree' => TRUE
+    );
+
+    $top_destinations_2 = variable_get('top_destinations_2', array());
+    $td2_name = $top_destinations_2['name'];
+    $td2_image = $top_destinations_2['image'];
+    $td2_url = $top_destinations_2['url'];
+
+    $form['top_destinations_2']['name'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Nom'),
+        '#default_value' => $td2_name,
+    );
+    $form['top_destinations_2']['image'] = array(
+        '#type'          => 'media',
+        '#title'         => 'Image',
+        '#theme'         => 'media_widget', // Without that, you only get text input
+        '#default_value' => $td2_image, //The fid
+        '#media_options' => array(
+            'global' => array(
+                'file_directory'  => 'image_folder',
+                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
+                    'upload',
+                    'media_default--media_browser_my_files'
+                ),
+                'file_extensions' => 'png gif jpg jpeg',
+                'max_filesize'    => '2 MB',
+                'uri_scheme'      => 'public',
+                'types'           => array('image'),
+                'schemes'         => array(
+                    'public' => 'public',
+                ),
+            ),
+        ),
+    );
+    $form['top_destinations_2']['url'] = array(
+        '#type' => 'textfield',
+        '#title' => t('URL'),
+        '#default_value' => $td2_url,
+    );
+
+
+    /* Top destination n°3 */
+    $form['top_destinations_3'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Destination n°3'),
+        '#weight' => 5,
+        '#collapsible' => TRUE,
+        '#collapsed' => FALSE,
+        '#tree' => TRUE
+    );
+
+    $top_destinations_3 = variable_get('top_destinations_3', array());
+    $td3_name = $top_destinations_3['name'];
+    $td3_image = $top_destinations_3['image'];
+    $td3_url = $top_destinations_3['url'];
+
+    $form['top_destinations_3']['name'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Nom'),
+        '#default_value' => $td3_name,
+    );
+    $form['top_destinations_3']['image'] = array(
+        '#type'          => 'media',
+        '#title'         => 'Image',
+        '#theme'         => 'media_widget', // Without that, you only get text input
+        '#default_value' => $td3_image, //The fid
+        '#media_options' => array(
+            'global' => array(
+                'file_directory'  => 'image_folder',
+                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
+                    'upload',
+                    'media_default--media_browser_my_files'
+                ),
+                'file_extensions' => 'png gif jpg jpeg',
+                'max_filesize'    => '2 MB',
+                'uri_scheme'      => 'public',
+                'types'           => array('image'),
+                'schemes'         => array(
+                    'public' => 'public',
+                ),
+            ),
+        ),
+    );
+    $form['top_destinations_3']['url'] = array(
+        '#type' => 'textfield',
+        '#title' => t('URL'),
+        '#default_value' => $td3_url,
+    );
+
+    /* Top destination n°4 */
+    $form['top_destinations_4'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Destination n°4'),
+        '#weight' => 6,
+        '#collapsible' => TRUE,
+        '#collapsed' => FALSE,
+        '#tree' => TRUE
+    );
+
+    $top_destinations_4 = variable_get('top_destinations_4', array());
+    $td4_name = $top_destinations_4['name'];
+    $td4_image = $top_destinations_4['image'];
+    $td4_url = $top_destinations_4['url'];
+
+    $form['top_destinations_4']['name'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Nom'),
+        '#default_value' => $td4_name,
+    );
+    $form['top_destinations_4']['image'] = array(
+        '#type'          => 'media',
+        '#title'         => 'Image',
+        '#theme'         => 'media_widget', // Without that, you only get text input
+        '#default_value' => $td4_image, //The fid
+        '#media_options' => array(
+            'global' => array(
+                'file_directory'  => 'image_folder',
+                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
+                    'upload',
+                    'media_default--media_browser_my_files'
+                ),
+                'file_extensions' => 'png gif jpg jpeg',
+                'max_filesize'    => '2 MB',
+                'uri_scheme'      => 'public',
+                'types'           => array('image'),
+                'schemes'         => array(
+                    'public' => 'public',
+                ),
+            ),
+        ),
+    );
+    $form['top_destinations_4']['url'] = array(
+        '#type' => 'textfield',
+        '#title' => t('URL'),
+        '#default_value' => $td4_url,
+    );
+
+    /* Top destination n°5 */
+    $form['top_destinations_5'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Destination n°5'),
+        '#weight' => 7,
+        '#collapsible' => TRUE,
+        '#collapsed' => FALSE,
+        '#tree' => TRUE
+    );
+
+    $top_destinations_5 = variable_get('top_destinations_5', array());
+    $td5_name = $top_destinations_5['name'];
+    $td5_image = $top_destinations_5['image'];
+    $td5_url = $top_destinations_5['url'];
+
+    $form['top_destinations_5']['name'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Nom'),
+        '#default_value' => $td5_name,
+    );
+    $form['top_destinations_5']['image'] = array(
+        '#type'          => 'media',
+        '#title'         => 'Image',
+        '#theme'         => 'media_widget', // Without that, you only get text input
+        '#default_value' => $td5_image, //The fid
+        '#media_options' => array(
+            'global' => array(
+                'file_directory'  => 'image_folder',
+                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
+                    'upload',
+                    'media_default--media_browser_my_files'
+                ),
+                'file_extensions' => 'png gif jpg jpeg',
+                'max_filesize'    => '2 MB',
+                'uri_scheme'      => 'public',
+                'types'           => array('image'),
+                'schemes'         => array(
+                    'public' => 'public',
+                ),
+            ),
+        ),
+    );
+    $form['top_destinations_5']['url'] = array(
+        '#type' => 'textfield',
+        '#title' => t('URL'),
+        '#default_value' => $td5_url,
+    );
+
+    /* Top destination n°6 */
+    $form['top_destinations_6'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Destination n°6'),
+        '#weight' => 8,
+        '#collapsible' => TRUE,
+        '#collapsed' => FALSE,
+        '#tree' => TRUE
+    );
+
+    $top_destinations_6 = variable_get('top_destinations_6', array());
+    $td6_name = $top_destinations_6['name'];
+    $td6_image = $top_destinations_6['image'];
+    $td6_url = $top_destinations_6['url'];
+
+    $form['top_destinations_6']['name'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Nom'),
+        '#default_value' => $td6_name,
+    );
+    $form['top_destinations_6']['image'] = array(
+        '#type'          => 'media',
+        '#title'         => 'Image',
+        '#theme'         => 'media_widget', // Without that, you only get text input
+        '#default_value' => $td6_image, //The fid
+        '#media_options' => array(
+            'global' => array(
+                'file_directory'  => 'image_folder',
+                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
+                    'upload',
+                    'media_default--media_browser_my_files'
+                ),
+                'file_extensions' => 'png gif jpg jpeg',
+                'max_filesize'    => '2 MB',
+                'uri_scheme'      => 'public',
+                'types'           => array('image'),
+                'schemes'         => array(
+                    'public' => 'public',
+                ),
+            ),
+        ),
+    );
+    $form['top_destinations_6']['url'] = array(
+        '#type' => 'textfield',
+        '#title' => t('URL'),
+        '#default_value' => $td6_url,
+    );
+
+    /* Top destination n°7 */
+    $form['top_destinations_7'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Destination n°7'),
+        '#weight' => 9,
+        '#collapsible' => TRUE,
+        '#collapsed' => FALSE,
+        '#tree' => TRUE
+    );
+
+    $top_destinations_7 = variable_get('top_destinations_7', array());
+    $td7_name = $top_destinations_7['name'];
+    $td7_image = $top_destinations_7['image'];
+    $td7_url = $top_destinations_7['url'];
+
+    $form['top_destinations_7']['name'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Nom'),
+        '#default_value' => $td7_name,
+    );
+    $form['top_destinations_7']['image'] = array(
+        '#type'          => 'media',
+        '#title'         => 'Image',
+        '#theme'         => 'media_widget', // Without that, you only get text input
+        '#default_value' => $td7_image, //The fid
+        '#media_options' => array(
+            'global' => array(
+                'file_directory'  => 'image_folder',
+                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
+                    'upload',
+                    'media_default--media_browser_my_files'
+                ),
+                'file_extensions' => 'png gif jpg jpeg',
+                'max_filesize'    => '2 MB',
+                'uri_scheme'      => 'public',
+                'types'           => array('image'),
+                'schemes'         => array(
+                    'public' => 'public',
+                ),
+            ),
+        ),
+    );
+    $form['top_destinations_7']['url'] = array(
+        '#type' => 'textfield',
+        '#title' => t('URL'),
+        '#default_value' => $td7_url,
+    );
+
+    /* Top destination n°8 */
+    $form['top_destinations_8'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Destination n°8'),
+        '#weight' => 10,
+        '#collapsible' => TRUE,
+        '#collapsed' => FALSE,
+        '#tree' => TRUE
+    );
+
+    $top_destinations_8 = variable_get('top_destinations_8', array());
+    $td8_name = $top_destinations_8['name'];
+    $td8_image = $top_destinations_8['image'];
+    $td8_url = $top_destinations_8['url'];
+
+    $form['top_destinations_8']['name'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Nom'),
+        '#default_value' => $td8_name,
+    );
+    $form['top_destinations_8']['image'] = array(
+        '#type'          => 'media',
+        '#title'         => 'Image',
+        '#theme'         => 'media_widget', // Without that, you only get text input
+        '#default_value' => $td8_image, //The fid
+        '#media_options' => array(
+            'global' => array(
+                'file_directory'  => 'image_folder',
+                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
+                    'upload',
+                    'media_default--media_browser_my_files'
+                ),
+                'file_extensions' => 'png gif jpg jpeg',
+                'max_filesize'    => '2 MB',
+                'uri_scheme'      => 'public',
+                'types'           => array('image'),
+                'schemes'         => array(
+                    'public' => 'public',
+                ),
+            ),
+        ),
+    );
+    $form['top_destinations_8']['url'] = array(
+        '#type' => 'textfield',
+        '#title' => t('URL'),
+        '#default_value' => $td8_url,
+    );
+
+    /* Top destination n°9 */
+    $form['top_destinations_9'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Destination n°9'),
+        '#weight' => 11,
+        '#collapsible' => TRUE,
+        '#collapsed' => FALSE,
+        '#tree' => TRUE
+    );
+
+    $top_destinations_9 = variable_get('top_destinations_9', array());
+    $td9_name = $top_destinations_9['name'];
+    $td9_image = $top_destinations_9['image'];
+    $td9_url = $top_destinations_9['url'];
+
+    $form['top_destinations_9']['name'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Nom'),
+        '#default_value' => $td9_name,
+    );
+    $form['top_destinations_9']['image'] = array(
+        '#type'          => 'media',
+        '#title'         => 'Image',
+        '#theme'         => 'media_widget', // Without that, you only get text input
+        '#default_value' => $td9_image, //The fid
+        '#media_options' => array(
+            'global' => array(
+                'file_directory'  => 'image_folder',
+                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
+                    'upload',
+                    'media_default--media_browser_my_files'
+                ),
+                'file_extensions' => 'png gif jpg jpeg',
+                'max_filesize'    => '2 MB',
+                'uri_scheme'      => 'public',
+                'types'           => array('image'),
+                'schemes'         => array(
+                    'public' => 'public',
+                ),
+            ),
+        ),
+    );
+    $form['top_destinations_9']['url'] = array(
+        '#type' => 'textfield',
+        '#title' => t('URL'),
+        '#default_value' => $td9_url,
+    );
+
+    return system_settings_form($form);
+}
