@@ -1,0 +1,66 @@
+div#top-activities-grid {
+    display: grid;
+    grid-template-columns: repeat(3, calc(33.33% - (20px/3 * 2)));
+    grid-gap: 20px;
+    width: 100%;
+}
+
+div#top-activities-container > h1 {
+    font-family: oswaldregular;
+    font-size: 25px;
+    text-align: center;
+    margin: 0 0 50px 0;
+    font-weight: normal;
+}
+div#top-activities-container > #description {
+    margin: 0 0 50px 0;
+    font-size: 14px;
+}
+
+#top-activities-grid > div {
+    position: relative;
+    background-color: #f9f9f9;
+    box-shadow: 1px 1px 5px #e0e0e0;
+    min-height: 150px;
+    max-height: 150px;
+}
+
+#top-activities-grid > div > a {
+    position: absolute;
+    display: block;
+    height: 100%;
+    width: 100%;
+    padding: 15px 25px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+p.ta-name {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    margin: 0;
+    left: 50%;
+    font-size: 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+    z-index: 10;
+    color: #fff;
+    border: 1px solid transparent;
+    padding: 3px 10px;
+    box-sizing: border-box;
+    text-align: center;
+}
+#top-activities-grid > div > a:hover > p.ta-name {
+    border: 1px solid #fff;
+
+}
+
+img.ta-img {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    z-index: 0;
+    transform: translateY(-50%);
+}
