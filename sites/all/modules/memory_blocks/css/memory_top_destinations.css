@@ -49,6 +49,7 @@ p.td-name {
     border: 1px solid transparent;
     padding: 3px 10px;
     box-sizing: border-box;
+    text-align: center;
 }
 #top-destinations-grid > div > a:hover > p.td-name {
     border: 1px solid #fff;

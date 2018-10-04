@@ -1,8 +1,7 @@
 <div id="top-destinations-container">
     <h1><?php echo $title; ?></h1>
-    <p id="description"><?php echo $description; ?></p>
+    <div id="description"><?php echo $description; ?></div>
     <div id="top-destinations-grid">
-
         <?php
         for( $i = 0 ; $i < sizeof($arrayAllDatas) ; $i++ ){
         ?>
@@ -16,6 +15,4 @@
         }
         ?>
     </div>
-
-
 </div>
