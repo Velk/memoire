@@ -73,10 +73,8 @@ function memory_map_block_view($delta = '') {
     switch ($delta) {
         case 'memory_map':
 
-            $data['title'] = "Memory - World map";
-
             // Link the template
-            $block['content']['#markup'] = theme('tpl_memory_map', $data);
+            $block['content']['#markup'] = theme('tpl_memory_map');
 
             // Link a css file
             $block['content']['#attached']['css'][] = array(

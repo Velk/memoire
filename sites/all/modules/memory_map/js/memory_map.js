@@ -47,7 +47,8 @@
             }
 
             $(".world").click(function(){
-               $("svg#svg-container").css("transform", "translateX(-50%) scale(1)");
+                setBasicPosition();
+               // $("svg#svg-container").css("transform", "translateX(-50%) scale(1)");
             });
             $(".europe").click(function(){
                 setBasicPosition();
