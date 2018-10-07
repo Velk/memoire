@@ -1481,5 +1481,149 @@ function memory_blocks_top_activities_admin_form($form, &$form_state) {
         '#default_value' => $ta9_url,
     );
 
+    /* Top activity n°10 */
+    $form['top_activities_10'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Activity n°10'),
+        '#weight' => 12,
+        '#collapsible' => TRUE,
+        '#collapsed' => FALSE,
+        '#tree' => TRUE
+    );
+
+    $top_activities_10 = variable_get('top_activities_10', array());
+    $ta10_name = $top_activities_10['name'];
+    $ta10_image = $top_activities_10['image'];
+    $ta10_url = $top_activities_10['url'];
+
+    $form['top_activities_10']['name'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Nom'),
+        '#default_value' => $ta10_name,
+    );
+    $form['top_activities_10']['image'] = array(
+        '#type'          => 'media',
+        '#title'         => 'Image',
+        '#theme'         => 'media_widget', // Without that, you only get text input
+        '#default_value' => $ta10_image, //The fid
+        '#media_options' => array(
+            'global' => array(
+                'file_directory'  => 'image_folder',
+                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
+                    'upload',
+                    'media_default--media_browser_my_files'
+                ),
+                'file_extensions' => 'png gif jpg jpeg',
+                'max_filesize'    => '2 MB',
+                'uri_scheme'      => 'public',
+                'types'           => array('image'),
+                'schemes'         => array(
+                    'public' => 'public',
+                ),
+            ),
+        ),
+    );
+    $form['top_activities_10']['url'] = array(
+        '#type' => 'textfield',
+        '#title' => t('URL'),
+        '#default_value' => $ta10_url,
+    );
+
+    /* Top activity n°11 */
+    $form['top_activities_11'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Activity n°11'),
+        '#weight' => 13,
+        '#collapsible' => TRUE,
+        '#collapsed' => FALSE,
+        '#tree' => TRUE
+    );
+
+    $top_activities_11 = variable_get('top_activities_11', array());
+    $ta11_name = $top_activities_11['name'];
+    $ta11_image = $top_activities_11['image'];
+    $ta11_url = $top_activities_11['url'];
+
+    $form['top_activities_11']['name'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Nom'),
+        '#default_value' => $ta11_name,
+    );
+    $form['top_activities_11']['image'] = array(
+        '#type'          => 'media',
+        '#title'         => 'Image',
+        '#theme'         => 'media_widget', // Without that, you only get text input
+        '#default_value' => $ta11_image, //The fid
+        '#media_options' => array(
+            'global' => array(
+                'file_directory'  => 'image_folder',
+                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
+                    'upload',
+                    'media_default--media_browser_my_files'
+                ),
+                'file_extensions' => 'png gif jpg jpeg',
+                'max_filesize'    => '2 MB',
+                'uri_scheme'      => 'public',
+                'types'           => array('image'),
+                'schemes'         => array(
+                    'public' => 'public',
+                ),
+            ),
+        ),
+    );
+    $form['top_activities_11']['url'] = array(
+        '#type' => 'textfield',
+        '#title' => t('URL'),
+        '#default_value' => $ta11_url,
+    );
+
+    /* Top activity n°12 */
+    $form['top_activities_12'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Activity n°12'),
+        '#weight' => 14,
+        '#collapsible' => TRUE,
+        '#collapsed' => FALSE,
+        '#tree' => TRUE
+    );
+
+    $top_activities_12 = variable_get('top_activities_12', array());
+    $ta12_name = $top_activities_12['name'];
+    $ta12_image = $top_activities_12['image'];
+    $ta12_url = $top_activities_12['url'];
+
+    $form['top_activities_12']['name'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Nom'),
+        '#default_value' => $ta12_name,
+    );
+    $form['top_activities_12']['image'] = array(
+        '#type'          => 'media',
+        '#title'         => 'Image',
+        '#theme'         => 'media_widget', // Without that, you only get text input
+        '#default_value' => $ta12_image, //The fid
+        '#media_options' => array(
+            'global' => array(
+                'file_directory'  => 'image_folder',
+                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
+                    'upload',
+                    'media_default--media_browser_my_files'
+                ),
+                'file_extensions' => 'png gif jpg jpeg',
+                'max_filesize'    => '2 MB',
+                'uri_scheme'      => 'public',
+                'types'           => array('image'),
+                'schemes'         => array(
+                    'public' => 'public',
+                ),
+            ),
+        ),
+    );
+    $form['top_activities_12']['url'] = array(
+        '#type' => 'textfield',
+        '#title' => t('URL'),
+        '#default_value' => $ta12_url,
+    );
+
     return system_settings_form($form);
 }

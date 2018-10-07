@@ -8,15 +8,20 @@
 function memory_map_menu() {
     $items = array();
 
-    $items['map'] = array(
-        'title' => t('Memory map'),
-        'description' => t('Memory - map'),
-        'page callback' => 'memory_map_block_view',
-        'access callback' => TRUE,
-        'type' => MENU_NORMAL_ITEM,
-    );
+//    $items['map'] = array(
+//        'title' => t('Memory map'),
+//        'description' => t('Memory - map'),
+//        'page callback' => 'memory_map_block_view',
+//        'access callback' => TRUE,
+//        'type' => MENU_NORMAL_ITEM,
+//    );
 
     return $items;
+}
+
+function memory_map_init(){
+    drupal_add_library('system','ui.dialog');
+    drupal_add_js(drupal_get_path('module', 'memory_map') . '/js/jquery-ui-1.12.1/jquery-ui.js');
 }
 
 /**
@@ -45,11 +50,12 @@ function memory_map_block_info() {
 
     $blocks['memory_map'] = array(
         'info' => t('Memory map'),
-        'weight' => 1,
+        'weight' => 5,
         'status' => 1,
         'region' => 'content',
         'visibility' => BLOCK_VISIBILITY_LISTED,
-        'pages' => 'map',
+        'pages' => '<front>',
+//        'pages' => 'map',
     );
 
     return $blocks;

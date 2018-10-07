@@ -16,6 +16,7 @@ svg#svg-container {
     display: block;
     transform: translateX(-50%) scale(1);
     margin-left: 50%;
+    cursor: move;
     /* transform-origin: center; */
 }
 
@@ -77,4 +78,27 @@ div#menu-map > div > button {
 div#menu-map > div > button:hover {
     border: 1px solid #26C6DA;
     color: #26C6DA;
+}
+
+/* Zoom */
+div#zoom {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: #f8f8f8;
+    box-shadow: 1px 1px 2px #b0b0b0;
+}
+div#zoom-in,
+div#zoom-out {
+    padding: 5px;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+div#zoom-in {
+    border-bottom: 1px solid #d1d1d1;
+}
+div#zoom-in:active,
+div#zoom-out:active {
+    box-shadow: #d1d1d1 0px 0px 3px inset;
+    background-color: #e9e9e9;
 }

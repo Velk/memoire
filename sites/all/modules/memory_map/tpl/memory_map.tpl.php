@@ -1579,7 +1579,13 @@
             d="m 879.6,395.2 -0.2,-0.2 -0.7,0.5 -0.6,0 0.1,0.2 0.1,0.2 0.7,0.4 0.6,-1.1 z m 13.5,-2.1 0,-0.1 -0.1,0 -0.1,0.1 -1.3,-0.1 -0.2,0.6 -0.5,0.4 0,0.7 0.5,0.7 0.3,0.1 0.5,0.1 0.7,-0.4 0.2,-0.4 0.1,-0.8 -0.1,-0.4 0,-0.5 z m -9.7,0.8 0.5,-0.4 0,-0.2 -0.1,-0.3 -0.5,-0.3 -0.2,0 -0.2,0.2 -0.2,0.4 0.3,0.5 0.2,0.1 0.2,0 z m 4.7,-2.3 1.2,-1 0,-0.3 -1,0.1 -1.1,1 -0.3,0.1 -1,0.1 -0.5,0 -0.4,0.2 0.2,0.3 0.4,1 0.7,0.9 0.6,-0.2 0.3,-0.2 0.4,-0.6 0.5,-1.4 z m 11.6,1.3 1.5,-0.5 0.3,-1 0.3,-1.1 0,-0.7 -0.2,-0.3 -0.1,0 -0.4,0 -0.3,0.2 -0.1,0.6 -0.7,1.3 -0.5,1.2 -0.7,0.6 -0.7,0.2 0.1,0.1 0.7,0.1 0.8,-0.7 z m -19.7,-2 0.5,-0.5 0.1,-0.3 -0.1,-0.5 0.2,-0.2 -0.1,-0.4 -0.3,-0.4 -0.7,0 -0.4,0.6 0.6,1.2 0.1,0.5 0.1,0 z m 22.4,-2.7 0.9,-0.3 0.5,-0.3 0.1,-0.9 0.2,-0.3 -0.2,-0.3 -0.2,0.2 -0.2,0.4 -0.6,0.2 -0.8,0.4 -0.2,0.3 -0.2,0.9 0.4,0.1 0.3,-0.4 z"
             style="fill:#f2f2f2;fill-rule:evenodd" />
     </svg>
-
+    <div id="zoom">
+        <div id="zoom-in">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+        </div><div id="zoom-out">
+            <i class="fa fa-minus" aria-hidden="true"></i>
+        </div>
+    </div>
 </div>
 <div id="menu-map">
     <div>
@@ -1599,10 +1605,6 @@
             Amérique du nord
         </button>
     </div><div>
-        <button type="button" class="central-america">
-            Amérique centrale
-        </button>
-    </div><div>
         <button type="button" class="south-america">
             Amérique du sud
         </button>
@@ -1611,8 +1613,8 @@
             Afrique
         </button>
     </div><div>
-        <button type="button" class="north-africa">
-            Afrique du Nord
+        <button type="button" class="middle-east">
+            Moyen-Orient
         </button>
     </div><div>
         <button type="button" class="oceania">
