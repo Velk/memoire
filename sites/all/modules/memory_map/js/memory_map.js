@@ -162,7 +162,7 @@
             /* Draggable */
 
             // Allow draggable element on svg-container
-            $("svg#svg-container").draggable();
+            // $("svg#svg-container").draggable();
 
             var clicking = false;
 
@@ -181,8 +181,6 @@
                 // Mouse click + moving
 
             });
-
-
 
         }
     };

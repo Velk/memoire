@@ -85,6 +85,12 @@ function memory_blocks_init() {
 
         drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/contact.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
     }
+
+    // If user click on destinations tab, link css file
+    if(preg_match("/^.*\/destinations/", $_SERVER['REQUEST_URI'])){
+
+        drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/all-destinations.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
+    }
 }
 
 
@@ -1076,10 +1082,10 @@ function memory_blocks_top_activities_admin_form($form, &$form_state) {
         '#media_options' => array(
             'global' => array(
                 'file_directory'  => 'image_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
+//                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
+//                    'upload',
+//                    'media_default--media_browser_my_files'
+//                ),
                 'file_extensions' => 'png gif jpg jpeg',
                 'max_filesize'    => '2 MB',
                 'uri_scheme'      => 'public',
