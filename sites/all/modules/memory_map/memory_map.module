@@ -20,8 +20,8 @@ function memory_map_menu() {
 }
 
 function memory_map_init(){
-    drupal_add_library('system','ui.dialog');
-    drupal_add_js(drupal_get_path('module', 'memory_map') . '/js/jquery-ui-1.12.1/jquery-ui.js');
+//    drupal_add_library('system','ui.dialog');
+//    drupal_add_js(drupal_get_path('module', 'memory_map') . '/js/jquery-ui-1.12.1/jquery-ui.js');
 }
 
 /**

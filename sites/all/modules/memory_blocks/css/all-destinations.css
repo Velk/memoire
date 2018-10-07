@@ -1,0 +1,39 @@
+body {
+    overflow: hidden;
+}
+
+div#destinations-container {
+    /*background-image: url(http://localhost/memory_website/memoire/sites/default/files/image_folder/map_background.jpeg);*/
+    /*background-size: contain;*/
+    /*background-repeat: no-repeat;*/
+    position: relative;
+    height: calc(100vh - 80px - 34px);
+    overflow: hidden;
+}
+div#destinations-container > img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+div#destinations-container > div {
+    display: grid;
+    position: relative;
+    grid-template-columns: repeat(6, 1fr);
+    grid-gap: 25px;
+    max-width: 1200px;
+    width: 100%;
+    margin: 50px 50px 0 auto;
+}
+.continent-container > h3 {
+    color: #fff;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 16px;
+}
+div#destinations-container .continent-container {
+
+}
+div#destinations-container .country-container {
+
+}
