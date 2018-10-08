@@ -30,27 +30,29 @@
 		}
 	}
 ?>
-<div id="destinations-container">
+<div id="container">
     <img src="http://localhost/memory_website/memoire/sites/default/files/image_folder/map_background.jpeg">
     <div>
-	<?php foreach($tab_continent as $cont): ?>
-        <div class="continent-container">
-            <h3><?php print $cont[0] ?></h3>
-            <?php if(!empty($cont['country'])): ?>
-                <ul class="country">
-                    <?php foreach($cont['country'] as $cntry): ?>
-                        <li><?php print $cntry[0] ?></li>
-                        <?php if(!empty($cntry[2])): ?>
-                            <ul class="city">
-                                <?php foreach($cntry[2] as $place): ?>
-                                    <li><a href=<?php print strtolower(current_path()."/".$place[0]); ?>><?php print $place[0] ?></a></li>
-                                <?php endforeach; ?>
+        <div id="destinations-container">
+            <?php foreach($tab_continent as $cont): ?>
+                <div class="continent-container">
+                    <h3><?php print $cont[0] ?></h3>
+                    <?php if(!empty($cont['country'])): ?>
+                        <?php foreach($cont['country'] as $cntry): ?>
+                            <ul class="country-container">
+                                <li><?php print $cntry[0] ?></li>
+                                <?php if(!empty($cntry[2])): ?>
+                                    <ul class="city">
+                                        <?php foreach($cntry[2] as $place): ?>
+                                            <li><a href=<?php print strtolower(current_path()."/".$place[0]); ?>><?php print $place[0] ?></a></li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                <?php endif; ?>
                             </ul>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
-                </ul>
-            <?php endif; ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
+            <?php endforeach; ?>
         </div>
-	<?php endforeach; ?>
     </div>
 </div>
