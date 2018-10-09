@@ -31,7 +31,7 @@
 	}
 ?>
 <div id="container">
-    <img src="http://localhost/memory_website/memoire/sites/default/files/image_folder/map_background.jpeg">
+    <img src="http://localhost/memory_website/memoire/sites/default/files/image_folder/map_background.jpg">
     <div>
         <div id="destinations-container">
             <?php foreach($tab_continent as $cont): ?>
