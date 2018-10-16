@@ -1,0 +1,44 @@
+div#block-memory-blocks-memory-footer {
+    position: relative;
+    background-color: #424242;
+    color: #fff;
+    padding: 15px 0;
+}
+
+div#block-memory-blocks-memory-footer > div.block-inner {
+    width: 90% !important;
+    max-width: 90%;
+    margin: 0 auto;
+    padding: 0;
+}
+
+#footer-container {
+    position: relative;
+    display: grid;
+    grid-template-areas:
+            "a b c e"
+            "a b c e"
+            "a b d e"
+            "a b d f";
+    grid-gap: 0 25px;
+    grid-template-columns: repeat(3, calc(28% - (75px/4))) calc(16% - (75px/4));
+}
+
+div#first-col {
+    grid-area: a;
+}
+div#second-col {
+    grid-area: b;
+}
+div#third-col {
+    grid-area: c;
+}
+div#fourth-col {
+    grid-area: d;
+}
+div#fifth-col {
+    grid-area: e;
+}
+div#social-media-shortcuts {
+    grid-area: f;
+}

@@ -43,7 +43,8 @@
                     "left": "0",
                 });
 
-                $("svg#svg-container").css("transform", "translateX(-50%) translateY(0) scale(1)");
+                // $("svg#svg-container").css("transform", "translateX(-50%) translateY(0) scale(1)");
+                $("svg#svg-container").css("transform", "translateX(-53%) translateY(2%) scale(1)");
             }
 
             $(".world").click(function(){
