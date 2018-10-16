@@ -76,7 +76,8 @@ div#page {
             ". g g g g ."
             ". h h h h ."
             ". i i i i ."
-            ". j j j j .";
+            ". j j j j ."
+            ". k k k k .";
     grid-template-columns: 10% repeat(4, 1fr) 10%;
     /*grid-gap: 50px 0;*/
     align-items: center;
@@ -356,6 +357,12 @@ div#page {
     font-style: italic;
     color: #26C6DA;
 }
+
+.node-activite .group-slider {
+    grid-area: k;
+}
+
+
 
 /* Fieldset - Groupe informations */
 .group-infos-prestation-base,

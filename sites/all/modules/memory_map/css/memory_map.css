@@ -1,11 +1,26 @@
+div#block-memory-map-memory-map {
+    background-image: url("../../../../../sites/default/files/image_folder/airport_info_board.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+div#block-memory-map-memory-map > .block-inner {
+    max-width: 90%;
+    padding: 0;
+}
+
 #world-map {
     position: relative;
     display: block;
-    width: 90%;
+    /*width: 90%;*/
+    width: 100%;
+    max-width: 1000px;
     height: 70vh;
     margin: auto;
     overflow: hidden;
     box-shadow: inset 0px 0px 5px #d8d8d8;
+    /*background-color: #ffffff75;*/
+    background-color: #ffffffeb;
 }
 
 svg#svg-container {
@@ -14,7 +29,8 @@ svg#svg-container {
     height: 100%;
     margin: auto;
     display: block;
-    transform: translateX(-50%) scale(1);
+    /*transform: translateX(-50%) scale(1);*/
+    transform: translateX(-53%) translateY(2%) scale(1);
     margin-left: 50%;
     cursor: move;
     /* transform-origin: center; */
@@ -22,7 +38,8 @@ svg#svg-container {
 
 svg#svg-container path {
     stroke: #ffffff !important;
-    fill: #babec6 !important;
+    /*fill: #424242 !important;*/
+    fill: #686868 !important;
 }
 
 svg#svg-container path:hover {
@@ -55,9 +72,15 @@ div#info-map > p {
 div#menu-map {
     position: relative;
     display: block;
-    width: 90%;
+    /*width: 90%;*/
+    width: 100%;
+    max-width: 1000px;
     margin: auto;
     text-align: center;
+    /*background-color: #ffffffe3;*/
+    background-color: #fffffff2;
+    padding: 7px 0;
+    box-sizing: border-box;
 }
 
 div#menu-map > div:last-of-type {
@@ -65,19 +88,23 @@ div#menu-map > div:last-of-type {
 }
 div#menu-map > div {
     display: inline-block;
-    padding-right: 9px;
+    padding-right: 40px;
 }
 
 div#menu-map > div > button {
-    border: 1px solid #858585;
+    /*border: 1px solid #858585;*/
+    border: none;
+    border-bottom: 1px solid transparent;
     background: none;
-    padding: 5px 15px;
-    color: #858585;
+    padding: 5px 0;
+    color: #424242;
     cursor: pointer;
+    line-height: 1;
 }
 div#menu-map > div > button:hover {
-    border: 1px solid #26C6DA;
+    border-bottom: 1px solid #26C6DA;
     color: #26C6DA;
+    /*text-decoration: underline;*/
 }
 
 /* Zoom */
