@@ -1,11 +1,17 @@
-div#block-memory-blocks-memory-footer {
+div#footer-wrapper div.grid-inner {
+    padding: 0;
+    border: none;
+    margin: 0;
+}
+
+div#memory-footer {
     position: relative;
     background-color: #424242;
     color: #fff;
     padding: 15px 0;
 }
 
-div#block-memory-blocks-memory-footer > div.block-inner {
+div#memory-footer > div {
     width: 90% !important;
     max-width: 90%;
     margin: 0 auto;
