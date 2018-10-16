@@ -202,7 +202,10 @@
       <?php endif; ?>
     </div>
   </div>
-  <?php if (!empty($panel_second)): ?>
+  <?php
+//  if (!empty($panel_second)):
+  if ($panel_second = render($page['panel_second'])):
+  ?>
   <!-- PANEL SECOND -->
   <div id="panel-second-wrapper" class="wrapper panel panel-second">
     <div class="container <?php print $grid;?> clearfix"> <?php print $panel_second;?> </div>
