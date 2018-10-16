@@ -227,25 +227,31 @@
       </div>
     </div>
   </div>
-    <?php
-    //  if (!empty($panel_second)):
-    if ($panel_second = render($page['panel_second'])):
-    ?>
+  <?php
+  //  if (!empty($panel_second)):
+  if ($panel_second = render($page['panel_second'])):
+  ?>
   <!-- PANEL SECOND -->
   <div id="panel-second-wrapper" class="wrapper panel panel-second">
     <div class="container <?php print $grid;?> clearfix"> <?php print $panel_second;?> </div>
   </div>
   <!-- //PANEL SECOND -->
   <?php endif; ?>
-  <?php if (!empty($panel_third)): ?>
+  <?php
+//  if (!empty($panel_third)):
+  if ($panel_third = render($page['panel_third'])):
+  ?>
   <!-- PANEL THIRD -->
   <div id="panel-third-wrapper" class="wrapper panel panel-third">
     <div class="container <?php print $grid;?> clearfix"> <?php print $panel_third;?> </div>
   </div>
   <!-- //PANEL THIRD -->
   <?php endif; ?>
-  
-   <?php if (!empty($panel_social)): ?>
+
+  <?php
+//  if (!empty($panel_social)):
+  if ($panel_social = render($page['panel_social'])):
+  ?>
   <!-- PANEL SOCIAL -->
   <div id="panel-social-wrapper" class="wrapper panel panel-social">
     <div class="container <?php print $grid;?> clearfix"> <?php print $panel_social;?> </div>
@@ -253,7 +259,10 @@
   <!-- //PANEL SOCIAL -->
   <?php endif; ?>
   
-  <?php if (!empty($panel_fourth)): ?>
+  <?php
+//  if (!empty($panel_fourth)):
+  if ($panel_fourth = render($page['panel_fourth'])):
+  ?>
   <!-- PANEL FOURTH -->
   <div id="panel-fourth-wrapper" class="wrapper panel panel-fourth">
     <div class="container <?php print $grid;?> clearfix"> <?php print $panel_fourth;?> </div>
@@ -261,7 +270,10 @@
   <!-- //PANEL FOURTH -->
   <?php endif; ?>
   
-  <?php if (!empty($panel_fifth)): ?>
+  <?php
+//  if (!empty($panel_fifth)):
+  if ($panel_fifth = render($page['panel_fifth'])):
+  ?>
   <!-- PANEL FIFTH -->
   <div id="panel-fifth-wrapper" class="wrapper panel panel-fifth">
     <div class="container <?php print $grid;?> clearfix"> <?php print $panel_fifth;?> </div>
@@ -269,7 +281,10 @@
   <!-- //PANEL FIFTH -->
   <?php endif; ?>
   
-  <?php if (!empty($panel_sixth)): ?>
+  <?php
+//  if (!empty($panel_sixth)):
+  if ($panel_sixth = render($page['panel_sixth'])):
+  ?>
   <!-- PANEL SIXTH -->
   <div id="panel-sixth-wrapper" class="wrapper panel panel-sixth">
     <div class="container <?php print $grid;?> clearfix"> <?php print $panel_sixth;?> </div>
@@ -277,7 +292,10 @@
   <!-- //PANEL SIXTH -->
   <?php endif; ?>
   
-  <?php if (!empty($panel_seventh)): ?>
+  <?php
+//  if (!empty($panel_seventh)):
+  if ($panel_seventh = render($page['panel_seventh'])):
+  ?>
   <!-- PANEL SEVENTH -->
   <div id="panel-seventh-wrapper" class="wrapper panel panel-seventh">
     <div class="container <?php print $grid;?> clearfix"> <?php print $panel_seventh;?> </div>
