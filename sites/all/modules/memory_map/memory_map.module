@@ -16,6 +16,15 @@ function memory_map_menu() {
 //        'type' => MENU_NORMAL_ITEM,
 //    );
 
+    $items['admin/memory/map-manager'] = array(
+        'title' => t('Memory - World map'),
+        'description' => t('Memory - World map manager'),
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('memory_blocks_world_map_admin_form'),
+        'access arguments' => array('administer site configuration'),
+        'type' => MENU_NORMAL_ITEM,
+    );
+
     return $items;
 }
 
@@ -73,8 +82,12 @@ function memory_map_block_view($delta = '') {
     switch ($delta) {
         case 'memory_map':
 
+            $data["world_map_title"] = variable_get("world_map_title");
+            $world_map_description = variable_get("world_map_description");
+            $data["world_map_description"] = $world_map_description["value"];
+
             // Link the template
-            $block['content']['#markup'] = theme('tpl_memory_map');
+            $block['content']['#markup'] = theme('tpl_memory_map', $data);
 
             // Link a css file
             $block['content']['#attached']['css'][] = array(
@@ -92,4 +105,26 @@ function memory_map_block_view($delta = '') {
     }
 
     return $block;
+}
+
+function memory_blocks_world_map_admin_form($form, &$form_state){
+
+    $form['world_map_title'] = array(
+        '#type' => 'textfield',
+        '#default_value' => variable_get('world_map_title', ''),
+        '#title' => t('Titre'),
+        '#weight' => 1,
+    );
+
+    $description = variable_get('world_map_description', array('' => '', 'format' => NULL));
+
+    $form['world_map_description'] = array(
+        '#type' => 'text_format',
+        '#format' => 'wysiwyg',
+        '#default_value' => $description['value'],
+        '#title' => t('Description'),
+        '#weight' => 2,
+    );
+
+    return system_settings_form($form);
 }
