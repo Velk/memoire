@@ -378,8 +378,11 @@ function memory_blocks_block_info() {
       'info' => t('Social Networks'),
       'weight' => 1,
       'status' => 1,
-      'region' => 'header_top',
-      'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+      'region' => 'content',
+//      'region' => 'header_top',
+//      'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+      'visibility' => BLOCK_VISIBILITY_LISTED,
+      'pages' => '<front>',
     );
 
     $blocks['memory_reviews'] = array(
@@ -628,6 +631,22 @@ function memory_blocks_block_view($delta = '') {
             $data['twitter'] = variable_get('twitter', array());
             $data['twitter_url'] = $data['twitter']['url'];
             $data['twitter_display_height'] = "30";
+
+            /* Social networks */
+            $footer_social_networks = variable_get('footer_social_networks', array());
+
+            $data["array_size_snl"] = sizeof($footer_social_networks);
+
+            for( $i = 1 ; $i <= sizeof($footer_social_networks); $i++ ){
+
+                $data["social_networks_".$i."_name"] = $footer_social_networks["social_networks_".$i]["name"];
+                $data["social_networks_".$i."_url"] = $footer_social_networks["social_networks_".$i]["url"];
+                $data["social_networks_".$i."_icon"] = $footer_social_networks["social_networks_".$i]["icon"];
+            }
+
+            /* Partners */
+            $data['footer_partners'] = variable_get('footer_partners', array());
+            $data['footer_partners'] = $data['footer_partners']['partners']['value'];
 
             // Link the template
             $block['content']['#markup'] = theme('tpl_memory_footer', $data);
@@ -1865,6 +1884,77 @@ function memory_blocks_footer_admin_form($form, &$form_state) {
         '#default_value' => $twitter['url'],
         '#title' => t('URL'),
         '#description' => t('Renseignez la partie de l\'URL correspondant à votre page Twitter.<br>Exemple : Pour l\'URL https://twitter.com/twitter , renseignez seulement twitter'),
+        '#weight' => 1,
+    );
+
+    /* Social networks */
+    $form['footer_social_networks'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Social networks'),
+        '#weight' => 8,
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
+        '#tree' => TRUE
+    );
+
+    $footer_social_networks = variable_get('footer_social_networks', array());
+
+    for( $i = 1 ; $i <= 5 ; $i++ ){
+
+        $form['footer_social_networks']['social_networks_'.$i] = array(
+            '#type' => 'fieldset',
+            '#title' => t('Social networks n°'.$i),
+            '#weight' => $i,
+            '#collapsible' => TRUE,
+            '#collapsed' => TRUE,
+            '#tree' => TRUE
+        );
+
+        $form['footer_social_networks']['social_networks_'.$i]['name'] = array(
+            '#type' => 'textfield',
+            '#title' => t('Nom'),
+            '#default_value' => $footer_social_networks['social_networks_'.$i]['name'],
+            '#weight' => 1,
+        );
+
+        $form['footer_social_networks']['social_networks_'.$i]['url'] = array(
+            '#type' => 'textfield',
+            '#title' => t('URL ou adresse e-mail'),
+            '#default_value' => $footer_social_networks['social_networks_'.$i]['url'],
+            '#weight' => 2,
+        );
+
+        $form['footer_social_networks']['social_networks_'.$i]['icon'] = array(
+            '#type' => 'textfield',
+            '#title' => t('Icône'),
+            '#description' => t(
+                'Choississez l\'icône représentant votre média sur : '.
+                '<em>https://fontawesome.com/v4.7.0/icons</em>'.
+                '<br> Puis renseigné le nom de l\'icône. '.
+                '<em>Exemple : fa-facebook</em>'
+            ),
+            '#default_value' => $footer_social_networks['social_networks_'.$i]['icon'],
+            '#weight' => 3,
+        );
+    }
+
+    /* Partners */
+    $form['footer_partners'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Partners'),
+        '#weight' => 9,
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
+        '#tree' => TRUE
+    );
+
+    $footer_partners = variable_get('footer_partners', array());
+
+    $form['footer_partners']['partners'] = array(
+        '#type' => 'text_format',
+        '#format' => 'wysiwyg',
+        '#default_value' => $footer_partners['partners']['value'],
+        '#title' => t('Partenaires'),
         '#weight' => 1,
     );
 

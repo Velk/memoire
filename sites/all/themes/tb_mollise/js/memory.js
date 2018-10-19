@@ -58,7 +58,9 @@
                 $("#menu-bar-wrapper").css("padding", "10px 0");
                 $("div#menu-bar-wrapper > div > div > div > ul > li > a").css("padding", "5px 30px");
                 $( "a:contains('Connexion')" ).parent("li").css("transform", "translateY(-13px)");
-                $("div#page").css("margin-top", "calc(60px + 34px)");
+                $("div#page").css("margin-top", "60px");
+                // $("div#page").css("margin-top", "calc(60px + 34px)");
+                $("div#block-memory-blocks-social-networks").css("top", "calc(60px + 230px)");
             }
             if($(window).scrollTop() === 0){
                 
@@ -66,7 +68,9 @@
                 $("#menu-bar-wrapper").css("padding", "15px 0");
                 $("div#menu-bar-wrapper > div > div > div > ul > li > a").css("padding", "10px 30px");
                 $( "a:contains('Connexion')" ).parent("li").css("transform", "translateY(-15px)");
-                $("div#page").css("margin-top", "calc(80px + 34px)");
+                $("div#page").css("margin-top", "80px");
+                // $("div#page").css("margin-top", "calc(80px + 34px)");
+                $("div#block-memory-blocks-social-networks").css("top", "calc(80px + 230px)");
             }
             
         });

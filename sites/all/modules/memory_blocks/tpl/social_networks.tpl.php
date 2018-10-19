@@ -2,9 +2,11 @@
     <?php
     foreach ($resultsSocialNetworks as $resultSocialNetworks){
         ?>
-        <a href="<?php echo $resultSocialNetworks->url; ?>" target="_blank">
-            <i class="fa <?php echo $resultSocialNetworks->icon; ?>" aria-hidden="true"></i>
-        </a>
+        <div class="social-networks-container">
+            <a href="<?php echo $resultSocialNetworks->url; ?>" target="_blank">
+                <i class="fa fa-2x <?php echo $resultSocialNetworks->icon; ?>" aria-hidden="true"></i>
+            </a>
+        </div>
         <?php
     }
     ?>
