@@ -60,9 +60,15 @@
                     ?>
                 </div>
             </div>
+            <?php
+            if( !empty($footer_partners) ){
+            ?>
             <div id="partners">
                 <?php echo $footer_partners; ?>
             </div>
+            <?php
+            }
+            ?>
         </div>
     </div>
 </div>
