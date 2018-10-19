@@ -36,6 +36,33 @@
 
                 </div>
             </div>
+            <div id="social-media-links">
+                <div id="header-social-media-links">
+                    <hr><p id="follow-us">Suivez-nous</p><hr>
+                </div>
+                <div id="social-media-links-container">
+                    <?php
+                    for( $i = 1 ; $i <= $array_size_snl ; $i++ ){
+                        $social_networks_name = "social_networks_".$i."_name";
+                        $social_networks_url = "social_networks_".$i."_url";
+                        $social_networks_icon = "social_networks_".$i."_icon";
+
+                        if( !empty($$social_networks_name) && !empty($$social_networks_name) && !empty($$social_networks_name) ){
+                    ?>
+                          <div>
+                              <a href=<?php echo $$social_networks_url; ?>"" target="_blank" title="<?php echo $$social_networks_name; ?>">
+                                  <i class="fa fa-2x <?php echo $$social_networks_icon; ?>" aria-hidden="true"></i>
+                              </a>
+                          </div>
+                    <?php
+                        }
+                    }
+                    ?>
+                </div>
+            </div>
+            <div id="partners">
+                <?php echo $footer_partners; ?>
+            </div>
         </div>
     </div>
 </div>
