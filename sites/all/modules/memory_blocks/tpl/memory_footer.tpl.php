@@ -50,7 +50,7 @@
                         if( !empty($$social_networks_name) && !empty($$social_networks_name) && !empty($$social_networks_name) ){
                     ?>
                           <div>
-                              <a href=<?php echo $$social_networks_url; ?>"" target="_blank" title="<?php echo $$social_networks_name; ?>">
+                              <a href="<?php echo $$social_networks_url; ?>" target="_blank" title="<?php echo $$social_networks_name; ?>">
                                   <i class="fa fa-2x <?php echo $$social_networks_icon; ?>" aria-hidden="true"></i>
                               </a>
                           </div>
