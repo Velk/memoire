@@ -547,10 +547,13 @@ function memory_blocks_block_view($delta = '') {
             $top_activities_7 = variable_get('top_activities_7', array());
             $top_activities_8 = variable_get('top_activities_8', array());
             $top_activities_9 = variable_get('top_activities_9', array());
+            $top_activities_10 = variable_get('top_activities_10', array());
+            $top_activities_11 = variable_get('top_activities_11', array());
+            $top_activities_12 = variable_get('top_activities_12', array());
 
             $arrayAll = array();
 
-            for( $i = 1 ; $i <= 9 ; $i++ ){
+            for( $i = 1 ; $i <= 12 ; $i++ ){
 
                 $stringArrayName = "top_activities_" . $i;
 
@@ -689,7 +692,7 @@ function memory_blocks_top_destinations_admin_form($form, &$form_state) {
 //        '#default_value' => variable_get('top_destinations_description', 'Entrer ici votre description.'),
         '#title' => t('Description'),
         '#weight' => 2,
-        '#required' => TRUE,
+//        '#required' => TRUE,
     );
 
     /* Top destination n°1 */
@@ -1149,7 +1152,7 @@ function memory_blocks_top_activities_admin_form($form, &$form_state) {
 //        '#default_value' => variable_get('top_activities_description', 'Entrer ici votre description.'),
         '#title' => t('Description'),
         '#weight' => 2,
-        '#required' => TRUE,
+//        '#required' => TRUE,
     );
 
     /* Top activity n°1 */
