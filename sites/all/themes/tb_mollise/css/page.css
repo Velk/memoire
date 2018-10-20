@@ -4,6 +4,7 @@ body {
 
 body p,
 body a,
+body li,
 body button {
     font-size: 16px;
 }

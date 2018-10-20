@@ -3,18 +3,18 @@
         attach: function (context, settings) {
 
             /* Scroll - Resize header menu */
-            $( window ).scroll(function() {
-
-                if($(window).scrollTop() > 0){
-
-                    $("div#block-memory-cart-memory-cart").css("top", "calc(60px + 34px)");
-                }
-                if($(window).scrollTop() === 0){
-
-                    $("div#block-memory-cart-memory-cart").css("top", "calc(80px + 34px)");
-                }
-
-            });
+            // $( window ).scroll(function() {
+            //
+            //     if($(window).scrollTop() > 0){
+            //
+            //         $("div#block-memory-cart-memory-cart").css("top", "calc(60px + 34px)");
+            //     }
+            //     if($(window).scrollTop() === 0){
+            //
+            //         $("div#block-memory-cart-memory-cart").css("top", "calc(80px + 34px)");
+            //     }
+            //
+            // });
 
             $("#btn-display").click(function(){
 
