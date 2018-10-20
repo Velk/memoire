@@ -2,6 +2,16 @@ body {
     text-align: justify;
 }
 
+body p,
+body a,
+body button {
+    font-size: 16px;
+}
+
+i.fa {
+    font-size: 1.5em;
+}
+
 div#page {
     /*margin-top: calc(80px + 34px);*/
     margin-top: 80px;
@@ -26,8 +36,8 @@ div#page {
 
 .region-content .block {
     width: 100%;
-    padding: 35px 0;
-    /*padding: 75px 0;*/
+    /*padding: 35px 0;*/
+    padding: 70px 0;
 }
 
 /*.front-page .region-content .block:nth-child(3) {*/
@@ -97,10 +107,11 @@ div#page {
  * Header
  */
 #header-wrapper {
-    background: #fff;
+    /*background: #fff;*/
+    background: #000;
     position: fixed;
     width: 100%;
-    box-shadow: 0px 0px 5px #E0E0E0;
+    /*box-shadow: 0px 0px 5px #E0E0E0;*/
     z-index: 99;
     top: 0;
     /*top: 34px;*/
@@ -187,82 +198,6 @@ div#page {
 .region-header {
   float: right;
   margin-top: 3em;
-}
-
-/**
- * Main Navigation
- */
-#menu-bar-wrapper {
-  position: absolute;
-  right: 0;
-  width: calc(100% - 200px);
-  z-index: 499;
-  padding: 15px 0;
-}
-
-div#menu-bar-wrapper > div > div {
-    background-color: transparent;
-    background-image:none;
-}
-
-#menu-bar-wrapper ul {
-    width: 100% !important;
-}
-
-div#menu-bar-wrapper > div > div > div > ul > li {
-    margin: 0 7px;
-}
-
-div#menu-bar-wrapper > div > div > div > ul > li > a {
-    background: #fff;
-    color: #BDBDBD;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-div#menu-bar-wrapper > div > div > div > ul > li > a:hover {
-    border-bottom: 1px solid #424242;
-    color: #424242;
-}
-div#menu-bar-wrapper > div > div > div > ul > li.active > a {
-    color: #263238;
-    background: #F5F5F5;
-}
-
-div#menu-bar-wrapper > div > div > div > ul > li ul{
-    background: #fff;
-    color: #BDBDBD;
-    border-right: 1px solid #BDBDBD;
-    border-left: 1px solid #BDBDBD;
-    border-bottom: 1px solid #BDBDBD;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-div#menu-bar-wrapper > div > div > div > ul > li ul > li{
-    border: none;
-}
-div#menu-bar-wrapper > div > div > div > ul > li ul > li > a{
-    border: none;
-    border-bottom: 1px solid #EEEEEE;
-    padding: 5px 10px;
-}
-div#menu-bar-wrapper > div > div > div > ul > li ul > li > a:hover{
-    background: #F5F5F5;
-    color: #424242;
-}
-
-#menu-bar-wrapper .menu-bar {
-  position: relative;
-}
-
-#menu-bar-wrapper .region-menu-bar {
-	width: 100%;
-}
-
-div#menu-bar-wrapper > div > div > div > ul > li > a {
-    padding: 10px 30px;
-    border: 1px solid #fff;
 }
 
 /* Region */
