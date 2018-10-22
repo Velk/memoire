@@ -46,8 +46,8 @@ div#menu-bar-wrapper > div > div > div > ul > li {
 div#menu-bar-wrapper > div > div > div > ul > li > a {
     /*background: #fff;*/
     background: transparent;
-    /*color: #BDBDBD;*/
-    color: #fff;
+    color: #424242;
+    /*color: #fff;*/
     padding: 10px 30px;
     /* border: 1px solid #fff; */
     border: none;
@@ -58,7 +58,7 @@ div#menu-bar-wrapper > div > div > div > ul > li > a {
 }
 div#menu-bar-wrapper > div > div > div > ul > li > a:hover {
     border-bottom: 1px solid #fff;
-    color: #fff;
+    color: #BDBDBD;
 }
 div#menu-bar-wrapper > div > div > div > ul > li.active > a {
     color: #fff;

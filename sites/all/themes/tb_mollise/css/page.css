@@ -6,7 +6,14 @@ body p,
 body a,
 body li,
 body button {
-    font-size: 16px;
+    font-size: 14px;
+}
+
+body #admin-menu p,
+body #admin-menu a,
+body #admin-menu li,
+body #admin-menu button {
+    font-size: 12px;
 }
 
 i.fa {
@@ -108,11 +115,11 @@ div#page {
  * Header
  */
 #header-wrapper {
-    /*background: #fff;*/
-    background: #000;
+    background: #fff;
+    /*background: #000;*/
     position: fixed;
     width: 100%;
-    /*box-shadow: 0px 0px 5px #E0E0E0;*/
+    box-shadow: 0px 0px 5px #E0E0E0;
     z-index: 99;
     top: 0;
     /*top: 34px;*/
