@@ -21,7 +21,8 @@
 
 div#block-memory-blocks-social-networks {
     position: fixed;
-    top: calc(80px + 230px);
+    top: calc(80px + (100vh - 80px)/2);
+    /*top: calc(80px + 230px);*/
     z-index: 10;
     padding: 10px 3px;
     box-sizing: border-box;
