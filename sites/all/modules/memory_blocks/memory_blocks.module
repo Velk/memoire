@@ -71,6 +71,15 @@ function memory_blocks_menu() {
         'type' => MENU_NORMAL_ITEM,
     );
 
+    $items['admin/memory/slider-manager'] = array(
+        'title' => t('Memory - Slider'),
+        'description' => t('Memory - Slider manager'),
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('memory_blocks_slider_admin_form'),
+        'access arguments' => array('administer site configuration'),
+        'type' => MENU_NORMAL_ITEM,
+    );
+
     return $items;
 }
 
@@ -366,6 +375,11 @@ function memory_blocks_theme($existing, $type, $theme, $path) {
             'path' => drupal_get_path('module', 'memory_blocks'),
             'variables' => array('infos' => NULL),
         ),
+        'tpl_memory_slider' => array(
+            'template' => 'tpl/memory_slider',
+            'path' => drupal_get_path('module', 'memory_blocks'),
+            'variables' => array('infos' => NULL),
+        ),
     );
 }
 
@@ -418,6 +432,15 @@ function memory_blocks_block_info() {
       'status' => 1,
       'region' => 'footer',
       'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    );
+
+    $blocks['memory_slider'] = array(
+      'info' => t('Memory Slider'),
+      'weight' => 1,
+      'status' => 1,
+      'region' => 'slideshow',
+      'visibility' => BLOCK_VISIBILITY_LISTED,
+        'pages' => '<front>',
     );
 
     return $blocks;
@@ -663,6 +686,141 @@ function memory_blocks_block_view($delta = '') {
              // Link a js file
              $block['content']['#attached']['js'][] = array(
                  'data' => drupal_get_path('module', 'memory_blocks').'/js/memory_footer.js',
+                 'type' => 'file'
+             );
+
+            break;
+        case 'memory_slider':
+
+            /* Slider - Global options */
+            $data['slider_height'] = variable_get('slider_height');
+
+            $data['slider_type'] = variable_get('slider_type');
+
+            drupal_add_js(array('memory_blocks' => array('slider_type' => variable_get("slider_type"))), array('type' => 'setting'));
+
+            /* Slider images */
+            if( variable_get('slider_type') == "0" ){
+
+                $slider = variable_get('slider', array());
+
+                $data["array_size_slider"] = sizeof($slider);
+
+                for( $i = 1 ; $i <= sizeof($slider); $i++ ){
+
+                    $data["slider_".$i."_name"] = $slider['image_container_'.$i]['name'];
+
+                    /*
+                     * $arrayName['image'] correspond to the fid
+                     * Load the file by its fid.
+                     * Create the URL file by using the file URI
+                     */
+                    $file = file_load($slider['image_container_'.$i]['image']);
+                    $url = file_create_url($file->uri);
+                    $data["slider_".$i."_image"] = $url;
+                }
+
+                drupal_add_js(array('memory_blocks' => array('slider_time_interval' => variable_get("slider_time_interval"))), array('type' => 'setting'));
+            }
+
+            /* Vidéo */
+            if( variable_get('slider_type') == "1" ){
+
+                $video = variable_get('video', array());
+                $video_name = $video['name'];
+                $video_id = $video['id'];
+                $video_autoplay = $video['autoplay'];
+                $video_loop = $video['loop'];
+                $video_controls = $video['controls'];
+
+//                drupal_set_message($video_name);
+//                drupal_set_message($video_id);
+//                drupal_set_message($video_autoplay);
+//                drupal_set_message($video_loop);
+//                drupal_set_message($video_controls);
+
+                //rel=0&showinfo=0&modestbranding=0
+
+                $video_url = "https://www.youtube.com/embed/" . $video_id;
+                if( $video_autoplay == 1 || $video_loop == 1 || $video_controls == 0 ){
+
+                    $video_url = $video_url . "?rel=0";
+
+                    if( substr($video_url, -1) == "?" ){
+
+                        if( $video_autoplay == 1 ){
+
+                            $video_url = $video_url . "autoplay=1";
+                        }
+                    }else{
+
+                        if( $video_autoplay == 1 ){
+
+                            $video_url = $video_url . "&autoplay=1";
+                        }
+                    }
+
+                    if( substr($video_url, -1) == "?" ){
+
+                        if( $video_loop == 1 ){
+
+                            $video_url = $video_url . "playlist=" . $video_id . "&loop=1";
+                        }
+                    }else{
+
+                        if( $video_loop == 1 ){
+
+                            $video_url = $video_url . "&playlist=" . $video_id . "&loop=1";
+                        }
+                    }
+
+                    if( substr($video_url, -1) == "?" ){
+
+                        if( $video_controls == 0 ){
+
+                            $video_url = $video_url . "controls=0";
+                        }
+                    }else{
+
+                        if( $video_controls == 0 ){
+
+                            $video_url = $video_url . "&controls=0";
+                        }
+                    }
+                }
+
+                $data['video_url'] = $video_url;
+            }
+
+            /* Still image */
+
+            if( variable_get('slider_type') == "2" ){
+
+                $still_img = variable_get('still_img', array());
+                $data['still_img_name'] = $still_img['name'];
+
+                /*
+                 * $arrayName['image'] correspond to the fid
+                 * Load the file by its fid.
+                 * Create the URL file by using the file URI
+                 */
+                $file = file_load($still_img['image']);
+                $url = file_create_url($file->uri);
+                $data['still_img_image'] = $url;
+            }
+
+            // Link the template
+            $block['content']['#markup'] = theme('tpl_memory_slider', $data);
+
+            // Link a css file
+            $block['content']['#attached']['css'][] = array(
+                'data' => drupal_get_path('module', 'memory_blocks').'/css/memory_slider.css',
+                'type' => 'file'
+            );
+
+             // Link a js file
+             $block['content']['#attached']['js'][] = array(
+                 'data' => drupal_get_path('module', 'memory_blocks').'/js/memory_slider.js',
                  'type' => 'file'
              );
 
@@ -1959,6 +2117,213 @@ function memory_blocks_footer_admin_form($form, &$form_state) {
         '#default_value' => $footer_partners['partners']['value'],
         '#title' => t('Partenaires'),
         '#weight' => 1,
+    );
+
+    return system_settings_form($form);
+}
+
+function memory_blocks_slider_admin_form($form, &$form_state){
+
+    /* Slider - Global options */
+    $form['slider_type'] = array(
+        '#type' => 'radios',
+        '#title' => t('Type d\'affichage'),
+        '#default_value' => variable_get('slider_type', 0),
+        '#options' => array(
+            0 => t('Slider d\'images'),
+            1 => t('Vidéo'),
+            2 => t('Image fixe'),
+        ),
+        '#description' => t('Choisir le type d\'affichage souhaité.'),
+        '#required' => TRUE,
+        '#weight' => 1,
+    );
+
+    $form['slider_height'] = array(
+        '#type' => 'textfield',
+        '#attributes' => array(
+            ' type' => 'number', // insert space before attribute name :)
+        ),
+        '#default_value' => variable_get("slider_height", "550"),
+        '#title' => t('Hauteur du slider'),
+        '#description' => t('Indiquer la hauteur du slider en pixel.'),
+        '#maxlength' => 5,
+        '#required' => TRUE,
+        '#weight' => 2,
+    );
+
+    $form['slider_time_interval'] = array(
+        '#type' => 'textfield',
+        '#attributes' => array(
+            ' type' => 'number', // insert space before attribute name :)
+        ),
+        '#default_value' => variable_get("slider_time_interval", "10000"),
+        '#title' => t('Interval de temps du slider'),
+        '#description' => t('Indiquer l\'interval de temps du slider pour lequel l\'image suivante apparaîtra.'),
+        '#maxlength' => 5,
+        '#required' => TRUE,
+        '#weight' => 3,
+    );
+
+    /* Slider images */
+    $form['slider'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Slider images'),
+        '#weight' => 4,
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
+        '#tree' => TRUE
+    );
+
+    $slider = variable_get('slider', array());
+
+    for( $i = 1 ; $i <= 8 ; $i++ ){
+
+        $form['slider']['image_container_'.$i] = array(
+            '#type' => 'fieldset',
+            '#title' => t('Image n°'.$i),
+            '#weight' => $i,
+            '#collapsible' => TRUE,
+            '#collapsed' => TRUE,
+            '#tree' => TRUE
+        );
+
+        $form['slider']['image_container_'.$i]['name'] = array(
+            '#type' => 'textfield',
+            '#title' => t('Nom'),
+            '#default_value' => $slider['image_container_'.$i]['name'],
+            '#weight' => 1,
+        );
+
+        $form['slider']['image_container_'.$i]['image'] = array(
+            '#type'          => 'media',
+            '#title' => t('Image'),
+            '#theme'         => 'media_widget', // Without that, you only get text input
+            '#default_value' => $slider['image_container_'.$i]['image'], // The fid
+            '#media_options' => array(
+                'global' => array(
+                    'file_directory'  => 'image_folder',
+                    'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
+                        'upload',
+                        'media_default--media_browser_my_files'
+                    ),
+                    'file_extensions' => 'png gif jpg jpeg',
+                    'max_filesize'    => '2 MB',
+                    'uri_scheme'      => 'public',
+                    'types'           => array('image'),
+                    'schemes'         => array(
+                        'public' => 'public',
+                    ),
+                ),
+            ),
+            '#weight' => 2,
+        );
+    }
+
+    /* Video */
+    $form['video'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Vidéo'),
+        '#weight' => 5,
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
+        '#tree' => TRUE
+    );
+
+    $video = variable_get('video', array());
+
+    $form['video']['name'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Nom'),
+        '#default_value' => $video['name'],
+        '#weight' => 1,
+    );
+
+    $form['video']['id'] = array(
+        '#type' => 'textfield',
+        '#title' => t('ID'),
+        '#default_value' => $video['id'],
+        '#description' => t("L'ID de la vidéo est trouvable dans l'URL de la vidéo Youtube : https://www.youtube.com/watch?v=<b>[video_ID]</b>.<br><em>Par exemple : Pour l'URL https://www.youtube.com/watch?v=sKfbYcBoqCQ , l'ID est sKfbYcBoqCQ.</em></em></i>"),
+        '#weight' => 2,
+    );
+
+    $form['video']['autoplay'] = array(
+        '#type' => 'radios',
+        '#title' => t('Autoplay'),
+        '#default_value' => $video['autoplay'],
+        '#options' => array(
+            0 => t('Désactiver'),
+            1 => t('Activer'),
+        ),
+        '#description' => t("L'autoplay permet de jouer automatiquement la vidéo lorsque l'utilisateur visite la page sur laquelle elle se trouve."),
+        '#weight' => 3,
+    );
+
+    $form['video']['loop'] = array(
+        '#type' => 'radios',
+        '#title' => t('Loop'),
+        '#default_value' => $video['loop'],
+        '#options' => array(
+            0 => t('Désactiver'),
+            1 => t('Activer'),
+        ),
+        '#description' => t("Loop permet de jouer la vidéo à l'infini."),
+        '#weight' => 4,
+    );
+
+    $form['video']['controls'] = array(
+        '#type' => 'radios',
+        '#title' => t('Controls'),
+        '#default_value' => $video['controls'],
+        '#options' => array(
+            0 => t('Désactiver'),
+            1 => t('Activer'),
+        ),
+        '#description' => t("Controls affiche les outils de gestion de la vidéo (pause...)."),
+        '#weight' => 5,
+    );
+
+    /* Still image */
+    $form['still_img'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Image fixe'),
+        '#weight' => 6,
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
+        '#tree' => TRUE
+    );
+
+    $still_img = variable_get('still_img', array());
+
+    $form['still_img']['name'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Nom'),
+        '#default_value' => $still_img['name'],
+        '#weight' => 1,
+    );
+
+    $form['still_img']['image'] = array(
+        '#type'          => 'media',
+        '#title' => t('Image'),
+        '#theme'         => 'media_widget', // Without that, you only get text input
+        '#default_value' => $still_img['image'], // The fid
+        '#media_options' => array(
+            'global' => array(
+                'file_directory'  => 'image_folder',
+                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
+                    'upload',
+                    'media_default--media_browser_my_files'
+                ),
+                'file_extensions' => 'png gif jpg jpeg',
+                'max_filesize'    => '2 MB',
+                'uri_scheme'      => 'public',
+                'types'           => array('image'),
+                'schemes'         => array(
+                    'public' => 'public',
+                ),
+            ),
+        ),
+        '#weight' => 2,
     );
 
     return system_settings_form($form);

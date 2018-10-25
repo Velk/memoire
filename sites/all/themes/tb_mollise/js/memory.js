@@ -49,7 +49,14 @@
             "font-size": "20px",
         });
 
+
         /* Scroll - Resize header menu */
+        var sliderHeight = $("#slider-container").height();
+        var windowHeight = $(window).height();
+
+        // Set basic social networks position
+        $("div#block-memory-blocks-social-networks").css("top", "calc(80px + " + sliderHeight + "px/2)");
+
         $( window ).scroll(function() {
 
             if($(window).scrollTop() > 0){
@@ -60,7 +67,11 @@
                 $( "a:contains('Connexion')" ).parent("li").css("transform", "translateY(-13px)");
                 $("div#page").css("margin-top", "60px");
                 // $("div#page").css("margin-top", "calc(60px + 34px)");
-                $("div#block-memory-blocks-social-networks").css("top", "calc(60px + 230px)");
+                // $("div#block-memory-blocks-social-networks").css("top", "calc(60px/2 + " + windowHeight + "px/2)");
+                var topValueScroll = 60/2 + windowHeight/2;
+                $("div#block-memory-blocks-social-networks").stop().animate({
+                    top: topValueScroll + "px",
+                });
             }
             if($(window).scrollTop() === 0){
 
@@ -70,7 +81,11 @@
                 $( "a:contains('Connexion')" ).parent("li").css("transform", "translateY(-15px)");
                 $("div#page").css("margin-top", "80px");
                 // $("div#page").css("margin-top", "calc(80px + 34px)");
-                $("div#block-memory-blocks-social-networks").css("top", "calc(80px + 230px)");
+                // $("div#block-memory-blocks-social-networks").css("top", "calc(80px + " + sliderHeight + "px/2)");
+                var topValue = 80 + sliderHeight/2;
+                $("div#block-memory-blocks-social-networks").stop().animate({
+                    top: topValue + "px",
+                });
             }
 
         });
