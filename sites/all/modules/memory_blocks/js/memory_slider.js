@@ -7,7 +7,7 @@
             /* ---------------------------------------------------------------------------------------------------------------------------------- */
 
             // Retrieve the total number of children
-            var nbChildren = $("#slider-container > div > div").size();
+            var nbChildren = $("#slider-img-container > div").size();
 
             // Initialize the child number to 2 to go to the second number when the time interval is done
             var childNumber = 2;
@@ -36,6 +36,133 @@
                 // Call the function sliderChangeImage() every 'x' millisecond
                 // Note that Drupal.settings.memory_blocks.slider_time_interval call slider_time_interval in the define in the memory_block module
                 setInterval(sliderChangeImage, Drupal.settings.memory_blocks.slider_time_interval);
+
+                // Previous or next images - Icons behavior
+                $("#slider-actions > i.fa-chevron-left").click(function(){
+
+                    var arrayIndex = [];
+
+                    $("div.slider-img-container").each(function(){
+
+                        // If image container direct child is the image
+                        if( $(this).children("img").length > 0 ){
+
+                            // Retrieve every index of image containers except the one who's displayed
+                            if( $( this ).index( $(this).is(":visible") ) !== -1 ){
+
+                                arrayIndex.push($( this ).index( $(this).is(":visible") ));
+                            }
+
+                        }
+                        // If image container direct child is the <a> markup then the image
+                        if( $(this).children("a").length > 0 ){
+
+                            // Retrieve every index of image containers except the one who's displayed
+                            if( $( this ).index( $(this).is(":visible") ) !== -1 ){
+
+                                arrayIndex.push($( this ).index( $(this).is(":visible") ));
+                            }
+                        }
+                    });
+
+                    var indexActualImage = 0;
+
+                    for(var i = 0 ; i < arrayIndex.length ; i++){
+
+                        // Check index of images retrieved then define the actual index of the image displayed
+                        if( arrayIndex[i] === indexActualImage ){
+                            indexActualImage++;
+                        }
+                    }
+
+                    if( indexActualImage === 0 ){
+
+                        $("div.slider-img-container").css("display", "none");
+                        $("div.slider-img-container:nth-child(" + nbChildren + ")").css("display", "block");
+                    }else{
+
+                        $("div.slider-img-container").css("display", "none");
+                        $("div.slider-img-container:nth-child(" + indexActualImage + ")").css("display", "block");
+                    }
+                });
+                $("#slider-actions > i.fa-chevron-right").click(function(){
+
+                    var arrayIndex = [];
+
+                    $("div.slider-img-container").each(function(){
+
+                        // If image container direct child is the image
+                        if( $(this).children("img").length > 0 ){
+
+                            // Retrieve every index of image containers except the one who's displayed
+                            if( $( this ).index( $(this).is(":visible") ) !== -1 ){
+
+                                arrayIndex.push($( this ).index( $(this).is(":visible") ));
+                            }
+
+                        }
+                        // If image container direct child is the <a> markup then the image
+                        if( $(this).children("a").length > 0 ){
+
+                            // Retrieve every index of image containers except the one who's displayed
+                            if( $( this ).index( $(this).is(":visible") ) !== -1 ){
+
+                                arrayIndex.push($( this ).index( $(this).is(":visible") ));
+                            }
+                        }
+                    });
+
+                    var indexActualImage = 0;
+
+                    for(var i = 0 ; i < arrayIndex.length ; i++){
+
+                        // Check index of images retrieved then define the actual index of the image displayed
+                        if( arrayIndex[i] === indexActualImage ){
+                            indexActualImage++;
+                        }
+                    }
+
+                    if( indexActualImage === (nbChildren-1) ){
+
+                        // If the index (start at 0) of the actual image equals the number of children minus 1 (to fit with the index
+                        // It would say that it is the last image so display the first image of the slider
+                        $("div.slider-img-container").css("display", "none");
+                        $("div.slider-img-container:nth-child(1)").css("display", "block");
+                    }else{
+
+                        // Set indexActualImage + 2 in order to get the next child image
+                        $("div.slider-img-container").css("display", "none");
+                        $("div.slider-img-container:nth-child(" + (indexActualImage+2) + ")").css("display", "block");
+                    }
+                });
+            }
+
+            /* ---------------------------------------------------------------------------------------------------------------------------------- */
+            /* ------------------------------------------------------ Set sound behavior -------------------------------------------------------- */
+            /* ---------------------------------------------------------------------------------------------------------------------------------- */
+
+            function changeIconSetSound(className){
+
+                // Change icon depending on the actual setting
+                if( className === "fa-volume-off" ){
+                    $("#set-sound > i").removeClass("fa-volume-off").addClass("fa-volume-up");
+                }else if( className === "fa-volume-up" ){
+                    $("#set-sound > i").removeClass("fa-volume-up").addClass("fa-volume-off");
+                }
+            }
+
+            if( Drupal.settings.memory_blocks.slider_type === "1"){
+
+                $("#set-sound > i").click(function(){
+                    changeIconSetSound($(this).attr('class').split(' ')[1]);
+
+                    // Checked if the video sound is muted
+                    if( $("#slider-container video").attr('muted') ) {
+                        $("#slider-container video").attr('muted', false);
+                    }else {
+                        $("#slider-container video").attr('muted', true);
+                    }
+                });
             }
 
             /* ---------------------------------------------------------------------------------------------------------------------------------- */

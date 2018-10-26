@@ -718,6 +718,8 @@ function memory_blocks_block_view($delta = '') {
                     $file = file_load($slider['image_container_'.$i]['image']);
                     $url = file_create_url($file->uri);
                     $data["slider_".$i."_image"] = $url;
+
+                    $data["slider_".$i."_redirection_link"] = $slider['image_container_'.$i]['redirection_link'];
                 }
 
                 drupal_add_js(array('memory_blocks' => array('slider_time_interval' => variable_get("slider_time_interval"))), array('type' => 'setting'));
@@ -728,68 +730,84 @@ function memory_blocks_block_view($delta = '') {
 
                 $video = variable_get('video', array());
                 $video_name = $video['name'];
-                $video_id = $video['id'];
-                $video_autoplay = $video['autoplay'];
-                $video_loop = $video['loop'];
-                $video_controls = $video['controls'];
+                $data['video_url_intern'] = $video['url_intern'];
+                $data['video_autoplay'] = $video['autoplay'];
+                $data['video_controls'] = $video['controls'];
+                $data['video_loop'] = $video['loop'];
+                $data['video_muted'] = $video['muted'];
+                $data['video_poster'] = $video['poster'];
 
-//                drupal_set_message($video_name);
-//                drupal_set_message($video_id);
-//                drupal_set_message($video_autoplay);
-//                drupal_set_message($video_loop);
-//                drupal_set_message($video_controls);
+                if( $video['poster_image'] != 0 ){
 
-                //rel=0&showinfo=0&modestbranding=0
-
-                $video_url = "https://www.youtube.com/embed/" . $video_id;
-                if( $video_autoplay == 1 || $video_loop == 1 || $video_controls == 0 ){
-
-                    $video_url = $video_url . "?rel=0";
-
-                    if( substr($video_url, -1) == "?" ){
-
-                        if( $video_autoplay == 1 ){
-
-                            $video_url = $video_url . "autoplay=1";
-                        }
-                    }else{
-
-                        if( $video_autoplay == 1 ){
-
-                            $video_url = $video_url . "&autoplay=1";
-                        }
-                    }
-
-                    if( substr($video_url, -1) == "?" ){
-
-                        if( $video_loop == 1 ){
-
-                            $video_url = $video_url . "playlist=" . $video_id . "&loop=1";
-                        }
-                    }else{
-
-                        if( $video_loop == 1 ){
-
-                            $video_url = $video_url . "&playlist=" . $video_id . "&loop=1";
-                        }
-                    }
-
-                    if( substr($video_url, -1) == "?" ){
-
-                        if( $video_controls == 0 ){
-
-                            $video_url = $video_url . "controls=0";
-                        }
-                    }else{
-
-                        if( $video_controls == 0 ){
-
-                            $video_url = $video_url . "&controls=0";
-                        }
-                    }
+                    $file = file_load($video['poster_image']);
+                    $url = file_create_url($file->uri);
+                    $data['video_poster_image'] = $url;
                 }
 
-                $data['video_url'] = $video_url;
+//                $video = variable_get('video', array());
+//                $video_name = $video['name'];
+//                $video_id = $video['id'];
+//                $video_autoplay = $video['autoplay'];
+//                $video_loop = $video['loop'];
+//                $video_controls = $video['controls'];
+//
+////                drupal_set_message($video_name);
+////                drupal_set_message($video_id);
+////                drupal_set_message($video_autoplay);
+////                drupal_set_message($video_loop);
+////                drupal_set_message($video_controls);
+//
+//                //rel=0&showinfo=0&modestbranding=0
+//
+//                $video_url = "https://www.youtube.com/embed/" . $video_id;
+//                if( $video_autoplay == 1 || $video_loop == 1 || $video_controls == 0 ){
+//
+//                    $video_url = $video_url . "?rel=0";
+//
+//                    if( substr($video_url, -1) == "?" ){
+//
+//                        if( $video_autoplay == 1 ){
+//
+//                            $video_url = $video_url . "autoplay=1";
+//                        }
+//                    }else{
+//
+//                        if( $video_autoplay == 1 ){
+//
+//                            $video_url = $video_url . "&autoplay=1";
+//                        }
+//                    }
+//
+//                    if( substr($video_url, -1) == "?" ){
+//
+//                        if( $video_loop == 1 ){
+//
+//                            $video_url = $video_url . "playlist=" . $video_id . "&loop=1";
+//                        }
+//                    }else{
+//
+//                        if( $video_loop == 1 ){
+//
+//                            $video_url = $video_url . "&playlist=" . $video_id . "&loop=1";
+//                        }
+//                    }
+//
+//                    if( substr($video_url, -1) == "?" ){
+//
+//                        if( $video_controls == 0 ){
+//
+//                            $video_url = $video_url . "controls=0";
+//                        }
+//                    }else{
+//
+//                        if( $video_controls == 0 ){
+//
+//                            $video_url = $video_url . "&controls=0";
+//                        }
+//                    }
+//                }
+//
+//                $data['video_url'] = $video_url;
             }
 
             /* Still image */
@@ -807,6 +825,8 @@ function memory_blocks_block_view($delta = '') {
                 $file = file_load($still_img['image']);
                 $url = file_create_url($file->uri);
                 $data['still_img_image'] = $url;
+
+                $data['still_img_redirection_link'] = $still_img['redirection_link'];
             }
 
             // Link the template
@@ -2218,9 +2238,78 @@ function memory_blocks_slider_admin_form($form, &$form_state){
             ),
             '#weight' => 2,
         );
+
+        $form['slider']['image_container_'.$i]['redirection_link'] = array(
+            '#type' => 'textfield',
+            '#title' => t('Lien de redirection'),
+            '#default_value' => $slider['image_container_'.$i]['redirection_link'],
+            '#weight' => 3,
+        );
     }
 
     /* Video */
+//    $form['video'] = array(
+//        '#type' => 'fieldset',
+//        '#title' => t('Vidéo'),
+//        '#weight' => 5,
+//        '#collapsible' => TRUE,
+//        '#collapsed' => TRUE,
+//        '#tree' => TRUE
+//    );
+//
+//    $video = variable_get('video', array());
+//
+//    $form['video']['name'] = array(
+//        '#type' => 'textfield',
+//        '#title' => t('Nom'),
+//        '#default_value' => $video['name'],
+//        '#weight' => 1,
+//    );
+//
+//    $form['video']['id'] = array(
+//        '#type' => 'textfield',
+//        '#title' => t('ID'),
+//        '#default_value' => $video['id'],
+//        '#description' => t("L'ID de la vidéo est trouvable dans l'URL de la vidéo Youtube : https://www.youtube.com/watch?v=<b>[video_ID]</b>.<br><em>Par exemple : Pour l'URL https://www.youtube.com/watch?v=sKfbYcBoqCQ , l'ID est sKfbYcBoqCQ.</em></em></i>"),
+//        '#weight' => 2,
+//    );
+//
+//    $form['video']['autoplay'] = array(
+//        '#type' => 'radios',
+//        '#title' => t('Autoplay'),
+//        '#default_value' => $video['autoplay'],
+//        '#options' => array(
+//            0 => t('Désactiver'),
+//            1 => t('Activer'),
+//        ),
+//        '#description' => t("L'autoplay permet de jouer automatiquement la vidéo lorsque l'utilisateur visite la page sur laquelle elle se trouve."),
+//        '#weight' => 3,
+//    );
+//
+//    $form['video']['loop'] = array(
+//        '#type' => 'radios',
+//        '#title' => t('Loop'),
+//        '#default_value' => $video['loop'],
+//        '#options' => array(
+//            0 => t('Désactiver'),
+//            1 => t('Activer'),
+//        ),
+//        '#description' => t("Loop permet de jouer la vidéo à l'infini."),
+//        '#weight' => 4,
+//    );
+//
+//    $form['video']['controls'] = array(
+//        '#type' => 'radios',
+//        '#title' => t('Controls'),
+//        '#default_value' => $video['controls'],
+//        '#options' => array(
+//            0 => t('Désactiver'),
+//            1 => t('Activer'),
+//        ),
+//        '#description' => t("Controls affiche les outils de gestion de la vidéo (pause...)."),
+//        '#weight' => 5,
+//    );
+
     $form['video'] = array(
         '#type' => 'fieldset',
         '#title' => t('Vidéo'),
@@ -2232,6 +2321,30 @@ function memory_blocks_slider_admin_form($form, &$form_state){
 
     $video = variable_get('video', array());
 
+//    $form['video']['video'] = array(
+//        '#type'          => 'media',
+//        '#title' => t('Upload video'),
+//        '#theme'         => 'media_widget', // Without that, you only get text input
+//        '#default_value' => $video['video'], // The fid
+//        '#media_options' => array(
+//            'global' => array(
+//                'file_directory'  => 'videos',
+//                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
+//                    'upload',
+//                    'media_default--media_browser_my_files'
+//                ),
+//                'file_extensions' => 'mov mp4',
+//                'max_filesize'    => '200 MB',
+//                'uri_scheme'      => 'public',
+//                'types'           => array('video'),
+//                'schemes'         => array(
+//                    'public' => 'public',
+//                ),
+//            ),
+//        ),
+//        '#weight' => 0,
+//    );
+
     $form['video']['name'] = array(
         '#type' => 'textfield',
         '#title' => t('Nom'),
@@ -2239,11 +2352,11 @@ function memory_blocks_slider_admin_form($form, &$form_state){
         '#weight' => 1,
     );
 
-    $form['video']['id'] = array(
+    $form['video']['url_intern'] = array(
         '#type' => 'textfield',
-        '#title' => t('ID'),
-        '#default_value' => $video['id'],
-        '#description' => t("L'ID de la vidéo est trouvable dans l'URL de la vidéo Youtube : https://www.youtube.com/watch?v=<b>[video_ID]</b>.<br><em>Par exemple : Pour l'URL https://www.youtube.com/watch?v=sKfbYcBoqCQ , l'ID est sKfbYcBoqCQ.</em></em></i>"),
+        '#title' => t('URL Interne'),
+        '#default_value' => $video['url_intern'],
+        '#description' => t("Exemple d'URL interne : http://localhost/memory_website/memoire/sites/default/files/videos/<b>[nom_video].[extension]</b>"),
         '#weight' => 2,
     );
 
@@ -2259,18 +2372,6 @@ function memory_blocks_slider_admin_form($form, &$form_state){
         '#weight' => 3,
     );
 
-    $form['video']['loop'] = array(
-        '#type' => 'radios',
-        '#title' => t('Loop'),
-        '#default_value' => $video['loop'],
-        '#options' => array(
-            0 => t('Désactiver'),
-            1 => t('Activer'),
-        ),
-        '#description' => t("Loop permet de jouer la vidéo à l'infini."),
-        '#weight' => 4,
-    );
-
     $form['video']['controls'] = array(
         '#type' => 'radios',
         '#title' => t('Controls'),
@@ -2280,7 +2381,67 @@ function memory_blocks_slider_admin_form($form, &$form_state){
             1 => t('Activer'),
         ),
         '#description' => t("Controls affiche les outils de gestion de la vidéo (pause...)."),
+        '#weight' => 4,
+    );
+
+    $form['video']['loop'] = array(
+        '#type' => 'radios',
+        '#title' => t('Loop'),
+        '#default_value' => $video['loop'],
+        '#options' => array(
+            0 => t('Désactiver'),
+            1 => t('Activer'),
+        ),
+        '#description' => t("Loop permet de jouer la vidéo à l'infini."),
         '#weight' => 5,
+    );
+
+    $form['video']['muted'] = array(
+        '#type' => 'radios',
+        '#title' => t('Muted'),
+        '#default_value' => $video['muted'],
+        '#options' => array(
+            0 => t('Désactiver'),
+            1 => t('Activer'),
+        ),
+        '#description' => t("L'audio de la vidéo est mutée."),
+        '#weight' => 6,
+    );
+
+    $form['video']['poster'] = array(
+        '#type' => 'radios',
+        '#title' => t('Poster'),
+        '#default_value' => $video['poster'],
+        '#options' => array(
+            0 => t('Désactiver'),
+            1 => t('Activer'),
+        ),
+        '#description' => t("Image a affiché lorsque la vidéo charge."),
+        '#weight' => 7,
+    );
+
+    $form['video']['poster_image'] = array(
+        '#type'          => 'media',
+        '#title' => t('Image'),
+        '#theme'         => 'media_widget', // Without that, you only get text input
+        '#default_value' => $video['poster_image'], // The fid
+        '#media_options' => array(
+            'global' => array(
+                'file_directory'  => 'image_folder',
+                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
+                    'upload',
+                    'media_default--media_browser_my_files'
+                ),
+                'file_extensions' => 'png gif jpg jpeg',
+                'max_filesize'    => '2 MB',
+                'uri_scheme'      => 'public',
+                'types'           => array('image'),
+                'schemes'         => array(
+                    'public' => 'public',
+                ),
+            ),
+        ),
+        '#weight' => 8,
     );
 
     /* Still image */
@@ -2324,6 +2485,13 @@ function memory_blocks_slider_admin_form($form, &$form_state){
             ),
         ),
         '#weight' => 2,
+    );
+
+    $form['still_img']['redirection_link'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Lien de redirection'),
+        '#default_value' => $still_img['redirection_link'],
+        '#weight' => 3,
     );
 
     return system_settings_form($form);
