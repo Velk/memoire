@@ -39,14 +39,14 @@
         ?>
             <video
                 width="100%"
-                height="100%"
+                height="auto"
                 <?php echo ($video_autoplay == 1) ? "autoplay" : ""; ?>
                 <?php echo ($video_controls == 1) ? "controls" : ""; ?>
                 <?php echo ($video_loop == 1) ? "loop" : ""; ?>
                 <?php echo ($video_muted == 1) ? "muted" : ""; ?>
                 <?php echo ($video_poster == 1 && !empty($video_poster_image) ) ? "poster=".$video_poster_image : ""; ?>
             >
-                <source src="<?php echo $video_url_intern; ?>" type="video/mp4">
+                <source src="<?php echo $video_video; ?>" type="video/mp4">
             </video>
             <div id="set-sound">
                 <i class="fa fa-volume-off" aria-hidden="true"></i>
