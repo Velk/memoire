@@ -39,7 +39,7 @@
         ?>
             <video
                 width="100%"
-                height="100%"
+                height="auto"
                 <?php echo ($video_autoplay == 1) ? "autoplay" : ""; ?>
                 <?php echo ($video_controls == 1) ? "controls" : ""; ?>
                 <?php echo ($video_loop == 1) ? "loop" : ""; ?>
