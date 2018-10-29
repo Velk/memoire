@@ -736,6 +736,7 @@ function memory_blocks_block_view($delta = '') {
                 $data['video_loop'] = $video['loop'];
                 $data['video_muted'] = $video['muted'];
                 $data['video_poster'] = $video['poster'];
+                $data['video_redirection_link'] = $video['redirection_link'];
 
                 if( $video['video'] != 0 ){
 
@@ -753,7 +754,6 @@ function memory_blocks_block_view($delta = '') {
             }
 
             /* Still image */
-
             if( variable_get('slider_type') == "2" ){
 
                 $still_img = variable_get('still_img', array());
@@ -2322,6 +2322,13 @@ function memory_blocks_slider_admin_form($form, &$form_state){
             ),
         ),
         '#weight' => 8,
+    );
+
+    $form['video']['redirection_link'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Lien de redirection'),
+        '#default_value' => $video['redirection_link'],
+        '#weight' => 9,
     );
 
     /* Still image */

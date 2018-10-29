@@ -61,7 +61,6 @@ div#set-sound {
     display: block;
     width: auto;
     text-align: center;
-    /*transform: translateX(-50%);*/
     right: 15px;
     bottom: 15px;
 }
@@ -84,6 +83,10 @@ div#set-sound:hover {
     bottom: 10px;
 }
 
+a#video-redirection-link{
+
+}
+
 /* Chevron go down */
 div#go-down {
     position: absolute;
@@ -95,17 +98,6 @@ div#go-down {
     bottom: 15px;
     animation: move_down_animation 2s ease-in-out infinite;
 }
-/*div#go-down > i {*/
-/*padding: 2px;*/
-/*box-sizing: border-box;*/
-/*font-size: 25px;*/
-/*width: 30px;*/
-/*height: 30px;*/
-/*border: 1px solid #fff;*/
-/*border-radius: 50px;*/
-/*color: #fff;*/
-/*cursor: pointer;*/
-/*}*/
 div#go-down > i {
     box-sizing: border-box;
     font-size: 50px;
