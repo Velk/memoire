@@ -1,4 +1,5 @@
 <?php
+    global $base_url;
     if (!empty($content['field_dst_image'])) {
         $img_head_url = file_create_url($content['field_dst_image']['#items'][0]['uri']);
     }
@@ -17,7 +18,7 @@
                 'img_uri' => $img_url,
                 'price' => $node->field_price_prestation['und']['0']['value'],
                 'node' => $node->vid,
-                'path' => drupal_get_path_alias('node/'.$node->vid),
+                'path' => $base_url."/".drupal_get_path_alias('node/'.$node->vid),
             );
         }
     }
