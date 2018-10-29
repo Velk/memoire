@@ -45,6 +45,7 @@
                 <?php echo ($video_loop == 1) ? "loop" : ""; ?>
                 <?php echo ($video_muted == 1) ? "muted" : ""; ?>
                 <?php echo ($video_poster == 1 && !empty($video_poster_image) ) ? "poster=".$video_poster_image : ""; ?>
+                <?php echo ( !empty($video_redirection_link) ) ? "data-href=\"" . $video_redirection_link . "\"" : ""; ?>
             >
                 <source src="<?php echo $video_video; ?>" type="video/mp4">
             </video>
