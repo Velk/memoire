@@ -25,34 +25,76 @@
 ?>
 <div id="continent">
     <div class="cont-head">
-        <h2 class="cont-head-title"><?php print $content['field_destination_title']['#items'][0]['value']; ?></h2>
-        <?php if(!empty($content['field_dst_image'])): ?>
-            <img src="<?php print $img_head_url;?>"
-                 alt="<?php print $content['field_dst_image']['#items'][0]['filename']?>"
-                 class="cont-head-img"
-                 style="width:100%;"
-            />
-        <?php endif; ?>
-        <p class="cont-head-desc">
+        <div id="cont-head-img-container">
+            <h2 class="cont-head-title"><?php print $content['field_destination_title']['#items'][0]['value']; ?></h2>
+            <?php if(!empty($content['field_dst_image'])): ?>
+                <img src="<?php print $img_head_url;?>"
+                     alt="<?php print $content['field_dst_image']['#items'][0]['filename']?>"
+                     class="cont-head-img"
+                     style="width:100%;"
+                />
+            <?php endif; ?>
+        </div>
+        <div id="cont-head-desc">
             <?php print $content['description']['#markup']; ?>
-        </p>
+        </div>
     </div>
-    <div class="cont-main">
+<!--    <div id="cont-filters">-->
+<!--        --><?php
+//        foreach($activities as $activity){
+//            echo '<div class="cont-filter">';
+//                switch($activity->name){
+//                    case "Activités de jour" :
+//                        print '<p><i class="fa fa-sun-o" aria-hidden="true"></i>' . $activity->name . '</p>';
+//                        break;
+//                    case "Activités de nuit" :
+//                        print '<p><i class="fa fa-moon-o" aria-hidden="true"></i>' . $activity->name . '</p>';
+//                        break;
+//                    case "Transferts" :
+//                        print '<p><i class="fa fa-home" aria-hidden="true"></i>' . $activity->name . '</p>';
+//                        break;
+//                    case "Hébergements" :
+//                        print '<p><i class="fa fa-plane" aria-hidden="true"></i>' . $activity->name . '</p>';
+//                        break;
+//                }
+//            echo '</div>';
+//        }
+//        ?>
+<!--    </div>-->
+    <div id="cont-main">
         <?php foreach($activities as $activity): ?>
-            <div class="cont-<?php print $activity->tid ?>">
-                <h2><?php print $activity->name ?></h2>
-                <?php foreach ($cnt[$activity->tid] as $event): ?>
-                    <div class="cont-scop-<?php print $activity->tid ?>">
-                        <h3 class="cont-stick-title"><?php print $event['title'] ?></h3>
-                        <img src="<?php print $event['img_uri']?>"
-                             alt="<?php print $event['img_name']?>"
-                             class="cont-vign-img"
-                             style="width: 150px;"
-                        />
-                        <p class="cont-price"><?php print $event['price']?></p>
-                        <a href="<?php print $event['path']?>" class="cont-readmore">En savoir plus</a>
-                    </div>
-                <?php endforeach; ?>
+            <div id="cont-<?php print $activity->tid ?>" class="cont-container">
+                <h2>
+                    <?php
+                    switch($activity->name){
+                        case "Activités de jour" :
+                            print '<i class="fa fa-sun-o" aria-hidden="true"></i>' . $activity->name;
+                            break;
+                        case "Activités de nuit" :
+                            print '<i class="fa fa-moon-o" aria-hidden="true"></i>' . $activity->name;
+                            break;
+                        case "Transferts" :
+                            print '<i class="fa fa-home" aria-hidden="true"></i>' . $activity->name;
+                            break;
+                        case "Hébergements" :
+                            print '<i class="fa fa-plane" aria-hidden="true"></i>' . $activity->name;
+                            break;
+                    }
+                    ?>
+                </h2>
+                <div class="cont-activities-container">
+                    <?php foreach ($cnt[$activity->tid] as $event): ?>
+                        <div class="cont-scop cont-scop-<?php print $activity->tid ?>">
+                            <h3 class="cont-stick-title"><?php print $event['title'] ?></h3>
+                            <img src="<?php print $event['img_uri']?>"
+                                 alt="<?php print $event['img_name']?>"
+                                 class="cont-vign-img"
+                            />
+                            <p class="cont-price"><?php print $event['price']?> €</p>
+                            <a href="<?php print $event['path']?>" class="cont-readmore"></a>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
             </div>
         <?php endforeach; ?>
     </div>
