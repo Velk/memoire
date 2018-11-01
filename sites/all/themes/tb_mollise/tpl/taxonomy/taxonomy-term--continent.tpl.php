@@ -44,13 +44,14 @@
         <div class="cont-filter">
             <p><i class="fa fa-th" aria-hidden="true"></i>Toutes nos Activités</p>
         </div>
-        <div class="cont-filter">
-            <p><i class="fa fa-globe" aria-hidden="true"></i>Nos Packs</p>
-        </div>
+<!--        <div class="cont-filter">-->
+<!--            <p><i class="fa fa-globe" aria-hidden="true"></i>Nos Packs</p>-->
+<!--        </div>-->
         <?php
         foreach($activities as $activity){
-            echo '<div class="cont-filter">';
-                switch($activity->name){
+            if( isset( $cnt[$activity->tid] ) ) {
+                echo '<div class="cont-filter">';
+                switch ($activity->name) {
                     case "Activités de jour" :
                         print '<p><i class="fa fa-sun-o" aria-hidden="true"></i>' . $activity->name . '</p>';
                         break;
@@ -58,13 +59,14 @@
                         print '<p><i class="fa fa-moon-o" aria-hidden="true"></i>' . $activity->name . '</p>';
                         break;
                     case "Transferts" :
-                        print '<p><i class="fa fa-home" aria-hidden="true"></i>' . $activity->name . '</p>';
+                        print '<p><i class="fa fa-bus" aria-hidden="true"></i>' . $activity->name . '</p>';
                         break;
                     case "Hébergements" :
-                        print '<p><i class="fa fa-plane" aria-hidden="true"></i>' . $activity->name . '</p>';
+                        print '<p><i class="fa fa-home" aria-hidden="true"></i>' . $activity->name . '</p>';
                         break;
                 }
-            echo '</div>';
+                echo '</div>';
+            }
         }
         ?>
     </div>

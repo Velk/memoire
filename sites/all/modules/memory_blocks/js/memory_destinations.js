@@ -20,6 +20,21 @@
             });
         });
 
+        /* ------------------------------------------------------------------------------------------------------------------------------------------------ */
+        /* ---------------------------------------------------------- Filters ----------------------------------------------------------------------------- */
+        /* ------------------------------------------------------------------------------------------------------------------------------------------------ */
+
+        /* Dynamic size of filters menu */
+        var filtersNbTab = $(".cont-filter").length;
+        var filtersTabSize = (100/filtersNbTab);
+
+        $("#cont-filters").css("grid-template-columns", "repeat(" + filtersNbTab + ", " + filtersTabSize + "%)");
+
+        /* Dynamic menu display */
+        if( filtersNbTab === 1 ){
+            $("#cont-filters").hide();
+        }
+
         /* Filters for destinations page */
         $(".cont-filter").click(function(){
            console.log("p : " + $(this).children("p").text());
@@ -41,9 +56,9 @@
                    var section = $(this).children("h2").text();
 
                    if( selectedSection === section ){
-                       $(this).css("display", "block");
+                       $(this).show();
                    }else{
-                       $(this).css("display", "none");
+                       $(this).hide();
                    }
                });
            }
