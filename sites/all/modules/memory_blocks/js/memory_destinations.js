@@ -37,21 +37,15 @@
 
         /* Filters for destinations page */
         $(".cont-filter").click(function(){
-           console.log("p : " + $(this).children("p").text());
 
            var selectedSection = $(this).children("p").text();
 
-           if(
-               selectedSection === "Toutes nos Activités" ||
-               selectedSection === "Nos Packs"
-           ){
+           if( selectedSection === "Toutes nos Activités" ){
 
                $("#cont-main .cont-container").css("display", "block");
            }else{
 
                $("#cont-main .cont-container").each(function(){
-
-                   console.log("h2 : " + $(this).children("h2").text());
 
                    var section = $(this).children("h2").text();
 
