@@ -7,6 +7,7 @@
     $nids = taxonomy_select_nodes($tid, FALSE);
     $vocabulary = taxonomy_vocabulary_machine_name_load('activite');
     $activities = entity_load('taxonomy_term', FALSE, array('vid' => $vocabulary->vid));
+
     $cnt = array();
     foreach ($nids as $nid) {
         $node = node_load($nid);
@@ -64,6 +65,9 @@
                     case "Hébergements" :
                         print '<p><i class="fa fa-home" aria-hidden="true"></i>' . $activity->name . '</p>';
                         break;
+                    case "Nos packs" :
+                        print '<p><i class="fa fa-globe" aria-hidden="true"></i>' . $activity->name . '</p>';
+                        break;
                 }
                 echo '</div>';
             }
@@ -88,6 +92,9 @@
                     case "Hébergements" :
                         print '<h2><i class="fa fa-home" aria-hidden="true"></i>' . $activity->name . '</h2>';
                         break;
+                    case "Nos packs" :
+                        print '<h2><i class="fa fa-globe" aria-hidden="true"></i>' . $activity->name . '</h2>';
+                        break;
                 }
                 ?>
                 <div class="cont-activities-container">
@@ -99,7 +106,7 @@
                             />
                             <div class="cont-datas-container">
                                 <h3 class="cont-stick-title"><?php print $event['title'] ?></h3>
-                                <p class="cont-price"><?php print $event['price']?> €</p>
+                                <p class="cont-price"><?php print $event['price']?> <?php isset($event['price']) ? print "€" : ""; ?></p>
                                 <a href="<?php print $event['path']?>" class="cont-readmore"></a>
                             </div>
                         </div>
