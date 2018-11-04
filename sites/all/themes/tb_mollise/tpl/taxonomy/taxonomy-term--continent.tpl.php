@@ -64,6 +64,9 @@
                     case "Hébergements" :
                         print '<p><i class="fa fa-home" aria-hidden="true"></i>' . $activity->name . '</p>';
                         break;
+		    case "Nos Packs" :
+			print '<p><i class="fa fa-packs" aria-hidden="true"></i>' .$activity->name .'</p>';
+			break;
                 }
                 echo '</div>';
             }
@@ -88,6 +91,9 @@
                     case "Hébergements" :
                         print '<h2><i class="fa fa-home" aria-hidden="true"></i>' . $activity->name . '</h2>';
                         break;
+		    case "Nos Packs" :
+			print '<h2><i class=fa fa-packs" aria-hidden="true"></i>' . $activity->name .'</h2>';
+			break;
                 }
                 ?>
                 <div class="cont-activities-container">
