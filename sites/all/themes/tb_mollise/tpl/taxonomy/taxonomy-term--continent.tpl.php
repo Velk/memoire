@@ -6,7 +6,20 @@
     $tid = key(taxonomy_get_term_by_name($term_name));
     $nids = taxonomy_select_nodes($tid, FALSE);
     $vocabulary = taxonomy_vocabulary_machine_name_load('activite');
-    $activities = entity_load('taxonomy_term', FALSE, array('vid' => $vocabulary->vid));
+    $v_activities = entity_load('taxonomy_term', FALSE, array('vid' => $vocabulary->vid));
+
+    $nb_act = count($v_activities);
+    $activities = array();
+    $count = 0;
+    for ($i = 0; $count < $nb_act; $i++) {
+	if (!empty($v_activities[$i])){
+	    if ($v_activities[$i]->weight == $count) {
+		$activities[$i] = $v_activities[$i];
+		$count++;
+		$i = 0;
+	    }
+	}
+    }
 
     $cnt = array();
     foreach ($nids as $nid) {
