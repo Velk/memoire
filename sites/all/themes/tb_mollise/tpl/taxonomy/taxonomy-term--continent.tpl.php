@@ -41,13 +41,9 @@
         </div>
     </div>
     <div id="cont-filters">
-        <!-- toutes nos activités, nos packs, Activités de Jour, Activités de Nuit, Transfert, Hébergement -->
         <div class="cont-filter">
             <p><i class="fa fa-th" aria-hidden="true"></i>Toutes nos Activités</p>
         </div>
-<!--        <div class="cont-filter">-->
-<!--            <p><i class="fa fa-globe" aria-hidden="true"></i>Nos Packs</p>-->
-<!--        </div>-->
         <?php
         foreach($activities as $activity){
             if( isset( $cnt[$activity->tid] ) ) {
