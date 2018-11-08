@@ -73,6 +73,9 @@ div#footer-container > div#fourth-col > p:nth-child(1) {
     border-bottom: 1px solid #d4d4d4;
     padding-bottom: 4px;
 }
+div#footer-container > div a {
+    color: #d4d4d4;
+}
 div#footer-container > div a:visited {
     color: #d4d4d4;
 }

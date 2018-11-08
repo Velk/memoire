@@ -535,7 +535,7 @@ div#activity-slider-actions {
     z-index: 10;
     display: block;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 60px);
 }
 div#activity-slider-actions > i.fa-chevron-left,
 div#activity-slider-actions > i.fa-chevron-right {
@@ -555,4 +555,36 @@ div#activity-slider-actions > i.fa-chevron-right {
 div#activity-slider-actions > i.fa-chevron-left:hover,
 div#activity-slider-actions > i.fa-chevron-right:hover {
     color: #fff;
+}
+
+
+/* Thumbnails */
+div#activity-slider-thumbnails {
+    position: relative;
+    width: 100%;
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+}
+.activity-slider-thumbnail {
+    position: relative;
+    width: 100px;
+    height: 50px;
+    display: inline-block;
+    overflow: hidden;
+    margin-right: 10px;
+    cursor: pointer;
+}
+.activity-slider-thumbnail:last-of-type {
+    margin-right: 0;
+}
+.activity-slider-thumbnail > span.ac-title {
+    display: none;
+}
+.activity-slider-thumbnail > img {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
 }
