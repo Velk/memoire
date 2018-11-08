@@ -497,6 +497,105 @@
                     loadImage(3);
                 }
             }
+
+            /* ---------------------------------------------------------------------------------------------------------------------------------- */
+            /* --------------------------------------------------------- Thumbnails : Slider images ---------------------------------------------------------- */
+            /* ---------------------------------------------------------------------------------------------------------------------------------- */
+
+            if( nbChildren >= 4 ) {
+
+                /* Previous or next image buttons */
+                $(".activity-slider").append(
+                    "<div id='activity-slider-thumbnails'>" +
+                    "</div>"
+                );
+
+                $(".activity-carousel").each(function(){
+
+                    var element = $(this).clone().removeClass("activity-carousel");
+                    element = element.addClass("activity-slider-thumbnail");
+                    element = element.removeAttr("style");
+                    element.appendTo("#activity-slider-thumbnails");
+
+                });
+
+                $(".activity-slider-thumbnail").each(function(){
+
+                    // element.child("span").removeClass("ac-");
+                    $(this).children("img").removeClass("ac-picture");
+                    $(this).children("img").removeAttr("style");
+                });
+
+                // Click on thumbnails
+                $( "#activity-slider-thumbnails > .activity-slider-thumbnail" ).click(function(){
+
+                    var selectedThumbnail = $(this).index();
+
+                    var firstImage = ( selectedThumbnail < 1 ) ? nbChildren : selectedThumbnail;
+                    var secondImage = (selectedThumbnail+1);
+                    var thirdImage = ( (secondImage+1) > nbChildren ) ? 1 : (secondImage+1) ;
+                    var fourthImage = ( (thirdImage+1) > nbChildren ) ? 1 : (thirdImage+1);
+
+                    // Display only the 'n' image
+                    $("div.activity-carousel").css({
+                        "display": "none",
+                        "grid-area": "none",
+                    });
+
+                    // Previous image
+                    $("div.activity-carousel:nth-child(" + firstImage + ")").css({
+                        "display": "block",
+                        "grid-area": "a",
+                        "background-color": "#000",
+                    });
+                    $("div.activity-carousel:nth-child(" + firstImage + ") > img.ac-picture").css({
+                        "opacity": "0.5",
+                        "filter": "grayscale(1) blur(2px)",
+                    });
+
+                    // Current image
+                    $("div.activity-carousel:nth-child(" + secondImage + ")").css({
+                        "display": "block",
+                        "grid-area": "b",
+                        "background-color": "none",
+                    });
+                    $("div.activity-carousel:nth-child(" + secondImage + ") > img.ac-picture").css({
+                        "opacity": "1",
+                        "filter": "none",
+                    });
+
+                    // Next image
+                    $("div.activity-carousel:nth-child(" + thirdImage + ")").css({
+                        "display": "block",
+                        "grid-area": "c",
+                        "background-color": "none",
+                    });
+                    $("div.activity-carousel:nth-child(" + thirdImage + ") > img.ac-picture").css({
+                        "opacity": "1",
+                        "filter": "none",
+                    });
+
+                    // Next next image
+                    $("div.activity-carousel:nth-child(" + fourthImage + ")").css({
+                        "display": "block",
+                        "grid-area": "d",
+                        "background-color": "#000",
+                    });
+                    $("div.activity-carousel:nth-child(" + fourthImage + ") > img.ac-picture").css({
+                        "opacity": "0.5",
+                        "filter": "grayscale(1) blur(2px)",
+                    });
+
+                    // Call loadImage()
+                    loadImage(firstImage);
+                    loadImage(secondImage);
+                    loadImage(thirdImage);
+                    loadImage(fourthImage);
+
+                });
+
+            }
+
         }
     };
 }(jQuery));
