@@ -79,14 +79,14 @@ svg#svg-container {
 }
 
 svg#svg-container path {
-    stroke: #ffffff !important;
-    /*fill: #424242 !important;*/
-    fill: #686868 !important;
+    stroke: #ffffff;
+    fill: #686868;
+    fill-rule: evenodd;
 }
 
 svg#svg-container path:hover {
     cursor: pointer;
-    fill: #727272 !important;
+    fill: #727272;
 }
 
 div#info-map {
@@ -108,6 +108,10 @@ div#info-map > p {
     margin: 0;
     text-align: center;
     font-size: 14px;
+}
+
+svg#svg-container path.country-redirection {
+    fill: #26C6DA;
 }
 
 /* Map menu */
