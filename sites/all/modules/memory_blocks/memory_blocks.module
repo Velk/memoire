@@ -867,6 +867,7 @@ function memory_blocks_top_destinations_admin_form($form, &$form_state) {
         '#type' => 'textfield',
         '#title' => t('URL'),
         '#default_value' => $td1_url,
+        '#maxlength' => 512,
     );
 
     /* Top destination n°2 */
@@ -915,6 +916,7 @@ function memory_blocks_top_destinations_admin_form($form, &$form_state) {
         '#type' => 'textfield',
         '#title' => t('URL'),
         '#default_value' => $td2_url,
+        '#maxlength' => 512,
     );
 
 
@@ -964,6 +966,7 @@ function memory_blocks_top_destinations_admin_form($form, &$form_state) {
         '#type' => 'textfield',
         '#title' => t('URL'),
         '#default_value' => $td3_url,
+        '#maxlength' => 512,
     );
 
     /* Top destination n°4 */
@@ -1012,6 +1015,7 @@ function memory_blocks_top_destinations_admin_form($form, &$form_state) {
         '#type' => 'textfield',
         '#title' => t('URL'),
         '#default_value' => $td4_url,
+        '#maxlength' => 512,
     );
 
     /* Top destination n°5 */
@@ -1060,6 +1064,7 @@ function memory_blocks_top_destinations_admin_form($form, &$form_state) {
         '#type' => 'textfield',
         '#title' => t('URL'),
         '#default_value' => $td5_url,
+        '#maxlength' => 512,
     );
 
     /* Top destination n°6 */
@@ -1108,6 +1113,7 @@ function memory_blocks_top_destinations_admin_form($form, &$form_state) {
         '#type' => 'textfield',
         '#title' => t('URL'),
         '#default_value' => $td6_url,
+        '#maxlength' => 512,
     );
 
     /* Top destination n°7 */
@@ -1156,6 +1162,7 @@ function memory_blocks_top_destinations_admin_form($form, &$form_state) {
         '#type' => 'textfield',
         '#title' => t('URL'),
         '#default_value' => $td7_url,
+        '#maxlength' => 512,
     );
 
     /* Top destination n°8 */
@@ -1204,6 +1211,7 @@ function memory_blocks_top_destinations_admin_form($form, &$form_state) {
         '#type' => 'textfield',
         '#title' => t('URL'),
         '#default_value' => $td8_url,
+        '#maxlength' => 512,
     );
 
     /* Top destination n°9 */
@@ -1252,6 +1260,7 @@ function memory_blocks_top_destinations_admin_form($form, &$form_state) {
         '#type' => 'textfield',
         '#title' => t('URL'),
         '#default_value' => $td9_url,
+        '#maxlength' => 512,
     );
 
     return system_settings_form($form);
@@ -1327,6 +1336,7 @@ function memory_blocks_top_activities_admin_form($form, &$form_state) {
         '#type' => 'textfield',
         '#title' => t('URL'),
         '#default_value' => $ta1_url,
+        '#maxlength' => 512,
     );
 
     /* Top activity n°2 */
@@ -1375,8 +1385,8 @@ function memory_blocks_top_activities_admin_form($form, &$form_state) {
         '#type' => 'textfield',
         '#title' => t('URL'),
         '#default_value' => $ta2_url,
+        '#maxlength' => 512,
     );
-
 
     /* Top activity n°3 */
     $form['top_activities_3'] = array(
@@ -1424,6 +1434,7 @@ function memory_blocks_top_activities_admin_form($form, &$form_state) {
         '#type' => 'textfield',
         '#title' => t('URL'),
         '#default_value' => $ta3_url,
+        '#maxlength' => 512,
     );
 
     /* Top activity n°4 */
@@ -1472,6 +1483,7 @@ function memory_blocks_top_activities_admin_form($form, &$form_state) {
         '#type' => 'textfield',
         '#title' => t('URL'),
         '#default_value' => $ta4_url,
+        '#maxlength' => 512,
     );
 
     /* Top activity n°5 */
@@ -1520,6 +1532,7 @@ function memory_blocks_top_activities_admin_form($form, &$form_state) {
         '#type' => 'textfield',
         '#title' => t('URL'),
         '#default_value' => $ta5_url,
+        '#maxlength' => 512,
     );
 
     /* Top activity n°6 */
@@ -1568,6 +1581,7 @@ function memory_blocks_top_activities_admin_form($form, &$form_state) {
         '#type' => 'textfield',
         '#title' => t('URL'),
         '#default_value' => $ta6_url,
+        '#maxlength' => 512,
     );
 
     /* Top activity n°7 */
@@ -1616,6 +1630,7 @@ function memory_blocks_top_activities_admin_form($form, &$form_state) {
         '#type' => 'textfield',
         '#title' => t('URL'),
         '#default_value' => $ta7_url,
+        '#maxlength' => 512,
     );
 
     /* Top activity n°8 */
@@ -1664,6 +1679,7 @@ function memory_blocks_top_activities_admin_form($form, &$form_state) {
         '#type' => 'textfield',
         '#title' => t('URL'),
         '#default_value' => $ta8_url,
+        '#maxlength' => 512,
     );
 
     /* Top activity n°9 */
@@ -1712,6 +1728,7 @@ function memory_blocks_top_activities_admin_form($form, &$form_state) {
         '#type' => 'textfield',
         '#title' => t('URL'),
         '#default_value' => $ta9_url,
+        '#maxlength' => 512,
     );
 
     /* Top activity n°10 */
@@ -1760,6 +1777,7 @@ function memory_blocks_top_activities_admin_form($form, &$form_state) {
         '#type' => 'textfield',
         '#title' => t('URL'),
         '#default_value' => $ta10_url,
+        '#maxlength' => 512,
     );
 
     /* Top activity n°11 */
@@ -1808,6 +1826,7 @@ function memory_blocks_top_activities_admin_form($form, &$form_state) {
         '#type' => 'textfield',
         '#title' => t('URL'),
         '#default_value' => $ta11_url,
+        '#maxlength' => 512,
     );
 
     /* Top activity n°12 */
@@ -1856,6 +1875,7 @@ function memory_blocks_top_activities_admin_form($form, &$form_state) {
         '#type' => 'textfield',
         '#title' => t('URL'),
         '#default_value' => $ta12_url,
+        '#maxlength' => 512,
     );
 
     return system_settings_form($form);
@@ -2190,6 +2210,7 @@ function memory_blocks_slider_admin_form($form, &$form_state){
             '#type' => 'textfield',
             '#title' => t('Lien de redirection'),
             '#default_value' => $slider['image_container_'.$i]['redirection_link'],
+            '#maxlength' => 512,
             '#weight' => 3,
         );
     }
@@ -2333,6 +2354,7 @@ function memory_blocks_slider_admin_form($form, &$form_state){
         '#type' => 'textfield',
         '#title' => t('Lien de redirection'),
         '#default_value' => $video['redirection_link'],
+        '#maxlength' => 512,
         '#weight' => 9,
     );
 
@@ -2383,6 +2405,7 @@ function memory_blocks_slider_admin_form($form, &$form_state){
         '#type' => 'textfield',
         '#title' => t('Lien de redirection'),
         '#default_value' => $still_img['redirection_link'],
+        '#maxlength' => 512,
         '#weight' => 3,
     );
 

@@ -90,8 +90,6 @@
 
         });
 
-    
-
         // header_top_button.click(function() {
         //
         //     if(header_top_button.hasClass("active")) {
@@ -109,6 +107,49 @@
         //         });
         //     }
         // });
+
+        /* ------------------------------------------------------------------------------------------------------------- */
+        /* --------------------------------------------- Admin menu ---------------------------------------------------- */
+        /* ------------------------------------------------------------------------------------------------------------- */
+
+        var adminToolbarVisibility = setInterval(setPageDistance, 100);
+
+        // Set the page (menu and rest of the page) to the bottom of the admin toolbar
+        function setPageDistance(){
+
+            if( $("#admin-menu").is(":visible") ){
+
+                var adminToolbarHeight = $("#admin-menu").height();
+
+                $("#header-wrapper").css("margin-top", adminToolbarHeight);
+
+                var menuHeight = $("#header-wrapper").height();
+
+                $("#page").css("margin-top", (menuHeight + adminToolbarHeight));
+
+                clearInterval(adminToolbarVisibility);
+            }
+        }
+
+        // Check if the screen width changed
+        var tempMenuWidth;
+
+        setInterval(function(){
+
+            if( $("#admin-menu").is(":visible") ){
+
+                var menuWidth = $("#admin-menu").width();
+
+                // If the last width is set and if the last width is different than the current width (that's to say the width change)
+                if( tempMenuWidth !== null && tempMenuWidth !== menuWidth ){
+
+                    // Call setPageDistance()
+                    setPageDistance();
+                }
+
+                tempMenuWidth = $("#admin-menu").width();
+            }
+        }, 500);
 
     });
 })(jQuery);
