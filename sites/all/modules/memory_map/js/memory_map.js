@@ -19,12 +19,15 @@
 
             $("svg#svg-container path").mouseenter(function(){
 
-                if($("div#info-map").length === 0){
+                if( $(this).css("color") === "rgb(38, 198, 218)" ){
 
-                    $("body").append("<div id='info-map'><p></p></div>");
+                    if($("div#info-map").length === 0){
+
+                        $("body").append("<div id='info-map'><p></p></div>");
+                    }
+
+                    $("div#info-map > p").text($(this).data( "name" ));
                 }
-
-                $("div#info-map > p").text($(this).data( "name" ));
             });
 
             $("svg#svg-container path").mouseleave(function(){
@@ -165,23 +168,23 @@
             // Allow draggable element on svg-container
             // $("svg#svg-container").draggable();
 
-            var clicking = false;
-
-            $('svg#svg-container').mousedown(function(){
-                clicking = true;
-            });
-
-            $(document).mouseup(function(){
-                clicking = false;
-            });
-
-            var topValue;
-            $('svg#svg-container').mousemove(function(){
-                if(clicking == false) return;
-
-                // Mouse click + moving
-
-            });
+            // var clicking = false;
+            //
+            // $('svg#svg-container').mousedown(function(){
+            //     clicking = true;
+            // });
+            //
+            // $(document).mouseup(function(){
+            //     clicking = false;
+            // });
+            //
+            // var topValue;
+            // $('svg#svg-container').mousemove(function(){
+            //     if(clicking == false) return;
+            //
+            //     // Mouse click + moving
+            //
+            // });
 
         }
     };

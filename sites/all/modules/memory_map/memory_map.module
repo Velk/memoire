@@ -93,19 +93,11 @@ function memory_map_block_view($delta = '') {
 
             for( $i = 1 ; $i <= sizeof($countries_list); $i++ ){
 
-//                drupal_set_message("----------------------------------------------------------------------------");
-//                drupal_set_message($countries_list['country_'.$i]['id']);
-//                drupal_set_message($countries_list['country_'.$i]['name']);
-//                drupal_set_message($countries_list['country_'.$i]['svg_pattern']);
-//                drupal_set_message($countries_list['country_'.$i]['redirect_link']);
-
                 $data["country_".$i."_id"] = $countries_list['country_'.$i]['id'];
                 $data["country_".$i."_name"] = $countries_list['country_'.$i]['name'];
                 $data["country_".$i."_svg_pattern"] = $countries_list['country_'.$i]['svg_pattern'];
                 $data["country_".$i."_redirect_link"] = $countries_list['country_'.$i]['redirect_link'];
             }
-
-
 
             // Link the template
             $block['content']['#markup'] = theme('tpl_memory_map', $data);
@@ -1222,11 +1214,6 @@ function memory_blocks_world_map_admin_form($form, &$form_state){
 
     foreach ($array_countries as $country){
 
-//        drupal_set_message($country["id"]);
-//        drupal_set_message($country["name"]);
-//        drupal_set_message($country["svg_pattern"]);
-//        drupal_set_message("------------------------------------------------------------------------------");
-
         $form['countries_list']['country_'.$increment] = array(
             '#type' => 'fieldset',
             '#title' => $country["name"],
@@ -1252,6 +1239,7 @@ function memory_blocks_world_map_admin_form($form, &$form_state){
             '#type' => 'hidden',
 //            '#type' => 'textfield',
             '#value' => $country["svg_pattern"],
+            '#maxlength' => 512,
             '#weight' => 2,
         );
 
@@ -1259,6 +1247,7 @@ function memory_blocks_world_map_admin_form($form, &$form_state){
             '#type' => 'textfield',
             '#title' => t('Lien de redirection'),
             '#default_value' => $countries_list['country_'.$increment]['redirect_link'],
+            '#maxlength' => 512,
             '#weight' => 3,
         );
 
