@@ -600,26 +600,26 @@
             /* ------------------------------------------------ Button - Submit activity -------------------------------------------------------- */
             /* ---------------------------------------------------------------------------------------------------------------------------------- */
 
-            $(".node-activite").append(
-                "<button id='submit-btn-activity'>Acheter</button>" +
-                "<div id='info-submit-activity'>" +
-                    "<div>" +
-                        "<p>Partie en construction</p>" +
-                        "<p>L'action n'a pas abouti car cette partie est en construction.<br>Pour commander, veuillez contacter l'agence Memory directement par téléphone ou par e-mail.</p>" +
-                        "<i class='fa fa-times' aria-hidden='true'></i>" +
-                    "</div>" +
-                "</div>"
-            );
-
-            $("#submit-btn-activity").click(function(){
-
-                $("#info-submit-activity").show();
-            });
-
-            $("#info-submit-activity i.fa-times").click(function(){
-
-                $("#info-submit-activity").hide();
-            });
+            // $(".node-activite").append(
+            //     "<button id='submit-btn-activity'>Acheter</button>" +
+            //     "<div id='info-submit-activity'>" +
+            //         "<div>" +
+            //             "<p>Partie en construction</p>" +
+            //             "<p>L'action n'a pas abouti car cette partie est en construction.<br>Pour commander, veuillez contacter l'agence Memory directement par téléphone ou par e-mail.</p>" +
+            //             "<i class='fa fa-times' aria-hidden='true'></i>" +
+            //         "</div>" +
+            //     "</div>"
+            // );
+            //
+            // $("#submit-btn-activity").click(function(){
+            //
+            //     $("#info-submit-activity").show();
+            // });
+            //
+            // $("#info-submit-activity i.fa-times").click(function(){
+            //
+            //     $("#info-submit-activity").hide();
+            // });
 
         }
     };
