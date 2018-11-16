@@ -127,6 +127,7 @@
 
                 $("#page").css("margin-top", (menuHeight + adminToolbarHeight));
 
+                console.log("RUN METHOD");
                 clearInterval(adminToolbarVisibility);
             }
         }
@@ -150,6 +151,17 @@
                 tempMenuWidth = $("#admin-menu").width();
             }
         }, 500);
+
+        $(window).scroll(function(){
+
+            if( $("#admin-menu").is(":visible") ){
+
+                var adminMenuHeight = $("#admin-menu").height();
+                var menuHeight = $("#header-wrapper").height();
+
+                $("#page").css("margin-top", (menuHeight + adminMenuHeight));
+            }
+        });
 
     });
 })(jQuery);
