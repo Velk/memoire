@@ -48,7 +48,7 @@ fieldset.contact_fieldset > legend {
 
 fieldset.webform-component--contact-details > .fieldset-content {
     display: grid;
-    grid-template-areas: "a a b b b b c c c c" "d d d d e e e f f f";
+    grid-template-areas: "a a b b b b c c c c" "d d d d e e e f f f" ". . . g g g g . . .";
     grid-template-columns: repeat(10, calc(10% - (20px*9)/10 ));
     grid-gap: 10px 20px;
 }
@@ -70,15 +70,12 @@ fieldset.webform-component--contact-details > .fieldset-content {
 .webform-component--contact-details--nature-request {
     grid-area: f;
 }
-
-
-.webform-component--contact-details .webform-component {
-    border: 1px solid #424242;
-    border-radius: 2px;
-    background: #fff;
+.webform-component--contact-details--others {
+    grid-area: g;
 }
+
 .webform-component--contact-details .webform-component > label {
-    margin: 5px 10px;
+    margin: 5px 10px 5px 0;
     font-size: 10px;
     font-weight: bold;
     text-transform: uppercase;
@@ -86,9 +83,10 @@ fieldset.webform-component--contact-details > .fieldset-content {
 }
 .webform-component--contact-details .webform-component > input,
 .webform-component--contact-details .webform-component > select {
-    height: 25px;
-    border: none;
-    background: transparent;
+    height: 27px;
+    border: 1px solid #eeeeee;
+    border-radius: 2px;
+    background: #fff;
     padding: 5px;
 }
 .webform-component--contact-details .webform-component > input {
@@ -123,13 +121,8 @@ fieldset.webform-component--quote-request > .fieldset-content {
     grid-area: f;
 }
 
-.webform-component--quote-request .webform-component {
-    border: 1px solid #424242;
-    border-radius: 2px;
-    background: #fff;
-}
 .webform-component--quote-request .webform-component > label {
-    margin: 5px 10px;
+    margin: 5px 10px 5px 0;
     font-size: 10px;
     font-weight: bold;
     text-transform: uppercase;
@@ -137,10 +130,18 @@ fieldset.webform-component--quote-request > .fieldset-content {
 }
 .webform-component--quote-request .webform-component > input,
 .webform-component--quote-request .webform-component > select {
-    height: 25px;
-    border: none;
-    background: transparent;
+    height: 27px;
+    border: 1px solid #eeeeee;
+    border-radius: 2px;
+    background: #fff;
     padding: 5px;
+}
+.webform-component--quote-request .webform-component > .webform-datepicker {
+    height: 27px;
+    border: 1px solid #eeeeee;
+    border-radius: 2px;
+    background: #fff;
+    padding: 0;
 }
 .webform-component--quote-request .webform-component > input {
     padding: 5px 10px;
@@ -157,11 +158,11 @@ fieldset.webform-component--quote-request > .fieldset-content {
 .webform-datepicker .form-item > select {
     height: 100%;
     border: none;
-    border-right: 1px solid #424242;
+    border-right: 1px solid #eeeeee;
 }
 .webform-datepicker > input[type="image"] {
     width: 20px;
-    padding: 5px;
+    padding: 4px;
     margin: 0;
     border: 0;
 }
@@ -172,13 +173,8 @@ fieldset.webform-component--questions > .fieldset-content {
     grid-template-rows: repeat(2, 50%);
 }
 
-.webform-component--questions .webform-component {
-    border: 1px solid #424242;
-    border-radius: 2px;
-    background: #fff;
-}
 .webform-component--questions .webform-component > label {
-    margin: 5px 10px;
+    margin: 5px 10px 5px 0;
     font-size: 10px;
     font-weight: bold;
     text-transform: uppercase;
@@ -186,9 +182,10 @@ fieldset.webform-component--questions > .fieldset-content {
 }
 .webform-component--questions .webform-component > input,
 .webform-component--questions .webform-component > select {
-    height: 25px;
-    border: none;
-    background: transparent;
+    height: 27px;
+    border: 1px solid #eeeeee;
+    border-radius: 2px;
+    background: #fff;
     padding: 5px;
 }
 .webform-component--questions .webform-component > input {
@@ -196,8 +193,9 @@ fieldset.webform-component--questions > .fieldset-content {
 }
 .webform-component--questions .webform-component textarea {
     padding: 5px 10px;
-    background: transparent;
-    border: none;
+    border: 1px solid #eeeeee;
+    border-radius: 2px;
+    background: #fff;
     resize: vertical;
 }
 .webform-component--questions .webform-component .grippie {
@@ -212,160 +210,3 @@ fieldset.webform-component--questions > .fieldset-content {
     margin: auto;
     display: block;
 }
-
-
-/*form.webform-client-form > div {*/
-    /*position: relative;*/
-    /*width: 800px;*/
-    /*margin: auto;*/
-    /*padding: 25px 0;*/
-    /*box-sizing: border-box;*/
-    /*display: grid;*/
-    /*grid-template-areas:*/
-            /*"a a b b c c"*/
-            /*"d d e e f f"*/
-            /*". g g h h ."*/
-            /*"i i i i i i"*/
-            /*". . j j . .";*/
-    /*grid-template-columns: repeat(6, 1fr);*/
-    /*grid-gap: 20px;*/
-/*}*/
-
-/*.webform-component--civility {*/
-    /*grid-area: a;*/
-/*}*/
-/*.webform-component--lastname {*/
-    /*grid-area: b;*/
-/*}*/
-/*.webform-component--firstname {*/
-    /*grid-area: c;*/
-/*}*/
-/*.webform-component--email {*/
-    /*grid-area: d;*/
-/*}*/
-/*.webform-component--phone {*/
-    /*grid-area: e;*/
-/*}*/
-/*.webform-component--group-size {*/
-    /*grid-area: f;*/
-/*}*/
-/*.webform-component--arrival {*/
-    /*grid-area: g;*/
-/*}*/
-/*.webform-component--departure {*/
-    /*grid-area: h;*/
-/*}*/
-/*.webform-component--message {*/
-    /*grid-area: i;*/
-/*}*/
-/*.form-actions {*/
-    /*grid-area: j;*/
-/*}*/
-
-/*form.webform-client-form > div label {*/
-    /*font-size: 14px;*/
-    /*margin-bottom: 10px;*/
-    /*color: #26C6DA;*/
-/*}*/
-/*form.webform-client-form > div input:not([type="image"]),*/
-/*form.webform-client-form > div select:not(#edit-submitted-arrival-month):not(#edit-submitted-arrival-day):not(#edit-submitted-arrival-year):not(#edit-submitted-departure-month):not(#edit-submitted-departure-day):not(#edit-submitted-departure-year) {*/
-    /*width: 100%;*/
-/*}*/
-/*form.webform-client-form > div input:not([type="image"]):not([type="submit"]),*/
-/*form.webform-client-form > div select {*/
-    /*height: 30px;*/
-    /*background: #fff;*/
-    /*box-shadow: inset 0px 0px 3px #ebe9e9;*/
-    /*padding: 5px 10px;*/
-    /*border: 1px solid #e9e9e9;*/
-    /*cursor: pointer;*/
-/*}*/
-
-/*form.webform-client-form > div textarea {*/
-    /*resize: vertical;*/
-    /*background: #fff;*/
-    /*box-shadow: inset 0px 0px 3px #ebe9e9;*/
-    /*padding: 10px;*/
-    /*border: 1px solid #e9e9e9;*/
-    /*cursor: pointer;*/
-/*}*/
-/*form.webform-client-form > div .grippie {*/
-    /*border: none;*/
-    /*background-color: #a8a8a8;*/
-    /*height: 5px;*/
-/*}*/
-
-/*.form-actions > span.button > input.form-submit {*/
-    /*box-sizing: border-box;*/
-    /*padding: 7px;*/
-    /*border: 1px solid #26C6DA;*/
-    /*background-color: #26C6DA;*/
-    /*color: #fff;*/
-    /*font-size: 14px;*/
-    /*cursor: pointer;*/
-/*}*/
-/*.form-actions > span.button > input.form-submit:hover {*/
-    /*border: 1px solid #a8a8a8;*/
-    /*background-color: transparent;*/
-    /*color: #a8a8a8;*/
-/*}*/
-
-/*!* Datepicker *!*/
-/*.webform-component--arrival > .webform-datepicker,*/
-/*.webform-component--departure > .webform-datepicker {*/
-    /*position: relative;*/
-    /*display: grid;*/
-    /*grid-template-areas: "a b c d";*/
-    /*align-items: center;*/
-/*}*/
-/*.webform-component--arrival > .webform-datepicker > div,*/
-/*.webform-component--departure > .webform-datepicker > div {*/
-    /*margin: 0;*/
-/*}*/
-/*.webform-component--arrival > .webform-datepicker:after,*/
-/*.webform-component--departure > .webform-datepicker:after {*/
-    /*font-family: FontAwesome;*/
-    /*content: "\f133";*/
-    /*display: inline-block;*/
-    /*font-size: 20px;*/
-    /*height: 30px;*/
-    /*width: 30px;*/
-    /*text-align: center;*/
-    /*color: #424242;*/
-/*}*/
-/*.webform-component--arrival > .webform-datepicker input[type="image"],*/
-/*.webform-component--departure > .webform-datepicker input[type="image"] {*/
-    /*position: absolute;*/
-    /*border: none;*/
-    /*background: none;*/
-    /*height: 30px;*/
-    /*width: 30px;*/
-    /*box-sizing: border-box;*/
-    /*padding: 15px;*/
-/*}*/
-
-/*.webform-component--arrival > .webform-datepicker > div.form-item-submitted-arrival-month,*/
-/*.webform-component--departure > .webform-datepicker > div.form-item-submitted-departure-month {*/
-    /*grid-area: b;*/
-/*}*/
-/*.webform-component--arrival > .webform-datepicker > div.form-item-submitted-arrival-day,*/
-/*.webform-component--departure > .webform-datepicker > div.form-item-submitted-departure-day {*/
-    /*grid-area: a;*/
-/*}*/
-/*.webform-component--arrival > .webform-datepicker > div.form-item-submitted-arrival-year,*/
-/*.webform-component--departure > .webform-datepicker > div.form-item-submitted-departure-year {*/
-    /*grid-area: c;*/
-/*}*/
-/*.webform-component--arrival > .webform-datepicker > input[type="image"],*/
-/*.webform-component--departure > .webform-datepicker > input[type="image"] {*/
-    /*grid-area: d;*/
-/*}*/
-/*.webform-component--arrival > .webform-datepicker:after,*/
-/*.webform-component--departure > .webform-datepicker:after {*/
-    /*grid-area: d;*/
-/*}*/
-
-/*!* Autofill *!*/
-/*input:-webkit-autofill {*/
-    /*-webkit-box-shadow: 0 0 0 30px #fff inset !important;*/
-/*}*/
