@@ -1,7 +1,15 @@
-/*body {*/
-    /*overflow: hidden;*/
-/*}*/
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #00000059;
+    opacity: 1; /* Firefox */
+}
 
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #00000059;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+    color: #00000059;
+}
 form.webform-client-form {
     position: relative;
     width: 100%;
@@ -16,6 +24,9 @@ form.webform-client-form > div {
     position: relative;
     width: 700px;
     margin: auto;
+    box-shadow: 1px 1px 5px #dbdbdb;
+    padding: 25px 50px;
+    background-color: #fff;
 }
 
 fieldset.contact_fieldset {
@@ -25,7 +36,8 @@ fieldset.contact_fieldset {
 }
 fieldset.contact_fieldset input[type="text"],
 fieldset.contact_fieldset input[type="email"],
-fieldset.contact_fieldset select {
+fieldset.contact_fieldset select,
+fieldset.contact_fieldset textarea {
     width: 100%;
     font-size: 12px;
     color: #000;
@@ -48,7 +60,7 @@ fieldset.contact_fieldset > legend {
 
 fieldset.webform-component--contact-details > .fieldset-content {
     display: grid;
-    grid-template-areas: "a a b b b b c c c c" "d d d d e e e f f f" ". . . g g g g . . .";
+    grid-template-areas: "a a b b b b c c c c" "d d d d e e e f f f" ". . . . . . . g g g";
     grid-template-columns: repeat(10, calc(10% - (20px*9)/10 ));
     grid-gap: 10px 20px;
 }
@@ -209,4 +221,24 @@ fieldset.webform-component--questions > .fieldset-content {
 .form-actions input[type="submit"] {
     margin: auto;
     display: block;
+}
+
+/* Error fields */
+fieldset.contact_fieldset input[type="text"].error,
+fieldset.contact_fieldset input[type="email"].error,
+fieldset.contact_fieldset select.error,
+fieldset.contact_fieldset textarea.error {
+    color: #ff6055;
+    border: 1px solid #ffaba5;
+    background-color: #f443360d;
+}
+
+.messages.error {
+    color: #ff6055;
+    border: 1px solid #ffaba5;
+    background-color: #f443360d;
+    margin: 0;
+}
+.messages.error ul > li {
+    font-size: 12px;
 }
