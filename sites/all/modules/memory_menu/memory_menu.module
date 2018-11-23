@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * Implementation of hook_menu()
+ *
+ * @return array
+ */
+function memory_menu_menu() {
+    $items = array();
+
+    $items['admin/memory/menu-manager'] = array(
+        'title' => t('Memory - Menu Features'),
+        'description' => t('Memory - Menu features'),
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('memory_menu_activity_form'),
+        'access arguments' => array('administer site configuration'),
+        'type' => MENU_NORMAL_ITEM,
+    );
+
+    return $items;
+}
+
+/**
+ * @param $form
+ * @param $form_state
+ * @return mixed
+ */
+function memory_menu_activity_form($form, &$form_state) {
+
+    $form['menu-activity'] = array(
+        '#type' => 'tableselect',
+        '#header' => $header,
+        '#options' => $options,
+        '#empty' => t('No social network available.'),
+    );
+
+    return $form;
+}
