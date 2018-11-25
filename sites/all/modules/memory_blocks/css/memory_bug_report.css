@@ -1,0 +1,34 @@
+div#block-memory-blocks-memory-bug-report {
+    position: fixed;
+    top: calc(80px + (100vh - 80px)/2);
+    z-index: 10;
+    padding: 0;
+    display: block;
+    width: auto;
+    background-color: #000;
+    border: 1px solid #fff;
+    border-bottom: none;
+    transform: translateY(-100%) translateX(50%) rotate(-90deg);
+    right: 0;
+    transform-origin: center bottom;
+    text-align: center;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+div#block-memory-blocks-memory-bug-report > .block-inner {
+    padding: 0;
+}
+
+div#bug-report-container > a {
+    font-size: 12px;
+    color: #fff;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 10px 15px;
+    box-sizing: border-box;
+}
+div#bug-report-container > a:hover {
+    color: #26C6DA;
+}
