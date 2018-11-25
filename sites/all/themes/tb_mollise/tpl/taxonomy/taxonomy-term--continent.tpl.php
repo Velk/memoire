@@ -104,6 +104,88 @@
                                 <h3 class="cont-stick-title"><?php print $event['title'] ?></h3>
                                 <p class="cont-price"><?php print $event['price']?> <?php isset($event['price']) ? print "€" : ""; ?></p>
                                 <a href="<?php print $event['path']?>" class="cont-readmore"></a>
+                                <?php
+                                    $query = db_select('node', 'n');
+                                    $query->fields('n', array('nid', 'title'));
+                                    $query->condition('n.type', 'activite', '=');
+                                    $query->orderBy('n.title', 'asc');
+                                    $query->distinct();
+                                    $results = $query->execute();
+
+                                    foreach( $results as $result ){
+
+                                        if( $event['title'] == $result->title ){
+
+                                            $var = "category_" . $result->nid;
+
+                                            switch($$var){
+                                                case "0" :
+                                                    $isCategory = false;
+                                                    break;
+                                                case "1" :
+                                                    $isCategory = true;
+                                                    $color = "#F42C1C";
+                                                    $text = "Volcan";
+                                                    break;
+                                                case "2" :
+                                                    $isCategory = true;
+                                                    $color = "#F42C1C";
+                                                    $text = "Aventure";
+                                                    break;
+                                                case "3" :
+                                                    $isCategory = true;
+                                                    $color = "#046C5C";
+                                                    $text = "Survie";
+                                                    break;
+                                                case "4" :
+                                                    $isCategory = true;
+                                                    $color = "#046C5C";
+                                                    $text = "Nature";
+                                                    break;
+                                                case "5" :
+                                                    $isCategory = true;
+                                                    $color = "#6C3C5C";
+                                                    $text = "EVG";
+                                                    break;
+                                                case "6" :
+                                                    $isCategory = true;
+                                                    $color = "#EF648A";
+                                                    $text = "EVJF";
+                                                    break;
+                                                case "7" :
+                                                    $isCategory = true;
+                                                    $color = "#FC6404";
+                                                    $text = "Team<br>Building";
+                                                    break;
+                                                case "8" :
+                                                    $isCategory = true;
+                                                    $color = "#FC6404";
+                                                    $text = "Anniversaire";
+                                                    break;
+                                                case "9" :
+                                                    $isCategory = true;
+                                                    $color = "#FC6404";
+                                                    $text = "Vie<br>étudiante";
+                                                    break;
+                                                case "10" :
+                                                    $isCategory = true;
+                                                    $color = "#8CDCFB";
+                                                    $text = "Mariage";
+                                                    break;
+                                                case "11" :
+                                                    $isCategory = true;
+                                                    $color = "#8CDCFB";
+                                                    $text = "Demande<br>en mariage";
+                                                    break;
+                                            }
+
+                                            if( $isCategory ){
+
+                                                print "<div class='banner-category' style='background-color:$color;'><p>" . $text . "</p></div>";
+                                            }
+                                        }
+                                    }
+                                ?>
                             </div>
                         </div>
                     <?php endforeach; ?>

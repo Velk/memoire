@@ -14,7 +14,7 @@ form.webform-client-form {
     position: relative;
     width: 100%;
     height: auto;
-    background-color: #f9f9f9;
+    background-color: #d7d7d7;
     margin: 0;
     padding: 50px 25px;
     box-sizing: border-box;
@@ -26,7 +26,7 @@ form.webform-client-form > div {
     margin: auto;
     box-shadow: 1px 1px 5px #dbdbdb;
     padding: 25px 50px;
-    background-color: #fff;
+    background-color: #f9f9f9;
 }
 
 fieldset.contact_fieldset {

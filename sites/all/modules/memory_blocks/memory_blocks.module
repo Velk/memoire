@@ -80,6 +80,15 @@ function memory_blocks_menu() {
         'type' => MENU_NORMAL_ITEM,
     );
 
+    $items['admin/memory/activity-categories-manager'] = array(
+        'title' => t('Memory - Categories of activity'),
+        'description' => t('Memory - Categories of activity'),
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('memory_blocks_activity_categories_admin_form'),
+        'access arguments' => array('administer site configuration'),
+        'type' => MENU_NORMAL_ITEM,
+    );
+
     return $items;
 }
 
@@ -386,6 +395,21 @@ function memory_blocks_theme($existing, $type, $theme, $path) {
             'path' => drupal_get_path('module', 'memory_blocks'),
             'variables' => array('infos' => NULL),
         ),
+        'tpl_memory_go_top_page' => array(
+            'template' => 'tpl/memory_go_top_page',
+            'path' => drupal_get_path('module', 'memory_blocks'),
+            'variables' => array('infos' => NULL),
+        ),
+        'tpl_memory_bug_report' => array(
+            'template' => 'tpl/memory_bug_report',
+            'path' => drupal_get_path('module', 'memory_blocks'),
+            'variables' => array('infos' => NULL),
+        ),
+//        'tpl_memory_activity_categories' => array(
+//            'template' => 'tpl/taxonomy/taxonomy-term--continent',
+//            'path' => drupal_get_path('theme', 'tb_mollise'),
+//            'variables' => array('infos' => NULL),
+//        ),
     );
 }
 
@@ -449,6 +473,22 @@ function memory_blocks_block_info() {
         'pages' => '<front>',
     );
 
+    $blocks['memory_go_top_page'] = array(
+      'info' => t('Memory Go Top Page'),
+      'weight' => 5,
+      'status' => 1,
+      'region' => 'content',
+      'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    );
+
+    $blocks['memory_bug_report'] = array(
+      'info' => t('Memory Bug Report'),
+      'weight' => 6,
+      'status' => 1,
+      'region' => 'content',
+      'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    );
+
     return $blocks;
 }
 
@@ -477,12 +517,6 @@ function memory_blocks_block_view($delta = '') {
                 'type' => 'file'
             );
 
-            // // Link a js file
-            // $block['content']['#attached']['js'][] = array(
-            //     'data' => drupal_get_path('module', 'bsconnexion').'/js/bs-cc-menu.js',
-            //     'type' => 'file'
-            // );
-
             break;
         case 'memory_reviews':
 
@@ -499,7 +533,6 @@ function memory_blocks_block_view($delta = '') {
         case 'memory_top_destinations':
 
             $data['title'] = variable_get("top_destinations_title");
-//            $data['description'] = variable_get("top_destinations_description");
             $description = variable_get("top_destinations_description");
             $data['description'] = $description['value'];
 
@@ -513,8 +546,6 @@ function memory_blocks_block_view($delta = '') {
             $top_destinations_7 = variable_get('top_destinations_7', array());
             $top_destinations_8 = variable_get('top_destinations_8', array());
             $top_destinations_9 = variable_get('top_destinations_9', array());
-
-//            drupal_set_message("<pre>". print_r($top_destinations_3, true) ."</pre>");
 
             $arrayAll = array();
 
@@ -545,8 +576,6 @@ function memory_blocks_block_view($delta = '') {
                 }
             }
 
-//            drupal_set_message("<pre>". print_r($arrayAll, true) ."</pre>");
-
             $data['arrayAllDatas'] = $arrayAll;
 
             // Link the template
@@ -562,7 +591,6 @@ function memory_blocks_block_view($delta = '') {
         case 'memory_top_activities':
 
             $data['title'] = variable_get("top_activities_title");
-//            $data['description'] = variable_get("top_activities_description");
             $description = variable_get("top_activities_description");
             $data['description'] = $description['value'];
 
@@ -651,11 +679,9 @@ function memory_blocks_block_view($delta = '') {
             if( $facebook_display_type == 0 ){
 
                 $data['facebook_display_type'] = "button";
-//                $data['facebook_display_height'] = "65";
             }else{
 
                 $data['facebook_display_type'] = "button_count";
-//                $data['facebook_display_height'] = "46";
             }
             $data['facebook_display_height'] = "30";
 
@@ -789,6 +815,44 @@ function memory_blocks_block_view($delta = '') {
              // Link a js file
              $block['content']['#attached']['js'][] = array(
                  'data' => drupal_get_path('module', 'memory_blocks').'/js/memory_slider.js',
+                 'type' => 'file'
+             );
+
+            break;
+        case 'memory_go_top_page':
+
+            // Link the template
+            $block['content']['#markup'] = theme('tpl_memory_go_top_page');
+
+            // Link a css file
+            $block['content']['#attached']['css'][] = array(
+                'data' => drupal_get_path('module', 'memory_blocks').'/css/memory_go_top_page.css',
+                'type' => 'file'
+            );
+
+             // Link a js file
+             $block['content']['#attached']['js'][] = array(
+                 'data' => drupal_get_path('module', 'memory_blocks').'/js/memory_go_top_page.js',
+                 'type' => 'file'
+             );
+
+            break;
+        case 'memory_bug_report':
+
+            $data['data'] = "data";
+
+            // Link the template
+            $block['content']['#markup'] = theme('tpl_memory_bug_report', $data);
+
+            // Link a css file
+            $block['content']['#attached']['css'][] = array(
+                'data' => drupal_get_path('module', 'memory_blocks').'/css/memory_bug_report.css',
+                'type' => 'file'
+            );
+
+             // Link a js file
+             $block['content']['#attached']['js'][] = array(
+                 'data' => drupal_get_path('module', 'memory_blocks').'/js/memory_bug_report.js',
                  'type' => 'file'
              );
 
@@ -2412,3 +2476,117 @@ function memory_blocks_slider_admin_form($form, &$form_state){
 
     return system_settings_form($form);
 }
+
+function tb_mollise_preprocess(&$vars) {
+
+    $query = db_select('node', 'n');
+    $query->fields('n', array('nid', 'title'));
+    $query->condition('n.type', 'activite', '=');
+    $query->orderBy('n.title', 'asc');
+    $query->distinct();
+    $results = $query->execute();
+
+    foreach( $results as $result ){
+
+        $vars["category_" . $result->nid] = variable_get("category_" . $result->nid);
+    }
+}
+
+function memory_blocks_activity_categories_admin_form($form, &$form_state){
+
+
+    $query = db_select('node', 'n');
+    $query->fields('n', array('nid', 'title'));
+    $query->condition('n.type', 'activite', '=');
+    $query->orderBy('n.title', 'asc');
+    $query->distinct();
+    $results = $query->execute();
+
+    $form["markup_table_top"] = array(
+        '#type' => 'markup',
+        '#markup' =>
+            '<table>' .
+                '<tr>' .
+                    '<th>Titre</th>' .
+                    '<th>Catégorie</th>' .
+                '</tr>'
+        ,
+    );
+
+    foreach( $results as $result ){
+
+//        drupal_set_message($result->title . " : " . $form_state['values']["category_" . $result->nid]);
+
+        $form["markup_top_" . $result->nid] = array(
+            '#type' => 'markup',
+            '#markup' => '<tr>',
+        );
+
+        $form["title_" . $result->nid] = array(
+            '#type' => 'markup',
+            '#markup' => '<td>' . $result->title . '</td>',
+        );
+
+        $form["category_markup_top" . $result->nid] = array(
+            '#type' => 'markup',
+            '#markup' => '<td>',
+        );
+
+        $form["category_" . $result->nid] = array(
+            '#type' => 'select',
+            '#options' => array(
+                0 => t('Aucun'),
+                1 => t('Volcan'),
+                2 => t('Aventure'),
+                3 => t('Survie'),
+                4 => t('Nature'),
+                5 => t('EVG'),
+                6 => t('EVJF'),
+                7 => t('Team Building'),
+                8 => t('Anniversaire'),
+                9 => t('Vie étudiante'),
+                10 => t('Mariage'),
+                11 => t('Demande en mariage'),
+            ),
+            '#default_value' => variable_get("category_" . $result->nid),
+        );
+
+        $form["category_markup_bottom" . $result->nid] = array(
+            '#type' => 'markup',
+            '#markup' => '</td>',
+        );
+
+        $form["markup_bottom_" . $result->nid] = array(
+            '#type' => 'markup',
+            '#markup' => '</tr>',
+        );
+    }
+
+    $form["markup_table_bottom"] = array(
+        '#type' => 'markup',
+        '#markup' => '</table>' ,
+    );
+
+//    $form['#submit'][] = 'memory_blocks_activity_categories_admin_form_submit';
+
+    return system_settings_form($form);
+}
+
+///**
+// * Submit handler for the custom form.
+// */
+//function memory_blocks_activity_categories_admin_form_submit($form, &$form_state) {
+//
+//    $query = db_select('node', 'n');
+//    $query->fields('n', array('nid', 'title'));
+//    $query->condition('n.type', 'activite', '=');
+//    $query->orderBy('n.title', 'asc');
+////    $query->distinct();
+//    $results = $query->execute();
+//
+//    foreach( $results as $result ){
+//
+//        drupal_set_message($result->title . " : " . $form_state['values']["category_" . $result->nid]);
+//    }
+//
+//}
