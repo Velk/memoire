@@ -32,7 +32,9 @@
             $tab_continent[$country[2]]['country'][] = array($country[0], $country[1]);
         }
     }
-
+    
+    $menu_activity = variable_get('menu_activity', '');
+    kpr($menu_activity);
 ?>
 <div id="min-menu">
     <?php foreach($main_menu as $menu): ?>
@@ -66,7 +68,14 @@
 
             <!-- Activity menu part -->
             <?php elseif ($menu['identifier'] == "main-menu_sjours:node/4"): ?>
-                <?php print '<a href="'.  $base_url .'/activite">'. $menu['title'] . '</a>'; ?>
+                <div>
+                    <?php print '<a href="'.  $base_url .'/activite">'. $menu['title'] . '</a>'; ?>
+                    <div>
+                        <div>
+
+                        </div>
+                    </div>
+                </div>
 
             <!-- End Activity menu part -->
             <?php else: ?>
