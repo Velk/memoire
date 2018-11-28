@@ -1,0 +1,446 @@
+<?php
+
+/**
+ * Implementation of hook_menu()
+ *
+ * @return array
+ */
+function memory_menu_menu() {
+    $items = array();
+
+    $items['admin/memory/menu-manager'] = array(
+        'title' => t('Memory - Menu Features'),
+        'description' => t('Memory - Menu features'),
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('memory_menu_activity_form'),
+        'access arguments' => array('administer site configuration'),
+        'type' => MENU_NORMAL_ITEM,
+    );
+
+    return $items;
+}
+
+/**
+ * @param $form
+ * @param $form_state
+ * @return mixed
+ */
+function memory_menu_activity_form($form, &$form_state) {
+
+    $form['menu_activity_title'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Titre du menu'),
+        '#default_value' => variable_get('menu_activity_title', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+
+    /** Panel One */
+    $form['menu_panel_one'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Menu One'),
+        '#weight' => 1,
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
+    );
+    $form['menu_panel_one']['menu_one_img'] = array(
+        '#type' => 'managed_file',
+        '#title' => t('Menu Image One'),
+        '#description' => t("N'enregistrez que des images : elles seront affichées sur le menu"),
+        '#default_value' => variable_get('menu_one_img', ''),
+    );
+    $form['menu_panel_one']['link_moto'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Titre du premier lien'),
+        '#default_value' => variable_get('link_moto', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+    $form['menu_panel_one']['link_molo'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Lien du premier lien'),
+        '#default_value' => variable_get('link_molo', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+    $form['menu_panel_one']['link_mots'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Titre du second lien'),
+        '#default_value' => variable_get('link_mots', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+    $form['menu_panel_one']['link_mols'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Lien du second lien'),
+        '#default_value' => variable_get('link_mols', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+    $form['menu_panel_one']['link_mott'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Titre du troisième lien'),
+        '#default_value' => variable_get('link_mott', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+    $form['menu_panel_one']['link_molt'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Lien du troisième lien'),
+        '#default_value' => variable_get('link_molt', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+    $form['menu_panel_one']['link_motf'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Titre du quatrième lien'),
+        '#default_value' => variable_get('link_motf', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+    $form['menu_panel_one']['link_molf'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Lien du quatrième lien'),
+        '#default_value' => variable_get('link_molf', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+
+
+    /** Panel Two */
+    $form['menu_panel_two'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Menu two'),
+        '#weight' => 2,
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
+    );
+    $form['menu_panel_two']['menu_two_img'] = array(
+        '#type' => 'managed_file',
+        '#title' => t('Menu Image two'),
+        '#description' => t("N'enregistrez que des images : elles seront affichées sur le menu"),
+        '#default_value' => variable_get('menu_two_img', ''),
+    );
+    $form['menu_panel_two']['link_msto'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Titre du premier lien'),
+        '#default_value' => variable_get('link_msto', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+    $form['menu_panel_two']['link_mslo'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Lien du premier lien'),
+        '#default_value' => variable_get('link_mslo', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+    $form['menu_panel_two']['link_msts'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Titre du second lien'),
+        '#default_value' => variable_get('link_msts', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+    $form['menu_panel_two']['link_msls'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Lien du second lien'),
+        '#default_value' => variable_get('link_msls', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+    $form['menu_panel_two']['link_mstt'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Titre du troisième lien'),
+        '#default_value' => variable_get('link_mstt', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+    $form['menu_panel_two']['link_mslt'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Lien du troisième lien'),
+        '#default_value' => variable_get('link_mslt', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+    $form['menu_panel_two']['link_mstf'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Titre du quatrième lien'),
+        '#default_value' => variable_get('link_mstf', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+    $form['menu_panel_two']['link_mslf'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Lien du quatrième lien'),
+        '#default_value' => variable_get('link_mslf', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+
+    /** Panel Three */
+    $form['menu_panel_three'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Menu three'),
+        '#weight' => 3,
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
+    );
+    $form['menu_panel_three']['menu_three_img'] = array(
+        '#type' => 'managed_file',
+        '#title' => t('Menu Image three'),
+        '#description' => t("N'enregistrez que des images : elles seront affichées sur le menu"),
+        '#default_value' => variable_get('menu_three_img', ''),
+    );
+    $form['menu_panel_three']['link_mtto'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Titre du premier lien'),
+        '#default_value' => variable_get('link_mtto', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+    $form['menu_panel_three']['link_mtlo'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Lien du premier lien'),
+        '#default_value' => variable_get('link_mtlo', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+    $form['menu_panel_three']['link_mtts'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Titre du second lien'),
+        '#default_value' => variable_get('link_mtts', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+    $form['menu_panel_three']['link_mtls'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Lien du second lien'),
+        '#default_value' => variable_get('link_mtls', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+    $form['menu_panel_three']['link_mttt'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Titre du troisième lien'),
+        '#default_value' => variable_get('link_mttt', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+    $form['menu_panel_three']['link_mtlt'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Lien du troisième lien'),
+        '#default_value' => variable_get('link_mtlt', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+    $form['menu_panel_three']['link_mttf'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Titre du quatrième lien'),
+        '#default_value' => variable_get('link_mttf', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+    $form['menu_panel_three']['link_mtlf'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Lien du quatrième lien'),
+        '#default_value' => variable_get('link_mtlf', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+
+    /** Panel Four */
+    $form['menu_panel_four'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Menu four'),
+        '#weight' => 4,
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
+    );
+    $form['menu_panel_four']['menu_four_img'] = array(
+        '#type' => 'managed_file',
+        '#title' => t('Menu Image four'),
+        '#description' => t("N'enregistrez que des images : elles seront affichées sur le menu"),
+        '#default_value' => variable_get('menu_four_img', ''),
+    );
+    $form['menu_panel_four']['link_mfto'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Titre du premier lien'),
+        '#default_value' => variable_get('link_mfto', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+    $form['menu_panel_four']['link_mflo'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Lien du premier lien'),
+        '#default_value' => variable_get('link_mflo', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+    $form['menu_panel_four']['link_mfts'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Titre du second lien'),
+        '#default_value' => variable_get('link_mfts', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+    $form['menu_panel_four']['link_mfls'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Lien du second lien'),
+        '#default_value' => variable_get('link_mfls', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+    $form['menu_panel_four']['link_mftt'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Titre du troisième lien'),
+        '#default_value' => variable_get('link_mftt', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+    $form['menu_panel_four']['link_mflt'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Lien du troisième lien'),
+        '#default_value' => variable_get('link_mftt', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+    $form['menu_panel_four']['link_mftf'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Titre du quatrième lien'),
+        '#default_value' => variable_get('link_mftf', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+    $form['menu_panel_four']['link_mflf'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Lien du quatrième lien'),
+        '#default_value' => variable_get('link_mflf', ''),
+        '#size' => 60,
+        '#maxlength' => 128,
+    );
+    $form['#submit'] = array('memory_menu_activity_form_submit');
+
+    return system_settings_form($form);
+}
+
+/**
+ * @param $form
+ * @param $form_state
+ */
+function memory_menu_activity_form_submit($form, &$form_state) {
+    if (isset($form_state['values']['menu_one_img'])) {
+        $file_one = file_load($form_state['values']['menu_one_img']);
+        $file_one->status = FILE_STATUS_PERMANENT;
+        $file_saved  = file_save($file_one);
+        file_usage_add($file_saved, 'memory_menu', 'menu_one_img', $file_saved->fid);
+    }
+    if (isset($form_state['values']['menu_two_img'])) {
+        $file_two = file_load($form_state['values']['menu_two_img']);
+        $file_two->status = FILE_STATUS_PERMANENT;
+        file_save($file_two);
+    }
+    if (isset($form_state['values']['menu_three_img'])) {
+        $file_three = file_load($form_state['values']['menu_three_img']);
+        $file_three->status = FILE_STATUS_PERMANENT;
+        file_save($file_three);
+    }
+    if (isset($form_state['values']['menu_four_img'])) {
+        $file_four = file_load($form_state['values']['menu_four_img']);
+        $file_four->status = FILE_STATUS_PERMANENT;
+        file_save($file_four);
+    }
+
+    $menu_form = array();
+    if (isset($form_state['values']['menu_activity_title'])) {
+        $menu_form['title'] = variable_get('menu_activity_title', '');
+    }
+
+    /** Menu one */
+    if (isset($form_state['values']['menu_panel_one']['menu_one_img'])) {
+        $menu_form['mo']['img'] = $file_one;
+    }
+    if (isset($form_state['values']['menu_panel_one']['link_moto'])) {
+        $menu_form['mo']['moto'] = variable_get('link_moto', '');
+        $menu_form['mo']['molo'] = variable_get('link_molo', '');
+    }
+    if (isset($form_state['values']['menu_panel_one']['link_mots'])) {
+        $menu_form['mo']['mots'] = variable_get('link_mots', '');
+        $menu_form['mo']['mols'] = variable_get('link_mols', '');
+    }
+    if (isset($form_state['values']['menu_panel_one']['link_mott'])) {
+        $menu_form['mo']['mott'] = variable_get('link_mott', '');
+        $menu_form['mo']['molt'] = variable_get('link_molt', '');
+    }
+    if (isset($form_state['values']['menu_panel_one']['link_motf'])) {
+        $menu_form['mo']['motf'] = variable_get('link_motf', '');
+        $menu_form['mo']['molf'] = variable_get('link_molf', '');
+    }
+
+    /** Menu Two */
+    if (isset($form_state['values']['menu_panel_two']['menu_two_img'])) {
+        $menu_form['ms']['img'] = $file_two;
+    }
+    if (isset($form_state['values']['menu_panel_two']['link_msto'])) {
+        $menu_form['ms']['msto'] = variable_get('link_msto', '');
+        $menu_form['ms']['mslo'] = variable_get('link_mslo', '');
+    }
+    if (isset($form_state['values']['menu_panel_two']['link_mots'])) {
+        $menu_form['ms']['msts'] = variable_get('link_msts', '');
+        $menu_form['ms']['msls'] = variable_get('link_msls', '');
+    }
+    if (isset($form_state['values']['menu_panel_two']['link_mott'])) {
+        $menu_form['ms']['mstt'] = variable_get('link_mstt', '');
+        $menu_form['ms']['mslt'] = variable_get('link_mslt', '');
+    }
+    if (isset($form_state['values']['menu_panel_two']['link_motf'])) {
+        $menu_form['ms']['mstf'] = variable_get('link_mstf', '');
+        $menu_form['ms']['mslf'] = variable_get('link_mslf', '');
+    }
+
+    /** Menu Three */
+    if (isset($form_state['values']['menu_panel_three']['menu_three_img'])) {
+        $menu_form['mt']['img'] = $file_three;
+    }
+    if (isset($form_state['values']['menu_panel_three']['link_moto'])) {
+        $menu_form['mt']['mtto'] = variable_get('link_mtto', '');
+        $menu_form['mt']['mtlo'] = variable_get('link_mtlo', '');
+    }
+    if (isset($form_state['values']['menu_panel_three']['link_mots'])) {
+        $menu_form['mt']['mtts'] = variable_get('link_mtts', '');
+        $menu_form['mt']['mtls'] = variable_get('link_mtls', '');
+    }
+    if (isset($form_state['values']['menu_panel_three']['link_mott'])) {
+        $menu_form['mt']['mttt'] = variable_get('link_mttt', '');
+        $menu_form['mt']['mtlt'] = variable_get('link_mtlt', '');
+    }
+    if (isset($form_state['values']['menu_panel_three']['link_motf'])) {
+        $menu_form['mt']['mttf'] = variable_get('link_mttf', '');
+        $menu_form['mt']['mtlf'] = variable_get('link_mtlf', '');
+    }
+
+    /** Menu Four */
+    if (isset($form_state['values']['menu_panel_four']['menu_four_img'])) {
+        $menu_form['mf']['img'] = $file_four;
+    }
+    if (isset($form_state['values']['menu_panel_four']['link_moto'])) {
+        $menu_form['mf']['mfto'] = variable_get('link_mfto', '');
+        $menu_form['mf']['mflo'] = variable_get('link_mflo', '');
+    }
+    if (isset($form_state['values']['menu_panel_four']['link_mots'])) {
+        $menu_form['mf']['mfts'] = variable_get('link_mfts', '');
+        $menu_form['mf']['mfls'] = variable_get('link_mfls', '');
+    }
+    if (isset($form_state['values']['menu_panel_four']['link_mott'])) {
+        $menu_form['mf']['mftt'] = variable_get('link_mftt', '');
+        $menu_form['mf']['mflt'] = variable_get('link_mflt', '');
+    }
+    if (isset($form_state['values']['menu_panel_four']['link_motf'])) {
+        $menu_form['mf']['mftf'] = variable_get('link_mftf', '');
+        $menu_form['mf']['mflf'] = variable_get('link_mflf', '');
+    }
+
+    //var_dump(get_defined_vars());
+    //variable_set('menu_activity', $menu_form);
+    die;
+}
