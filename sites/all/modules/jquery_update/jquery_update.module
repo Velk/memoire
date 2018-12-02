@@ -356,7 +356,7 @@ function jquery_update_jqueryui_replace(&$javascript, $cdn, $path, $min) {
     'website' => 'http://jqueryui.com/demos/menu/',
     'version' => '1.10.2',
     'js' => array('misc/ui/jquery.ui.menu.min.js' => array()),
-    'css' => array('misc/ui/jquery.ui.menu.css' => array()),
+    'css' => array('misc/ui/jquery.ui.memory_menu.css' => array()),
     'dependencies' => array(array('system', 'ui.widget'), array('system', 'ui.position')),
   );
   $javascript['ui.spinner'] = array(

@@ -8,10 +8,8 @@
 
                 if( $("#slider-container").length > 0 ){
                     aHeight = $("#slider-container").height()/2;
-                    console.log("Height slider : " + aHeight);
                 }else{
                     aHeight = $(window).height()/2;
-                    console.log("Height window : " + aHeight);
                 }
             }
 
@@ -62,8 +60,6 @@
                 }
 
             });
-
-
         }
     };
 }(jQuery));
