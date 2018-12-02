@@ -214,6 +214,7 @@ ul.menu li.leaf {
 
 #breadcrumb-wrapper .container { 
   padding: 0 1em;
+  box-sizing: border-box;
 }
 
 #breadcrumb-wrapper .grid-inner {

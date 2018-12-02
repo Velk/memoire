@@ -34,27 +34,49 @@
     }
     
     $menu_activity = variable_get('menu_activity', '');
-    kpr($menu_activity);
+//    kpr($menu_activity);
 ?>
-<div id="min-menu">
+<div id="memory-menu">
     <?php foreach($main_menu as $menu): ?>
-        <div style="display: inline-block;margin-right: 15px;">
+        <div class="memory-menu-tabs">
 
             <!-- destination menu part -->
             <?php if($menu['identifier'] == "main-menu_destinations:destinations"): ?>
-                <?php print '<a href="'.  $base_url .'/destinations">' . $menu['title'] . '</a>'; ?>
-                <div id="destinations-menu" style="display:none;">
-                    <?php foreach($tab_continent as $cont): ?>
+                <?php print '<li id="memory-menu-tab-destination"><a href="'.  $base_url .'/destinations">' . $menu['title'] . '</a></li>'; ?>
+                <div id="destinations-menu">
+                    <div>
+                        <div id="memory-dest-tab-menu">
+                            <div id="memory-dest-tab-menu-title">
+                                <p>Nos destinations</p>
+                            </div>
+                            <div id="memory-dest-tab-menu-link">
+                                <a href="<?php print $base_url; ?>/destinations">Toutes nos destinations</a>
+                            </div>
+                        </div>
+                        <hr>
+                        <?php foreach($tab_continent as $cont): ?>
                         <div class="continent-menu">
                             <h3><?php print $cont[0] ?></h3>
                             <?php if(!empty($cont['country'])): ?>
                                 <?php foreach($cont['country'] as $cntry): ?>
                                     <ul class="country-menu">
-                                        <li><?php print $cntry[0] ?></li>
-                                        <?php if(!empty($cntry[2])): ?>
+                                        <li>
+                                            <?php if(!empty($cntry[2]) && count($cntry[2]) == 1){
+                                                foreach($cntry[2] as $onlyOneCity){
+                                                    print
+                                                        "<a href=" . strtolower(current_path()."/".$onlyOneCity[0]) . ">" .
+                                                        $cntry[0] . " - " . $onlyOneCity[0] .
+                                                        "</a>"
+                                                    ;
+                                                }
+                                            }else{
+                                                print $cntry[0];
+                                            } ?>
+                                        </li>
+                                        <?php if(!empty($cntry[2]) && count($cntry[2]) > 1): ?>
                                             <ul class="city-menu">
                                                 <?php foreach($cntry[2] as $place): ?>
-                                                    <li><a href=<?php print strtolower(current_path()."/".$place[0]); ?>><?php print $place[0] ?></a></li>
+                                                    <li><a href=<?php print strtolower(current_path()."/".$place[0]); ?>>- <?php print $place[0] ?></a></li>
                                                 <?php endforeach; ?>
                                             </ul>
                                         <?php endif; ?>
@@ -62,14 +84,15 @@
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </div>
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
             <!-- End destination menu part -->
 
             <!-- Activity menu part -->
             <?php elseif ($menu['identifier'] == "main-menu_sjours:node/4"): ?>
+                <?php print '<li><a href="'.  $base_url .'/activite">'. $menu['title'] . '</a></li>'; ?>
                 <div>
-                    <?php print '<a href="'.  $base_url .'/activite">'. $menu['title'] . '</a>'; ?>
                     <div>
                         <div>
 
@@ -79,7 +102,7 @@
 
             <!-- End Activity menu part -->
             <?php else: ?>
-                <?php print '<a href="'.  $base_url . '/' . drupal_get_path_alias($menu['href']) . '">' . $menu['title'] . '</a>'; ?>
+                <?php print '<li><a href="'.  $base_url . '/' . drupal_get_path_alias($menu['href']) . '">' . $menu['title'] . '</a></li>'; ?>
             <?php endif; ?>
         </div>
     <?php endforeach; ?>
