@@ -76,7 +76,7 @@
                                         <?php if(!empty($cntry[2]) && count($cntry[2]) > 1): ?>
                                             <ul class="city-menu">
                                                 <?php foreach($cntry[2] as $place): ?>
-                                                    <li><a href=<?php print strtolower(current_path()."/".$place[0]); ?>>- <?php print $place[0] ?></a></li>
+                                                    <li><a href=<?php print url('taxonomy/term/'.$place[1]); ?>>- <?php print $place[0] ?></a></li>
                                                 <?php endforeach; ?>
                                             </ul>
                                         <?php endif; ?>
