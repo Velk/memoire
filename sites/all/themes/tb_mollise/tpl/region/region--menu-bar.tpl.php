@@ -64,7 +64,7 @@
                                             <?php if(!empty($cntry[2]) && count($cntry[2]) == 1){
                                                 foreach($cntry[2] as $onlyOneCity){
                                                     print
-                                                        "<a href=" . strtolower(current_path()."/".$onlyOneCity[0]) . ">" .
+                                                        "<a href=" . url('taxonomy/term/'.$onlyOneCity[1]) . ">" .
                                                         $cntry[0] . " - " . $onlyOneCity[0] .
                                                         "</a>"
                                                     ;
