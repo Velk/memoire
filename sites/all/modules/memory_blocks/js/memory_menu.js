@@ -48,7 +48,6 @@
 
                 if( $("#destinations-menu").is(":visible") ){
 
-                    console.log("fsgddsf");
                     if( $("#admin-menu").is(":visible") ) {
 
                         var adminToolbarHeight = $("#admin-menu").height();

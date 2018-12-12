@@ -1,3 +1,4 @@
+<?php global $base_url; ?>
 <div id="top-activities-container">
     <h1><?php echo $title; ?></h1>
     <div id="description"><?php echo $description; ?></div>
@@ -6,7 +7,7 @@
         for( $i = 0 ; $i < sizeof($arrayAllDatas) ; $i++ ){
             ?>
             <div>
-                <a href="<?php echo $arrayAllDatas[$i]["url"]; ?>">
+                <a href="<?php echo $base_url . $arrayAllDatas[$i]["url"]; ?>">
                     <p class="ta-name"><?php echo $arrayAllDatas[$i]["name"]; ?></p>
                     <img src="<?php echo $arrayAllDatas[$i]["image"]; ?>" class="ta-img"/>
                 </a>

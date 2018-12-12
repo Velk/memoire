@@ -1,5 +1,6 @@
 <?php
     $main_menu = menu_navigation_links('main-menu');
+
     global $base_url;
 
     $vocabulary = taxonomy_vocabulary_machine_name_load('continent');
@@ -38,8 +39,8 @@
 ?>
 <div id="memory-menu">
     <?php foreach($main_menu as $menu): ?>
-        <div class="memory-menu-tabs">
 
+        <div class="memory-menu-tabs <?php ( $menu['identifier'] == "main-menu_connexion:node/13" || $menu['title'] == "Nous contacter" ) ? print 'menu-pos-right' : print '' ?>">
             <!-- destination menu part -->
             <?php if($menu['identifier'] == "main-menu_destinations:destinations"): ?>
                 <?php print '<li id="memory-menu-tab-destination"><a href="'.  $base_url .'/destinations">' . $menu['title'] . '</a></li>'; ?>
@@ -91,7 +92,7 @@
 
             <!-- Activity menu part -->
             <?php elseif ($menu['identifier'] == "main-menu_sjours:node/4"): ?>
-                <?php print '<li><a href="'.  $base_url .'/activite">'. $menu['title'] . '</a></li>'; ?>
+                <?php print '<li><a href="'.  $base_url .'/activite">' . $menu['title'] . '</a></li>'; ?>
                 <div>
                     <div>
                         <div>
@@ -99,8 +100,18 @@
                         </div>
                     </div>
                 </div>
-
             <!-- End Activity menu part -->
+
+            <!-- Connexion menu part -->
+            <?php elseif ($menu['title'] == "Nous contacter"): ?>
+                <?php print '<li><a href="'.  $base_url .'/contact"><i class="fa fa-envelope-o" aria-hidden="true"></i>' . $menu['title'] . ' <b>+33 (0)9 86 37 49 14</b></a></li>'; ?>
+            <!-- End Connexion menu part -->
+
+            <!-- Connexion menu part -->
+            <?php elseif ($menu['identifier'] == "main-menu_connexion:node/13"): ?>
+                <?php print '<li><a href="'.  $base_url .'/connexion"><i class="fa fa-sign-in" aria-hidden="true"></i>' . $menu['title'] . '</a></li>'; ?>
+            <!-- End Connexion menu part -->
+
             <?php else: ?>
                 <?php print '<li><a href="'.  $base_url . '/' . drupal_get_path_alias($menu['href']) . '">' . $menu['title'] . '</a></li>'; ?>
             <?php endif; ?>
