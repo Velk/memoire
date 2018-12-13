@@ -1147,25 +1147,18 @@ function memory_blocks_top_destinations_admin_form($form, &$form_state) {
             '#tree' => TRUE
         );
 
-        $top_destinations_nbr = "top_destinations_" . $i;
-        $$top_destinations_nbr = variable_get('top_destinations_' . $i, array());
-        $td_name = "td" . $i . "_name";
-        $td_image = "td" . $i . "_image";
-        $td_url = "td" . $i . "_url";
-        $$td_name = $$top_destinations_nbr['name'];
-        $$td_image = $$top_destinations_nbr['image'];
-        $$td_url = $$top_destinations_nbr['url'];
+        $top_destinations_nbr = variable_get('top_destinations_' . $i, array());
 
         $form['top_destinations_' . $i]['name'] = array(
             '#type' => 'textfield',
             '#title' => t('Nom'),
-            '#default_value' => $$td_name,
+            '#default_value' => $top_destinations_nbr['name'],
         );
         $form['top_destinations_' . $i]['image'] = array(
             '#type'          => 'media',
             '#title'         => 'Image',
             '#theme'         => 'media_widget', // Without that, you only get text input
-            '#default_value' => $$td_image, //The fid
+            '#default_value' => $top_destinations_nbr['image'], //The fid
 //        '#default_value' => variable_get('image_saved', NULL), //The fid
             '#media_options' => array(
                 'global' => array(
@@ -1188,7 +1181,7 @@ function memory_blocks_top_destinations_admin_form($form, &$form_state) {
             '#field_prefix' => $base_url,
             '#type' => 'textfield',
             '#title' => t('URL'),
-            '#default_value' => $$td_url,
+            '#default_value' => $top_destinations_nbr['url'],
             '#maxlength' => 512,
         );
     }
@@ -1196,6 +1189,11 @@ function memory_blocks_top_destinations_admin_form($form, &$form_state) {
     return system_settings_form($form);
 }
 
+/**
+ * @param $form
+ * @param $form_state
+ * @return mixed
+ */
 function memory_blocks_top_activities_admin_form($form, &$form_state) {
 
     global $base_url;
@@ -1231,25 +1229,18 @@ function memory_blocks_top_activities_admin_form($form, &$form_state) {
             '#tree' => TRUE
         );
 
-        $top_activities_nbr = "top_activities_" . $i;
-        $$top_activities_nbr = variable_get('top_activities_' . $i, array());
-        $ta_name = "td" . $i . "_name";
-        $ta_image = "td" . $i . "_image";
-        $ta_url = "td" . $i . "_url";
-        $$ta_name = $$top_activities_nbr['name'];
-        $$ta_image = $$top_activities_nbr['image'];
-        $$ta_url = $$top_activities_nbr['url'];
+        $top_activities_nbr = variable_get('top_activities_' . $i, array());
 
         $form['top_activities_' . $i]['name'] = array(
             '#type' => 'textfield',
             '#title' => t('Nom'),
-            '#default_value' => $$ta_name,
+            '#default_value' => $top_activities_nbr['name'],
         );
         $form['top_activities_' . $i]['image'] = array(
             '#type'          => 'media',
             '#title'         => 'Image',
             '#theme'         => 'media_widget', // Without that, you only get text input
-            '#default_value' => $$ta_image, //The fid
+            '#default_value' => $top_activities_nbr['image'], //The fid
     //        '#default_value' => variable_get('image_saved', NULL), //The fid
             '#media_options' => array(
                 'global' => array(
@@ -1272,7 +1263,7 @@ function memory_blocks_top_activities_admin_form($form, &$form_state) {
             '#field_prefix' => $base_url,
             '#type' => 'textfield',
             '#title' => t('URL'),
-            '#default_value' => $$ta_url,
+            '#default_value' => $top_activities_nbr['url'],
             '#maxlength' => 512,
         );
     }
