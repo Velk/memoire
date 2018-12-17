@@ -40,7 +40,7 @@
 <div id="memory-menu">
     <?php foreach($main_menu as $menu): ?>
 
-        <div class="memory-menu-tabs <?php ( $menu['identifier'] == "main-menu_connexion:node/13" || $menu['title'] == "Nous contacter" ) ? print 'menu-pos-right' : print '' ?>">
+        <div class="memory-menu-tabs <?php ( $menu['identifier'] == "main-menu_connexion:node/13" || $menu['title'] == "Nous contacter" ) ? print 'menu-pos-right' : print '' ?> <?php ( $menu['title'] == "Nous contacter" ) ? print 'menu-contact-link' : print '' ?>">
             <!-- destination menu part -->
             <?php if($menu['identifier'] == "main-menu_destinations:destinations"): ?>
                 <?php print '<li id="memory-menu-tab-destination"><a href="'.  $base_url .'/destinations">' . $menu['title'] . '</a></li>'; ?>
@@ -104,7 +104,7 @@
 
             <!-- Connexion menu part -->
             <?php elseif ($menu['title'] == "Nous contacter"): ?>
-                <?php print '<li><a href="'.  $base_url .'/contact"><i class="fa fa-envelope-o" aria-hidden="true"></i>' . $menu['title'] . ' <b>+33 (0)9 86 37 49 14</b></a></li>'; ?>
+                <?php print '<li><img src="'.  $base_url .'/sites/default/files/icons_folder/telephone-of-old-design.png" class="memory-icons"><b>+33 (0)9 86 37 49 14</b><a href="'.  $base_url .'/contact" id="memory-contact-link">Votre demande de devis</a></li>'; ?>
             <!-- End Connexion menu part -->
 
             <!-- Connexion menu part -->
