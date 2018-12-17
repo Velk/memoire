@@ -35,6 +35,22 @@
                 }
             });
 
+            /* Set dynamically the height of continent title */
+            var maxTitleContinentHeight = 0;
+
+            $(".continent-container > h3").each(function(){
+
+                var titleContinentHeight = $(this).outerHeight();
+
+                if ( titleContinentHeight > maxTitleContinentHeight ){
+                    maxTitleContinentHeight = titleContinentHeight;
+                }
+            });
+
+            $(".continent-container > h3").each(function(){
+
+                $(this).height(maxTitleContinentHeight);
+            });
 
         }
     };

@@ -40,6 +40,7 @@
 
             if( isset($all_dest_image) ){
                 echo '<img src="' . $all_dest_image . '">';
+                echo '<div id="memory-img-filter"></div>';
             }
             if( isset($all_dest_title) ){
                 echo '<h2>' . $all_dest_title . '</h2>';
@@ -69,6 +70,7 @@
                                     $country_flag = flags($cntry[0]);
                                     if( isset($country_flag) ){
                                         echo '<img src="' . $base_url . '/sites/default/files/flags/' . flags($cntry[0]) . '.png"/>';
+
                                     }
                                     print $cntry[0];
                                     ?>
