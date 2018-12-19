@@ -61,7 +61,7 @@ div#set-sound {
     display: block;
     width: auto;
     text-align: center;
-    right: 15px;
+    left: 15px;
     bottom: 15px;
 }
 div#set-sound > i {
@@ -79,7 +79,7 @@ div#set-sound:hover > i {
     opacity:1;
 }
 div#set-sound:hover {
-    right: 10px;
+    left: 10px;
     bottom: 10px;
 }
 

@@ -89,6 +89,24 @@ function memory_blocks_menu() {
         'type' => MENU_NORMAL_ITEM,
     );
 
+    $items['admin/memory/3-columns-block-manager'] = array(
+        'title' => t('Memory - 3 Columns block'),
+        'description' => t('Memory - 3 Columns block'),
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('memory_blocks_3_columns_block_admin_form'),
+        'access arguments' => array('administer site configuration'),
+        'type' => MENU_NORMAL_ITEM,
+    );
+
+    $items['admin/memory/all-destinations-page-manager'] = array(
+        'title' => t('Memory - All destinations page'),
+        'description' => t('Memory - All destinations page'),
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('memory_blocks_all_destinations_page_admin_form'),
+        'access arguments' => array('administer site configuration'),
+        'type' => MENU_NORMAL_ITEM,
+    );
+
     return $items;
 }
 
@@ -408,11 +426,11 @@ function memory_blocks_theme($existing, $type, $theme, $path) {
             'path' => drupal_get_path('module', 'memory_blocks'),
             'variables' => array('infos' => NULL),
         ),
-//        'tpl_memory_activity_categories' => array(
-//            'template' => 'tpl/taxonomy/taxonomy-term--continent',
-//            'path' => drupal_get_path('theme', 'tb_mollise'),
-//            'variables' => array('infos' => NULL),
-//        ),
+        'tpl_memory_3_columns_block' => array(
+            'template' => 'tpl/memory_3_columns_block',
+            'path' => drupal_get_path('module', 'memory_blocks'),
+            'variables' => array('infos' => NULL),
+        ),
     );
 }
 
@@ -490,6 +508,15 @@ function memory_blocks_block_info() {
       'status' => 1,
       'region' => 'content',
       'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    );
+
+    $blocks['memory_3_columns_block'] = array(
+      'info' => t('Memory 3 Columns block'),
+      'weight' => 7,
+      'status' => 1,
+      'region' => 'content',
+      'visibility' => BLOCK_VISIBILITY_LISTED,
+      'pages' => '<front>',
     );
 
     return $blocks;
@@ -842,10 +869,8 @@ function memory_blocks_block_view($delta = '') {
             break;
         case 'memory_bug_report':
 
-            $data['data'] = "data";
-
             // Link the template
-            $block['content']['#markup'] = theme('tpl_memory_bug_report', $data);
+            $block['content']['#markup'] = theme('tpl_memory_bug_report');
 
             // Link a css file
             $block['content']['#attached']['css'][] = array(
@@ -860,12 +885,237 @@ function memory_blocks_block_view($delta = '') {
              );
 
             break;
+        case 'memory_3_columns_block':
+
+            $data['mcb_title'] = variable_get('mcb_title');
+            $mcb_text_1 = variable_get('mcb_text_1', array());
+            $data['mcb_text_1'] = $mcb_text_1['value'];
+
+            // Bloc 1
+            $mcb_column_1 = variable_get('mcb_column_1', array());
+            /*
+             * $arrayName['image'] correspond to the fid
+             * Load the file by its fid.
+             * Create the URL file by using the file URI
+             */
+            $file = file_load($mcb_column_1['mcb_picto']);
+            $url = file_create_url($file->uri);
+            $data['mcb_column_1_picto'] = $url;
+
+            $data['mcb_column_1_text'] = $mcb_column_1['mcb_text']['value'];
+
+            // Bloc 2
+            $mcb_column_2 = variable_get('mcb_column_2', array());
+            /*
+             * $arrayName['image'] correspond to the fid
+             * Load the file by its fid.
+             * Create the URL file by using the file URI
+             */
+            $file = file_load($mcb_column_2['mcb_picto']);
+            $url = file_create_url($file->uri);
+            $data['mcb_column_2_picto'] = $url;
+
+            $data['mcb_column_2_text'] = $mcb_column_2['mcb_text']['value'];
+
+            // Bloc 3
+            $mcb_column_3 = variable_get('mcb_column_3', array());
+            /*
+             * $arrayName['image'] correspond to the fid
+             * Load the file by its fid.
+             * Create the URL file by using the file URI
+             */
+            $file = file_load($mcb_column_3['mcb_picto']);
+            $url = file_create_url($file->uri);
+            $data['mcb_column_3_picto'] = $url;
+
+            $data['mcb_column_3_text'] = $mcb_column_3['mcb_text']['value'];
+
+            $mcb_text_2 = variable_get('mcb_text_2', array());
+            $data['mcb_text_2'] = $mcb_text_2['value'];
+
+            // Link the template
+            $block['content']['#markup'] = theme('tpl_memory_3_columns_block', $data);
+
+            // Link a css file
+            $block['content']['#attached']['css'][] = array(
+                'data' => drupal_get_path('module', 'memory_blocks').'/css/memory_3_columns_block.css',
+                'type' => 'file'
+            );
+
+            break;
     }
 
     return $block;
 }
 
+function memory_blocks_3_columns_block_admin_form($form, &$form_state){
+
+    $form['mcb_title'] = array(
+        '#type' => 'textfield',
+        '#default_value' => variable_get('mcb_title', 'L\'agence de voyage déjantée'),
+        '#title' => t('Titre'),
+        '#weight' => 1,
+    );
+
+    $mcb_text_1 = variable_get('mcb_text_1', array());
+
+    $form['mcb_text_1'] = array(
+        '#type' => 'text_format',
+        '#format' => 'wysiwyg',
+        '#default_value' => $mcb_text_1['value'],
+//        '#default_value' => $footer_column_1['society']['value'],
+        '#title' => t('Texte n°1'),
+        '#weight' => 1,
+    );
+
+    /* Column 1 */
+    $mcb_column_1 = variable_get('mcb_column_1', array());
+
+    $form['mcb_column_1'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Column n°1'),
+        '#weight' => 3,
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
+        '#tree' => TRUE
+    );
+
+    $form['mcb_column_1']['mcb_picto'] = array(
+        '#type'          => 'media',
+        '#title'         => 'Bloc 1 - Pictogramme',
+        '#theme'         => 'media_widget', // Without that, you only get text input
+        '#default_value' => $mcb_column_1['mcb_picto'], //The fid
+        '#media_options' => array(
+            'global' => array(
+                'file_directory'  => 'icons_folder',
+                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
+                    'upload',
+                    'media_default--media_browser_my_files'
+                ),
+                'file_extensions' => 'png gif jpg jpeg',
+                'max_filesize'    => '2 MB',
+                'uri_scheme'      => 'public',
+                'types'           => array('image'),
+                'schemes'         => array(
+                    'public' => 'public',
+                ),
+            ),
+        ),
+        '#weight' => 1,
+    );
+
+    $form['mcb_column_1']['mcb_text'] = array(
+        '#type' => 'text_format',
+        '#format' => 'wysiwyg',
+        '#default_value' => $mcb_column_1['mcb_text']['value'],
+        '#title' => t('Bloc 1 - Texte'),
+        '#weight' => 2,
+    );
+
+    /* Column 2 */
+    $mcb_column_2 = variable_get('mcb_column_2', array());
+
+    $form['mcb_column_2'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Column n°2'),
+        '#weight' => 4,
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
+        '#tree' => TRUE
+    );
+
+    $form['mcb_column_2']['mcb_picto'] = array(
+        '#type'          => 'media',
+        '#title'         => 'Bloc 2 - Pictogramme',
+        '#theme'         => 'media_widget', // Without that, you only get text input
+        '#default_value' => $mcb_column_2['mcb_picto'], //The fid
+        '#media_options' => array(
+            'global' => array(
+                'file_directory'  => 'icons_folder',
+                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
+                    'upload',
+                    'media_default--media_browser_my_files'
+                ),
+                'file_extensions' => 'png gif jpg jpeg',
+                'max_filesize'    => '2 MB',
+                'uri_scheme'      => 'public',
+                'types'           => array('image'),
+                'schemes'         => array(
+                    'public' => 'public',
+                ),
+            ),
+        ),
+        '#weight' => 1,
+    );
+
+    $form['mcb_column_2']['mcb_text'] = array(
+        '#type' => 'text_format',
+        '#format' => 'wysiwyg',
+        '#default_value' => $mcb_column_2['mcb_text']['value'],
+        '#title' => t('Bloc 2 - Texte'),
+        '#weight' => 2,
+    );
+
+    /* Column 3 */
+    $mcb_column_3 = variable_get('mcb_column_3', array());
+
+    $form['mcb_column_3'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Column n°3'),
+        '#weight' => 5,
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
+        '#tree' => TRUE
+    );
+
+    $form['mcb_column_3']['mcb_picto'] = array(
+        '#type'          => 'media',
+        '#title'         => 'Bloc 3 - Pictogramme',
+        '#theme'         => 'media_widget', // Without that, you only get text input
+        '#default_value' => $mcb_column_3['mcb_picto'], //The fid
+        '#media_options' => array(
+            'global' => array(
+                'file_directory'  => 'icons_folder',
+                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
+                    'upload',
+                    'media_default--media_browser_my_files'
+                ),
+                'file_extensions' => 'png gif jpg jpeg',
+                'max_filesize'    => '2 MB',
+                'uri_scheme'      => 'public',
+                'types'           => array('image'),
+                'schemes'         => array(
+                    'public' => 'public',
+                ),
+            ),
+        ),
+        '#weight' => 1,
+    );
+
+    $form['mcb_column_3']['mcb_text'] = array(
+        '#type' => 'text_format',
+        '#format' => 'wysiwyg',
+        '#default_value' => $mcb_column_3['mcb_text']['value'],
+        '#title' => t('Bloc 3 - Texte'),
+        '#weight' => 2,
+    );
+
+    $mcb_text_2 = variable_get('mcb_text_2', array());
+
+    $form['mcb_text_2'] = array(
+        '#type' => 'text_format',
+        '#format' => 'wysiwyg',
+        '#default_value' => $mcb_text_2['value'],
+        '#title' => t('Texte n°2'),
+        '#weight' => 6,
+    );
+
+    return system_settings_form($form);
+}
+
 function memory_blocks_top_destinations_admin_form($form, &$form_state) {
+
+    global $base_url;
 
     $form['top_destinations_title'] = array(
         '#type' => 'textfield',
@@ -878,463 +1128,75 @@ function memory_blocks_top_destinations_admin_form($form, &$form_state) {
     $description = variable_get('top_destinations_description', array('Entrer ici votre description.' => '', 'format' => NULL));
 
     $form['top_destinations_description'] = array(
-//        '#type' => 'textarea',
         '#type' => 'text_format',
         '#format' => 'wysiwyg',
         '#default_value' => $description['value'],
-//        '#default_value' => variable_get('top_destinations_description', 'Entrer ici votre description.'),
         '#title' => t('Description'),
         '#weight' => 2,
-//        '#required' => TRUE,
     );
 
-    /* Top destination n°1 */
-    $form['top_destinations_1'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Destination n°1'),
-        '#weight' => 3,
-        '#collapsible' => TRUE,
-        '#collapsed' => FALSE,
-        '#tree' => TRUE
-    );
+    /* Top destination */
+    for( $i = 1 ; $i < 10 ; $i++ ){
 
-    $top_destinations_1 = variable_get('top_destinations_1', array());
-    $td1_name = $top_destinations_1['name'];
-    $td1_image = $top_destinations_1['image'];
-    $td1_url = $top_destinations_1['url'];
+        $form['top_destinations_' . $i] = array(
+            '#type' => 'fieldset',
+            '#title' => t('Destination n°' . $i),
+            '#weight' => 2 + $i,
+            '#collapsible' => TRUE,
+            '#collapsed' => FALSE,
+            '#tree' => TRUE
+        );
 
-    $form['top_destinations_1']['name'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Nom'),
-        '#default_value' => $td1_name,
-    );
-    $form['top_destinations_1']['image'] = array(
-        '#type'          => 'media',
-        '#title'         => 'Image',
-        '#theme'         => 'media_widget', // Without that, you only get text input
-        '#default_value' => $td1_image, //The fid
+        $top_destinations_nbr = variable_get('top_destinations_' . $i, array());
+
+        $form['top_destinations_' . $i]['name'] = array(
+            '#type' => 'textfield',
+            '#title' => t('Nom'),
+            '#default_value' => $top_destinations_nbr['name'],
+        );
+        $form['top_destinations_' . $i]['image'] = array(
+            '#type'          => 'media',
+            '#title'         => 'Image',
+            '#theme'         => 'media_widget', // Without that, you only get text input
+            '#default_value' => $top_destinations_nbr['image'], //The fid
 //        '#default_value' => variable_get('image_saved', NULL), //The fid
-        '#media_options' => array(
-            'global' => array(
-                'file_directory'  => 'image_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
-                'file_extensions' => 'png gif jpg jpeg',
-                'max_filesize'    => '2 MB',
-                'uri_scheme'      => 'public',
-                'types'           => array('image'),
-                'schemes'         => array(
-                    'public' => 'public',
-                ),
-            ),
-        ),
-    );
-    $form['top_destinations_1']['url'] = array(
-        '#type' => 'textfield',
-        '#title' => t('URL'),
-        '#default_value' => $td1_url,
-        '#maxlength' => 512,
-    );
-
-    /* Top destination n°2 */
-    $form['top_destinations_2'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Destination n°2'),
-        '#weight' => 4,
-        '#collapsible' => TRUE,
-        '#collapsed' => FALSE,
-        '#tree' => TRUE
-    );
-
-    $top_destinations_2 = variable_get('top_destinations_2', array());
-    $td2_name = $top_destinations_2['name'];
-    $td2_image = $top_destinations_2['image'];
-    $td2_url = $top_destinations_2['url'];
-
-    $form['top_destinations_2']['name'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Nom'),
-        '#default_value' => $td2_name,
-    );
-    $form['top_destinations_2']['image'] = array(
-        '#type'          => 'media',
-        '#title'         => 'Image',
-        '#theme'         => 'media_widget', // Without that, you only get text input
-        '#default_value' => $td2_image, //The fid
-        '#media_options' => array(
-            'global' => array(
-                'file_directory'  => 'image_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
-                'file_extensions' => 'png gif jpg jpeg',
-                'max_filesize'    => '2 MB',
-                'uri_scheme'      => 'public',
-                'types'           => array('image'),
-                'schemes'         => array(
-                    'public' => 'public',
+            '#media_options' => array(
+                'global' => array(
+                    'file_directory'  => 'image_folder',
+                    'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
+                        'upload',
+                        'media_default--media_browser_my_files'
+                    ),
+                    'file_extensions' => 'png gif jpg jpeg',
+                    'max_filesize'    => '2 MB',
+                    'uri_scheme'      => 'public',
+                    'types'           => array('image'),
+                    'schemes'         => array(
+                        'public' => 'public',
+                    ),
                 ),
             ),
-        ),
-    );
-    $form['top_destinations_2']['url'] = array(
-        '#type' => 'textfield',
-        '#title' => t('URL'),
-        '#default_value' => $td2_url,
-        '#maxlength' => 512,
-    );
-
-
-    /* Top destination n°3 */
-    $form['top_destinations_3'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Destination n°3'),
-        '#weight' => 5,
-        '#collapsible' => TRUE,
-        '#collapsed' => FALSE,
-        '#tree' => TRUE
-    );
-
-    $top_destinations_3 = variable_get('top_destinations_3', array());
-    $td3_name = $top_destinations_3['name'];
-    $td3_image = $top_destinations_3['image'];
-    $td3_url = $top_destinations_3['url'];
-
-    $form['top_destinations_3']['name'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Nom'),
-        '#default_value' => $td3_name,
-    );
-    $form['top_destinations_3']['image'] = array(
-        '#type'          => 'media',
-        '#title'         => 'Image',
-        '#theme'         => 'media_widget', // Without that, you only get text input
-        '#default_value' => $td3_image, //The fid
-        '#media_options' => array(
-            'global' => array(
-                'file_directory'  => 'image_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
-                'file_extensions' => 'png gif jpg jpeg',
-                'max_filesize'    => '2 MB',
-                'uri_scheme'      => 'public',
-                'types'           => array('image'),
-                'schemes'         => array(
-                    'public' => 'public',
-                ),
-            ),
-        ),
-    );
-    $form['top_destinations_3']['url'] = array(
-        '#type' => 'textfield',
-        '#title' => t('URL'),
-        '#default_value' => $td3_url,
-        '#maxlength' => 512,
-    );
-
-    /* Top destination n°4 */
-    $form['top_destinations_4'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Destination n°4'),
-        '#weight' => 6,
-        '#collapsible' => TRUE,
-        '#collapsed' => FALSE,
-        '#tree' => TRUE
-    );
-
-    $top_destinations_4 = variable_get('top_destinations_4', array());
-    $td4_name = $top_destinations_4['name'];
-    $td4_image = $top_destinations_4['image'];
-    $td4_url = $top_destinations_4['url'];
-
-    $form['top_destinations_4']['name'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Nom'),
-        '#default_value' => $td4_name,
-    );
-    $form['top_destinations_4']['image'] = array(
-        '#type'          => 'media',
-        '#title'         => 'Image',
-        '#theme'         => 'media_widget', // Without that, you only get text input
-        '#default_value' => $td4_image, //The fid
-        '#media_options' => array(
-            'global' => array(
-                'file_directory'  => 'image_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
-                'file_extensions' => 'png gif jpg jpeg',
-                'max_filesize'    => '2 MB',
-                'uri_scheme'      => 'public',
-                'types'           => array('image'),
-                'schemes'         => array(
-                    'public' => 'public',
-                ),
-            ),
-        ),
-    );
-    $form['top_destinations_4']['url'] = array(
-        '#type' => 'textfield',
-        '#title' => t('URL'),
-        '#default_value' => $td4_url,
-        '#maxlength' => 512,
-    );
-
-    /* Top destination n°5 */
-    $form['top_destinations_5'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Destination n°5'),
-        '#weight' => 7,
-        '#collapsible' => TRUE,
-        '#collapsed' => FALSE,
-        '#tree' => TRUE
-    );
-
-    $top_destinations_5 = variable_get('top_destinations_5', array());
-    $td5_name = $top_destinations_5['name'];
-    $td5_image = $top_destinations_5['image'];
-    $td5_url = $top_destinations_5['url'];
-
-    $form['top_destinations_5']['name'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Nom'),
-        '#default_value' => $td5_name,
-    );
-    $form['top_destinations_5']['image'] = array(
-        '#type'          => 'media',
-        '#title'         => 'Image',
-        '#theme'         => 'media_widget', // Without that, you only get text input
-        '#default_value' => $td5_image, //The fid
-        '#media_options' => array(
-            'global' => array(
-                'file_directory'  => 'image_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
-                'file_extensions' => 'png gif jpg jpeg',
-                'max_filesize'    => '2 MB',
-                'uri_scheme'      => 'public',
-                'types'           => array('image'),
-                'schemes'         => array(
-                    'public' => 'public',
-                ),
-            ),
-        ),
-    );
-    $form['top_destinations_5']['url'] = array(
-        '#type' => 'textfield',
-        '#title' => t('URL'),
-        '#default_value' => $td5_url,
-        '#maxlength' => 512,
-    );
-
-    /* Top destination n°6 */
-    $form['top_destinations_6'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Destination n°6'),
-        '#weight' => 8,
-        '#collapsible' => TRUE,
-        '#collapsed' => FALSE,
-        '#tree' => TRUE
-    );
-
-    $top_destinations_6 = variable_get('top_destinations_6', array());
-    $td6_name = $top_destinations_6['name'];
-    $td6_image = $top_destinations_6['image'];
-    $td6_url = $top_destinations_6['url'];
-
-    $form['top_destinations_6']['name'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Nom'),
-        '#default_value' => $td6_name,
-    );
-    $form['top_destinations_6']['image'] = array(
-        '#type'          => 'media',
-        '#title'         => 'Image',
-        '#theme'         => 'media_widget', // Without that, you only get text input
-        '#default_value' => $td6_image, //The fid
-        '#media_options' => array(
-            'global' => array(
-                'file_directory'  => 'image_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
-                'file_extensions' => 'png gif jpg jpeg',
-                'max_filesize'    => '2 MB',
-                'uri_scheme'      => 'public',
-                'types'           => array('image'),
-                'schemes'         => array(
-                    'public' => 'public',
-                ),
-            ),
-        ),
-    );
-    $form['top_destinations_6']['url'] = array(
-        '#type' => 'textfield',
-        '#title' => t('URL'),
-        '#default_value' => $td6_url,
-        '#maxlength' => 512,
-    );
-
-    /* Top destination n°7 */
-    $form['top_destinations_7'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Destination n°7'),
-        '#weight' => 9,
-        '#collapsible' => TRUE,
-        '#collapsed' => FALSE,
-        '#tree' => TRUE
-    );
-
-    $top_destinations_7 = variable_get('top_destinations_7', array());
-    $td7_name = $top_destinations_7['name'];
-    $td7_image = $top_destinations_7['image'];
-    $td7_url = $top_destinations_7['url'];
-
-    $form['top_destinations_7']['name'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Nom'),
-        '#default_value' => $td7_name,
-    );
-    $form['top_destinations_7']['image'] = array(
-        '#type'          => 'media',
-        '#title'         => 'Image',
-        '#theme'         => 'media_widget', // Without that, you only get text input
-        '#default_value' => $td7_image, //The fid
-        '#media_options' => array(
-            'global' => array(
-                'file_directory'  => 'image_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
-                'file_extensions' => 'png gif jpg jpeg',
-                'max_filesize'    => '2 MB',
-                'uri_scheme'      => 'public',
-                'types'           => array('image'),
-                'schemes'         => array(
-                    'public' => 'public',
-                ),
-            ),
-        ),
-    );
-    $form['top_destinations_7']['url'] = array(
-        '#type' => 'textfield',
-        '#title' => t('URL'),
-        '#default_value' => $td7_url,
-        '#maxlength' => 512,
-    );
-
-    /* Top destination n°8 */
-    $form['top_destinations_8'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Destination n°8'),
-        '#weight' => 10,
-        '#collapsible' => TRUE,
-        '#collapsed' => FALSE,
-        '#tree' => TRUE
-    );
-
-    $top_destinations_8 = variable_get('top_destinations_8', array());
-    $td8_name = $top_destinations_8['name'];
-    $td8_image = $top_destinations_8['image'];
-    $td8_url = $top_destinations_8['url'];
-
-    $form['top_destinations_8']['name'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Nom'),
-        '#default_value' => $td8_name,
-    );
-    $form['top_destinations_8']['image'] = array(
-        '#type'          => 'media',
-        '#title'         => 'Image',
-        '#theme'         => 'media_widget', // Without that, you only get text input
-        '#default_value' => $td8_image, //The fid
-        '#media_options' => array(
-            'global' => array(
-                'file_directory'  => 'image_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
-                'file_extensions' => 'png gif jpg jpeg',
-                'max_filesize'    => '2 MB',
-                'uri_scheme'      => 'public',
-                'types'           => array('image'),
-                'schemes'         => array(
-                    'public' => 'public',
-                ),
-            ),
-        ),
-    );
-    $form['top_destinations_8']['url'] = array(
-        '#type' => 'textfield',
-        '#title' => t('URL'),
-        '#default_value' => $td8_url,
-        '#maxlength' => 512,
-    );
-
-    /* Top destination n°9 */
-    $form['top_destinations_9'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Destination n°9'),
-        '#weight' => 11,
-        '#collapsible' => TRUE,
-        '#collapsed' => FALSE,
-        '#tree' => TRUE
-    );
-
-    $top_destinations_9 = variable_get('top_destinations_9', array());
-    $td9_name = $top_destinations_9['name'];
-    $td9_image = $top_destinations_9['image'];
-    $td9_url = $top_destinations_9['url'];
-
-    $form['top_destinations_9']['name'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Nom'),
-        '#default_value' => $td9_name,
-    );
-    $form['top_destinations_9']['image'] = array(
-        '#type'          => 'media',
-        '#title'         => 'Image',
-        '#theme'         => 'media_widget', // Without that, you only get text input
-        '#default_value' => $td9_image, //The fid
-        '#media_options' => array(
-            'global' => array(
-                'file_directory'  => 'image_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
-                'file_extensions' => 'png gif jpg jpeg',
-                'max_filesize'    => '2 MB',
-                'uri_scheme'      => 'public',
-                'types'           => array('image'),
-                'schemes'         => array(
-                    'public' => 'public',
-                ),
-            ),
-        ),
-    );
-    $form['top_destinations_9']['url'] = array(
-        '#type' => 'textfield',
-        '#title' => t('URL'),
-        '#default_value' => $td9_url,
-        '#maxlength' => 512,
-    );
+        );
+        $form['top_destinations_' . $i]['url'] = array(
+            '#field_prefix' => $base_url,
+            '#type' => 'textfield',
+            '#title' => t('URL'),
+            '#default_value' => $top_destinations_nbr['url'],
+            '#maxlength' => 512,
+        );
+    }
 
     return system_settings_form($form);
 }
 
+/**
+ * @param $form
+ * @param $form_state
+ * @return mixed
+ */
 function memory_blocks_top_activities_admin_form($form, &$form_state) {
+
+    global $base_url;
 
     $form['top_activities_title'] = array(
         '#type' => 'textfield',
@@ -1347,604 +1209,64 @@ function memory_blocks_top_activities_admin_form($form, &$form_state) {
     $description = variable_get('top_activities_description', array('Entrer ici votre description.' => '', 'format' => NULL));
 
     $form['top_activities_description'] = array(
-//        '#type' => 'textarea',
         '#type' => 'text_format',
         '#format' => 'wysiwyg',
         '#default_value' => $description['value'],
-//        '#default_value' => variable_get('top_activities_description', 'Entrer ici votre description.'),
         '#title' => t('Description'),
         '#weight' => 2,
-//        '#required' => TRUE,
     );
 
-    /* Top activity n°1 */
-    $form['top_activities_1'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Activity n°1'),
-        '#weight' => 3,
-        '#collapsible' => TRUE,
-        '#collapsed' => FALSE,
-        '#tree' => TRUE
-    );
 
-    $top_activities_1 = variable_get('top_activities_1', array());
-    $ta1_name = $top_activities_1['name'];
-    $ta1_image = $top_activities_1['image'];
-    $ta1_url = $top_activities_1['url'];
+    /* Top activity */
+    for( $i = 1 ; $i < 13 ; $i++ ){
 
-    $form['top_activities_1']['name'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Nom'),
-        '#default_value' => $ta1_name,
-    );
-    $form['top_activities_1']['image'] = array(
-        '#type'          => 'media',
-        '#title'         => 'Image',
-        '#theme'         => 'media_widget', // Without that, you only get text input
-        '#default_value' => $ta1_image, //The fid
-//        '#default_value' => variable_get('image_saved', NULL), //The fid
-        '#media_options' => array(
-            'global' => array(
-                'file_directory'  => 'image_folder',
-//                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-//                    'upload',
-//                    'media_default--media_browser_my_files'
-//                ),
-                'file_extensions' => 'png gif jpg jpeg',
-                'max_filesize'    => '2 MB',
-                'uri_scheme'      => 'public',
-                'types'           => array('image'),
-                'schemes'         => array(
-                    'public' => 'public',
+        $form['top_activities_' . $i] = array(
+            '#type' => 'fieldset',
+            '#title' => t('Activity n°' . $i),
+            '#weight' => 2 + $i,
+            '#collapsible' => TRUE,
+            '#collapsed' => FALSE,
+            '#tree' => TRUE
+        );
+
+        $top_activities_nbr = variable_get('top_activities_' . $i, array());
+
+        $form['top_activities_' . $i]['name'] = array(
+            '#type' => 'textfield',
+            '#title' => t('Nom'),
+            '#default_value' => $top_activities_nbr['name'],
+        );
+        $form['top_activities_' . $i]['image'] = array(
+            '#type'          => 'media',
+            '#title'         => 'Image',
+            '#theme'         => 'media_widget', // Without that, you only get text input
+            '#default_value' => $top_activities_nbr['image'], //The fid
+    //        '#default_value' => variable_get('image_saved', NULL), //The fid
+            '#media_options' => array(
+                'global' => array(
+                    'file_directory'  => 'image_folder',
+    //                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
+    //                    'upload',
+    //                    'media_default--media_browser_my_files'
+    //                ),
+                    'file_extensions' => 'png gif jpg jpeg',
+                    'max_filesize'    => '2 MB',
+                    'uri_scheme'      => 'public',
+                    'types'           => array('image'),
+                    'schemes'         => array(
+                        'public' => 'public',
+                    ),
                 ),
             ),
-        ),
-    );
-    $form['top_activities_1']['url'] = array(
-        '#type' => 'textfield',
-        '#title' => t('URL'),
-        '#default_value' => $ta1_url,
-        '#maxlength' => 512,
-    );
-
-    /* Top activity n°2 */
-    $form['top_activities_2'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Activity n°2'),
-        '#weight' => 4,
-        '#collapsible' => TRUE,
-        '#collapsed' => FALSE,
-        '#tree' => TRUE
-    );
-
-    $top_activities_2 = variable_get('top_activities_2', array());
-    $ta2_name = $top_activities_2['name'];
-    $ta2_image = $top_activities_2['image'];
-    $ta2_url = $top_activities_2['url'];
-
-    $form['top_activities_2']['name'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Nom'),
-        '#default_value' => $ta2_name,
-    );
-    $form['top_activities_2']['image'] = array(
-        '#type'          => 'media',
-        '#title'         => 'Image',
-        '#theme'         => 'media_widget', // Without that, you only get text input
-        '#default_value' => $ta2_image, //The fid
-        '#media_options' => array(
-            'global' => array(
-                'file_directory'  => 'image_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
-                'file_extensions' => 'png gif jpg jpeg',
-                'max_filesize'    => '2 MB',
-                'uri_scheme'      => 'public',
-                'types'           => array('image'),
-                'schemes'         => array(
-                    'public' => 'public',
-                ),
-            ),
-        ),
-    );
-    $form['top_activities_2']['url'] = array(
-        '#type' => 'textfield',
-        '#title' => t('URL'),
-        '#default_value' => $ta2_url,
-        '#maxlength' => 512,
-    );
-
-    /* Top activity n°3 */
-    $form['top_activities_3'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Activity n°3'),
-        '#weight' => 5,
-        '#collapsible' => TRUE,
-        '#collapsed' => FALSE,
-        '#tree' => TRUE
-    );
-
-    $top_activities_3 = variable_get('top_activities_3', array());
-    $ta3_name = $top_activities_3['name'];
-    $ta3_image = $top_activities_3['image'];
-    $ta3_url = $top_activities_3['url'];
-
-    $form['top_activities_3']['name'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Nom'),
-        '#default_value' => $ta3_name,
-    );
-    $form['top_activities_3']['image'] = array(
-        '#type'          => 'media',
-        '#title'         => 'Image',
-        '#theme'         => 'media_widget', // Without that, you only get text input
-        '#default_value' => $ta3_image, //The fid
-        '#media_options' => array(
-            'global' => array(
-                'file_directory'  => 'image_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
-                'file_extensions' => 'png gif jpg jpeg',
-                'max_filesize'    => '2 MB',
-                'uri_scheme'      => 'public',
-                'types'           => array('image'),
-                'schemes'         => array(
-                    'public' => 'public',
-                ),
-            ),
-        ),
-    );
-    $form['top_activities_3']['url'] = array(
-        '#type' => 'textfield',
-        '#title' => t('URL'),
-        '#default_value' => $ta3_url,
-        '#maxlength' => 512,
-    );
-
-    /* Top activity n°4 */
-    $form['top_activities_4'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Activity n°4'),
-        '#weight' => 6,
-        '#collapsible' => TRUE,
-        '#collapsed' => FALSE,
-        '#tree' => TRUE
-    );
-
-    $top_activities_4 = variable_get('top_activities_4', array());
-    $ta4_name = $top_activities_4['name'];
-    $ta4_image = $top_activities_4['image'];
-    $ta4_url = $top_activities_4['url'];
-
-    $form['top_activities_4']['name'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Nom'),
-        '#default_value' => $ta4_name,
-    );
-    $form['top_activities_4']['image'] = array(
-        '#type'          => 'media',
-        '#title'         => 'Image',
-        '#theme'         => 'media_widget', // Without that, you only get text input
-        '#default_value' => $ta4_image, //The fid
-        '#media_options' => array(
-            'global' => array(
-                'file_directory'  => 'image_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
-                'file_extensions' => 'png gif jpg jpeg',
-                'max_filesize'    => '2 MB',
-                'uri_scheme'      => 'public',
-                'types'           => array('image'),
-                'schemes'         => array(
-                    'public' => 'public',
-                ),
-            ),
-        ),
-    );
-    $form['top_activities_4']['url'] = array(
-        '#type' => 'textfield',
-        '#title' => t('URL'),
-        '#default_value' => $ta4_url,
-        '#maxlength' => 512,
-    );
-
-    /* Top activity n°5 */
-    $form['top_activities_5'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Activity n°5'),
-        '#weight' => 7,
-        '#collapsible' => TRUE,
-        '#collapsed' => FALSE,
-        '#tree' => TRUE
-    );
-
-    $top_activities_5 = variable_get('top_activities_5', array());
-    $ta5_name = $top_activities_5['name'];
-    $ta5_image = $top_activities_5['image'];
-    $ta5_url = $top_activities_5['url'];
-
-    $form['top_activities_5']['name'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Nom'),
-        '#default_value' => $ta5_name,
-    );
-    $form['top_activities_5']['image'] = array(
-        '#type'          => 'media',
-        '#title'         => 'Image',
-        '#theme'         => 'media_widget', // Without that, you only get text input
-        '#default_value' => $ta5_image, //The fid
-        '#media_options' => array(
-            'global' => array(
-                'file_directory'  => 'image_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
-                'file_extensions' => 'png gif jpg jpeg',
-                'max_filesize'    => '2 MB',
-                'uri_scheme'      => 'public',
-                'types'           => array('image'),
-                'schemes'         => array(
-                    'public' => 'public',
-                ),
-            ),
-        ),
-    );
-    $form['top_activities_5']['url'] = array(
-        '#type' => 'textfield',
-        '#title' => t('URL'),
-        '#default_value' => $ta5_url,
-        '#maxlength' => 512,
-    );
-
-    /* Top activity n°6 */
-    $form['top_activities_6'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Activity n°6'),
-        '#weight' => 8,
-        '#collapsible' => TRUE,
-        '#collapsed' => FALSE,
-        '#tree' => TRUE
-    );
-
-    $top_activities_6 = variable_get('top_activities_6', array());
-    $ta6_name = $top_activities_6['name'];
-    $ta6_image = $top_activities_6['image'];
-    $ta6_url = $top_activities_6['url'];
-
-    $form['top_activities_6']['name'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Nom'),
-        '#default_value' => $ta6_name,
-    );
-    $form['top_activities_6']['image'] = array(
-        '#type'          => 'media',
-        '#title'         => 'Image',
-        '#theme'         => 'media_widget', // Without that, you only get text input
-        '#default_value' => $ta6_image, //The fid
-        '#media_options' => array(
-            'global' => array(
-                'file_directory'  => 'image_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
-                'file_extensions' => 'png gif jpg jpeg',
-                'max_filesize'    => '2 MB',
-                'uri_scheme'      => 'public',
-                'types'           => array('image'),
-                'schemes'         => array(
-                    'public' => 'public',
-                ),
-            ),
-        ),
-    );
-    $form['top_activities_6']['url'] = array(
-        '#type' => 'textfield',
-        '#title' => t('URL'),
-        '#default_value' => $ta6_url,
-        '#maxlength' => 512,
-    );
-
-    /* Top activity n°7 */
-    $form['top_activities_7'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Activity n°7'),
-        '#weight' => 9,
-        '#collapsible' => TRUE,
-        '#collapsed' => FALSE,
-        '#tree' => TRUE
-    );
-
-    $top_activities_7 = variable_get('top_activities_7', array());
-    $ta7_name = $top_activities_7['name'];
-    $ta7_image = $top_activities_7['image'];
-    $ta7_url = $top_activities_7['url'];
-
-    $form['top_activities_7']['name'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Nom'),
-        '#default_value' => $ta7_name,
-    );
-    $form['top_activities_7']['image'] = array(
-        '#type'          => 'media',
-        '#title'         => 'Image',
-        '#theme'         => 'media_widget', // Without that, you only get text input
-        '#default_value' => $ta7_image, //The fid
-        '#media_options' => array(
-            'global' => array(
-                'file_directory'  => 'image_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
-                'file_extensions' => 'png gif jpg jpeg',
-                'max_filesize'    => '2 MB',
-                'uri_scheme'      => 'public',
-                'types'           => array('image'),
-                'schemes'         => array(
-                    'public' => 'public',
-                ),
-            ),
-        ),
-    );
-    $form['top_activities_7']['url'] = array(
-        '#type' => 'textfield',
-        '#title' => t('URL'),
-        '#default_value' => $ta7_url,
-        '#maxlength' => 512,
-    );
-
-    /* Top activity n°8 */
-    $form['top_activities_8'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Activity n°8'),
-        '#weight' => 10,
-        '#collapsible' => TRUE,
-        '#collapsed' => FALSE,
-        '#tree' => TRUE
-    );
-
-    $top_activities_8 = variable_get('top_activities_8', array());
-    $ta8_name = $top_activities_8['name'];
-    $ta8_image = $top_activities_8['image'];
-    $ta8_url = $top_activities_8['url'];
-
-    $form['top_activities_8']['name'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Nom'),
-        '#default_value' => $ta8_name,
-    );
-    $form['top_activities_8']['image'] = array(
-        '#type'          => 'media',
-        '#title'         => 'Image',
-        '#theme'         => 'media_widget', // Without that, you only get text input
-        '#default_value' => $ta8_image, //The fid
-        '#media_options' => array(
-            'global' => array(
-                'file_directory'  => 'image_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
-                'file_extensions' => 'png gif jpg jpeg',
-                'max_filesize'    => '2 MB',
-                'uri_scheme'      => 'public',
-                'types'           => array('image'),
-                'schemes'         => array(
-                    'public' => 'public',
-                ),
-            ),
-        ),
-    );
-    $form['top_activities_8']['url'] = array(
-        '#type' => 'textfield',
-        '#title' => t('URL'),
-        '#default_value' => $ta8_url,
-        '#maxlength' => 512,
-    );
-
-    /* Top activity n°9 */
-    $form['top_activities_9'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Activity n°9'),
-        '#weight' => 11,
-        '#collapsible' => TRUE,
-        '#collapsed' => FALSE,
-        '#tree' => TRUE
-    );
-
-    $top_activities_9 = variable_get('top_activities_9', array());
-    $ta9_name = $top_activities_9['name'];
-    $ta9_image = $top_activities_9['image'];
-    $ta9_url = $top_activities_9['url'];
-
-    $form['top_activities_9']['name'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Nom'),
-        '#default_value' => $ta9_name,
-    );
-    $form['top_activities_9']['image'] = array(
-        '#type'          => 'media',
-        '#title'         => 'Image',
-        '#theme'         => 'media_widget', // Without that, you only get text input
-        '#default_value' => $ta9_image, //The fid
-        '#media_options' => array(
-            'global' => array(
-                'file_directory'  => 'image_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
-                'file_extensions' => 'png gif jpg jpeg',
-                'max_filesize'    => '2 MB',
-                'uri_scheme'      => 'public',
-                'types'           => array('image'),
-                'schemes'         => array(
-                    'public' => 'public',
-                ),
-            ),
-        ),
-    );
-    $form['top_activities_9']['url'] = array(
-        '#type' => 'textfield',
-        '#title' => t('URL'),
-        '#default_value' => $ta9_url,
-        '#maxlength' => 512,
-    );
-
-    /* Top activity n°10 */
-    $form['top_activities_10'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Activity n°10'),
-        '#weight' => 12,
-        '#collapsible' => TRUE,
-        '#collapsed' => FALSE,
-        '#tree' => TRUE
-    );
-
-    $top_activities_10 = variable_get('top_activities_10', array());
-    $ta10_name = $top_activities_10['name'];
-    $ta10_image = $top_activities_10['image'];
-    $ta10_url = $top_activities_10['url'];
-
-    $form['top_activities_10']['name'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Nom'),
-        '#default_value' => $ta10_name,
-    );
-    $form['top_activities_10']['image'] = array(
-        '#type'          => 'media',
-        '#title'         => 'Image',
-        '#theme'         => 'media_widget', // Without that, you only get text input
-        '#default_value' => $ta10_image, //The fid
-        '#media_options' => array(
-            'global' => array(
-                'file_directory'  => 'image_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
-                'file_extensions' => 'png gif jpg jpeg',
-                'max_filesize'    => '2 MB',
-                'uri_scheme'      => 'public',
-                'types'           => array('image'),
-                'schemes'         => array(
-                    'public' => 'public',
-                ),
-            ),
-        ),
-    );
-    $form['top_activities_10']['url'] = array(
-        '#type' => 'textfield',
-        '#title' => t('URL'),
-        '#default_value' => $ta10_url,
-        '#maxlength' => 512,
-    );
-
-    /* Top activity n°11 */
-    $form['top_activities_11'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Activity n°11'),
-        '#weight' => 13,
-        '#collapsible' => TRUE,
-        '#collapsed' => FALSE,
-        '#tree' => TRUE
-    );
-
-    $top_activities_11 = variable_get('top_activities_11', array());
-    $ta11_name = $top_activities_11['name'];
-    $ta11_image = $top_activities_11['image'];
-    $ta11_url = $top_activities_11['url'];
-
-    $form['top_activities_11']['name'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Nom'),
-        '#default_value' => $ta11_name,
-    );
-    $form['top_activities_11']['image'] = array(
-        '#type'          => 'media',
-        '#title'         => 'Image',
-        '#theme'         => 'media_widget', // Without that, you only get text input
-        '#default_value' => $ta11_image, //The fid
-        '#media_options' => array(
-            'global' => array(
-                'file_directory'  => 'image_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
-                'file_extensions' => 'png gif jpg jpeg',
-                'max_filesize'    => '2 MB',
-                'uri_scheme'      => 'public',
-                'types'           => array('image'),
-                'schemes'         => array(
-                    'public' => 'public',
-                ),
-            ),
-        ),
-    );
-    $form['top_activities_11']['url'] = array(
-        '#type' => 'textfield',
-        '#title' => t('URL'),
-        '#default_value' => $ta11_url,
-        '#maxlength' => 512,
-    );
-
-    /* Top activity n°12 */
-    $form['top_activities_12'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Activity n°12'),
-        '#weight' => 14,
-        '#collapsible' => TRUE,
-        '#collapsed' => FALSE,
-        '#tree' => TRUE
-    );
-
-    $top_activities_12 = variable_get('top_activities_12', array());
-    $ta12_name = $top_activities_12['name'];
-    $ta12_image = $top_activities_12['image'];
-    $ta12_url = $top_activities_12['url'];
-
-    $form['top_activities_12']['name'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Nom'),
-        '#default_value' => $ta12_name,
-    );
-    $form['top_activities_12']['image'] = array(
-        '#type'          => 'media',
-        '#title'         => 'Image',
-        '#theme'         => 'media_widget', // Without that, you only get text input
-        '#default_value' => $ta12_image, //The fid
-        '#media_options' => array(
-            'global' => array(
-                'file_directory'  => 'image_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
-                'file_extensions' => 'png gif jpg jpeg',
-                'max_filesize'    => '2 MB',
-                'uri_scheme'      => 'public',
-                'types'           => array('image'),
-                'schemes'         => array(
-                    'public' => 'public',
-                ),
-            ),
-        ),
-    );
-    $form['top_activities_12']['url'] = array(
-        '#type' => 'textfield',
-        '#title' => t('URL'),
-        '#default_value' => $ta12_url,
-        '#maxlength' => 512,
-    );
+        );
+        $form['top_activities_' . $i]['url'] = array(
+            '#field_prefix' => $base_url,
+            '#type' => 'textfield',
+            '#title' => t('URL'),
+            '#default_value' => $top_activities_nbr['url'],
+            '#maxlength' => 512,
+        );
+    }
 
     return system_settings_form($form);
 }
@@ -2482,6 +1804,8 @@ function memory_blocks_slider_admin_form($form, &$form_state){
 
 function tb_mollise_preprocess(&$vars) {
 
+    /* Activity categories */
+
     $query = db_select('node', 'n');
     $query->fields('n', array('nid', 'title'));
     $query->condition('n.type', 'activite', '=');
@@ -2493,10 +1817,26 @@ function tb_mollise_preprocess(&$vars) {
 
         $vars["category_" . $result->nid] = variable_get("category_" . $result->nid);
     }
+
+    /* All destinations page */
+
+    /*
+     * $arrayName['image'] correspond to the fid
+     * Load the file by its fid.
+     * Create the URL file by using the file URI
+     */
+    $file = file_load(variable_get("all_dest_image"));
+    $url = file_create_url($file->uri);
+    $vars['all_dest_image'] = $url;
+
+    $vars['all_dest_title'] = variable_get('all_dest_title');
+
+    $all_dest_description = variable_get('all_dest_description', array());
+    $vars['all_dest_description'] = $all_dest_description['value'];
+
 }
 
 function memory_blocks_activity_categories_admin_form($form, &$form_state){
-
 
     $query = db_select('node', 'n');
     $query->fields('n', array('nid', 'title'));
@@ -2517,8 +1857,6 @@ function memory_blocks_activity_categories_admin_form($form, &$form_state){
     );
 
     foreach( $results as $result ){
-
-//        drupal_set_message($result->title . " : " . $form_state['values']["category_" . $result->nid]);
 
         $form["markup_top_" . $result->nid] = array(
             '#type' => 'markup',
@@ -2570,26 +1908,53 @@ function memory_blocks_activity_categories_admin_form($form, &$form_state){
         '#markup' => '</table>' ,
     );
 
-//    $form['#submit'][] = 'memory_blocks_activity_categories_admin_form_submit';
-
     return system_settings_form($form);
 }
 
-///**
-// * Submit handler for the custom form.
-// */
-//function memory_blocks_activity_categories_admin_form_submit($form, &$form_state) {
-//
-//    $query = db_select('node', 'n');
-//    $query->fields('n', array('nid', 'title'));
-//    $query->condition('n.type', 'activite', '=');
-//    $query->orderBy('n.title', 'asc');
-////    $query->distinct();
-//    $results = $query->execute();
-//
-//    foreach( $results as $result ){
-//
-//        drupal_set_message($result->title . " : " . $form_state['values']["category_" . $result->nid]);
-//    }
-//
-//}
+function memory_blocks_all_destinations_page_admin_form($form, &$form_state){
+
+    $form['all_dest_image'] = array(
+        '#type'          => 'media',
+        '#title' => t('Image'),
+        '#theme'         => 'media_widget', // Without that, you only get text input
+        '#default_value' => variable_get('all_dest_image'), // The fid
+        '#media_options' => array(
+            'global' => array(
+                'file_directory'  => 'image_folder',
+                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
+                    'upload',
+                    'media_default--media_browser_my_files'
+                ),
+                'file_extensions' => 'png gif jpg jpeg',
+                'max_filesize'    => '2 MB',
+                'uri_scheme'      => 'public',
+                'types'           => array('image'),
+                'schemes'         => array(
+                    'public' => 'public',
+                ),
+            ),
+        ),
+        '#weight' => 1,
+    );
+
+    $form['all_dest_title'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Title'),
+        '#default_value' => variable_get('all_dest_title'),
+        '#maxlength' => 512,
+        '#weight' => 2,
+    );
+
+    $all_dest_description = variable_get('all_dest_description', array());
+
+    $form['all_dest_description'] = array(
+        '#type' => 'text_format',
+        '#format' => 'wysiwyg',
+        '#title' => t('Description'),
+        '#default_value' => $all_dest_description['value'],
+        '#weight' => 3,
+    );
+
+
+    return system_settings_form($form);
+}

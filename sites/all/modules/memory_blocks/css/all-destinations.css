@@ -1,27 +1,42 @@
-/*body {*/
-    /*overflow: hidden;*/
-/*}*/
-
 div#container {
-    /*background-image: url(http://localhost/memory_website/memoire/sites/default/files/image_folder/map_background.jpeg);*/
-    /*background-size: contain;*/
-    /*background-repeat: no-repeat;*/
     position: relative;
-    height: calc(100vh - 80px - 34px);
     overflow: hidden;
 }
-div#container > img {
+div#container > #img-container {
+    position: relative;
+    height: 550px;
+    overflow: hidden;
+}
+div#container > #img-container > img {
     position: absolute;
     top: 50%;
     left: 0;
     width: 100%;
+    z-index: 0;
     transform: translateY(-50%);
 }
-div#container > div {
+div#container > #img-container div#memory-img-filter {
     position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    background-color: #ffffff78;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+div#img-container > h2 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    margin: 0;
+    font-size: 35px;
+    color: #fff;
+    z-index: 20;
+}
+
+div#description-container {
+    width: 75%;
+    margin: 50px auto;
 }
 div#container > div > div#destinations-container {
     display: grid;
@@ -29,8 +44,8 @@ div#container > div > div#destinations-container {
     grid-template-columns: repeat(6, 1fr);
     grid-gap: 25px;
     max-width: 1200px;
-    width: 100%;
-    margin: 50px 50px 0 auto;
+    width: 75%;
+    margin: 50px auto;
 }
 .continent-container > h3 {
     color: #424242;
@@ -80,4 +95,8 @@ ul.country-container > ul.city > li > a {
 ul.country-container > ul.city > li > a:hover,
 ul.country-container > ul.city > li > a:active {
     color: #26C6DA;
+}
+
+.country-container img {
+    margin-right: 5px;
 }

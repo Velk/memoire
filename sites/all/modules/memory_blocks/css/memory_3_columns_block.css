@@ -1,0 +1,39 @@
+div#mcb-container > h2 {
+    text-align: center;
+    font-size: 25px;
+    color: #424242;
+    font-family: oswaldregular;
+    font-weight: normal;
+    margin: 0 0 25px 0;
+}
+
+.mcb-text:first-of-type {
+    margin: 25px 0 50px 0;
+}
+.mcb-text:last-of-type {
+    margin: 50px 0 0 0;
+}
+.mcb-text p {
+    font-size: 14px;
+}
+
+div#mcb-blocks-container {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, calc(33.3333% - (25px/3)*2));
+    grid-gap: 0 25px;
+}
+div#mcb-blocks-container .mcb-block {
+    text-align: center;
+}
+div#mcb-blocks-container .mcb-block > img {
+    width: 75px;
+    height: auto;
+}
+div#mcb-blocks-container .mcb-block > div {
+    margin-top: 25px;
+    text-align: center;
+}
+div#mcb-blocks-container .mcb-block > div p {
+    margin: 0;
+}
