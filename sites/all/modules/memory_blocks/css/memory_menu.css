@@ -96,7 +96,7 @@ div#memory-menu {
     max-height: calc(100vh - 150px);
     /* height: 100%; */
     border: 1px solid #a7a7a7;
-    padding: 15px 25px;
+    padding: 15px 25px 25px 25px;
     display: grid;
     grid-template-areas: "a a a a a a" "h h h h h h" "b c d e f g";
     grid-template-columns: repeat(6, calc(calc(100%/6) - calc(20px*5/6)));
@@ -203,6 +203,144 @@ ul.city-menu > li:nth-child(2n) {
 }
 .continent-menu a:hover {
     color: #26C6DA;
+}
+
+/* ---------- Activity tab ---------- */
+#activities-menu {
+    /*display: block;*/
+    display: none;
+    position: fixed;
+    top: 80px;
+    width: calc(100% - 75px);
+    max-width: 1200px;
+    left: 75px;
+    height: auto;
+    box-sizing: border-box;
+    padding: 5px 0 0 0;
+    line-height: 1;
+}
+#memory-menu-tab-activity:hover ~ #activities-menu {
+    display: block;
+}
+#activities-menu:hover {
+    display: block;
+}
+#activities-menu > div {
+    position: relative;
+    background-color: #fff;
+    border-radius: 5px;
+    box-sizing: border-box;
+    width: 100%;
+    max-height: calc(100vh - 150px);
+    border: 1px solid #a7a7a7;
+    padding: 15px 25px 25px 25px;
+    display: grid;
+    grid-template-areas: "a" "b" "c";
+    grid-template-columns: 100%;
+    overflow-y: scroll;
+}
+
+div#memory-act-tab-menu {
+    grid-area: a;
+}
+#activities-menu > div > hr {
+    grid-area: b;
+}
+#activity-menu-container {
+    grid-area: c;
+}
+
+/* Activities overlay menu */
+div#memory-act-tab-menu {
+    display: grid;
+    grid-template-columns: repeat(2, 50%);
+    margin: 15px 0;
+    align-items: center;
+}
+div#memory-act-tab-menu-title {
+    text-align: left;
+}
+div#memory-act-tab-menu-link {
+    text-align: right;
+}
+div#memory-act-tab-menu-title > p {
+    margin: 0;
+    font-size: 25px;
+    font-weight: bold;
+}
+div#memory-act-tab-menu-link > a {
+    padding: 10px 25px;
+    background-color: #26C6DA;
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 1px 1px 5px #e9e9e9;
+    border: 1px solid #26C6DA;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+div#memory-act-tab-menu-link > a:hover {
+    border: 1px solid #26C6DA;
+    background-color: #fff;
+    color: #26C6DA;
+}
+
+/* Activities overlay line */
+#activities-menu > div > hr {
+    width: 100%;
+    border: none;
+    border-top: 1px solid #424242;
+    height: 0;
+    background-color: transparent;
+    margin: 20px 0;
+}
+
+/* Activities content */
+div#activity-menu-container {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, calc(calc(100%/2) - calc(20px*1/2)));
+    grid-gap: 20px 20px;
+}
+
+.activity-menu {
+    display: grid;
+    grid-template-columns: calc(150px - calc(10px*1/2)) calc(calc(100% - 150px) - calc(10px*1/2));
+    grid-template-areas: "a b";
+    grid-gap: 0 10px;
+}
+.activity-categories-image {
+    grid-area: a;
+    position: relative;
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+}
+.activity-categories-image > img {
+    position: relative;
+    width: auto;
+    height: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.activity-categories-content {
+    grid-area: b;
+    position: relative;
+}
+.activity-categories-content > h3 {
+    text-align: left;
+    font-size: 12px;
+    text-transform: uppercase;
+    margin: 0 0 15px 0;
+}
+ul.activity-categories-menu {
+    list-style-type: none;
+    margin: 0 0 10px 0;
+}
+ul.activity-categories-menu > li {
+    font-size: 12px;
+    font-weight: 300;
 }
 
 /* SCROLLBAR */
