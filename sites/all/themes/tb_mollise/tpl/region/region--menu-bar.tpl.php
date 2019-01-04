@@ -3,6 +3,7 @@
 
     global $base_url;
 
+    /* Destinations tab */
     $vocabulary = taxonomy_vocabulary_machine_name_load('continent');
     $tree = taxonomy_get_tree($vocabulary->vid);
 
@@ -33,8 +34,58 @@
             $tab_continent[$country[2]]['country'][] = array($country[0], $country[1]);
         }
     }
-    
-    $menu_activity = variable_get('menu_activity', '');
+
+    /* Activities tab */
+    $vocabulary_category_activities = taxonomy_vocabulary_machine_name_load('activity_categories');
+    $tree_category_activities = taxonomy_get_tree($vocabulary_category_activities->vid);
+
+    $tab_global_categories = array();
+    $tab_categories = array();
+
+    foreach ($tree_category_activities as $term_category_activities) {
+        if($term_category_activities->depth === 0) {
+            $tab_global_categories[$term_category_activities->tid] = array($term_category_activities->name,$term_category_activities->tid,);
+        } elseif($term_category_activities->depth === 1) {
+            $tab_categories[$term_category_activities->tid] = array($term_category_activities->name,$term_category_activities->tid,$term_category_activities->parents[0]);
+        }
+    }
+
+    asort($tab_global_categories);
+    asort($tab_categories);
+
+    foreach ($tab_categories as $categories) {
+
+
+        // Load taxonomy term datas
+        $datas_category = taxonomy_term_load($categories[1]);
+
+        $uri_category = taxonomy_term_uri($datas_category);
+        $url_category = url($uri_category["path"]);
+
+        $tab_global_categories[$categories[2]]['category'][] = array($categories[0], $categories[1], $url_category);
+    }
+
+    foreach ($tab_global_categories as $global_category){
+
+        // Load taxonomy term datas
+        $datas_global_category = taxonomy_term_load($global_category[1]);
+
+        // Retrieve the fid (image ID) of the global category
+        $fid_global_category = $datas_global_category->field_category_activities_img['und'][0]['fid'];
+
+        if( isset($fid_global_category) ){
+
+            // Load image by its fid
+            $file = file_load($fid_global_category);
+            $img_url_global_category = file_create_url($file->uri);
+
+            // Set the url of the image in the array
+            $tab_global_categories[$global_category[1]]['img_url'] = $img_url_global_category;
+        }
+    }
+
+//    drupal_set_message("<pre>" . print_r($tab_global_categories, true) . "</pre>");
+
 //    kpr($menu_activity);
 ?>
 <div id="memory-menu">
@@ -92,15 +143,46 @@
 
             <!-- Activity menu part -->
             <?php elseif ($menu['identifier'] == "main-menu_sjours:node/4"): ?>
-                <?php print '<li><a href="'.  $base_url .'/activite">' . $menu['title'] . '</a></li>'; ?>
-                <div>
+                <?php print '<li id="memory-menu-tab-activity"><a href="'.  $base_url .'/activite">' . $menu['title'] . '</a></li>'; ?>
+                <div id="activities-menu">
                     <div>
-                        <div>
-
+                        <div id="memory-act-tab-menu">
+                            <div id="memory-act-tab-menu-title">
+                                <p>Nos activités</p>
+                            </div>
+                            <div id="memory-act-tab-menu-link">
+                                <a href="<?php print $base_url; ?>/activities">Toutes nos activités</a>
+                            </div>
+                        </div>
+                        <hr>
+                        <div id="activity-menu-container">
+                            <?php foreach($tab_global_categories as $global_category): ?>
+                                <div class="activity-menu">
+                                    <?php if(!empty($global_category['img_url'])) :?>
+                                        <div class="activity-categories-image">
+                                            <img src="<?php print $global_category['img_url']; ?>" />
+                                        </div>
+                                    <?php endif; ?>
+                                    <div class="activity-categories-content">
+                                        <h3><?php print $global_category[0] ?></h3>
+                                        <?php if(!empty($global_category['category'])): ?>
+                                            <?php foreach($global_category['category'] as $category): ?>
+                                                <ul class="activity-categories-menu">
+                                                    <li>
+                                                        <a href=<?php print strtolower($category[2]); ?>>
+                                                            <?php print $category[0]; ?>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
                     </div>
                 </div>
-            <!-- End Activity menu part -->
+            <!-- End destination menu part -->
 
             <!-- Connexion menu part -->
             <?php elseif ($menu['title'] == "Nous contacter"): ?>
