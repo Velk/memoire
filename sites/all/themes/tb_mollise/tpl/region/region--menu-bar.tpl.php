@@ -84,7 +84,7 @@
         }
     }
 
-//    drupal_set_message("<pre>" . print_r($tab_global_categories, true) . "</pre>");
+//    drupal_set_message("<pre>" . print_r($main_menu, true) . "</pre>");
 
 //    kpr($menu_activity);
 ?>
@@ -116,7 +116,7 @@
                                             <?php if(!empty($cntry[2]) && count($cntry[2]) == 1){
                                                 foreach($cntry[2] as $onlyOneCity){
                                                     print
-                                                        "<a href=" . strtolower(current_path()."/".$onlyOneCity[0]) . ">" .
+                                                        "<a href=" . strtolower($base_url."/destinations/".$onlyOneCity[0]) . ">" .
                                                         $cntry[0] . " - " . $onlyOneCity[0] .
                                                         "</a>"
                                                     ;
@@ -128,7 +128,7 @@
                                         <?php if(!empty($cntry[2]) && count($cntry[2]) > 1): ?>
                                             <ul class="city-menu">
                                                 <?php foreach($cntry[2] as $place): ?>
-                                                    <li><a href=<?php print strtolower(current_path()."/".$place[0]); ?>>- <?php print $place[0] ?></a></li>
+                                                    <li><a href=<?php print strtolower($base_url."/destinations/".$place[0]); ?>>- <?php print $place[0] ?></a></li>
                                                 <?php endforeach; ?>
                                             </ul>
                                         <?php endif; ?>
@@ -142,51 +142,57 @@
             <!-- End destination menu part -->
 
             <!-- Activity menu part -->
-            <?php elseif ($menu['identifier'] == "main-menu_sjours:node/4"): ?>
-                <?php print '<li id="memory-menu-tab-activity"><a href="'.  $base_url .'/activite">' . $menu['title'] . '</a></li>'; ?>
-                <div id="activities-menu">
-                    <div>
-                        <div id="memory-act-tab-menu">
-                            <div id="memory-act-tab-menu-title">
-                                <p>Nos activités</p>
-                            </div>
-                            <div id="memory-act-tab-menu-link">
-                                <a href="<?php print $base_url; ?>/activities">Toutes nos activités</a>
-                            </div>
-                        </div>
-                        <hr>
-                        <div id="activity-menu-container">
-                            <?php foreach($tab_global_categories as $global_category): ?>
-                                <div class="activity-menu">
-                                    <?php if(!empty($global_category['img_url'])) :?>
-                                        <div class="activity-categories-image">
-                                            <img src="<?php print $global_category['img_url']; ?>" />
-                                        </div>
-                                    <?php endif; ?>
-                                    <div class="activity-categories-content">
-                                        <h3><?php print $global_category[0] ?></h3>
-                                        <?php if(!empty($global_category['category'])): ?>
-                                            <?php foreach($global_category['category'] as $category): ?>
-                                                <ul class="activity-categories-menu">
-                                                    <li>
-                                                        <a href=<?php print strtolower($category[2]); ?>>
-                                                            <?php print $category[0]; ?>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            <?php endforeach; ?>
-                                        <?php endif; ?>
-                                    </div>
+            <?php elseif ($menu['href'] == "activity-categories"): ?>
+                <?php
+                if( in_array('administrator', $user->roles) ) {
+                ?>
+                    <?php print '<li id="memory-menu-tab-activity"><a href="'.  $base_url .'/activity-categories">' . $menu['title'] . '</a></li>'; ?>
+                    <div id="activities-menu">
+                        <div>
+                            <div id="memory-act-tab-menu">
+                                <div id="memory-act-tab-menu-title">
+                                    <p>Nos activités</p>
                                 </div>
-                            <?php endforeach; ?>
+                                <div id="memory-act-tab-menu-link">
+                                    <a href="<?php print $base_url; ?>/activity-categories">Toutes nos activités</a>
+                                </div>
+                            </div>
+                            <hr>
+                            <div id="activity-menu-container">
+                                <?php foreach($tab_global_categories as $global_category): ?>
+                                    <div class="activity-menu">
+                                        <?php if(!empty($global_category['img_url'])) :?>
+                                            <div class="activity-categories-image">
+                                                <img src="<?php print $global_category['img_url']; ?>" />
+                                            </div>
+                                        <?php endif; ?>
+                                        <div class="activity-categories-content">
+                                            <h3><?php print $global_category[0] ?></h3>
+                                            <?php if(!empty($global_category['category'])): ?>
+                                                <?php foreach($global_category['category'] as $category): ?>
+                                                    <ul class="activity-categories-menu">
+                                                        <li>
+                                                            <a href=<?php print strtolower($category[2]); ?>>
+                                                                <?php print $category[0]; ?>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
                         </div>
                     </div>
-                </div>
+                <?php
+                }
+                ?>
             <!-- End destination menu part -->
 
             <!-- Connexion menu part -->
             <?php elseif ($menu['title'] == "Nous contacter"): ?>
-                <?php print '<li><img src="'.  $base_url .'/sites/default/files/icons_folder/telephone-of-old-design.png" class="memory-icons"><b>+33 (0)9 86 37 49 14</b><a href="'.  $base_url .'/contact" id="memory-contact-link">Votre demande de devis</a></li>'; ?>
+                <?php print '<li><img src="'.  $base_url .'/sites/default/files/icons_folder/telephone-of-old-design.png" class="memory-icons"><b>+32 (0)484 403 663</b><a href="'.  $base_url .'/contact" id="memory-contact-link">Votre demande de devis</a></li>'; ?>
             <!-- End Connexion menu part -->
 
             <!-- Connexion menu part -->

@@ -21,6 +21,7 @@ div#memory-menu {
     display: inline-block;
     height: 100%;
     line-height: 80px;
+    vertical-align: top;
 }
 .memory-menu-tabs > li {
     list-style-type: none;
