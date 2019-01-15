@@ -107,6 +107,15 @@ function memory_blocks_menu() {
         'type' => MENU_NORMAL_ITEM,
     );
 
+    $items['admin/memory/all-activities-page-manager'] = array(
+        'title' => t('Memory - All activities page'),
+        'description' => t('Memory - All activities page'),
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('memory_blocks_all_activities_page_admin_form'),
+        'access arguments' => array('administer site configuration'),
+        'type' => MENU_NORMAL_ITEM,
+    );
+
     return $items;
 }
 
@@ -125,8 +134,8 @@ function memory_blocks_init() {
     // If user is on activity page, link css file
     if(preg_match("/^.*\/destinations\/.*\/.*$/", $_SERVER['REQUEST_URI'])){
 
-        drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/memory_activities.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
-        drupal_add_js(drupal_get_path('module', 'memory_blocks') . '/js/memory_activities.js', array('group' => JS_DEFAULT, 'every_page' => TRUE));
+        drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/memory_activity.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
+        drupal_add_js(drupal_get_path('module', 'memory_blocks') . '/js/memory_activity.js', array('group' => JS_DEFAULT, 'every_page' => TRUE));
     }
 
     // If user is on contact page, link css file
@@ -139,15 +148,25 @@ function memory_blocks_init() {
     // If user click on destinations tab, link css and js file
     if(preg_match("/^.*\/destinations$/", $_SERVER['REQUEST_URI'])){
 
-        drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/all-destinations.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
-        drupal_add_js(drupal_get_path('module', 'memory_blocks') . '/js/all-destinations.js', array('group' => JS_DEFAULT, 'every_page' => TRUE));
+        drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/memory-all-destinations.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
+        drupal_add_js(drupal_get_path('module', 'memory_blocks') . '/js/memory-all-destinations.js', array('group' => JS_DEFAULT, 'every_page' => TRUE));
     }
 
+    // If user click on activities tab, link css and js file
+    if(preg_match("/^.*\/activity-categories/", $_SERVER['REQUEST_URI'])){
+
+        drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/memory-all-activities.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
+        drupal_add_js(drupal_get_path('module', 'memory_blocks') . '/js/memory-all-activities.js', array('group' => JS_DEFAULT, 'every_page' => TRUE));
+    }
+
+    // Add style and javascript for destinations page containing activities thumbnails
     drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/memory_destinations.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
     drupal_add_js(drupal_get_path('module', 'memory_blocks') . '/js/memory_destinations.js', array('group' => JS_DEFAULT, 'every_page' => TRUE));
 
+    // Add style and javascript for activities page containing activities thumbnails
+    drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/memory_activities.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
+    drupal_add_js(drupal_get_path('module', 'memory_blocks') . '/js/memory_activities.js', array('group' => JS_DEFAULT, 'every_page' => TRUE));
 }
-
 
 /**
  * Implements memory_blocks_admin_redirect()
@@ -1825,14 +1844,30 @@ function tb_mollise_preprocess(&$vars) {
      * Load the file by its fid.
      * Create the URL file by using the file URI
      */
-    $file = file_load(variable_get("all_dest_image"));
-    $url = file_create_url($file->uri);
-    $vars['all_dest_image'] = $url;
+    $file_all_dest = file_load(variable_get("all_dest_image"));
+    $url_all_dest = file_create_url($file_all_dest->uri);
+    $vars['all_dest_image'] = $url_all_dest;
 
     $vars['all_dest_title'] = variable_get('all_dest_title');
 
     $all_dest_description = variable_get('all_dest_description', array());
     $vars['all_dest_description'] = $all_dest_description['value'];
+
+    /* All activities page */
+
+    /*
+     * $arrayName['image'] correspond to the fid
+     * Load the file by its fid.
+     * Create the URL file by using the file URI
+     */
+    $file_all_act = file_load(variable_get("all_act_image"));
+    $url_all_act = file_create_url($file_all_act->uri);
+    $vars['all_act_image'] = $url_all_act;
+
+    $vars['all_act_title'] = variable_get('all_act_title');
+
+    $all_act_description = variable_get('all_act_description', array());
+    $vars['all_act_description'] = $all_act_description['value'];
 
 }
 
@@ -1955,6 +1990,53 @@ function memory_blocks_all_destinations_page_admin_form($form, &$form_state){
         '#weight' => 3,
     );
 
+    return system_settings_form($form);
+}
+
+
+function memory_blocks_all_activities_page_admin_form($form, &$form_state){
+
+    $form['all_act_image'] = array(
+        '#type'          => 'media',
+        '#title' => t('Image'),
+        '#theme'         => 'media_widget', // Without that, you only get text input
+        '#default_value' => variable_get('all_act_image'), // The fid
+        '#media_options' => array(
+            'global' => array(
+                'file_directory'  => 'image_folder',
+                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
+                    'upload',
+                    'media_default--media_browser_my_files'
+                ),
+                'file_extensions' => 'png gif jpg jpeg',
+                'max_filesize'    => '2 MB',
+                'uri_scheme'      => 'public',
+                'types'           => array('image'),
+                'schemes'         => array(
+                    'public' => 'public',
+                ),
+            ),
+        ),
+        '#weight' => 1,
+    );
+
+    $form['all_act_title'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Title'),
+        '#default_value' => variable_get('all_act_title'),
+        '#maxlength' => 512,
+        '#weight' => 2,
+    );
+
+    $all_act_description = variable_get('all_act_description', array());
+
+    $form['all_act_description'] = array(
+        '#type' => 'text_format',
+        '#format' => 'wysiwyg',
+        '#title' => t('Description'),
+        '#default_value' => $all_act_description['value'],
+        '#weight' => 3,
+    );
 
     return system_settings_form($form);
 }

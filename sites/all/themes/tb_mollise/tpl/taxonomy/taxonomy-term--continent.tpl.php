@@ -12,13 +12,13 @@
     $activities = array();
     $count = 0;
     for ($i = 0; $count < $nb_act; $i++) {
-	if (!empty($v_activities[$i])){
-	    if ($v_activities[$i]->weight == $count) {
-		$activities[$i] = $v_activities[$i];
-		$count++;
-		$i = 0;
-	    }
-	}
+        if (!empty($v_activities[$i])){
+            if ($v_activities[$i]->weight == $count) {
+                $activities[$i] = $v_activities[$i];
+                $count++;
+                $i = 0;
+            }
+        }
     }
 
     $cnt = array();
