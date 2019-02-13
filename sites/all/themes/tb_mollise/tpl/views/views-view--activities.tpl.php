@@ -103,32 +103,32 @@ for($i = 0 ; $i < count($nids) ; $i++){
 
 <div id="container">
     <?php
-//    $ip_image = $url_path_cleaned . "_ip_image";
-//    $ip_description = $url_path_cleaned . "_ip_description";
-//    $ip_title = $url_path_cleaned . "_ip_title";
-//
-//    if( isset($$ip_image) || isset($$ip_title) ){
-//
-//        echo '<div id="img-container">';
-//
-//        if( isset($$ip_image) ){
-//            echo '<img src="' . $$ip_image . '">';
-//            echo '<div id="memory-img-filter"></div>';
-//        }
-//        if( isset($$ip_title) ){
-//            echo '<h2>' . $$ip_title . '</h2>';
-//        }
-//
-//        echo '</div>';
-//    }
-//
-//    if( isset($$ip_description) ){
-//        echo
-//            '<div id="description-container">' .
-//            $$ip_description .
-//            '</div>'
-//        ;
-//    }
+    $ip_image = $url_path_cleaned . "_ip_image";
+    $ip_description = $url_path_cleaned . "_ip_description";
+    $ip_title = $url_path_cleaned . "_ip_title";
+
+    if( isset($$ip_image) || isset($$ip_title) ){
+
+        echo '<div id="img-container">';
+
+        if( isset($$ip_image) ){
+            echo '<img src="' . $$ip_image . '">';
+            echo '<div id="memory-img-filter"></div>';
+        }
+        if( isset($$ip_title) ){
+            echo '<h2>' . $$ip_title . '</h2>';
+        }
+
+        echo '</div>';
+    }
+
+    if( isset($$ip_description) ){
+        echo
+            '<div id="description-container">' .
+            $$ip_description .
+            '</div>'
+        ;
+    }
     ?>
     <div id="act-dest-main">
         <div class="act-dest-container">
