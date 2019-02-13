@@ -159,7 +159,12 @@
                             </div>
                             <hr>
                             <div id="activity-menu-container">
-                                <?php foreach($tab_global_categories as $global_category): ?>
+                                <?php
+                                foreach($tab_global_categories as $global_category){
+                                    // Load taxonomy term by its tid
+                                    $tax_global_activity_category = taxonomy_term_load($global_category[1]);
+//                                    drupal_set_message("<pre>" . print_r($tax_global_activity_category,true) . "</pre>");
+                                ?>
                                     <div class="activity-menu">
                                         <?php if(!empty($global_category['img_url'])) :?>
                                             <div class="activity-categories-image">
@@ -167,21 +172,24 @@
                                             </div>
                                         <?php endif; ?>
                                         <div class="activity-categories-content">
-                                            <h3><?php print $global_category[0] ?></h3>
+                                            <h3><?php print $tax_global_activity_category->field_category_activities_title['und'][0]['value'] ?></h3>
                                             <?php if(!empty($global_category['category'])): ?>
-                                                <?php foreach($global_category['category'] as $category): ?>
+                                                <?php foreach($global_category['category'] as $category){
+                                                    // Load taxonomy term by its tid
+                                                    $tax_activity_category = taxonomy_term_load($category[1]);
+                                                ?>
                                                     <ul class="activity-categories-menu">
                                                         <li>
                                                             <a href=<?php print strtolower($category[2]); ?>>
-                                                                <?php print $category[0]; ?>
+                                                                <?php print $tax_activity_category->field_category_activities_title['und'][0]['value']; ?>
                                                             </a>
                                                         </li>
                                                     </ul>
-                                                <?php endforeach; ?>
+                                                <?php } ?>
                                             <?php endif; ?>
                                         </div>
                                     </div>
-                                <?php endforeach; ?>
+                                <?php } ?>
                             </div>
                         </div>
                     </div>

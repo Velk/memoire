@@ -3,9 +3,9 @@
     $(document).ready(function($) {
 
         /* Set the image on the entire size of its container depending on the container width greater than the image width or not */
-        $(".all-act-scop").each(function(){
+        $(".act-dest-scop").each(function(){
 
-            $(this).children("img.all-act-vign-img").load(function(){
+            $(this).children("img.act-dest-vign-img").load(function(){
 
                 var divContainerWidth = $(this).parent().width();
                 var imgWidth = $(this).width();
