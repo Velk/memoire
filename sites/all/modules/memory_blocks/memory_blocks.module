@@ -1889,37 +1889,37 @@ function memory_blocks_preprocess(&$vars) {
     /* Intermediate page */
 
     // Include pathauto to clean a string for use in URLs in order to compare with the current URL
-    module_load_include('inc', 'pathauto', 'pathauto');
-
-    $query = db_select('node', 'n');
-    $query->fields('n', array('nid', 'title'));
-    $query->condition('n.type', 'activite', '=');
-    $query->orderBy('n.title', 'asc');
-    $query->distinct();
-    $results = $query->execute();
-
-    foreach( $results as $result ) {
-
-        $cleaned_title = pathauto_cleanstring($result->title);
-        $var_cleaned_title = str_replace("-", "_", $cleaned_title);
-
-        $intermediate_page = variable_get("fieldset_" . $cleaned_title, array());
-
-        /*
-         * $arrayName['image'] correspond to the fid
-         * Load the file by its fid.
-         * Create the URL file by using the file URI
-         */
-        if($intermediate_page["ip_image"] !== 0){
-
-            $file_ip_img = file_load($intermediate_page["ip_image"]);
-            $ip_img_url = file_create_url($file_ip_img->uri);
-            $vars[$var_cleaned_title . "_ip_image"] = $ip_img_url;
-        }
-
-        $vars[$var_cleaned_title . "_ip_title"] = $result->title;
-        $vars[$var_cleaned_title . "_ip_description"] = $intermediate_page["ip_description"]["value"];
-    }
+//    module_load_include('inc', 'pathauto', 'pathauto');
+//
+//    $query = db_select('node', 'n');
+//    $query->fields('n', array('nid', 'title'));
+//    $query->condition('n.type', 'activite', '=');
+//    $query->orderBy('n.title', 'asc');
+//    $query->distinct();
+//    $results = $query->execute();
+//
+//    foreach( $results as $result ) {
+//
+//        $cleaned_title = pathauto_cleanstring($result->title);
+//        $var_cleaned_title = str_replace("-", "_", $cleaned_title);
+//
+//        $intermediate_page = variable_get("fieldset_" . $cleaned_title, array());
+//
+//        /*
+//         * $arrayName['image'] correspond to the fid
+//         * Load the file by its fid.
+//         * Create the URL file by using the file URI
+//         */
+//        if($intermediate_page["ip_image"] !== 0){
+//
+//            $file_ip_img = file_load($intermediate_page["ip_image"]);
+//            $ip_img_url = file_create_url($file_ip_img->uri);
+//            $vars[$var_cleaned_title . "_ip_image"] = $ip_img_url;
+//        }
+//
+//        $vars[$var_cleaned_title . "_ip_title"] = $result->title;
+//        $vars[$var_cleaned_title . "_ip_description"] = $intermediate_page["ip_description"]["value"];
+//    }
 }
 
 function memory_blocks_activity_families_admin_form($form, &$form_state){
