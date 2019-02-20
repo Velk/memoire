@@ -142,7 +142,7 @@ for($i = 0 ; $i < count($nids) ; $i++){
                         />
                         <div class="act-dest-datas-container">
                             <h3 class="act-dest-stick-title"><?php print $activity_content['destination'] ?></h3>
-                            <a href="<?php print $base_url . "/" . $activity_content['destination_path']; ?>" class="act-dest-readmore"></a>
+                            <a href="<?php print $base_url . "/" . $activity_content['destination_path'] . "#" . $url_path; ?>" class="act-dest-readmore"></a>
                         </div>
                     </div>
             <?php
