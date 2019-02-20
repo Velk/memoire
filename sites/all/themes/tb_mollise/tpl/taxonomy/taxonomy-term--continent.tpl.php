@@ -1,5 +1,9 @@
 <?php
     global $base_url;
+
+    // Include pathauto to clean a string for use in URLs in order to compare with the current URL
+    module_load_include('inc', 'pathauto', 'pathauto');
+
     if (!empty($content['field_dst_image'])) {
         $img_head_url = file_create_url($content['field_dst_image']['#items'][0]['uri']);
     }
@@ -28,6 +32,7 @@
             $img_url = file_create_url($node->field_img_activite['und']['0']['uri']);
             $cnt[$cat['tid']][$node->vid] = array(
                 'title' => $node->field_activity_title['und']['0']['value'],
+                'title_cleaned' => pathauto_cleanstring($node->field_activity_title['und']['0']['value']),
                 'img_name' => $node->field_img_activite['und']['0']['filename'],
                 'img_uri' => $img_url,
                 'price' => $node->field_price_prestation['und']['0']['value'],
@@ -113,7 +118,7 @@
                                  alt="<?php print $event['img_name']?>"
                                  class="cont-vign-img"
                             />
-                            <div class="cont-datas-container">
+                            <div class="cont-datas-container" id="<?php print $event['title_cleaned'] ?>">
                                 <h3 class="cont-stick-title"><?php print $event['title'] ?></h3>
                                 <p class="cont-price"><?php print $event['price']?> <?php isset($event['price']) ? print "€" : ""; ?></p>
                                 <a href="<?php print $event['path']?>" class="cont-readmore"></a>
