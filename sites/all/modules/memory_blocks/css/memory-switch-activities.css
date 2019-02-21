@@ -47,7 +47,8 @@ div#memory-next-act i {
 
 div#memory-destination {
     box-sizing: border-box;
-    margin: 0 3px;
+    margin: 0 25px;
+    padding: 0 20px;
 }
 
 div#memory-previous-act {

@@ -55,12 +55,10 @@
 
     foreach ($tab_categories as $categories) {
 
-
         // Load taxonomy term datas
         $datas_category = taxonomy_term_load($categories[1]);
 
-        $uri_category = taxonomy_term_uri($datas_category);
-        $url_category = url($uri_category["path"]);
+        $url_category = drupal_get_path_alias("taxonomy/term/" . $datas_category->tid);
 
         $tab_global_categories[$categories[2]]['category'][] = array($categories[0], $categories[1], $url_category);
     }
@@ -115,8 +113,12 @@
                                         <li>
                                             <?php if(!empty($cntry[2]) && count($cntry[2]) == 1){
                                                 foreach($cntry[2] as $onlyOneCity){
+
+                                                    // Get dynamically the path alias when there is only 1 city
+                                                    $destination_path_alias = drupal_get_path_alias("taxonomy/term/" . $onlyOneCity[1]);
+
                                                     print
-                                                        "<a href=" . strtolower($base_url."/destinations/".$onlyOneCity[0]) . ">" .
+                                                        "<a href=" . strtolower($base_url."/".$destination_path_alias) . ">" .
                                                         $cntry[0] . " - " . $onlyOneCity[0] .
                                                         "</a>"
                                                     ;
@@ -127,9 +129,19 @@
                                         </li>
                                         <?php if(!empty($cntry[2]) && count($cntry[2]) > 1): ?>
                                             <ul class="city-menu">
-                                                <?php foreach($cntry[2] as $place): ?>
-                                                    <li><a href=<?php print strtolower($base_url."/destinations/".$place[0]); ?>>- <?php print $place[0] ?></a></li>
-                                                <?php endforeach; ?>
+                                                <?php foreach($cntry[2] as $place){
+
+                                                    // Get dynamically the path alias when there is more than 1 city
+                                                    $destination_path_alias = drupal_get_path_alias("taxonomy/term/" . $place[1]);
+
+                                                    print
+                                                        "<li>" .
+                                                            "<a href=" . strtolower($base_url."/".$destination_path_alias) . ">" .
+                                                            "- " . $place[0] .
+                                                            "</a>" .
+                                                        "</li>"
+                                                    ;
+                                                } ?>
                                             </ul>
                                         <?php endif; ?>
                                     </ul>
@@ -180,7 +192,7 @@
                                                 ?>
                                                     <ul class="activity-categories-menu">
                                                         <li>
-                                                            <a href=<?php print strtolower($category[2]); ?>>
+                                                            <a href=<?php print $base_url . "/" . $category[2]; ?>>
                                                                 <?php print $tax_activity_category->field_category_activities_title['und'][0]['value']; ?>
                                                             </a>
                                                         </li>
