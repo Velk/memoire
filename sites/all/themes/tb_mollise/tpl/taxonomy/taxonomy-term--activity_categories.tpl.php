@@ -58,19 +58,37 @@ if($isSpecialPageWithFilters){
         }
 
         $cnt = array();
+
         foreach ($nids as $nid) {
+
+//            foreach($node->field_acti_cont_cat['und'] as $cat) {
+//                $img_url = file_create_url($node->field_img_activite['und']['0']['uri']);
+//                $cnt[$cat['tid']][$node->vid] = array(
+//                    'title' => $node->field_activity_title['und']['0']['value'],
+//                    'img_name' => $node->field_img_activite['und']['0']['filename'],
+//                    'img_uri' => $img_url,
+//                    'price' => $node->field_price_prestation['und']['0']['value'],
+//                    'node' => $node->vid,
+//                    'path' => $base_url."/".drupal_get_path_alias('node/'.$node->vid),
+//                );
+//            }
+
             $node = node_load($nid);
-            foreach($node->field_acti_cont_cat['und'] as $cat) {
-                $img_url = file_create_url($node->field_img_activite['und']['0']['uri']);
-                $cnt[$cat['tid']][$node->vid] = array(
-                    'title' => $node->field_activity_title['und']['0']['value'],
-                    'img_name' => $node->field_img_activite['und']['0']['filename'],
-                    'img_uri' => $img_url,
-                    'price' => $node->field_price_prestation['und']['0']['value'],
-                    'node' => $node->vid,
-                    'path' => $base_url."/".drupal_get_path_alias('node/'.$node->vid),
-                );
-            }
+
+            $group_activity_tid = $node->field_acti_cont_cat['und']['0']['tid'];
+            $activity_weight = ( empty($node->field_weight['und']['0']['value']) ) ? 0 : $node->field_weight['und']['0']['value'];
+            $img_url = file_create_url($node->field_img_activite['und']['0']['uri']);
+
+            $cnt[$group_activity_tid][$activity_weight][$node->field_activity_title['und']['0']['value']] = array(
+                'title' => $node->field_activity_title['und']['0']['value'],
+//                'title_cleaned' => pathauto_cleanstring($node->field_activity_title['und']['0']['value']),
+                'img_name' => $node->field_img_activite['und']['0']['filename'],
+                'img_uri' => $img_url,
+                'price' => $node->field_price_prestation['und']['0']['value'],
+                'node' => $node->vid,
+                'path' => $base_url."/".drupal_get_path_alias('node/'.$node->vid),
+                'weight' => $activity_weight,
+            );
         }
 
         ?>
@@ -144,16 +162,28 @@ if($isSpecialPageWithFilters){
                             }
                             ?>
                             <div class="act-cat-activities-container">
-                                <?php foreach ($cnt[$activity->tid] as $event): ?>
+                                <?php
+
+                                // Sort array by activity weight
+                                ksort($cnt[$activity->tid]);
+
+                                foreach ($cnt[$activity->tid] as $cnt_weight_sorted){
+
+                                    // Sort array by activity name
+                                    ksort($cnt_weight_sorted);
+
+                                    foreach ($cnt_weight_sorted as $cnt_act_sorted) {
+
+                                ?>
                                     <div class="act-cat-scop act-cat-scop-<?php print $activity->tid ?>">
-                                        <img src="<?php print $event['img_uri']?>"
-                                             alt="<?php print $event['img_name']?>"
+                                        <img src="<?php print $cnt_act_sorted['img_uri']?>"
+                                             alt="<?php print $cnt_act_sorted['img_name']?>"
                                              class="act-cat-vign-img"
                                         />
                                         <div class="act-cat-datas-container">
-                                            <h3 class="act-cat-stick-title"><?php print $event['title'] ?></h3>
-                                            <p class="act-cat-price"><?php print $event['price']?> <?php isset($event['price']) ? print "€" : ""; ?></p>
-                                            <a href="<?php print $event['path']?>" class="act-cat-readmore"></a>
+                                            <h3 class="act-cat-stick-title"><?php print $cnt_act_sorted['title'] ?></h3>
+                                            <p class="act-cat-price"><?php print $cnt_act_sorted['price']?> <?php isset($cnt_act_sorted['price']) ? print "€" : ""; ?></p>
+                                            <a href="<?php print $cnt_act_sorted['path']?>" class="act-cat-readmore"></a>
                                             <?php
                                             $query = db_select('node', 'n');
                                             $query->fields('n', array('nid', 'title'));
@@ -164,7 +194,7 @@ if($isSpecialPageWithFilters){
 
                                             foreach( $results as $result ){
 
-                                                if( $event['title'] == $result->title ){
+                                                if( $cnt_act_sorted['title'] == $result->title ){
 
                                                     $var = "category_" . $result->nid;
 
@@ -238,7 +268,10 @@ if($isSpecialPageWithFilters){
                                             ?>
                                         </div>
                                     </div>
-                                <?php endforeach; ?>
+                                    <?php
+                                }
+                            }
+                            ?>
                             </div>
                         </div>
                     <?php } ?>
@@ -282,26 +315,21 @@ if($isSpecialPageWithFilters){
 
         foreach ($nids as $nid) {
 
-            // Retrieve all content of the node belonging to the activity category
             $node = node_load($nid);
 
-            // Retrieve the fid (image ID) of the activity
-            $fid_activity = $node->field_img_activite['und'][0]['fid'];
+            $activity_weight = ( empty($node->field_weight['und']['0']['value']) ) ? 0 : $node->field_weight['und']['0']['value'];
+            $img_url = file_create_url($node->field_img_activite['und']['0']['uri']);
 
-            if( isset($fid_activity) ){
-
-                // Load image by its fid
-                $file = file_load($fid_activity);
-                $img_url_activity = file_create_url($file->uri);
-            }
-
-            $activities_content[$node->vid] = array(
-                'title' => $node->field_activity_title['und'][0]['value'],
+            $activities_content[$activity_weight][$node->field_activity_title['und']['0']['value']] = array(
+                'title' => $node->field_activity_title['und']['0']['value'],
+                'title_cleaned' => pathauto_cleanstring($node->field_activity_title['und']['0']['value']),
                 'img_alt_text' => $node->field_img_activite['und'][0]['field_file_image_alt_text']['und'][0]['value'],
-                'img_uri' => $img_url_activity,
-                'price' => $node->field_price_prestation['und'][0]['value'],
-                'vid' => $node->vid,
+                'img_name' => $node->field_img_activite['und']['0']['filename'],
+                'img_uri' => $img_url,
+                'price' => $node->field_price_prestation['und']['0']['value'],
+                'node' => $node->vid,
                 'path' => $base_url."/".drupal_get_path_alias('node/'.$node->vid),
+                'weight' => $activity_weight,
             );
         }
 
@@ -341,19 +369,34 @@ if($isSpecialPageWithFilters){
             </div>
             <div id="act-cat-main">
                 <div class="act-cat-activities-container">
-                    <?php foreach ($activities_content as $activity_content): ?>
+                    <?php
+
+                    // Sort array by activity weight
+                    ksort($activities_content);
+
+                    foreach ($activities_content as $act_weight_sorted){
+
+                        // Sort array by activity name
+                        ksort($act_weight_sorted);
+
+                        foreach ($act_weight_sorted as $act_sorted) {
+
+                    ?>
                         <div class="act-cat-scop">
-                            <img src="<?php print $activity_content['img_uri']?>"
-                                 alt="<?php print $activity_content['img_alt_text']?>"
+                            <img src="<?php print $act_sorted['img_uri']?>"
+                                 alt="<?php print $act_sorted['img_alt_text']?>"
                                  class="act-cat-vign-img"
                             />
                             <div class="act-cat-datas-container">
-                                <h3 class="act-cat-stick-title"><?php print $activity_content['title'] ?></h3>
-                                <p class="act-cat-price"><?php print $activity_content['price']?> <?php isset($activity_content['price']) ? print "€" : ""; ?></p>
-                                <a href="<?php print $activity_content['path']?>" class="act-cat-readmore"></a>
+                                <h3 class="act-cat-stick-title"><?php print $act_sorted['title'] ?></h3>
+                                <p class="act-cat-price"><?php print $act_sorted['price']?> <?php isset($act_sorted['price']) ? print "€" : ""; ?></p>
+                                <a href="<?php print $act_sorted['path']?>" class="act-cat-readmore"></a>
                             </div>
                         </div>
-                    <?php endforeach; ?>
+                    <?php
+                        }
+                    }
+                    ?>
                 </div>
             </div>
         </div>
