@@ -155,9 +155,6 @@
 
             <!-- Activity menu part -->
             <?php elseif ($menu['href'] == "activity-categories"): ?>
-                <?php
-                if( in_array('administrator', $user->roles) ) {
-                ?>
                     <?php print '<li id="memory-menu-tab-activity"><a href="'.  $base_url .'/activity-categories">' . $menu['title'] . '</a></li>'; ?>
                     <div id="activities-menu">
                         <div>
@@ -205,9 +202,6 @@
                             </div>
                         </div>
                     </div>
-                <?php
-                }
-                ?>
             <!-- End destination menu part -->
 
             <!-- Connexion menu part -->
