@@ -1,4 +1,6 @@
 <?php
+global $base_url;
+
 if(!empty($world_map_title) && !empty($world_map_description)){
 ?>
 <div id="map-header">
@@ -119,7 +121,7 @@ if(!empty($world_map_title) && !empty($world_map_description)){
                     $country_redirect_link = "country_" . $i . "_redirect_link";
                     ?>
                     <?php if( !empty($$country_redirect_link) ){ ?>
-                    <a href="<?php echo $$country_redirect_link; ?>">
+                    <a href="<?php echo $base_url . $$country_redirect_link; ?>">
                     <?php } ?>
                         <path
                             inkscape:connector-curvature="0"
