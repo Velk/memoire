@@ -1,0 +1,5 @@
+name = Memory Phone
+description = Custom module for memory website allow multivalues phone to display
+package = Memory
+version = VERSION
+core = 7.x

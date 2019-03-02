@@ -1,0 +1,65 @@
+
+.memory-menu-tabs div#memory-contact-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
+}
+div#phone-datas-container {
+    position: relative;
+    width: auto;
+    height: 100%;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+div#other-countries {
+    display: none;
+    position: absolute;
+    top: 85px;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    padding: 10px 10px;
+    box-sizing: border-box;
+    border-radius: 3px;
+    border: 1px solid #a7a7a7;
+    max-height: 290px;
+    overflow-y: scroll;
+}
+div#other-countries > div {
+    display: inline-flex;
+    position: relative;
+    width: 100%;
+    margin-bottom: 15px;
+}
+div#other-countries > div:last-of-type {
+    margin-bottom: 0;
+}
+div#other-countries > div > p {
+    margin: 0;
+    line-height: 14px;
+    font-size: 14px;
+}
+div#other-countries > div > img {
+    height: 100%;
+}
+div#default-country {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    height: 100%;
+    cursor: pointer;
+}
+div#default-country > p {
+    margin: 0;
+    line-height: 14px;
+    font-size: 14px;
+}
+div#default-country > i {
+    margin: 0 0 0 10px;
+    font-size: 14px;
+}
+div#phone-datas-container div > img {
+    margin-right: 10px;
+}
