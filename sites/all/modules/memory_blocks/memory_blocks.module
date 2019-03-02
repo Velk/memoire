@@ -2250,4 +2250,3 @@ function memory_blocks_intermediate_page_admin_form($form, &$form_state){
 
     return system_settings_form($form);
 }
-
