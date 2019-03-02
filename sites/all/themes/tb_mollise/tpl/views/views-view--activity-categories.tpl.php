@@ -125,16 +125,16 @@ if(!isset($_GET["activity"])){
                         />
                         <div class="all-act-datas-container">
                             <h3 class="all-act-stick-title"><?php print $activity_count['title'] ?></h3>
-                            <?php
-                            if($activity_count['count'] > 1){
-                                $current_url = url(current_path(), array('absolute' => TRUE));
-                            ?>
-<!--                                <a href="--><?php //print $current_url . "?activity=" . $activity_count['title']?><!--" class="all-act-readmore"></a>-->
-                            <?php }else{ ?>
-                                <p class="all-act-price"><?php print $activity_count['price']?> <?php isset($activity_count['price']) ? print "€" : ""; ?></p>
-<!--                                <a href="--><?php //print $activity_count['path']?><!--" class="all-act-readmore"></a>-->
-<!--                                <a href="--><?php //print $activity_count['destination_path']?><!--" class="all-act-readmore"></a>-->
-                            <?php } ?>
+<!--                            --><?php
+//                            if($activity_count['count'] > 1){
+//                                $current_url = url(current_path(), array('absolute' => TRUE));
+//                            ?>
+<!--<!--                                <a href="-->--><?php ////print $current_url . "?activity=" . $activity_count['title']?><!--<!--" class="all-act-readmore"></a>-->-->
+<!--                            --><?php //}else{ ?>
+<!--                                <p class="all-act-price">--><?php //print $activity_count['price']?><!-- --><?php //isset($activity_count['price']) ? print "€" : ""; ?><!--</p>-->
+<!--<!--                                <a href="-->--><?php ////print $activity_count['path']?><!--<!--" class="all-act-readmore"></a>-->-->
+<!--<!--                                <a href="-->--><?php ////print $activity_count['destination_path']?><!--<!--" class="all-act-readmore"></a>-->-->
+<!--                            --><?php //} ?>
 
                             <a href="<?php print $base_url . "/activites/" . $activity_count['intermediate_path']?>" class="all-act-readmore"></a>
                         </div>

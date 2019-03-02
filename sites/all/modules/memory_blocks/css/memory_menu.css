@@ -32,7 +32,7 @@ div#memory-menu {
     padding: 0 15px;
     color: #000;
 }
-.memory-menu-tabs > li > a#memory-contact-link {
+.memory-menu-tabs a#memory-contact-link {
     display: inline-block;
     line-height: 1;
     padding: 7px 12px;
@@ -42,8 +42,9 @@ div#memory-menu {
     color: #fff;
     border: 1px solid #26C6DA;
     box-sizing: border-box;
+    width: auto;
 }
-.memory-menu-tabs > li > a#memory-contact-link:hover {
+.memory-menu-tabs a#memory-contact-link:hover {
     background-color: #fff;
     color: #000;
     border: 1px solid #26C6DA;
