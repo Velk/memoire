@@ -85,11 +85,11 @@ for($i = 0 ; $i < count($nids) ; $i++){
         'destination_path' => $array_taxonomy_tree[$node->field_acti_content_desti['und'][0]['tid']]["path_alias"],
     );
 }
+
+$maxThumbnailsToDisplay = (!empty($all_act_nb_thumbnails)) ? $all_act_nb_thumbnails : 20;
+$maxThumbnailsCounter = 0;
 ?>
 
-<?php
-if(!isset($_GET["activity"])){
-?>
 <div id="container">
     <?php
     if( isset($all_act_image) || isset($all_act_title) ){
@@ -117,72 +117,29 @@ if(!isset($_GET["activity"])){
     ?>
     <div id="all-activities-main">
         <div class="all-activities-container">
-            <?php foreach ($activities_count as $activity_count): ?>
+            <?php
+            foreach ($activities_count as $activity_count){
+
+                if( $maxThumbnailsCounter == $maxThumbnailsToDisplay){
+                    break;
+                }else {
+            ?>
                     <div class="all-act-scop">
-                        <img src="<?php print $activity_count['img_uri']?>"
-                             alt="<?php print $activity_count['img_alt_text']?>"
+                        <img src="<?php print $activity_count['img_uri'] ?>"
+                             alt="<?php print $activity_count['img_alt_text'] ?>"
                              class="all-act-vign-img"
                         />
                         <div class="all-act-datas-container">
                             <h3 class="all-act-stick-title"><?php print $activity_count['title'] ?></h3>
-<!--                            --><?php
-//                            if($activity_count['count'] > 1){
-//                                $current_url = url(current_path(), array('absolute' => TRUE));
-//                            ?>
-<!--<!--                                <a href="-->--><?php ////print $current_url . "?activity=" . $activity_count['title']?><!--<!--" class="all-act-readmore"></a>-->-->
-<!--                            --><?php //}else{ ?>
-<!--                                <p class="all-act-price">--><?php //print $activity_count['price']?><!-- --><?php //isset($activity_count['price']) ? print "€" : ""; ?><!--</p>-->
-<!--<!--                                <a href="-->--><?php ////print $activity_count['path']?><!--<!--" class="all-act-readmore"></a>-->-->
-<!--<!--                                <a href="-->--><?php ////print $activity_count['destination_path']?><!--<!--" class="all-act-readmore"></a>-->-->
-<!--                            --><?php //} ?>
-
-                            <a href="<?php print $base_url . "/activites/" . $activity_count['intermediate_path']?>" class="all-act-readmore"></a>
+                            <a href="<?php print $base_url . "/activites/" . $activity_count['intermediate_path'] ?>"
+                               class="all-act-readmore"></a>
                         </div>
                     </div>
-            <?php endforeach; ?>
+            <?php
+                }
+                $maxThumbnailsCounter++;
+            }
+            ?>
         </div>
     </div>
 </div>
-<?php
-}else{
-$activity_name = $_GET["activity"];
-?>
-<div id="container">
-    <?php
-    if( isset($activities_count[$activity_name]["img_uri"]) || isset($activities_count[$activity_name]["title"]) ){
-
-        echo '<div id="img-container">';
-
-        if( isset($activities_count[$activity_name]["img_uri"]) ){
-            echo '<img src="' . $activities_count[$activity_name]["img_uri"] . '">';
-            echo '<div id="memory-img-filter"></div>';
-        }
-        if( isset($activities_count[$activity_name]["title"]) ){
-            echo '<h2>' . $activities_count[$activity_name]["title"] . '</h2>';
-        }
-
-        echo '</div>';
-    }
-    ?>
-    <div id="all-activities-main">
-        <div class="all-activities-container">
-            <?php foreach ($activities_content[$activity_name] as $activity_content): ?>
-                <div class="all-act-scop">
-                    <img src="<?php print $activity_content['img_uri']?>"
-                         alt="<?php print $activity_content['img_alt_text']?>"
-                         class="all-act-vign-img"
-                    />
-                    <div class="all-act-datas-container">
-                        <h3 class="all-act-stick-title"><?php print $activity_content['title'] ?></h3>
-                        <p class="all-act-price"><?php print $activity_content['price']?> <?php isset($activity_content['price']) ? print "€" : ""; ?></p>
-<!--                        <a href="--><?php //print $activity_content['path']?><!--" class="all-act-readmore"></a>-->
-                        <a href="<?php print $activity_content['destination_path']?>" class="all-act-readmore"></a>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    </div>
-</div>
-<?php
-}
-?>

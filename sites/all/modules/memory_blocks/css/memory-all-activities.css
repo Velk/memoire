@@ -1,7 +1,7 @@
 div#container {
-    position: relative;
-    overflow: hidden;
-}
+     position: relative;
+     overflow: hidden;
+ }
 div#container > #img-container {
     position: relative;
     height: 550px;
@@ -112,3 +112,17 @@ a.all-act-readmore {
     width: 100%;
     z-index: 3;
 }
+
+#all-activities-main > i.fa-spinner {
+    position: relative;
+    margin-top: 25px;
+    left: calc(50% - 13px);
+    font-size: 26px;
+    color: #26C6DA;
+    -webkit-animation:spin 4s linear infinite;
+    -moz-animation:spin 4s linear infinite;
+    animation:spin 4s linear infinite;
+}
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
