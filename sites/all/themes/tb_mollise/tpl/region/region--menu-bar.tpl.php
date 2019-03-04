@@ -278,6 +278,7 @@ if($ip_data && $ip_data->geoplugin_countryName != null){
                         ?>
                     </div>
                     <div id="default-country">
+                        <img src="https://www.memoryvoyage.com/sites/default/files/icons_folder/telephone-of-old-design.png" class="memory-icons">
                         <img src="<?php print $base_url . '/sites/default/files/flags/' . $datas_default_country["id"] . '.png'; ?>"/>
                         <p><?php print $datas_default_country["index"] . " " . $datas_default_country["phone_number"]; ?></p>
                         <i class="fa fa-chevron-down" aria-hidden="true"></i>
