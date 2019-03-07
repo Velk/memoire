@@ -17,7 +17,6 @@ foreach ($taxonomy_tree as $tax_tree){
 //    drupal_set_message("TID : " . $tax_tree->tid . " - Name : " . $tax_tree->name . " - Path : " . drupal_get_path_alias("taxonomy/term/".$tax_tree->tid));
 }
 
-
 /* Load node datas corresponding to activities */
 // Query to retrieve every node with the type "activite"
 $query = new EntityFieldQuery();
@@ -39,7 +38,7 @@ foreach ($entities as $entity) {
     }
 }
 
-$activities_content = array();
+//$activities_content = array();
 
 $activities_count = [];
 
@@ -74,16 +73,16 @@ for($i = 0 ; $i < count($nids) ; $i++){
     $activities_count[$node->field_activity_title['und'][0]['value']]["destination_path"] = $array_taxonomy_tree[$node->field_acti_content_desti['und'][0]['tid']]["path_alias"];
     $activities_count[$node->field_activity_title['und'][0]['value']]["intermediate_path"] = $clean_string_to_url;
 
-    $activities_content[$node->field_activity_title['und'][0]['value']][$node->vid] = array(
-        'title' => $node->field_activity_title['und'][0]['value'],
-        'img_alt_text' => $node->field_img_activite['und'][0]['field_file_image_alt_text']['und'][0]['value'],
-        'img_uri' => $img_url_activity,
-        'price' => $node->field_price_prestation['und'][0]['value'],
-        'vid' => $node->vid,
-        'path' => $base_url."/".drupal_get_path_alias('node/'.$node->vid),
-        'destination' => $array_taxonomy_tree[$node->field_acti_content_desti['und'][0]['tid']]["name"],
-        'destination_path' => $array_taxonomy_tree[$node->field_acti_content_desti['und'][0]['tid']]["path_alias"],
-    );
+//    $activities_content[$node->field_activity_title['und'][0]['value']][$node->vid] = array(
+//        'title' => $node->field_activity_title['und'][0]['value'],
+//        'img_alt_text' => $node->field_img_activite['und'][0]['field_file_image_alt_text']['und'][0]['value'],
+//        'img_uri' => $img_url_activity,
+//        'price' => $node->field_price_prestation['und'][0]['value'],
+//        'vid' => $node->vid,
+//        'path' => $base_url."/".drupal_get_path_alias('node/'.$node->vid),
+//        'destination' => $array_taxonomy_tree[$node->field_acti_content_desti['und'][0]['tid']]["name"],
+//        'destination_path' => $array_taxonomy_tree[$node->field_acti_content_desti['und'][0]['tid']]["path_alias"],
+//    );
 }
 
 $maxThumbnailsToDisplay = (!empty($all_act_nb_thumbnails)) ? $all_act_nb_thumbnails : 20;

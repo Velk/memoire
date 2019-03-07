@@ -1,87 +1,122 @@
 <?php
 
-/* Define pages intended to contain filters */
+/* ------------------------------------- SPECIAL FILTERS & INTERMEDIATE PAGE ------------------------------------- */
+// Get the current path of the page : taxonomy/term/[tid]
+$current_path = current_path();
+// Retrieve the tid
+$taxonomy_tid = explode("taxonomy/term/", $current_path)[1];
+// Load the taxonomy term by its tid
+$taxonomy_term_load = taxonomy_term_load($taxonomy_tid);
+// Retrieve the boolean value of special filters
+$bool_is_special_filters = $taxonomy_term_load->field_is_special_filters[0]["value"];
+// Retrieve the boolean value of special filters
+$bool_is_intermediate_page = $taxonomy_term_load->field_is_intermediate_page[0]["value"];
 
-// Get every terms in the taxonomy vocabulary activity_categories
-$vocabulary_act_cat = taxonomy_vocabulary_machine_name_load('activity_categories');
-$terms_act_cat = entity_load('taxonomy_term', FALSE, array('vid' => $vocabulary_act_cat->vid));
+/* -------------------------------------------------- CONTENT -------------------------------------------------- */
+global $base_url;
 
-$array_tid_filters_pages = array();
+if (!empty($content['field_category_activities_img'])) {
+    $img_head_url = file_create_url($content['field_category_activities_img']['#items'][0]['file']->uri);
+}
 
-// Browse each term in order to retrieve the tid of the term wished
-foreach ($terms_act_cat as $term_act_cat){
+// Retrieve the taxonomy ID
+$tid = key(taxonomy_get_term_by_name($term_name));
 
-    if(
-        $term_act_cat->name == "EVG (Enterrements de vie de garçon)" ||
-        $term_act_cat->name == "EVJF (Enterrements de vie de jeune fille)"
-    ){
-        // Set the tid for the special pages containing filters
-        $array_tid_filters_pages[$term_act_cat->tid] = array('tid' => $term_act_cat->tid);
+// Retrieve an array containing nodes ID belonging to the activity category
+$nids = taxonomy_select_nodes($tid, FALSE);
+
+/* Get activities filters depending on activite taxonomy */
+$vocabulary = taxonomy_vocabulary_machine_name_load('activite');
+$v_activities = entity_load('taxonomy_term', FALSE, array('vid' => $vocabulary->vid));
+
+$nb_act = count($v_activities);
+$activities = array();
+$count = 0;
+for ($i = 0; $count < $nb_act; $i++) {
+    if (!empty($v_activities[$i])){
+        if ($v_activities[$i]->weight == $count) {
+            $activities[$i] = $v_activities[$i];
+            $count++;
+            $i = 0;
+        }
     }
 }
 
-$isSpecialPageWithFilters = false;
+$cnt = array();
 
-foreach ($array_tid_filters_pages as $array_tid_filters_page) {
-    // Check if the page is a special page
-    if (current_path() == "taxonomy/term/" . $array_tid_filters_page["tid"]) {
-        $isSpecialPageWithFilters = true;
-    }
-}
-?>
+foreach ($nids as $nid) {
 
-<?php
-if($isSpecialPageWithFilters){
- ?>
-        <?php
-        /* Special : With filters */
-        global $base_url;
-        if (!empty($content['field_category_activities_img'])) {
-            $img_head_url = file_create_url($content['field_category_activities_img']['#items'][0]['file']->uri);
-        }
-        $tid = key(taxonomy_get_term_by_name($term_name));
-        $nids = taxonomy_select_nodes($tid, FALSE);
-        $vocabulary = taxonomy_vocabulary_machine_name_load('activite');
-        $v_activities = entity_load('taxonomy_term', FALSE, array('vid' => $vocabulary->vid));
+    $node = node_load($nid);
 
-        $nb_act = count($v_activities);
-        $activities = array();
-        $count = 0;
-        for ($i = 0; $count < $nb_act; $i++) {
-            if (!empty($v_activities[$i])){
-                if ($v_activities[$i]->weight == $count) {
-                    $activities[$i] = $v_activities[$i];
-                    $count++;
-                    $i = 0;
-                }
-            }
-        }
+    $activity_weight = ( empty($node->field_weight['und']['0']['value']) ) ? 0 : $node->field_weight['und']['0']['value'];
+    $img_url = file_create_url($node->field_img_activite['und']['0']['uri']);
 
-        $cnt = array();
+    if($bool_is_special_filters == 1) {
 
-        foreach ($nids as $nid) {
+        if($bool_is_intermediate_page == 1){
 
-//            foreach($node->field_acti_cont_cat['und'] as $cat) {
-//                $img_url = file_create_url($node->field_img_activite['und']['0']['uri']);
-//                $cnt[$cat['tid']][$node->vid] = array(
-//                    'title' => $node->field_activity_title['und']['0']['value'],
-//                    'img_name' => $node->field_img_activite['und']['0']['filename'],
-//                    'img_uri' => $img_url,
-//                    'price' => $node->field_price_prestation['und']['0']['value'],
-//                    'node' => $node->vid,
-//                    'path' => $base_url."/".drupal_get_path_alias('node/'.$node->vid),
-//                );
-//            }
+            // Page WITH special filters & WITH intermediate page
 
-            $node = node_load($nid);
+            // Clean the title of the node (activity) to use as a part of the URL
+            $clean_string_to_url = pathauto_cleanstring($node->field_activity_title['und']['0']['value']);
 
             $group_activity_tid = $node->field_acti_cont_cat['und']['0']['tid'];
-            $activity_weight = ( empty($node->field_weight['und']['0']['value']) ) ? 0 : $node->field_weight['und']['0']['value'];
-            $img_url = file_create_url($node->field_img_activite['und']['0']['uri']);
-
             $cnt[$group_activity_tid][$activity_weight][$node->field_activity_title['und']['0']['value']] = array(
                 'title' => $node->field_activity_title['und']['0']['value'],
-//                'title_cleaned' => pathauto_cleanstring($node->field_activity_title['und']['0']['value']),
+                // 'title_cleaned' => pathauto_cleanstring($node->field_activity_title['und']['0']['value']),
+                'img_name' => $node->field_img_activite['und']['0']['filename'],
+                'img_uri' => $img_url,
+                'price' => $node->field_price_prestation['und']['0']['value'],
+                'node' => $node->vid,
+                'path' => $base_url . "/" . drupal_get_path_alias('node/' . $node->vid),
+                'weight' => $activity_weight,
+                'intermediate_path' => $base_url . "/activites/" . $clean_string_to_url,
+            );
+
+        }else{
+
+            // Page WITH special filters & WITHOUT intermediate page
+            $group_activity_tid = $node->field_acti_cont_cat['und']['0']['tid'];
+            $cnt[$group_activity_tid][$activity_weight][$node->field_activity_title['und']['0']['value']] = array(
+                'title' => $node->field_activity_title['und']['0']['value'],
+                // 'title_cleaned' => pathauto_cleanstring($node->field_activity_title['und']['0']['value']),
+                'img_name' => $node->field_img_activite['und']['0']['filename'],
+                'img_uri' => $img_url,
+                'price' => $node->field_price_prestation['und']['0']['value'],
+                'node' => $node->vid,
+                'path' => $base_url . "/" . drupal_get_path_alias('node/' . $node->vid),
+                'weight' => $activity_weight,
+            );
+        }
+    }else{
+
+        if($bool_is_intermediate_page == 1){
+
+            // Page WITHOUT special filters & WITH intermediate page
+
+            // Clean the title of the node (activity) to use as a part of the URL
+            $clean_string_to_url = pathauto_cleanstring($node->field_activity_title['und']['0']['value']);
+
+            $cnt[$activity_weight][$node->field_activity_title['und']['0']['value']] = array(
+                'title' => $node->field_activity_title['und']['0']['value'],
+                'title_cleaned' => pathauto_cleanstring($node->field_activity_title['und']['0']['value']),
+                'img_alt_text' => $node->field_img_activite['und'][0]['field_file_image_alt_text']['und'][0]['value'],
+                'img_name' => $node->field_img_activite['und']['0']['filename'],
+                'img_uri' => $img_url,
+                'price' => $node->field_price_prestation['und']['0']['value'],
+                'node' => $node->vid,
+                'path' => $base_url."/".drupal_get_path_alias('node/'.$node->vid),
+                'weight' => $activity_weight,
+                'intermediate_path' => $base_url . "/activites/" . $clean_string_to_url,
+            );
+
+        }else{
+
+            // Page WITHOUT special filters & WITHOUT intermediate page
+            $cnt[$activity_weight][$node->field_activity_title['und']['0']['value']] = array(
+                'title' => $node->field_activity_title['und']['0']['value'],
+                'title_cleaned' => pathauto_cleanstring($node->field_activity_title['und']['0']['value']),
+                'img_alt_text' => $node->field_img_activite['und'][0]['field_file_image_alt_text']['und'][0]['value'],
                 'img_name' => $node->field_img_activite['und']['0']['filename'],
                 'img_uri' => $img_url,
                 'price' => $node->field_price_prestation['und']['0']['value'],
@@ -90,8 +125,14 @@ if($isSpecialPageWithFilters){
                 'weight' => $activity_weight,
             );
         }
+    }
+}
 
-        ?>
+?>
+
+<?php
+if($bool_is_special_filters == 1){
+?>
         <div id="act-cat">
             <div class="act-cat-head">
                 <div id="act-cat-head-img-container">
@@ -183,7 +224,7 @@ if($isSpecialPageWithFilters){
                                         <div class="act-cat-datas-container">
                                             <h3 class="act-cat-stick-title"><?php print $cnt_act_sorted['title'] ?></h3>
                                             <p class="act-cat-price"><?php print $cnt_act_sorted['price']?> <?php isset($cnt_act_sorted['price']) ? print "€" : ""; ?></p>
-                                            <a href="<?php print $cnt_act_sorted['path']?>" class="act-cat-readmore"></a>
+                                            <a href="<?php print ($bool_is_intermediate_page == 1) ? $cnt_act_sorted['intermediate_path'] : $cnt_act_sorted['path'] ?>" class="act-cat-readmore"></a>
                                             <?php
                                             $query = db_select('node', 'n');
                                             $query->fields('n', array('nid', 'title'));
@@ -281,90 +322,20 @@ if($isSpecialPageWithFilters){
 <?php
 }else{
 ?>
-        <?php
-        /* Page content */
-
-        global $base_url;
-
-        $activity_category_content = array();
-
-        // Retrieve the fid (image ID) of the activity category
-        $fid_activity_category = $content['field_category_activities_img']['#object']->field_category_activities_img[0]['fid'];
-
-        if( isset($fid_activity_category) ){
-
-            // Load image by its fid
-            $file = file_load($fid_activity_category);
-            $img_url_activity_category = file_create_url($file->uri);
-        }
-
-        $activity_category_content = array(
-            'title' => $term_name,
-            'img_alt_text' =>  $content['field_category_activities_img']['#object']->field_category_activities_img[0]['field_file_image_alt_text'],
-            'img_uri' => $img_url_activity_category,
-            'description' => $content['description']['#markup'],
-        );
-
-        // Retrieve the taxonomy ID
-        $tid = key(taxonomy_get_term_by_name($term_name));
-
-        // Retrieve an array containing nodes ID belonging to the activity category
-        $nids = taxonomy_select_nodes($tid, FALSE);
-
-        $activities_content = array();
-
-        foreach ($nids as $nid) {
-
-            $node = node_load($nid);
-
-            $activity_weight = ( empty($node->field_weight['und']['0']['value']) ) ? 0 : $node->field_weight['und']['0']['value'];
-            $img_url = file_create_url($node->field_img_activite['und']['0']['uri']);
-
-            $activities_content[$activity_weight][$node->field_activity_title['und']['0']['value']] = array(
-                'title' => $node->field_activity_title['und']['0']['value'],
-                'title_cleaned' => pathauto_cleanstring($node->field_activity_title['und']['0']['value']),
-                'img_alt_text' => $node->field_img_activite['und'][0]['field_file_image_alt_text']['und'][0]['value'],
-                'img_name' => $node->field_img_activite['und']['0']['filename'],
-                'img_uri' => $img_url,
-                'price' => $node->field_price_prestation['und']['0']['value'],
-                'node' => $node->vid,
-                'path' => $base_url."/".drupal_get_path_alias('node/'.$node->vid),
-                'weight' => $activity_weight,
-            );
-        }
-
-        /* Get activities filters depending on activite taxonomy */
-        $vocabulary = taxonomy_vocabulary_machine_name_load('activite');
-        $v_activities = entity_load('taxonomy_term', FALSE, array('vid' => $vocabulary->vid));
-
-        $nb_act = count($v_activities);
-        $activities = array();
-        $count = 0;
-        for ($i = 0; $count < $nb_act; $i++) {
-            if (!empty($v_activities[$i])){
-                if ($v_activities[$i]->weight == $count) {
-                    $activities[$i] = $v_activities[$i];
-                    $count++;
-                    $i = 0;
-                }
-            }
-        }
-
-        ?>
         <div id="act-cat">
-            <div class="act-cat-head-head">
+            <div class="act-cat-head">
                 <div id="act-cat-head-img-container">
-                    <h2 class="act-cat-head-title"><?php print $activity_category_content['title']; ?></h2>
-                    <?php if(!empty($activity_category_content['img_uri'])): ?>
-                        <img src="<?php print $activity_category_content['img_uri'];?>"
-                             alt="<?php print $activity_category_content['img_alt_text']?>"
+                    <h2 class="act-cat-head-title"><?php print $content['field_category_activities_title']['#items'][0]['value']; ?></h2>
+                    <?php if(!empty($content['field_category_activities_img'])): ?>
+                        <img src="<?php print $img_head_url;?>"
+                             alt="<?php print $content['field_category_activities_img']['#items'][0]['filename']?>"
                              class="act-cat-head-img"
                              style="width:100%;"
                         />
                     <?php endif; ?>
                 </div>
                 <div id="act-cat-head-desc">
-                    <?php print $activity_category_content['description']; ?>
+                    <?php print $content['description']['#markup']; ?>
                 </div>
             </div>
             <div id="act-cat-main">
@@ -372,9 +343,9 @@ if($isSpecialPageWithFilters){
                     <?php
 
                     // Sort array by activity weight
-                    ksort($activities_content);
+                    ksort($cnt);
 
-                    foreach ($activities_content as $act_weight_sorted){
+                    foreach ($cnt as $act_weight_sorted){
 
                         // Sort array by activity name
                         ksort($act_weight_sorted);
@@ -390,7 +361,7 @@ if($isSpecialPageWithFilters){
                             <div class="act-cat-datas-container">
                                 <h3 class="act-cat-stick-title"><?php print $act_sorted['title'] ?></h3>
                                 <p class="act-cat-price"><?php print $act_sorted['price']?> <?php isset($act_sorted['price']) ? print "€" : ""; ?></p>
-                                <a href="<?php print $act_sorted['path']?>" class="act-cat-readmore"></a>
+                                <a href="<?php print ($bool_is_intermediate_page == 1) ? $act_sorted['intermediate_path'] : $act_sorted['path'] ?>" class="act-cat-readmore"></a>
                             </div>
                         </div>
                     <?php

@@ -88,17 +88,6 @@ for($i = 0 ; $i < count($nids) ; $i++){
     );
 }
 
-//foreach ($activities_content as $activity_content){
-//
-//     if($activity_content["intermediate_path"] == $url_path){
-//
-//        drupal_set_message("Title : " . $activity_content["title"]);
-//        drupal_set_message("Destination : " . $activity_content["destination"]);
-//        drupal_set_message("Destination path : " . $activity_content["destination_path"]);
-//        drupal_set_message("Destination image : " . $activity_content["destination_image"]);
-//        drupal_set_message("------------------------------------------------------");
-//    }
-//}
 ?>
 
 <div id="container">
