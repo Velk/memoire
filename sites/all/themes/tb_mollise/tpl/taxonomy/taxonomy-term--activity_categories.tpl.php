@@ -1,6 +1,4 @@
 <?php
-global $base_url;
-global $user;
 
 /* ------------------------------------- SPECIAL FILTERS & INTERMEDIATE PAGE ------------------------------------- */
 // Get the current path of the page : taxonomy/term/[tid]
@@ -10,11 +8,12 @@ $taxonomy_tid = explode("taxonomy/term/", $current_path)[1];
 // Load the taxonomy term by its tid
 $taxonomy_term_load = taxonomy_term_load($taxonomy_tid);
 // Retrieve the boolean value of special filters
-$bool_is_special_filters = $content['field_is_special_filters']['#items'][0]['value'];
-// Retrieve the boolean value of intermediate page
-$bool_is_intermediate_page = $content['field_is_intermediate_page']['#items'][0]['value'];
+$bool_is_special_filters = $taxonomy_term_load->field_is_special_filters[0]["value"];
+// Retrieve the boolean value of special filters
+$bool_is_intermediate_page = $taxonomy_term_load->field_is_intermediate_page[0]["value"];
 
 /* -------------------------------------------------- CONTENT -------------------------------------------------- */
+global $base_url;
 
 if (!empty($content['field_category_activities_img'])) {
     $img_head_url = file_create_url($content['field_category_activities_img']['#items'][0]['file']->uri);
