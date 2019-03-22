@@ -107,7 +107,6 @@ function memory_blocks_menu() {
         'type' => MENU_NORMAL_ITEM,
     );
 
-<<<<<<< HEAD
     $items['admin/memory/all-activities-page-manager'] = array(
         'title' => t('Memory - All activities page'),
         'description' => t('Memory - All activities page'),
@@ -134,8 +133,6 @@ function memory_blocks_menu() {
         'type' => MENU_CALLBACK,
     );
 
-=======
->>>>>>> 18d926a4b4fecfbb216596f6673a8ae07b533588
     return $items;
 }
 
@@ -1967,7 +1964,6 @@ function tb_mollise_preprocess(&$vars) {
     $all_dest_description = variable_get('all_dest_description', array());
     $vars['all_dest_description'] = $all_dest_description['value'];
 
-<<<<<<< HEAD
     /* All activities page */
 
     /*
@@ -2024,8 +2020,6 @@ function tb_mollise_preprocess(&$vars) {
             $vars[$var_cleaned_title . "_ip_description"] = $intermediate_page["ip_description"]["value"];
         }
     }
-=======
->>>>>>> 18d926a4b4fecfbb216596f6673a8ae07b533588
 }
 
 function memory_blocks_activity_categories_admin_form($form, &$form_state){
@@ -2161,7 +2155,6 @@ function memory_blocks_all_destinations_page_admin_form($form, &$form_state){
 
     return system_settings_form($form);
 }
-<<<<<<< HEAD
 
 function memory_blocks_intermediate_page_admin_form($form, &$form_state){
 
@@ -2223,5 +2216,3 @@ function memory_blocks_intermediate_page_admin_form($form, &$form_state){
 
     return system_settings_form($form);
 }
-=======
->>>>>>> 18d926a4b4fecfbb216596f6673a8ae07b533588
