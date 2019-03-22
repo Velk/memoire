@@ -1,0 +1,62 @@
+div#block-memory-blocks-memory-switch-activities {
+    padding: 0;
+    margin: 15px 0 50px 0;
+    width: 100%;
+    position: relative;
+}
+
+div#memory-switch-act-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 80%;
+    margin: auto;
+}
+
+div.memory-switch-act {
+    background-color: #26c6da;
+    border-radius: 0;
+    position: relative;
+    text-transform: uppercase;
+    font-weight: bold;
+    box-shadow: 0px 2px 5px #cacaca;
+}
+div.memory-switch-act:hover {
+    background-color: #1d8a98;
+    cursor: pointer;
+}
+
+div.memory-switch-act > a {
+    color: #fff;
+    font-size: 12px;
+    display: block;
+    padding: 7px 15px;
+}
+
+div.memory-switch-act > a > i {
+    color: #fff;
+    font-size: 12px;
+}
+
+div#memory-previous-act i {
+    margin-right: 10px;
+}
+div#memory-next-act i {
+    margin-left: 10px;
+}
+
+div#memory-destination {
+    box-sizing: border-box;
+    margin: 0 25px;
+    padding: 0 20px;
+}
+
+div#memory-previous-act {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+div#memory-next-act {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}

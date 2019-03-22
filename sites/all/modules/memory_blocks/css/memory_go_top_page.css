@@ -1,7 +1,7 @@
 div#block-memory-blocks-memory-go-top-page {
     position: fixed;
     bottom: 15px;
-    right: 15px;
+    right: 45px;
     margin: 0;
     padding: 0;
     z-index: 999;
@@ -20,6 +20,7 @@ button#go-top-page {
     margin: 0;
     padding: 0;
     background-color: rgba(255, 255, 255, .5);
+    cursor: pointer;
 }
 
 button#go-top-page > i {
