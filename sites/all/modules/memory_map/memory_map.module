@@ -122,8 +122,6 @@ function memory_map_block_view($delta = '') {
 
 function memory_blocks_world_map_admin_form($form, &$form_state){
 
-    global $base_url;
-
     $form['world_map_title'] = array(
         '#type' => 'textfield',
         '#default_value' => variable_get('world_map_title', ''),
@@ -1246,7 +1244,6 @@ function memory_blocks_world_map_admin_form($form, &$form_state){
         );
 
         $form['countries_list']['country_'.$increment]['redirect_link'] = array(
-            '#field_prefix' => $base_url,
             '#type' => 'textfield',
             '#title' => t('Lien de redirection'),
             '#default_value' => $countries_list['country_'.$increment]['redirect_link'],

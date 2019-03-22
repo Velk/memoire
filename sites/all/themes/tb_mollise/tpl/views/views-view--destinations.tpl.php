@@ -78,13 +78,7 @@
                                 <?php if(!empty($cntry[2])): ?>
                                     <ul class="city">
                                         <?php foreach($cntry[2] as $place): ?>
-                                            <?php
-                                            // Get the taxonomy term tid
-                                            $city_term_tid = $place[1];
-                                            // Get the path alias for the place
-                                            $city_path = drupal_get_path_alias("taxonomy/term/" . $city_term_tid);
-                                            ?>
-                                            <li><a href=<?php print strtolower($base_url . '/' . $city_path); ?>><?php print $place[0] ?></a></li>
+                                            <li><a href=<?php print strtolower(current_path()."/".$place[0]); ?>><?php print $place[0] ?></a></li>
                                         <?php endforeach; ?>
                                     </ul>
                                 <?php endif; ?>

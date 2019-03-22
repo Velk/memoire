@@ -24,7 +24,7 @@
 
             /* Click behavior */
 
-            $("button#go-top-page").click(function(){
+            $("button#go-top-page > i").click(function(){
 
                 $("html, body").stop().animate({ scrollTop: 0 }, 600);
             });
