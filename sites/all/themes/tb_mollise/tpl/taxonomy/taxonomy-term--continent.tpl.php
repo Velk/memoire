@@ -42,9 +42,10 @@
             'img_name' => $node->field_img_activite['und']['0']['filename'],
             'img_uri' => $img_url,
             'price' => $node->field_price_prestation['und']['0']['value'],
-            'node' => $node->vid,
+            'node_vid' => $node->vid,
             'path' => $base_url."/".drupal_get_path_alias('node/'.$node->vid),
             'weight' => $activity_weight,
+            'group_act_cat' => $group_activity_tid,
         );
     }
 ?>
@@ -71,7 +72,7 @@
         <?php
         foreach($activities as $activity){
             if( isset( $cnt[$activity->tid] ) ) {
-                echo '<div class="cont-filter">';
+                echo '<div class="cont-filter cont-filter-' . $activity->tid . '">';
                 switch ($activity->name) {
                     case "Activités de jour" :
                         print '<p><i class="fa fa-sun-o" aria-hidden="true"></i>' . $activity->name . '</p>';
@@ -137,8 +138,21 @@
                                      class="cont-vign-img"
                                 />
                                 <div class="cont-datas-container" id="<?php print $cnt_act_sorted['title_cleaned'] ?>">
+                                    <input type="hidden" class="cont-act-nid" value="<?php print $cnt_act_sorted['node_vid'] ?>">
+                                    <input type="hidden" class="cont-act-cat" value="<?php print $cnt_act_sorted['group_act_cat'] ?>">
                                     <h3 class="cont-stick-title"><?php print $cnt_act_sorted['title'] ?></h3>
                                     <p class="cont-price"><?php print $cnt_act_sorted['price'] ?><?php isset($cnt_act_sorted['price']) ? print "€" : ""; ?></p>
+
+                                    <?php
+                                    if( isset($cnt_act_sorted['price']) ){
+                                    ?>
+                                        <button class="cont-add-cart" type="button">
+                                            <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                                        </button>
+                                    <?php
+                                    }
+                                    ?>
+
                                     <a href="<?php print $cnt_act_sorted['path'] ?>" class="cont-readmore"></a>
                                     <?php
                                     $query = db_select('node', 'n');
