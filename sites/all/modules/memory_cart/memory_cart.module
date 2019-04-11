@@ -1,13 +1,13 @@
 <?php
 
-///**
-// * Implementation of hook_menu()
-// *
-// * @return array
-// */
-//function memory_cart_menu() {
-//    $items = array();
-//
+/**
+ * Implementation of hook_menu()
+ *
+ * @return array
+ */
+function memory_cart_menu() {
+    $items = array();
+
 //    $items['map'] = array(
 //        'title' => t('Memory map'),
 //        'description' => t('Memory - map'),
@@ -15,9 +15,56 @@
 //        'access callback' => TRUE,
 //        'type' => MENU_NORMAL_ITEM,
 //    );
-//
-//    return $items;
-//}
+
+    // Ajax Callback to display activities thumbnails in all activities page.
+    $items['destinations/ajax/cart'] = array(
+        'title' => 'Ajax callback',
+        'page callback' => 'ajax_add_activity_to_cart',
+        'access arguments' => array('access content'),
+        'type' => MENU_CALLBACK,
+    );
+
+    return $items;
+}
+
+function ajax_add_activity_to_cart(){
+
+    global $base_url;
+
+    $activity_nid = $_POST['actNid'];
+    $activity_title = $_POST['actTitle'];
+
+    $node_load = node_load($activity_nid);
+
+    /*
+    Check authenticity of the asked activity.
+    If the title get by the nid isn't the same as the thumbnail title send by ajax,
+    it will say that the user change either the nid either the title
+    */
+    if( $node_load->title == $activity_title ){
+
+        // Get the Destination field value of the activity
+        $activity_field_img = field_get_items("node", $node_load, "field_img_activite");
+        // Get the destination TID
+        $activity_img_url = file_create_url($activity_field_img[0]["uri"]);
+        ;
+
+        $arrayCartActivity = array(
+            "nid" => $node_load->nid,
+            "title" => $node_load->title,
+            "image" => $activity_img_url,
+        );
+
+//        drupal_set_message("<pre>" . print_r($arrayCartActivity, true) . "</pre>");
+
+        drupal_json_output($arrayCartActivity);
+    }else{
+
+        drupal_json_output("Les données demandées ne sont pas intègres");
+    }
+
+
+}
 
 /**
  * Implement hook_theme()
@@ -49,7 +96,7 @@ function memory_cart_block_info() {
         'status' => 1,
         'region' => 'content',
         'visibility' => BLOCK_VISIBILITY_LISTED,
-        'pages' => 'product/*',
+        'pages' => 'destinations/*',
     );
 
     return $blocks;

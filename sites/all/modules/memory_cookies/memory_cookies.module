@@ -1,0 +1,198 @@
+<?php
+
+/**
+ * Implementation of hook_menu()
+ *
+ * @return array
+ */
+function memory_cookies_menu() {
+    $items = array();
+
+    $items['admin/memory/cookies'] = array(
+        'title' => t('Memory - Cookies'),
+        'description' => t('Memory - Cookies manager'),
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('memory_cookies_admin_cookies_manager'),
+        'access arguments' => array('administer site configuration'),
+        'type' => MENU_NORMAL_ITEM,
+    );
+
+    // Ajax Callback to set cookies
+    $items['cookies/preferences'] = array(
+        'title' => 'Ajax callback',
+        'page callback' => 'ajax_set_cookies',
+        'access arguments' => array('access content'),
+        'type' => MENU_CALLBACK,
+    );
+
+    return $items;
+}
+
+function ajax_set_cookies(){
+
+    $isAcceptCookies = $_POST['acceptCookies'];
+
+    if($isAcceptCookies){
+
+        $validityNbDays = intval(variable_get('cookies_nb_day_validity'));
+        $validityNbDays = (isset($validityNbDays)) ? $validityNbDays : 0;
+        $validityNbDays = (60*60*24*$validityNbDays);
+
+        setcookie("isCookiesAccept", true, time() + $validityNbDays, '/');
+
+        drupal_json_output(true);
+    }else{
+
+        drupal_json_output(false);
+    }
+
+}
+
+/**
+ * @param $form
+ * @param $form_state
+ * @return mixed
+ */
+function memory_cookies_admin_cookies_manager($form, &$form_state) {
+
+    $form['cookies_nb_day_validity'] = array(
+        '#type' => 'textfield',
+        '#attributes' => array(
+            ' type' => 'number',
+        ),
+        '#default_value' => variable_get('cookies_nb_day_validity', 0),
+        '#title' => t('Validité du cookie - Nombre de jours'),
+        '#description' => t('Nombre de jours de validité du cookie. Si 0, alors le cookie expire lorsque le navigateur est fermé.'),
+        '#weight' => 0,
+    );
+
+    $cookies_description = variable_get('cookies_description', array());
+
+    $form['cookies_description'] = array(
+        '#type' => 'text_format',
+        '#format' => 'wysiwyg',
+        '#default_value' => $cookies_description['value'],
+        '#title' => t('Description'),
+        '#weight' => 1,
+    );
+
+    $form['cookies_accept_btn_text'] = array(
+        '#type' => 'textfield',
+        '#default_value' => variable_get('cookies_accept_btn_text', 'OK'),
+        '#title' => t('Bouton d\'acceptation - Texte'),
+        '#weight' => 2,
+    );
+
+    $form['cookies_deny_btn_is_display'] = array(
+        '#type' => 'radios',
+        '#title' => t('Bouton de refus - Affichage'),
+        '#default_value' => variable_get('cookies_deny_btn_is_display', 1),
+        '#options' => array(
+            0 => t('Non'),
+            1 => t('Oui')
+        ),
+        '#weight' => 3,
+    );
+
+    $form['cookies_deny_btn_text'] = array(
+        '#type' => 'textfield',
+        '#default_value' => variable_get('cookies_deny_btn_text', 'Je refuse'),
+        '#title' => t('Bouton de refus - Texte'),
+        '#weight' => 4,
+    );
+
+    $form['cookies_deny_btn_redirection'] = array(
+        '#type' => 'textfield',
+        '#default_value' => variable_get('cookies_deny_btn_redirection', 'https://www.google.com/'),
+        '#title' => t('Bouton de refus - URL de redirection'),
+        '#weight' => 5,
+        '#maxlength' => 512,
+    );
+
+    return system_settings_form($form);
+}
+
+
+/**
+ * Implement hook_theme()
+ *
+ * @param $existing
+ * @param $type
+ * @param $theme
+ * @param $path
+ * @return array
+ */
+function memory_cookies_theme($existing, $type, $theme, $path) {
+    return array(
+        'tpl_memory_cookies' => array(
+            'template' => 'tpl/memory_cookies',
+            'path' => drupal_get_path('module', 'memory_cookies'),
+            'variables' => array('infos' => NULL),
+        ),
+    );
+}
+
+/**
+ * @return mixed
+ */
+function memory_cookies_block_info() {
+
+    $blocks['memory_cookies'] = array(
+        'info' => t('Memory cookies'),
+        'weight' => 1,
+        'status' => 1,
+        'region' => 'content',
+        'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+        'pages' => 'admin/*',
+    );
+
+    return $blocks;
+}
+
+/**
+ * @param string $delta
+ * @return array
+ * @throws Exception
+ */
+function memory_cookies_block_view($delta = '') {
+
+    $block = array();
+
+    switch ($delta) {
+        case 'memory_cookies':
+
+            $isAcceptCookies = $_COOKIE['isCookiesAccept'];
+
+            if(
+                !isset($isAcceptCookies) ||
+                $isAcceptCookies == false
+            ){
+
+                $cookies_description = variable_get('cookies_description', array());
+                $data['cookies_description'] = $cookies_description['value'];
+                $data['cookies_accept_btn_text'] = variable_get('cookies_accept_btn_text');
+                $data['cookies_deny_btn_is_display'] = variable_get('cookies_deny_btn_is_display');
+                $data['cookies_deny_btn_text'] = variable_get('cookies_deny_btn_text');
+                $data['cookies_deny_btn_redirection'] = variable_get('cookies_deny_btn_redirection');
+
+                // Link the template
+                $block['content']['#markup'] = theme('tpl_memory_cookies', $data);
+
+                // Link a css file
+                $block['content']['#attached']['css'][] = array(
+                    'data' => drupal_get_path('module', 'memory_cookies').'/css/memory_cookies.css',
+                    'type' => 'file'
+                );
+
+                // Link a js file
+                $block['content']['#attached']['js'][] = array(
+                    'data' => drupal_get_path('module', 'memory_cookies').'/js/memory_cookies.js',
+                    'type' => 'file'
+                );
+            }
+
+            break;
+    }
+
+    return $block;
+}
