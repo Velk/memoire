@@ -1,7 +1,7 @@
 div#container {
-     position: relative;
-     overflow: hidden;
- }
+    position: relative;
+    overflow: hidden;
+}
 div#container > #img-container {
     position: relative;
     height: 550px;
@@ -40,19 +40,19 @@ div#description-container {
 }
 
 /* All activities - Main */
-div#all-activities-main {
+div#act-dest-main {
     position: relative;
     width: 75%;
     margin: 75px auto;
 }
 
-.all-activities-container {
+.act-dest-container {
     display: grid;
     grid-template-columns: repeat(4, calc(25% - (20px*3)/4));
     grid-gap: 20px;
 }
 
-.all-act-scop {
+.act-dest-scop {
     position: relative;
     width: 100%;
     cursor: pointer;
@@ -61,7 +61,7 @@ div#all-activities-main {
     overflow: hidden;
 }
 
-.all-act-datas-container {
+.act-dest-datas-container {
     position: relative;
     width: 100%;
     height: 100%;
@@ -69,7 +69,7 @@ div#all-activities-main {
     background-image: -webkit-linear-gradient(-90deg, rgba(0,0,0,0.4), rgba(255,255,255,0));
 }
 
-h3.all-act-stick-title {
+h3.act-dest-stick-title {
     position: absolute;
     width: calc(100% - 50px);
     text-align: left;
@@ -82,28 +82,28 @@ h3.all-act-stick-title {
     z-index: 2;
     color: #fff;
 }
-.all-act-vign-img {
+.act-dest-vign-img {
     position: absolute;
     left: 50%;
     width: auto;
     height: 100%;
     transform: translateX(-50%);
 }
-p.all-act-price {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    color: #fff;
-    font-weight: bold;
-    font-size: 18px;
-    margin: 0;
-    padding: 10px 15px;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    z-index: 2;
-}
-a.all-act-readmore {
+/*p.all-act-price {*/
+    /*position: absolute;*/
+    /*bottom: 0;*/
+    /*right: 0;*/
+    /*color: #fff;*/
+    /*font-weight: bold;*/
+    /*font-size: 18px;*/
+    /*margin: 0;*/
+    /*padding: 10px 15px;*/
+    /*-webkit-box-sizing: border-box;*/
+    /*-moz-box-sizing: border-box;*/
+    /*box-sizing: border-box;*/
+    /*z-index: 2;*/
+/*}*/
+a.act-dest-readmore {
     position: absolute;
     top: 0;
     left: 0;
@@ -112,17 +112,3 @@ a.all-act-readmore {
     width: 100%;
     z-index: 3;
 }
-
-#all-activities-main > i.fa-spinner {
-    position: relative;
-    margin-top: 25px;
-    left: calc(50% - 13px);
-    font-size: 26px;
-    color: #26C6DA;
-    -webkit-animation:spin 4s linear infinite;
-    -moz-animation:spin 4s linear infinite;
-    animation:spin 4s linear infinite;
-}
-@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
-@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
-@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
