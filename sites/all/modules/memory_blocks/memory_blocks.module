@@ -2044,7 +2044,7 @@ function memory_blocks_slider_admin_form($form, &$form_state){
     return system_settings_form($form);
 }
 
-/* ADD Preprocess function */
+/* Preprocess function */
 
 function memory_blocks_activity_families_admin_form($form, &$form_state){
 

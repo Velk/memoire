@@ -60,8 +60,13 @@ class ViewsHandlerFilterTest extends ViewsSqlTest {
     $node1 = $this->drupalCreateNode(array('type' => 'article','field_tags_tid' => $term->tid, 'created' => REQUEST_TIME));
     $node2 = $this->drupalCreateNode(array('type' => 'article', 'created' => REQUEST_TIME + 1));
     $user2 = $this->drupalCreateUser(array('access content'));
+<<<<<<< HEAD
     // $this->drupalLogin($this->drupalCreateUser(['administer users']);
     $this->drupalLogin($this->drupalCreateUser(['administer users', 'access administration pages', 'administer site configuration', 'administer nodes', 'bypass node access']));
+=======
+    // $this->drupalLogin($this->drupalCreateUser(array('administer users'));
+    $this->drupalLogin($this->drupalCreateUser(array('administer users', 'access administration pages', 'administer site configuration', 'administer nodes', 'bypass node access')));
+>>>>>>> 81744710a6fbf2efcb829a2643be1d12441bbaa0
 
     $this->drupalGet('node/1/edit');
     $edit['field_tags' . '[' . LANGUAGE_NONE . ']'] = $term->name;
