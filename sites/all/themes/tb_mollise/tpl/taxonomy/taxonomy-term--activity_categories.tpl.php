@@ -219,7 +219,6 @@ if($bool_is_special_filters == 1){
                 ksort($cnt_weight_sorted);
 
                 foreach ($cnt_weight_sorted as $cnt_act_sorted) {
-
                   ?>
                   <div class="act-cat-scop act-cat-scop-<?php print $activity->tid ?>">
                     <img src="<?php print $cnt_act_sorted['img_uri']?>"
@@ -231,9 +230,15 @@ if($bool_is_special_filters == 1){
                       <p class="act-cat-price"><?php print $cnt_act_sorted['price']?> <?php isset($cnt_act_sorted['price']) ? print "€" : ""; ?></p>
                       <a href="<?php print ($bool_is_intermediate_page == 1) ? $cnt_act_sorted['intermediate_path'] : $cnt_act_sorted['path'] ?>" class="act-cat-readmore"></a>
                       <?php
+
+//                      drupal_set_message($cnt_act_sorted['title']);
+//                      drupal_set_message("<pre>" . print_r($cnt_act_sorted, true) . "</pre>");
+
                       $query = db_select('node', 'n');
                       $query->fields('n', array('nid', 'title'));
                       $query->condition('n.type', 'activite', '=');
+                      $query->condition('n.nid', $cnt_act_sorted['node'], '=');
+                      $query->condition('n.title', $cnt_act_sorted['title'], '=');
                       $query->orderBy('n.title', 'asc');
                       $query->distinct();
                       $results = $query->execute();
@@ -242,9 +247,9 @@ if($bool_is_special_filters == 1){
 
                         if( $cnt_act_sorted['title'] == $result->title ){
 
-                          $var = "category_" . $result->nid;
+                          $admin_var_get_category = variable_get("category_" . $result->nid);
 
-                          switch($$var){
+                          switch($admin_var_get_category){
                             case "0" :
                               $isCategory = false;
                               break;
@@ -304,13 +309,14 @@ if($bool_is_special_filters == 1){
                               $text = "Demande<br>en mariage";
                               break;
                           }
-
+drupal_set_message("ISCATEGORY : " . $isCategory);
                           if( $isCategory ){
-
+drupal_set_message("OKKK");
                             print "<div class='act-cat-banner-category' style='background-color:$color;'><p>" . $text . "</p></div>";
                           }
                         }
                       }
+                      drupal_set_message("-------------------------------------------------------------------------");
                       ?>
                     </div>
                   </div>

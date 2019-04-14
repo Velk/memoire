@@ -166,9 +166,9 @@
 
                                         if ($cnt_act_sorted['title'] == $result->title) {
 
-                                            $var = "category_" . $result->nid;
+                                            $admin_var_get_category = variable_get("category_" . $result->nid);
 
-                                            switch ($$var) {
+                                            switch ($admin_var_get_category) {
                                                 case "0" :
                                                     $isCategory = false;
                                                     break;
