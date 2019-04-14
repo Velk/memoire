@@ -110,6 +110,31 @@ if($ip_data && $ip_data->geoplugin_countryName != null){
     $user_location['city'] = $ip_data->geoplugin_city;
 }
 ?>
+
+<?php
+/* PHONE */
+
+// Function countries_list() is declare in memory_phone.module
+$array_countries = countries_list();
+
+$countries_phone_datas = array();
+
+$countries_container = variable_get('countries_container', array());
+
+foreach ($array_countries as $country){
+
+//        $country_datas = variable_get("countries_list_" . $country["id"], array());
+
+  if(!empty($countries_container['countries_list_' . $country["id"]]['index']) && !empty($countries_container['countries_list_' . $country["id"]]['phone_number'])){
+
+//            drupal_set_message("Country ID : " . $country["id"] . " - Index : " . $country_datas["index"] . " - Phone number : " . $country_datas["phone_number"]);
+    $countries_phone_datas[$country["id"]]["id"] = $country["id"];
+    $countries_phone_datas[$country["id"]]["index"] = $countries_container['countries_list_' . $country["id"]]["index"];
+    $countries_phone_datas[$country["id"]]["phone_number"] = $countries_container['countries_list_' . $country["id"]]["phone_number"];
+  }
+}
+?>
+
 <div id="memory-menu">
     <?php foreach($main_menu as $menu): ?>
 
@@ -232,6 +257,7 @@ if($ip_data && $ip_data->geoplugin_countryName != null){
             <?php elseif ($menu['title'] == "Nous contacter"): ?>
             <div id="memory-contact-container">
                 <div id="phone-datas-container">
+
                     <div id="other-countries">
                         <?php
                         $datas_default_country = array();
@@ -259,7 +285,7 @@ if($ip_data && $ip_data->geoplugin_countryName != null){
                             // If we can't get the user location, set the default country first
                             }else{
 
-                                if($country_phone_datas["id"] != $default_country){
+                                if($country_phone_datas["id"] != variable_get('default_country')){
                         ?>
                                     <div>
                                         <img src="<?php print $base_url . '/sites/default/files/flags/' . $country_phone_datas["id"] . '.png'; ?>"/>
@@ -277,11 +303,11 @@ if($ip_data && $ip_data->geoplugin_countryName != null){
                         }
                         ?>
                     </div>
-                    <div id="default-country">
+                    <div id="default-country" <?php print((sizeof($countries_phone_datas) > 1) ? "class=\"toggle-display-countries\"" : "")?>>
                         <img src="https://www.memoryvoyage.com/sites/default/files/icons_folder/telephone-of-old-design.png" class="memory-icons">
                         <img src="<?php print $base_url . '/sites/default/files/flags/' . $datas_default_country["id"] . '.png'; ?>"/>
                         <p><?php print $datas_default_country["index"] . " " . $datas_default_country["phone_number"]; ?></p>
-                        <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                        <i class="fa fa-chevron-down" aria-hidden="true" <?php print((sizeof($countries_phone_datas) <= 1) ? "style='display:none;'" : "")?>></i>
                     </div>
                 </div>
                 <a href="<?php print $base_url . '/contact'; ?>" id="memory-contact-link">Votre demande de devis</a>

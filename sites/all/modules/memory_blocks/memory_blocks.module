@@ -2044,8 +2044,6 @@ function memory_blocks_slider_admin_form($form, &$form_state){
     return system_settings_form($form);
 }
 
-/* Preprocess function */
-
 function memory_blocks_activity_families_admin_form($form, &$form_state){
 
     $query = db_select('node', 'n');
