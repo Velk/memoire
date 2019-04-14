@@ -1,36 +1,52 @@
 <?php
     global $base_url;
 
-    $vocabulary = taxonomy_vocabulary_machine_name_load('continent');
-	$tree = taxonomy_get_tree($vocabulary->vid);
+    /* ---------------- All destinations page - Admin settings ---------------- */
 
-	$tab_continent = array();
-	$tab_pays = array();
-	$tab_ville = array();
-	foreach ($tree as $term) {
-		if($term->depth === 0) {
-			$tab_continent[$term->tid] = array($term->name,$term->tid,);
-		} elseif($term->depth === 1) {
-			$tab_pays[$term->tid] = array($term->name,$term->tid,$term->parents[0]);
-		} elseif($term->depth === 2) {
-			$tab_ville[$term->tid] = array($term->name,$term->tid,$term->parents[0]);
-		}
-	}
-	
-	asort($tab_continent);
-	asort($tab_pays);
-	asort($tab_ville);
-	
-	foreach ($tab_ville as $city) {
-		$tab_pays[$city[2]]['city'][] = array($city[0], $city[1]);
-	}
-	foreach ($tab_pays as $country) {
-		if (!empty($country['city'])) {
-			$tab_continent[$country[2]]['country'][] = array($country[0], $country[1], $country['city']);
-		} else {
-			$tab_continent[$country[2]]['country'][] = array($country[0], $country[1]);
-		}
-	}
+    // $arrayName['image'] correspond to the fid
+    // Load the file by its fid.
+    // Create the URL file by using the file URI
+    $file_all_dest = file_load(variable_get("all_dest_image"));
+    $url_all_dest = file_create_url($file_all_dest->uri);
+    $all_dest_image = $url_all_dest;
+
+    $all_dest_title = variable_get('all_dest_title');
+
+    $all_dest_description_array = variable_get('all_dest_description', array());
+    $all_dest_description = $all_dest_description_array['value'];
+
+    /* ---------------- All destinations page - Destinations ---------------- */
+
+    $vocabulary = taxonomy_vocabulary_machine_name_load('continent');
+    $tree = taxonomy_get_tree($vocabulary->vid);
+
+    $tab_continent = array();
+    $tab_pays = array();
+    $tab_ville = array();
+    foreach ($tree as $term) {
+        if($term->depth === 0) {
+            $tab_continent[$term->tid] = array($term->name,$term->tid,);
+        } elseif($term->depth === 1) {
+            $tab_pays[$term->tid] = array($term->name,$term->tid,$term->parents[0]);
+        } elseif($term->depth === 2) {
+            $tab_ville[$term->tid] = array($term->name,$term->tid,$term->parents[0]);
+        }
+    }
+
+    asort($tab_continent);
+    asort($tab_pays);
+    asort($tab_ville);
+
+    foreach ($tab_ville as $city) {
+        $tab_pays[$city[2]]['city'][] = array($city[0], $city[1]);
+    }
+    foreach ($tab_pays as $country) {
+        if (!empty($country['city'])) {
+            $tab_continent[$country[2]]['country'][] = array($country[0], $country[1], $country['city']);
+        } else {
+            $tab_continent[$country[2]]['country'][] = array($country[0], $country[1]);
+        }
+    }
 ?>
 <div id="container">
     <?php
