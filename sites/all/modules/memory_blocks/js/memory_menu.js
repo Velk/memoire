@@ -44,9 +44,9 @@
 
             });
 
-            setInterval(function(){
+            function setDistanceTabMenu(tabID){
 
-                if( $("#destinations-menu").is(":visible") ){
+                if( $(tabID).is(":visible") ){
 
                     if( $("#admin-menu").is(":visible") ) {
 
@@ -54,24 +54,29 @@
 
                         if($(window).scrollTop() > 0){
 
-                            $("#destinations-menu").css("top", "calc(60px + " + adminToolbarHeight + "px)");
+                            $(tabID).css("top", "calc(60px + " + adminToolbarHeight + "px)");
                         }
                         if($(window).scrollTop() === 0) {
 
-                            $("#destinations-menu").css("top", "calc(80px + " + adminToolbarHeight + "px)");
+                            $(tabID).css("top", "calc(80px + " + adminToolbarHeight + "px)");
                         }
                     }else{
 
                         if($(window).scrollTop() > 0){
 
-                            $("#destinations-menu").css("top", "60px");
+                            $(tabID).css("top", "60px");
                         }
                         if($(window).scrollTop() === 0){
 
-                            $("#destinations-menu").css("top", "80px");
+                            $(tabID).css("top", "80px");
                         }
                     }
                 }
+            }
+
+            setInterval(function(){
+                setDistanceTabMenu("#destinations-menu");
+                setDistanceTabMenu("#activities-menu");
             }, 100);
 
             /* ------------------------------------------------------------------------------------------------------------- */

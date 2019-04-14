@@ -3,6 +3,7 @@
 
     global $base_url;
 
+    /* Destinations tab */
     $vocabulary = taxonomy_vocabulary_machine_name_load('continent');
     $tree = taxonomy_get_tree($vocabulary->vid);
 
@@ -33,7 +34,6 @@
             $tab_continent[$country[2]]['country'][] = array($country[0], $country[1]);
         }
     }
-<<<<<<< HEAD
 
     /* Activities tab */
     $vocabulary_category_activities = taxonomy_vocabulary_machine_name_load('activity_categories');
@@ -109,11 +109,6 @@ if($ip_data && $ip_data->geoplugin_countryName != null){
     $user_location['country'] = strtolower($ip_data->geoplugin_countryCode);
     $user_location['city'] = $ip_data->geoplugin_city;
 }
-=======
-    
-    $menu_activity = variable_get('menu_activity', '');
-//    kpr($menu_activity);
->>>>>>> 18d926a4b4fecfbb216596f6673a8ae07b533588
 ?>
 <div id="memory-menu">
     <?php foreach($main_menu as $menu): ?>
@@ -142,8 +137,12 @@ if($ip_data && $ip_data->geoplugin_countryName != null){
                                         <li>
                                             <?php if(!empty($cntry[2]) && count($cntry[2]) == 1){
                                                 foreach($cntry[2] as $onlyOneCity){
+
+                                                    // Get dynamically the path alias when there is only 1 city
+                                                    $destination_path_alias = drupal_get_path_alias("taxonomy/term/" . $onlyOneCity[1]);
+
                                                     print
-                                                        "<a href=" . url('taxonomy/term/'.$onlyOneCity[1]) . ">" .
+                                                        "<a href=" . strtolower($base_url."/".$destination_path_alias) . ">" .
                                                         $cntry[0] . " - " . $onlyOneCity[0] .
                                                         "</a>"
                                                     ;
@@ -154,9 +153,19 @@ if($ip_data && $ip_data->geoplugin_countryName != null){
                                         </li>
                                         <?php if(!empty($cntry[2]) && count($cntry[2]) > 1): ?>
                                             <ul class="city-menu">
-                                                <?php foreach($cntry[2] as $place): ?>
-                                                    <li><a href=<?php print url('taxonomy/term/'.$place[1]); ?>>- <?php print $place[0] ?></a></li>
-                                                <?php endforeach; ?>
+                                                <?php foreach($cntry[2] as $place){
+
+                                                    // Get dynamically the path alias when there is more than 1 city
+                                                    $destination_path_alias = drupal_get_path_alias("taxonomy/term/" . $place[1]);
+
+                                                    print
+                                                        "<li>" .
+                                                            "<a href=" . strtolower($base_url."/".$destination_path_alias) . ">" .
+                                                            "- " . $place[0] .
+                                                            "</a>" .
+                                                        "</li>"
+                                                    ;
+                                                } ?>
                                             </ul>
                                         <?php endif; ?>
                                     </ul>
@@ -169,20 +178,58 @@ if($ip_data && $ip_data->geoplugin_countryName != null){
             <!-- End destination menu part -->
 
             <!-- Activity menu part -->
-            <?php elseif ($menu['identifier'] == "main-menu_sjours:node/4"): ?>
-                <?php print '<li><a href="'.  $base_url .'/activite">' . $menu['title'] . '</a></li>'; ?>
-                <div>
-                    <div>
+            <?php elseif ($menu['href'] == "activity-categories"): ?>
+                    <?php print '<li id="memory-menu-tab-activity"><a href="'.  $base_url .'/activity-categories">' . $menu['title'] . '</a></li>'; ?>
+                    <div id="activities-menu">
                         <div>
-
+                            <div id="memory-act-tab-menu">
+                                <div id="memory-act-tab-menu-title">
+                                    <p>Nos activités</p>
+                                </div>
+                                <div id="memory-act-tab-menu-link">
+                                    <a href="<?php print $base_url; ?>/activity-categories">Toutes nos activités</a>
+                                </div>
+                            </div>
+                            <hr>
+                            <div id="activity-menu-container">
+                                <?php
+                                foreach($tab_global_categories as $global_category){
+                                    // Load taxonomy term by its tid
+                                    $tax_global_activity_category = taxonomy_term_load($global_category[1]);
+//                                    drupal_set_message("<pre>" . print_r($tax_global_activity_category,true) . "</pre>");
+                                ?>
+                                    <div class="activity-menu">
+                                        <?php if(!empty($global_category['img_url'])) :?>
+                                            <div class="activity-categories-image">
+                                                <img src="<?php print $global_category['img_url']; ?>" />
+                                            </div>
+                                        <?php endif; ?>
+                                        <div class="activity-categories-content">
+                                            <h3><?php print $tax_global_activity_category->field_category_activities_title['und'][0]['value'] ?></h3>
+                                            <?php if(!empty($global_category['category'])): ?>
+                                                <?php foreach($global_category['category'] as $category){
+                                                    // Load taxonomy term by its tid
+                                                    $tax_activity_category = taxonomy_term_load($category[1]);
+                                                ?>
+                                                    <ul class="activity-categories-menu">
+                                                        <li>
+                                                            <a href=<?php print $base_url . "/" . $category[2]; ?>>
+                                                                <?php print $tax_activity_category->field_category_activities_title['und'][0]['value']; ?>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                <?php } ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                <?php } ?>
+                            </div>
                         </div>
                     </div>
-                </div>
-            <!-- End Activity menu part -->
+            <!-- End destination menu part -->
 
             <!-- Connexion menu part -->
             <?php elseif ($menu['title'] == "Nous contacter"): ?>
-<<<<<<< HEAD
             <div id="memory-contact-container">
                 <div id="phone-datas-container">
                     <div id="other-countries">
@@ -239,9 +286,6 @@ if($ip_data && $ip_data->geoplugin_countryName != null){
                 </div>
                 <a href="<?php print $base_url . '/contact'; ?>" id="memory-contact-link">Votre demande de devis</a>
             </div>
-=======
-                <?php print '<li><img src="'.  $base_url .'/sites/default/files/icons_folder/telephone-of-old-design.png" class="memory-icons"><b>+33 (0)9 86 37 49 14</b><a href="'.  $base_url .'/contact" id="memory-contact-link">Votre demande de devis</a></li>'; ?>
->>>>>>> 18d926a4b4fecfbb216596f6673a8ae07b533588
             <!-- End Connexion menu part -->
 
             <!-- Connexion menu part -->
