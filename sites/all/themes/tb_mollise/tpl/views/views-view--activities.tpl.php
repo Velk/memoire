@@ -4,9 +4,48 @@ global $base_url;
 // Include pathauto to clean a string for use in URLs in order to compare with the current URL
 module_load_include('inc', 'pathauto', 'pathauto');
 
+/* ---------------- Intermediate page - Admin settings ---------------- */
+
 // Retrieve the part of the URL corresponding to the title of the activity cleaned
 $url_path = explode("activites/", current_path())[1];
 $url_path_cleaned = str_replace("-", "_", $url_path);
+
+$query = db_select('node', 'n');
+$query->fields('n', array('nid', 'title'));
+$query->condition('n.type', 'activite', '=');
+$query->orderBy('n.title', 'asc');
+$query->distinct();
+$results = $query->execute();
+
+foreach( $results as $result ) {
+
+  $cleaned_title = pathauto_cleanstring($result->title);
+
+  // Each the URL path title match with the result title
+  if( $url_path == $cleaned_title ){
+
+    $intermediate_page = variable_get("fieldset_" . $cleaned_title, array());
+
+    if($intermediate_page["ip_image"] !== 0){
+
+      // $arrayName['image'] correspond to the fid
+      // Load the file by its fid.
+      // Create the URL file by using the file URI
+      $file_ip_img = file_load($intermediate_page['ip_image']);
+      $ip_img_url = file_create_url($file_ip_img->uri);
+      $ip_image = $ip_img_url;
+
+      $ip_title = $result->title;
+    }
+
+    if($intermediate_page["ip_description"]["value"] !== ""){
+
+      $ip_description = $intermediate_page['ip_description']['value'];
+    }
+  }
+}
+
+/* ---------------- Intermediate page - Datas ---------------- */
 
 /* -- Load taxonomy to get the destination of the activity -- */
 $vocabulary = taxonomy_vocabulary_machine_name_load('continent');
@@ -87,34 +126,29 @@ for($i = 0 ; $i < count($nids) ; $i++){
         'intermediate_path' => $clean_string_to_url,
     );
 }
-
 ?>
 
 <div id="container">
     <?php
-    $ip_image = $url_path_cleaned . "_ip_image";
-    $ip_description = $url_path_cleaned . "_ip_description";
-    $ip_title = $url_path_cleaned . "_ip_title";
-
-    if( isset($$ip_image) || isset($$ip_title) ){
+    if( isset($ip_image) || isset($ip_title) ){
 
         echo '<div id="img-container">';
 
-        if( isset($$ip_image) ){
-            echo '<img src="' . $$ip_image . '">';
+        if( isset($ip_image) ){
+            echo '<img src="' . $ip_image . '">';
             echo '<div id="memory-img-filter"></div>';
         }
-        if( isset($$ip_title) ){
-            echo '<h2>' . $$ip_title . '</h2>';
+        if( isset($ip_title) ){
+            echo '<h2>' . $ip_title . '</h2>';
         }
 
         echo '</div>';
     }
 
-    if( isset($$ip_description) ){
+    if( isset($ip_description) ){
         echo
             '<div id="description-container">' .
-            $$ip_description .
+            $ip_description .
             '</div>'
         ;
     }
