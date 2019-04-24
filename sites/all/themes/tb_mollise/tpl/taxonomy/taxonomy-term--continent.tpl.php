@@ -146,9 +146,11 @@
                                     <?php
                                     if( isset($cnt_act_sorted['price']) ){
                                     ?>
+					<!-- LEGAL NOTICE : desactivation le temps que le côté légal soit en place
                                         <button class="cont-add-cart" type="button">
                                             <i class="fa fa-cart-plus" aria-hidden="true"></i>
                                         </button>
+					-- >
                                     <?php
                                     }
                                     ?>
