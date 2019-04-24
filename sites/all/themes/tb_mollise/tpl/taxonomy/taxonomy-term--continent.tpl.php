@@ -142,19 +142,18 @@
                                     <input type="hidden" class="cont-act-cat" value="<?php print $cnt_act_sorted['group_act_cat'] ?>">
                                     <h3 class="cont-stick-title"><?php print $cnt_act_sorted['title'] ?></h3>
                                     <p class="cont-price"><?php print $cnt_act_sorted['price'] ?><?php isset($cnt_act_sorted['price']) ? print "€" : ""; ?></p>
-
+				<!-- 
+					CONTEXT : LEGAL DESACTIVATION
                                     <?php
                                     if( isset($cnt_act_sorted['price']) ){
                                     ?>
-					<!-- LEGAL NOTICE : desactivation le temps que le côté légal soit en place
                                         <button class="cont-add-cart" type="button">
                                             <i class="fa fa-cart-plus" aria-hidden="true"></i>
                                         </button>
-					-- >
                                     <?php
                                     }
                                     ?>
-
+				-->
                                     <a href="<?php print $cnt_act_sorted['path'] ?>" class="cont-readmore"></a>
                                     <?php
                                     $query = db_select('node', 'n');
