@@ -10,9 +10,9 @@ function memory_blocks_menu() {
 
     $items['admin/memory'] = array(
         'title' => t('Memory'),
-        'description' => t('Memory - Tab'),
+        'description' => t('Memory - Global parameters'),
         'page callback' => 'drupal_get_form',
-        'page arguments' => array('memory_blocks_admin_redirect'),
+        'page arguments' => array('memory_blocks_admin_global_parameters'),
         'access arguments' => array('administer site configuration'),
         'type' => MENU_NORMAL_ITEM,
     );
@@ -297,10 +297,21 @@ function memory_blocks_init() {
 }
 
 /**
- * Implements memory_blocks_admin_redirect()
+ * Implements memory_blocks_admin_global_parameters()
  */
-function memory_blocks_admin_redirect(){
-    drupal_goto("admin/Memory/social-networks-manager");
+function memory_blocks_admin_global_parameters(){
+    // drupal_goto("admin/Memory/social-networks-manager");
+
+    $form['global_parameter_email'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Panier utilisateur - E-mail'),
+      '#description' => t('E-mail d\'envoi du panier utilisateur.'),
+      '#default_value' => variable_get('global_parameter_email'),
+      '#maxlength' => 512,
+      '#weight' => 1,
+    );
+
+    return system_settings_form($form);
 }
 
 /**

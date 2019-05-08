@@ -309,14 +309,11 @@ if($bool_is_special_filters == 1){
                               $text = "Demande<br>en mariage";
                               break;
                           }
-drupal_set_message("ISCATEGORY : " . $isCategory);
                           if( $isCategory ){
-drupal_set_message("OKKK");
                             print "<div class='act-cat-banner-category' style='background-color:$color;'><p>" . $text . "</p></div>";
                           }
                         }
                       }
-                      drupal_set_message("-------------------------------------------------------------------------");
                       ?>
                     </div>
                   </div>

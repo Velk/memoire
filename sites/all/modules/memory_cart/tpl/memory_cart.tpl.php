@@ -91,6 +91,33 @@ foreach ($vocab_activities_tree as $vocab_activity_tree){
         <div id="wish">
             <textarea name="wish" placeholder="Autres souhaits, ambiance, destination, pour votre hôtel et/ou transport vous préférez: le moins cher possible, le meilleur rapport qualité: prix/confort/durée de transport ou le top confort?"></textarea>
         </div>
-
+        <button type="button" id="validate-cart">Demander un devis</button>
     </form>
 </div>
+<?php if(!$is_user_logged_in){ ?>
+<div id="user-cart-user-not-logged-container">
+    <div>
+        <h2>Demande d'informations</h2>
+        <div id="user-cart-user-datas-container">
+            <div id="user-cart-user-firstname">
+              <input type="text" name="firstname"  placeholder="Prénom">
+            </div>
+            <div id="user-cart-user-lastname">
+              <input type="text" name="lastname"  placeholder="Nom">
+            </div>
+            <div id="user-cart-user-email">
+              <input type="text" name="email"  placeholder="E-mail">
+            </div>
+            <div id="user-cart-user-phone">
+              <input type="text" name="phone"  placeholder="Téléphone">
+            </div>
+            <div id="user-cart-user-approval">
+              <input type="checkbox" name="approval">
+              <label for="approval">J'accepte d'être contacté par Memory.</label>
+            </div>
+            <button type="button" id="user-not-logged-validate-cart">Valider</button>
+        </div>
+        <button type="button" id="user-not-logged-remove-overlay"><i class="fa fa-times" aria-hidden="true"></i></button>
+    </div>
+</div>
+<?php } ?>

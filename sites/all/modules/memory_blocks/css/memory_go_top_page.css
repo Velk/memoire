@@ -4,7 +4,7 @@ div#block-memory-blocks-memory-go-top-page {
     right: 45px;
     margin: 0;
     padding: 0;
-    z-index: 999;
+    z-index: 50;
     display: inline-block;
     width: auto;
 }
