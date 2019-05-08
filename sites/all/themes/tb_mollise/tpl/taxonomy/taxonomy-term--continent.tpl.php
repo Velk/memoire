@@ -146,9 +146,9 @@
                                     <?php
                                     if( isset($cnt_act_sorted['price']) ){
                                     ?>
-                                        <button class="cont-add-cart" type="button">
-                                            <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                                        </button>
+<!--                                        <button class="cont-add-cart" type="button">-->
+<!--                                            <i class="fa fa-cart-plus" aria-hidden="true"></i>-->
+<!--                                        </button>-->
                                     <?php
                                     }
                                     ?>

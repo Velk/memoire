@@ -8,18 +8,18 @@
 function memory_cart_menu() {
     $items = array();
 
-//    $items['map'] = array(
-//        'title' => t('Memory map'),
-//        'description' => t('Memory - map'),
-//        'page callback' => 'memory_map_block_view',
-//        'access callback' => TRUE,
-//        'type' => MENU_NORMAL_ITEM,
-//    );
-
-    // Ajax Callback to display activities thumbnails in all activities page.
+    // Ajax Callback intended to add in the cart the activity clicked when user is on a destination page
     $items['destinations/ajax/cart'] = array(
         'title' => 'Ajax callback',
         'page callback' => 'ajax_add_activity_to_cart',
+        'access arguments' => array('access content'),
+        'type' => MENU_CALLBACK,
+    );
+
+    // Ajax Callback intended to send quotation ask
+    $items['ajax/cart/quotation'] = array(
+        'title' => 'Ajax callback',
+        'page callback' => 'ajax_cart_send_user_quotation_ask',
         'access arguments' => array('access content'),
         'type' => MENU_CALLBACK,
     );
@@ -62,8 +62,210 @@ function ajax_add_activity_to_cart(){
 
         drupal_json_output("Les données demandées ne sont pas intègres");
     }
+}
 
+function ajax_cart_send_user_quotation_ask(){
 
+  global $base_url;
+  global $user;
+
+  $destination_email = variable_get('global_parameter_email');
+  $array_result_callback = array();
+
+  if(!isset($destination_email)){
+
+      $array_result_callback = array(
+          "result_sentence" => "La demande de devis n'a pas abouti. Veuillez réessayer ultérieurement.",
+          "is_success" => false
+      );
+
+      drupal_json_output($array_result_callback);
+  }else{
+      $cart_location = $_POST['location'];
+      $cart_date = $_POST['date'];
+      $cart_participants = ($_POST['participants'] != "") ? $_POST['participants'] : "Non spécifié";
+      $cart_budget = $_POST['budget'];
+      $cart_transport = $_POST['transport'];
+      $cart_trip = $_POST['trip'];
+      $cart_wish = ($_POST['wish'] != "") ? $_POST['wish'] : "Non spécifié";
+
+      $cart_user_is_anonymous = $_POST['userIsAnonymous'];
+
+//      drupal_set_message("Location : " . $cart_location);
+//      drupal_set_message("Date : " . $cart_date);
+//      drupal_set_message("Participants : " . $cart_participants);
+//      drupal_set_message("Budget : " . $cart_budget);
+//      drupal_set_message("Transport : " . $cart_transport);
+//      drupal_set_message("Trip : " . $cart_trip);
+//      drupal_set_message("Wish : " . $cart_wish);
+//      drupal_set_message("User firstname : " . $cart_user_firstname);
+//      drupal_set_message("User lastname : " . $cart_user_lastname);
+//      drupal_set_message("User email : " . $cart_user_email);
+//      drupal_set_message("User phone : " . $cart_user_phone);
+//      drupal_set_message("Destination EMAIL : " . $destination_email);
+
+      /* Start - E-mail body */
+      $body =
+        "DEMANDE DE DEVIS : " . "\n\n"
+      ;
+
+      if($cart_user_is_anonymous === true || $cart_user_is_anonymous === "true"){
+
+          $cart_user_firstname = $_POST['userFirstname'];
+          $cart_user_lastname = $_POST['userLastname'];
+          $cart_user_email = $_POST['userEmail'];
+          $cart_user_phone = $_POST['userPhone'];
+
+          $body =
+              $body .
+              "---------------------------------------------------------" . "\n\n" .
+              "Information sur l'utilisateur : " . "\n\n" .
+              "Prénom : " . $cart_user_firstname . "\n" .
+              "Nom : " . $cart_user_lastname . "\n" .
+              "E-mail : " . $cart_user_email . "\n" .
+              "Téléphone : " . $cart_user_phone . "\n\n"
+          ;
+
+      }else if($cart_user_is_anonymous === false || $cart_user_is_anonymous === "false"){
+
+          $user_load = user_load($user->uid);
+
+          $user_uid = ($user_load->uid != "") ? $user_load->uid : "Non spécifié";
+          $user_name = ($user_load->name != "") ? $user_load->name : "Non spécifié";
+          $user_email = ($user_load->mail != "") ? $user_load->mail : "Non spécifié";
+
+          $body =
+              $body .
+              "---------------------------------------------------------" . "\n\n" .
+              "Information sur l'utilisateur : " . "\n\n" .
+              "UID : " . $user_uid . "\n" .
+              "Nom : " . $user_name . "\n" .
+              "E-mail : " . $user_email . "\n\n"
+          ;
+      }
+
+      $body = $body .
+        "---------------------------------------------------------" . "\n\n" .
+        "Information sur la demande de devis : " . "\n\n" .
+        "Lieu de départ : " . $cart_location . "\n" .
+        "Date : " . $cart_date . "\n" .
+        "Participants : " . $cart_participants . "\n" .
+        "Budget : " . $cart_budget . "\n" .
+        "Transport : " . $cart_transport . "\n" .
+        "Wish : " . $cart_wish . "\n\n" .
+        "---------------------------------------------------------" . "\n\n" .
+        "Détails sur les activités souhaitées : "
+      ;
+
+      $cart_trip_sorted = [];
+
+      for($i = 0; $i < sizeof($cart_trip) ; $i++){
+
+        $cart_trip_sorted[$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["positionInDay"] = $cart_trip[$i]["positionInDay"];
+        $cart_trip_sorted[$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["activityType"] = $cart_trip[$i]["activityType"];
+        $cart_trip_sorted[$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["title"] = $cart_trip[$i]["title"];
+        $cart_trip_sorted[$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["nid"] = $cart_trip[$i]["nid"];
+      }
+
+      // Sort array by day then by activity position in the day
+      ksort($cart_trip_sorted);
+      for($i = 0 ; $i < sizeof($cart_trip_sorted) ; $i++){
+        ksort($cart_trip_sorted[$i]["activities"]);
+      }
+
+      // Add activities to the body e-mail
+      for($i = 1 ; $i < sizeof($cart_trip_sorted) ; $i++){
+
+          $body =
+            $body .
+            "\n\n" . "--- JOUR " . $i . " : " . "\n\n"
+          ;
+
+          for($j = 0 ; $j < sizeof($cart_trip_sorted[$i]["activities"]) ; $j++){
+
+              $body =
+                $body .
+                "Activité n°" . $cart_trip_sorted[$i]["activities"][$j]["positionInDay"] . " : " . "\n" .
+                "   - Titre : " . $cart_trip_sorted[$i]["activities"][$j]["title"] . "\n" .
+                "   - URL : " . $base_url . "/" . drupal_get_path_alias("node/" . $cart_trip_sorted[$i]["activities"][$j]["nid"]) . "\n\n"
+              ;
+          }
+
+          for($j = 0 ; $j < sizeof($cart_trip_sorted[$i]["transfer"]) ; $j++){
+
+              $body =
+                $body .
+                "Transfert : " . "\n" .
+                "   - Titre : " . $cart_trip_sorted[$i]["transfer"][$j]["title"] . "\n" .
+                "   - URL : " . $base_url . "/" . drupal_get_path_alias("node/" . $cart_trip_sorted[$i]["transfer"][$j]["nid"]) . "\n\n"
+              ;
+          }
+
+          for($j = 0 ; $j < sizeof($cart_trip_sorted[$i]["hosting"]) ; $j++){
+
+            $body =
+              $body .
+              "Hébergement : " . "\n" .
+              "   - Titre : " . $cart_trip_sorted[$i]["hosting"][$j]["title"] . "\n" .
+              "   - URL : " . $base_url . "/" . drupal_get_path_alias("node/" . $cart_trip_sorted[$i]["hosting"][$j]["nid"]) . "\n\n"
+            ;
+          }
+      }
+      /* End - E-mail body */
+
+      // Mail's parameters
+      $to = $destination_email;
+      $from = $destination_email;
+
+      // Subject of the mail
+      $subject = "Memory - Demande de devis";
+
+      // Call mail function
+      $params = array(
+        'subject' => $subject,
+        'body' => $body,
+      );
+
+      if(drupal_mail('memory_cart', '10', $to, "fr", $params, $from)){
+
+          $array_result_callback = array(
+            "result_sentence" => "La demande de devis a été envoyé.",
+            "is_success" => true
+          );
+
+          drupal_json_output($array_result_callback);
+      } else {
+
+          $array_result_callback = array(
+            "result_sentence" => "La demande de devis n'a pas abouti. Veuillez réessayer ultérieurement.",
+            "is_success" => false
+          );
+
+          drupal_json_output($array_result_callback);
+      }
+
+  }
+}
+
+/**
+ * Implementation of hook_mail().
+ *
+ * A very simple hook_mail() implementation, for module "bsconnexion".
+ * This implementation expects to receive a $body, $subject, and $headers
+ * inside the $params sent from drupal_mail(), rather than construct
+ * those here in the hook.
+ * @param $key
+ * @param $message
+ * @param $params
+ * @see drupal_mail()
+ */
+function memory_cart_mail($key, &$message, $params) {
+  switch ($key) {
+    case '10':
+      $message['subject'] = $params['subject'];
+      $message['body'][] = $params['body'];
+      break;
+  }
 }
 
 /**
@@ -114,15 +316,23 @@ function memory_cart_block_view($delta = '') {
     switch ($delta) {
         case 'memory_cart':
 
-            $data['title'] = "Memory - World cart";
+            $is_user_logged_in = null;
+
+            if(user_is_logged_in()){
+              $is_user_logged_in = true;
+            }else{
+              $is_user_logged_in = false;
+            }
+
+            $data['is_user_logged_in'] = $is_user_logged_in;
 
             // Link the template
             $block['content']['#markup'] = theme('tpl_memory_cart', $data);
 
             // Link a css file
             $block['content']['#attached']['css'][] = array(
-                'data' => drupal_get_path('module', 'memory_cart').'/css/memory_cart.css',
-                'type' => 'file'
+              'data' => drupal_get_path('module', 'memory_cart').'/css/memory_cart.css',
+              'type' => 'file'
             );
 
             // Link a js file
