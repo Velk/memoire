@@ -125,6 +125,15 @@ function memory_blocks_menu() {
         'type' => MENU_NORMAL_ITEM,
     );
 
+    $items['admin/memory/chatbox'] = array(
+      'title' => t('Memory - Chatbox'),
+      'description' => t('Memory - Chatbox'),
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('memory_blocks_chatbox_admin_form'),
+      'access arguments' => array('administer site configuration'),
+      'type' => MENU_NORMAL_ITEM,
+    );
+
     // Ajax Callback to display activities thumbnails in all activities page.
     $items['activity-categories/ajax'] = array(
         'title' => 'Ajax callback',
@@ -594,6 +603,11 @@ function memory_blocks_theme($existing, $type, $theme, $path) {
             'path' => drupal_get_path('module', 'memory_blocks'),
             'variables' => array('infos' => NULL),
         ),
+        'tpl_memory_chatbox' => array(
+          'template' => 'tpl/memory_chatbox',
+          'path' => drupal_get_path('module', 'memory_blocks'),
+          'variables' => array('infos' => NULL),
+        ),
     );
 }
 
@@ -689,6 +703,15 @@ function memory_blocks_block_info() {
       'region' => 'content',
       'visibility' => BLOCK_VISIBILITY_LISTED,
       'pages' => 'destinations/*/*',
+    );
+
+    $blocks['memory_chatbox'] = array(
+      'info' => t('Memory Chatbox'),
+      'weight' => 9,
+      'status' => 1,
+      'region' => 'content',
+      'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+      'pages' => '<front>\radmin/*',
     );
 
     return $blocks;
@@ -1195,6 +1218,22 @@ function memory_blocks_block_view($delta = '') {
             );
 
             break;
+        case 'memory_chatbox':
+
+          $data['chatbox_title'] = variable_get('chatbox_title');
+          $chatbox_text = variable_get('chatbox_text');
+          $data['chatbox_text'] = $chatbox_text["value"];
+
+          // Link the template
+          $block['content']['#markup'] = theme('tpl_memory_chatbox', $data);
+
+          // Link a css file
+          $block['content']['#attached']['css'][] = array(
+            'data' => drupal_get_path('module', 'memory_blocks') . '/css/memory_chatbox.css',
+            'type' => 'file'
+          );
+
+          break;
     }
 
     return $block;
@@ -2295,4 +2334,26 @@ function memory_blocks_intermediate_page_admin_form($form, &$form_state){
     }
 
     return system_settings_form($form);
+}
+
+function memory_blocks_chatbox_admin_form($form, &$form_state){
+
+  $form['chatbox_title'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Title'),
+    '#default_value' => variable_get('chatbox_title'),
+    '#weight' => 1,
+  );
+
+  $chatbox_text = variable_get("chatbox_text");
+
+  $form["chatbox_text"] = array(
+    '#type' => 'text_format',
+    '#format' => 'wysiwyg',
+    '#title' => t('Text of the chatbox'),
+    '#default_value' => $chatbox_text["value"],
+    '#weight' => 2,
+  );
+
+  return system_settings_form($form);
 }
