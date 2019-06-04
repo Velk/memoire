@@ -200,7 +200,7 @@ a.cont-readmore {
     box-sizing: border-box;
     right: 0;
     transform: rotate(45deg) translateY(-25px) translateX(40px);
-    z-index: 40;
+    z-index: 38;
 }
 
 .banner-category > p {
