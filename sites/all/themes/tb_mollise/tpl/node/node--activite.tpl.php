@@ -289,7 +289,7 @@ foreach ($activity_family_field as $activity_family_iteration){
                     }
 
                     if(
-                        isset($activity_basic_prest_price_prefix) &&
+                        //isset($activity_basic_prest_price_prefix) &&
                         isset($activity_basic_prest_price) &&
                         isset($activity_basic_prest_price_precision)
                     ){
