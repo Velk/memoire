@@ -56,8 +56,8 @@ form#devis {
     box-sizing: border-box;
     width: 100%;
     display: grid;
-    grid-template-areas: "a a b b" "c c c ." "d d d d" "e e e e" ". f f ." "g g g g" "h h h h" ". i i .";
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-areas: "a a b b" "c c d d" "e e e e" "f f f f" ". g g ." "h h h h" "i i i i" ". j j ." "k k k k";
+    grid-template-columns: repeat(4, calc(25% - 25px*3/4));
     grid-gap: 25px;
     background-color: #f7f7f7;
 }
@@ -65,29 +65,65 @@ form#devis {
 div#location {
     grid-area: a;
 }
-div#date {
-    grid-area: b;
-}
 div#participants {
+  grid-area: b;
+}
+div#departure-date {
     grid-area: c;
 }
-div#budget {
+div#return-date {
     grid-area: d;
 }
-div#transport {
+div#budget {
     grid-area: e;
 }
-button#empty-cart {
+div#transport {
     grid-area: f;
 }
-div#trip {
+button#empty-cart {
     grid-area: g;
 }
-div#wish {
+div#trip-global-container {
     grid-area: h;
 }
-button#validate-cart {
+div#wish {
     grid-area: i;
+}
+button#validate-cart {
+    grid-area: j;
+}
+div#total-quotation-cost {
+  grid-area: k;
+}
+
+#location, #participants, #dates {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+div#departure-date,
+div#return-date {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+}
+div#departure-date > i,
+div#return-date > i {
+  width: 20px !important;
+}
+div#departure-date > label,
+div#return-date > label {
+  width: calc(100% - 20px);
+  font-size: 14px;
+  margin: 0 !important;
+  font-weight: normal;
+
+}
+div#departure-date > input,
+div#return-date > input {
+  width: calc(100% - 20px);
+  margin-left: 20px;
 }
 
 div#cart-container > h1 {
@@ -95,6 +131,7 @@ div#cart-container > h1 {
     padding: 0 20px;
     text-align: center;
     color: #26C6DA;
+    font-size: 28px;
 }
 
 form#devis input {
@@ -104,7 +141,8 @@ form#devis input {
     padding: 8px 10px;
     background-color: transparent;
     font-size: 14px;
-    width: calc(100% - 25px);
+    /*width: calc(100% - 25px);*/
+    width: calc(100% - 20px);
 }
 form#devis input:hover {
     background-color: #fdfdfd;
@@ -154,6 +192,7 @@ form#devis textarea {
     height: 75px;
     font-size: 12px;
     border: 1px solid #26C6DA;
+    resize: vertical;
 }
 
 form#devis textarea:hover {
@@ -163,8 +202,20 @@ form#devis textarea:hover {
 }
 
 /* Trip days */
-div#trip {
+div.trip {
     margin: 25px 0;
+    border-top: 5px solid #ffffff;
+    border-bottom: 5px solid #ffffff;
+    box-sizing: border-box;
+    padding: 25px 0;
+}
+
+.trip > h3.trip-city-name {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 20px;
+  margin: 0 0 25px 0;
+  color: #424242;
 }
 
 .trip-days {
@@ -254,6 +305,24 @@ div#trip {
     background-color: #fdfdfd;
     color: #26C6DA;
 }
+.trip .transfer-container {
+  box-sizing: border-box;
+  background-color: #fff;
+  margin-bottom: 25px;
+}
+.trip .transfer-container:last-of-type {
+  margin-bottom: 0;
+}
+.trip .transfer-container > p {
+  padding-left: 15px;
+}
+
+.trip hr.transfer-separation {
+  height: 1px;
+  border: none;
+  background-color: #c4c4c4;
+  margin: 25px;
+}
 
 /* Design for activities */
 .activities {
@@ -261,7 +330,7 @@ div#trip {
     width: 100%;
     flex-direction: row;
     align-items: center;
-    height: 50px;
+    height: 70px;
     border: 1px solid #ededed;
     box-sizing: border-box;
     background-color: #ffffff;
@@ -271,8 +340,8 @@ div#trip {
     margin-bottom: 0;
 }
 .activities .activities-img-container {
-    height: 50px;
-    width: 50px;
+    height: 70px;
+    width: 70px;
     overflow: hidden;
     margin-right: 10px;
 }
@@ -282,10 +351,33 @@ div#trip {
     left: 50%;
     position: relative;
 }
-.activities > p {
+.activities > .activities-titles-container {
+    display: flex;
+    flex-wrap: wrap;
+    height: 60px;
+    overflow: hidden;
+    width: calc(100% - (20px + 70px + 50px + 20px));
+}
+.activities > .activities-titles-container > p {
     font-size: 14px;
+    width: 100%;
     margin: 0;
     text-align: left;
+}
+.activities > .activities-titles-container > p.activities-pack-title {
+  font-size: 12px;
+  font-style: italic;
+}
+
+.activities-price-container {
+  position: relative;
+  width: 50px;
+  text-align: center;
+}
+.activities-price-container > p {
+  margin: 0;
+  font-size: 14px;
+  color: #26C6DA;
 }
 
 .activities .positioning-btn {
@@ -315,6 +407,7 @@ div#trip {
     margin-left: auto;
     position: relative;
     height: 100%;
+    width: 20px;
     border: none;
     border-left: 1px solid #e9e9e9;
     background-color: #fff;
@@ -336,7 +429,7 @@ div#trip {
     width: 100%;
     flex-direction: row;
     align-items: center;
-    height: 50px;
+    height: 70px;
     border: 1px solid #ededed;
     box-sizing: border-box;
     background-color: #ffffff;
@@ -346,8 +439,8 @@ div#trip {
     margin-bottom: 0;
 }
 .hosting .activities-img-container {
-    height: 50px;
-    width: 50px;
+    height: 70px;
+    width: 70px;
     overflow: hidden;
     margin-right: 10px;
 }
@@ -357,9 +450,37 @@ div#trip {
     left: 50%;
     position: relative;
 }
-.hosting > p {
-    font-size: 14px;
-    margin: 0;
+.hosting > .activities-titles-container {
+  display: flex;
+  flex-wrap: wrap;
+  height: 60px;
+  overflow: hidden;
+  width: calc(100% - (20px + 70px + 50px + 20px));
+}
+.hosting > .activities-titles-container > p {
+  font-size: 14px;
+  width: 100%;
+  margin: 0;
+  text-align: left;
+}
+.hosting > .activities-titles-container > p.activities-pack-title {
+  font-size: 12px;
+  font-style: italic;
+}
+/*.hosting > p {*/
+/*    font-size: 14px;*/
+/*    margin: 0;*/
+/*}*/
+
+.hosting .activities-price-container {
+  position: relative;
+  width: 50px;
+  text-align: center;
+}
+.hosting .activities-price-container > p {
+  margin: 0;
+  font-size: 14px;
+  color: #26C6DA;
 }
 
 .hosting .positioning-btn {
@@ -410,7 +531,7 @@ div#trip {
     width: 100%;
     flex-direction: row;
     align-items: center;
-    height: 50px;
+    height: 70px;
     border: 1px solid #ededed;
     box-sizing: border-box;
     background-color: #ffffff;
@@ -420,8 +541,8 @@ div#trip {
     margin-bottom: 0;
 }
 .transfer .activities-img-container {
-    height: 50px;
-    width: 50px;
+    height: 70px;
+    width: 70px;
     overflow: hidden;
     margin-right: 10px;
 }
@@ -431,11 +552,39 @@ div#trip {
     left: 50%;
     position: relative;
 }
-.transfer > p {
-    font-size: 14px;
-    margin: 0;
+.transfer > .activities-titles-container {
+  display: flex;
+  flex-wrap: wrap;
+  height: 60px;
+  overflow: hidden;
+  width: calc(100% - (20px + 70px + 50px + 20px));
 }
+.transfer > .activities-titles-container > p {
+  font-size: 14px;
+  width: 100%;
+  margin: 0;
+  text-align: left;
+}
+.transfer > .activities-titles-container > p.activities-pack-title {
+  font-size: 12px;
+  font-style: italic;
+}
+/*.transfer > p {*/
+/*    font-size: 14px;*/
+/*    margin: 0;*/
+/*}*/
 
+
+.transfer .activities-price-container {
+  position: relative;
+  width: 50px;
+  text-align: center;
+}
+.transfer .activities-price-container > p {
+  margin: 0;
+  font-size: 14px;
+  color: #26C6DA;
+}
 .transfer .positioning-btn {
     position: relative;
     height: 100%;
@@ -479,7 +628,8 @@ div#trip {
 }
 
 /* USER CART - User is NOT logged in */
-div#user-cart-user-not-logged-container {
+div#user-cart-user-not-logged-container,
+div#user-cart-user-logged-container {
   display: none;
   position: fixed;
   top: 0;
@@ -489,7 +639,8 @@ div#user-cart-user-not-logged-container {
   z-index: 99;
   background-color: rgba(0, 0, 0, 0.8);
 }
-div#user-cart-user-not-logged-container > div {
+div#user-cart-user-not-logged-container > div,
+div#user-cart-user-logged-container > div {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -499,7 +650,8 @@ div#user-cart-user-not-logged-container > div {
   box-sizing: border-box;
   border-radius: 3px;
 }
-div#user-cart-user-not-logged-container > div > h2 {
+div#user-cart-user-not-logged-container > div > h2,
+div#user-cart-user-logged-container > div > h2 {
   font-size: 24px;
   color: #26C6DA;
   text-transform: uppercase;
@@ -592,7 +744,8 @@ button#user-not-logged-validate-cart {
   text-transform: uppercase;
 }
 
-button#user-not-logged-remove-overlay {
+button#user-not-logged-remove-overlay,
+button#user-logged-remove-overlay {
   position: absolute;
   top: 5px;
   right: 7px;
@@ -603,7 +756,8 @@ button#user-not-logged-remove-overlay {
   padding: 0;
   cursor: pointer;
 }
-button#user-not-logged-remove-overlay:hover{
+button#user-not-logged-remove-overlay:hover,
+button#user-logged-remove-overlay:hover{
   color: #e9e9e9;
 }
 
@@ -630,4 +784,57 @@ button#validate-cart:hover {
   color: #e85757;
   padding: 0 7.5%;
   margin: 0;
+}
+
+/* Total cost of the quotation */
+div#total-quotation-cost > p:first-of-type {
+  margin: 0;
+  text-align: center;
+  font-size: 14px;
+}
+div#total-quotation-cost > p:last-of-type {
+  margin: 10px 0 0 0;
+  text-align: justify;
+  font-size: 10px;
+  font-style: italic;
+}
+
+/* User cart - Loader */
+div#send-quotation-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.60);
+  z-index: 9999;
+}
+
+div#send-quotation-loader .lds-dual-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  display: inline-block;
+  width: 75px;
+  height: 75px;
+}
+div#send-quotation-loader .lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 75px;
+  height: 75px;
+  margin: 1px;
+  border-radius: 50%;
+  border: 7px solid #fff;
+  border-color: #fff transparent #fff transparent;
+  animation: send-quotation-loader 1.2s linear infinite;
+}
+@keyframes send-quotation-loader {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
