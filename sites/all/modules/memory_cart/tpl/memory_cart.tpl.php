@@ -25,31 +25,39 @@ foreach ($vocab_activities_tree as $vocab_activity_tree){
     <i class="fa fa-minus" id="icon-minus"></i>
 </button>
 <div id="cart-container" class="<?php print ($isActivityPage)? 'activity-page' : ''; ?><?php print ($isDestinationPage)? 'destination-page' : ''; ?>">
-    <h1>Mon voyage</h1>
+    <h1>Préparez votre aventure</h1>
     <form id="devis">
         <div id="location">
             <i class="fa fa-map-marker" aria-hidden="true"></i>
             <input type="text" name="location"  placeholder="Lieu de départ">
         </div>
-        <div id="date">
-            <i class="fa fa-calendar-o" aria-hidden="true"></i>
-            <input type="date" name="date"  placeholder="Date de départ">
-        </div>
         <div id="participants">
             <i class="fa fa-user" aria-hidden="true"></i>
             <input type="number" name="participants"  placeholder="Nombre de participants" min="1">
+        </div>
+        <div id="departure-date">
+          <i class="fa fa-calendar-o" aria-hidden="true"></i>
+          <label for="departure-date">Date de départ</label>
+          <input type="date" name="departure-date">
+        </div>
+        <div id="return-date">
+          <i class="fa fa-calendar-o" aria-hidden="true"></i>
+          <label for="return-date">Date de retour</label>
+          <input type="date" name="return-date">
         </div>
         <div id="budget">
             <label>Budget par personne</label>
             <select name="budget">
                 <option value="0">- de 100€</option>
-                <option value="1">100-250€</option>
-                <option value="2">250€-500€</option>
-                <option value="3">500-750€</option>
-                <option value="4">750€-1000€</option>
-                <option value="5">1000-1500€</option>
-                <option value="6">1500-2000€</option>
-                <option value="7">+ de 2000€</option>
+                <option value="1">100-200€</option>
+                <option value="2">200-300€</option>
+                <option value="3">300-400€</option>
+                <option value="4">400-500€</option>
+                <option value="5">500-750€</option>
+                <option value="6">750-1000€</option>
+                <option value="7">1000-1500€</option>
+                <option value="8">1500-2000€</option>
+                <option value="9">+ de 2000€</option>
             </select>
         </div>
         <div id="transport">
@@ -61,35 +69,46 @@ foreach ($vocab_activities_tree as $vocab_activity_tree){
             </select>
         </div>
         <button type="reset" id="empty-cart">Vider le panier</button>
-        <div id="trip">
-            <?php
-            for($i=1; $i <= 2 ; $i++){
-            ?>
-                <div class="trip-days">
-                    <div class="trip-days-header">
-                        <i class="fa fa-calendar-o" aria-hidden="true"></i>
-                        <p>Journée n° <?php print $i; ?></p>
-                    </div>
-                    <div class="trip-days-details">
-                        <div class="activities-container act-cont-<?php print $i; ?>">
-                            <p class="default-message">Aucune activité choisie</p>
-                        </div>
-                        <div class="hosting-container hosting-cont-<?php print $i; ?>">
-                            <p>Aucun hébergement</p>
-                            <button type="button" class="filter-<?php print $arrayFilters['Hébergements']; ?>">VOIR HEBERGEMENTS</button>
-                        </div>
-                        <div class="transfer-container transfer-cont-<?php print $i; ?>">
-                            <p>Aucun transfert</p>
-                            <button type="button" class="filter-<?php print $arrayFilters['Transferts']; ?>">VOIR TRANSFERTS</button>
-                        </div>
-                    </div>
+        <div id="trip-global-container">
+            <div class="trip">
+                <h3 class="trip-city-name">Ville</h3>
+                <div class="transfer-container transfer-cont-1">
+                    <p>Aucun transfert</p>
+                    <button type="button" class="filter-<?php print $arrayFilters['Transferts']; ?>">VOIR TRANSFERTS</button>
                 </div>
-            <?php
-            }
-            ?>
+                <hr class="transfer-separation">
+                <div class="trip-container">
+                <?php
+                for($i=1; $i <= 3 ; $i++){
+                ?>
+                    <div class="trip-days">
+                        <div class="trip-days-header">
+                            <i class="fa fa-calendar-o" aria-hidden="true"></i>
+                            <p>Journée n° <?php print $i; ?></p>
+                        </div>
+                        <div class="trip-days-details">
+                            <div class="activities-container act-cont-<?php print $i; ?>">
+                                <p class="default-message">Aucune activité choisie</p>
+                            </div>
+                            <?php if( $i < 3 ){ ?>
+                            <div class="hosting-container hosting-cont-<?php print $i; ?>">
+                                <p>Aucun hébergement</p>
+                                <button type="button" class="filter-<?php print $arrayFilters['Hébergements']; ?>">VOIR HEBERGEMENTS</button>
+                            </div>
+                            <?php } ?>
+                        </div>
+                    </div>
+                <?php } ?>
+                </div>
+                <hr class="transfer-separation">
+                <div class="transfer-container transfer-cont-2">
+                    <p>Aucun transfert</p>
+                    <button type="button" class="filter-<?php print $arrayFilters['Transferts']; ?>">VOIR TRANSFERTS</button>
+                </div>
+            </div>
         </div>
         <div id="wish">
-            <textarea name="wish" placeholder="Autres souhaits, ambiance, destination, pour votre hôtel et/ou transport vous préférez: le moins cher possible, le meilleur rapport qualité: prix/confort/durée de transport ou le top confort?"></textarea>
+            <textarea name="wish" placeholder="Nos agents sont là pour vous : une envie particulière, besoin d’un conseil, faites-le nous savoir… "></textarea>
         </div>
         <button type="button" id="validate-cart">Demander un devis</button>
     </form>

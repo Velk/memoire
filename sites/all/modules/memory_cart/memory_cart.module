@@ -47,12 +47,17 @@ function ajax_add_activity_to_cart(){
         $activity_field_img = field_get_items("node", $node_load, "field_img_activite");
         // Get the destination TID
         $activity_img_url = file_create_url($activity_field_img[0]["uri"]);
-        ;
+
+        // Get the pack title field value of the activity
+        $activity_field_pack_title = field_get_items("node", $node_load, "field_title_prestation_base");
+        // Get the pack title value
+        $activity_pack_title = $activity_field_pack_title[0]["value"];
 
         $arrayCartActivity = array(
             "nid" => $node_load->nid,
             "title" => $node_load->title,
             "image" => $activity_img_url,
+            "packTitle" => $activity_pack_title,
         );
 
 //        drupal_set_message("<pre>" . print_r($arrayCartActivity, true) . "</pre>");
@@ -82,7 +87,9 @@ function ajax_cart_send_user_quotation_ask(){
       drupal_json_output($array_result_callback);
   }else{
       $cart_location = $_POST['location'];
-      $cart_date = $_POST['date'];
+      //$cart_date = $_POST['date'];
+      $cart_departure_date = $_POST['departureDate'];
+      $cart_return_date = $_POST['returnDate'];
       $cart_participants = ($_POST['participants'] != "") ? $_POST['participants'] : "Non spécifié";
       $cart_budget = $_POST['budget'];
       $cart_transport = $_POST['transport'];
@@ -144,73 +151,145 @@ function ajax_cart_send_user_quotation_ask(){
           ;
       }
 
-      $body = $body .
-        "---------------------------------------------------------" . "\n\n" .
-        "Information sur la demande de devis : " . "\n\n" .
-        "Lieu de départ : " . $cart_location . "\n" .
-        "Date : " . $cart_date . "\n" .
-        "Participants : " . $cart_participants . "\n" .
-        "Budget : " . $cart_budget . "\n" .
-        "Transport : " . $cart_transport . "\n" .
-        "Wish : " . $cart_wish . "\n\n" .
-        "---------------------------------------------------------" . "\n\n" .
-        "Détails sur les activités souhaitées : "
-      ;
-
       $cart_trip_sorted = [];
 
       for($i = 0; $i < sizeof($cart_trip) ; $i++){
 
-        $cart_trip_sorted[$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["positionInDay"] = $cart_trip[$i]["positionInDay"];
-        $cart_trip_sorted[$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["activityType"] = $cart_trip[$i]["activityType"];
-        $cart_trip_sorted[$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["title"] = $cart_trip[$i]["title"];
-        $cart_trip_sorted[$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["nid"] = $cart_trip[$i]["nid"];
+        $cart_trip_sorted[$cart_trip[$i]["actDestination"]][$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["actDestination"] = $cart_trip[$i]["actDestination"];
+        $cart_trip_sorted[$cart_trip[$i]["actDestination"]][$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["positionInDay"] = $cart_trip[$i]["positionInDay"];
+        $cart_trip_sorted[$cart_trip[$i]["actDestination"]][$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["activityType"] = $cart_trip[$i]["activityType"];
+        $cart_trip_sorted[$cart_trip[$i]["actDestination"]][$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["title"] = $cart_trip[$i]["title"];
+        $cart_trip_sorted[$cart_trip[$i]["actDestination"]][$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["nid"] = $cart_trip[$i]["nid"];
+        $cart_trip_sorted[$cart_trip[$i]["actDestination"]][$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["packTitle"] = $cart_trip[$i]["packTitle"];
+        $cart_trip_sorted[$cart_trip[$i]["actDestination"]][$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["actPrice"] = $cart_trip[$i]["actPrice"];
+
+//        $cart_trip_sorted[$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["actDestination"] = $cart_trip[$i]["actDestination"];
+//        $cart_trip_sorted[$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["positionInDay"] = $cart_trip[$i]["positionInDay"];
+//        $cart_trip_sorted[$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["activityType"] = $cart_trip[$i]["activityType"];
+//        $cart_trip_sorted[$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["title"] = $cart_trip[$i]["title"];
+//        $cart_trip_sorted[$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["nid"] = $cart_trip[$i]["nid"];
+//        $cart_trip_sorted[$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["packTitle"] = $cart_trip[$i]["packTitle"];
+//        $cart_trip_sorted[$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["actPrice"] = $cart_trip[$i]["actPrice"];
+
       }
 
-      // Sort array by day then by activity position in the day
-      ksort($cart_trip_sorted);
-      for($i = 0 ; $i < sizeof($cart_trip_sorted) ; $i++){
-        ksort($cart_trip_sorted[$i]["activities"]);
+      $final_cart_trip = [];
+
+      foreach($cart_trip_sorted as $key=>$value) {
+
+          // Sort array by day then by activity position in the day
+          ksort($value);
+          for($i = 0 ; $i < sizeof($value) ; $i++){
+              ksort($value[$i]["activities"]);
+          }
+
+          $final_cart_trip[$key] = $value;
       }
 
-      // Add activities to the body e-mail
-      for($i = 1 ; $i < sizeof($cart_trip_sorted) ; $i++){
+//      // Sort array by day then by activity position in the day
+//      ksort($cart_trip_sorted);
+//      for($i = 0 ; $i < sizeof($cart_trip_sorted) ; $i++){
+//        ksort($cart_trip_sorted[$i]["activities"]);
+//      }
 
-          $body =
-            $body .
-            "\n\n" . "--- JOUR " . $i . " : " . "\n\n"
+      $body_activities_info = "";
+      $total_nb_city = 0;
+      $totalDaysNb = 0;
+      $totalNightsNb= 0;
+
+      foreach($final_cart_trip as $key=>$value){
+
+          $body_activities_info =
+            $body_activities_info .
+            "\n\n------------------------- Ville : " . $key . " -------------------------\n\n"
           ;
 
-          for($j = 0 ; $j < sizeof($cart_trip_sorted[$i]["activities"]) ; $j++){
+          $total_nb_city++;
 
-              $body =
-                $body .
-                "Activité n°" . $cart_trip_sorted[$i]["activities"][$j]["positionInDay"] . " : " . "\n" .
-                "   - Titre : " . $cart_trip_sorted[$i]["activities"][$j]["title"] . "\n" .
-                "   - URL : " . $base_url . "/" . drupal_get_path_alias("node/" . $cart_trip_sorted[$i]["activities"][$j]["nid"]) . "\n\n"
+          // Add transfer to the body e-mail
+          if( !empty($value[1]["transfer"]) ){
+
+              $body_activities_info =
+                  $body_activities_info .
+                  "Transfert - Aller : " . "\n" .
+                  "   - Titre : " . $value[1]["transfer"][0]["title"] . "\n" .
+                  "   - Pack : " . $value[1]["transfer"][0]["packTitle"] . "\n" .
+                  "   - Prix : " . $value[1]["transfer"][0]["actPrice"] . "\n" .
+                  "   - URL : " . $base_url . "/" . drupal_get_path_alias("node/" . $value[1]["transfer"][0]["nid"]) . "\n\n"
+              ;
+          }
+          if( !empty($value[2]["transfer"]) ){
+
+              $body_activities_info =
+                  $body_activities_info .
+                  "Transfert - Retour : " . "\n" .
+                  "   - Titre : " . $value[2]["transfer"][0]["title"] . "\n" .
+                  "   - Pack : " . $value[2]["transfer"][0]["packTitle"] . "\n" .
+                  "   - Prix : " . $value[2]["transfer"][0]["actPrice"] . "\n" .
+                  "   - URL : " . $base_url . "/" . drupal_get_path_alias("node/" . $value[2]["transfer"][0]["nid"]) . "\n\n"
               ;
           }
 
-          for($j = 0 ; $j < sizeof($cart_trip_sorted[$i]["transfer"]) ; $j++){
+          // Add activities to the body e-mail
 
-              $body =
-                $body .
-                "Transfert : " . "\n" .
-                "   - Titre : " . $cart_trip_sorted[$i]["transfer"][$j]["title"] . "\n" .
-                "   - URL : " . $base_url . "/" . drupal_get_path_alias("node/" . $cart_trip_sorted[$i]["transfer"][$j]["nid"]) . "\n\n"
-              ;
-          }
+          for($i = 1 ; $i < sizeof($value) ; $i++){
 
-          for($j = 0 ; $j < sizeof($cart_trip_sorted[$i]["hosting"]) ; $j++){
+              if( !empty($value[$i]["activities"]) || !empty($value[$i]["hosting"]) ){
 
-            $body =
-              $body .
-              "Hébergement : " . "\n" .
-              "   - Titre : " . $cart_trip_sorted[$i]["hosting"][$j]["title"] . "\n" .
-              "   - URL : " . $base_url . "/" . drupal_get_path_alias("node/" . $cart_trip_sorted[$i]["hosting"][$j]["nid"]) . "\n\n"
-            ;
+                  $totalDaysNb++;
+
+                  $body_activities_info =
+                      $body_activities_info .
+                      "\n\n" . "--- JOUR " . $i . " : " . "\n\n"
+                  ;
+
+                  for($j = 0 ; $j < sizeof($value[$i]["activities"]) ; $j++){
+
+                      $body_activities_info =
+                          $body_activities_info .
+                          "Activité n°" . $value[$i]["activities"][$j]["positionInDay"] . " : " . "\n" .
+                          "   - Titre : " . $value[$i]["activities"][$j]["title"] . "\n" .
+                          "   - Pack : " . $value[$i]["activities"][$j]["packTitle"] . "\n" .
+                          "   - Prix : " . $value[$i]["activities"][$j]["actPrice"] . "\n" .
+                          "   - URL : " . $base_url . "/" . drupal_get_path_alias("node/" . $value[$i]["activities"][$j]["nid"]) . "\n\n"
+                      ;
+                  }
+
+                  for($j = 0 ; $j < sizeof($value[$i]["hosting"]) ; $j++){
+
+                      $totalNightsNb++;
+
+                      $body_activities_info =
+                          $body_activities_info .
+                          "Hébergement : " . "\n" .
+                          "   - Titre : " . $value[$i]["hosting"][$j]["title"] . "\n" .
+                          "   - Pack : " . $value[$i]["hosting"][$j]["packTitle"] . "\n" .
+                          "   - Prix : " . $value[$i]["hosting"][$j]["actPrice"] . "\n" .
+                          "   - URL : " . $base_url . "/" . drupal_get_path_alias("node/" . $value[$i]["hosting"][$j]["nid"]) . "\n\n"
+                      ;
+                  }
+              }
           }
       }
+
+      $body_quotation_info =
+          "---------------------------------------------------------" . "\n\n" .
+          "Information sur la demande de devis : " . "\n\n" .
+          "Lieu de départ : " . $cart_location . "\n" .
+          "Date de départ : " . $cart_departure_date . "\n" .
+          "Date de retour : " . $cart_return_date . "\n" .
+          "Participants : " . $cart_participants . "\n" .
+          "Budget : " . $cart_budget . "\n" .
+          "Transport : " . $cart_transport . "\n" .
+          "Wish : " . $cart_wish . "\n\n" .
+          "---------------------------------------------------------" . "\n\n" .
+          "Nombre total de ville : " . $total_nb_city . "\n" .
+          "Séjour de " . $totalDaysNb . " jour(s) et " . $totalNightsNb . " nuit(s)" . "\n\n" .
+          "---------------------------------------------------------" . "\n\n" .
+          "Détails sur les activités souhaitées : \n\n"
+      ;
+
+      $body = $body . $body_quotation_info . $body_activities_info;
       /* End - E-mail body */
 
       // Mail's parameters
@@ -243,14 +322,13 @@ function ajax_cart_send_user_quotation_ask(){
 
           drupal_json_output($array_result_callback);
       }
-
   }
 }
 
 /**
  * Implementation of hook_mail().
  *
- * A very simple hook_mail() implementation, for module "bsconnexion".
+ * A very simple hook_mail() implementation, for module "memory_cart".
  * This implementation expects to receive a $body, $subject, and $headers
  * inside the $params sent from drupal_mail(), rather than construct
  * those here in the hook.

@@ -60,16 +60,17 @@ div.prestation-description {
 div.prestation-price-container {
   width: calc((100%/5));
   display: grid;
-  grid-template-areas: "a b" "c c";
+  grid-template-areas: "a b d" "c c c";
   align-content: center;
   align-items: center;
+  grid-template-columns: 1fr 1fr min-content;
 }
 div.prestation-price-container > * {
   margin: 0;
 }
 p.prestation-price-prefix {
   grid-area: a;
-  padding: 0 0 0 5px;
+  padding: 0;
   font-size: 12px;
   font-style: italic;
   color: #26C6DA;
@@ -82,8 +83,8 @@ p.prestation-price {
   font-weight: bold;
   line-height: 1;
   color: #26C6DA;
-  text-align: right;
-  padding: 0 0 0 5px;
+  text-align: center;
+  padding: 0;
   box-sizing: border-box;
 }
 p.prestation-price-precision {
@@ -250,7 +251,7 @@ div#activity-slider-thumbnails {
 }
 
 /* ACTIVITY PAGE - BUTTON ADD TO CART */
-button#btn-cart-container.cont-add-cart {
+/*button#btn-cart-container.cont-add-cart {
   position: fixed;
   bottom: 0;
   left: 0;
@@ -276,4 +277,34 @@ button#btn-cart-container.cont-add-cart > i {
   bottom: 12px;
   left: 12px;
   font-size: 25px;
+}*/
+
+button.cont-add-cart{
+  grid-area: d;
+  position: relative;
+  font-size: 12px;
+  height: min-content;
+  width: min-content;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  text-align: center;
+  background-color: #26C6DA;
+  border: 1px solid #fff;
+  color: #fff;
+  cursor: pointer;
+  padding: 13px 20px;
+  box-sizing: border-box;
+  margin-left: auto;
+}
+button.cont-add-cart:hover {
+  background-color: #4196a0;
+  border: 1px solid #ffffff;
+  box-sizing: border-box;
+  color: #ffffff;
+}
+button.cont-add-cart > i {
+  position: absolute;
+  transform: translateX(-50%) translateY(-50%);
+  font-size: medium;
 }

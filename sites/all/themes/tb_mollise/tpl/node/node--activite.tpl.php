@@ -307,7 +307,10 @@ foreach ($activity_family_field as $activity_family_iteration){
                                 echo
                                     '<p class="prestation-price">' .
                                     $activity_basic_prest_price .
-                                    ' €</p>'
+                                    ' €</p>' .
+                                    '<button class="cont-add-cart" type="button">' .
+                                        '<i class="fa fa-cart-plus" aria-hidden="true"></i>' .
+                                    '</button>'
                                 ;
                             }
 
@@ -403,7 +406,10 @@ foreach ($activity_family_field as $activity_family_iteration){
                                   echo
                                     '<p class="prestation-price">' .
                                     $activity_options[$i]["price"] .
-                                    ' €</p>'
+                                    ' €</p>' .
+                                    '<button class="cont-add-cart" type="button">' .
+                                    '<i class="fa fa-cart-plus" aria-hidden="true"></i>' .
+                                    '</button>'
                                   ;
                                 }
 
@@ -520,9 +526,6 @@ foreach ($activity_family_field as $activity_family_iteration){
         echo '</div>';
     }
     ?>
-    <button id="btn-cart-container" class="cont-add-cart" type="button">
-      <i class="fa fa-cart-plus" aria-hidden="true"></i>
-    </button>
     <?php
     if( isset($activity_category) ){
         echo '<input type="hidden" class="activity-category" value="' . $activity_category . '">';
