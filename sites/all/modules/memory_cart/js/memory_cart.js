@@ -34,7 +34,7 @@
                     $("form#devis").append(
                         "<div id='total-quotation-cost'>" +
                             "<p>Coût total estimé : " + totalQuotationCost + " €</p>" +
-                            "<p>Le prix de l’estimation correspond à un prix par personne pour un groupe de 10 personnes. Les prix peuvent varier en fonction du nombre de participant et de la saison. Pour une estimation précise, faites une demande de devis ci-dessous</p>" +
+                            "<p>Le prix de l’estimation correspond à un prix par personne pour un groupe de 10 personnes. Les prix peuvent varier en fonction du nombre de participant et de la saison. Pour une estimation précise, faites une demande de devis ci-dessus.</p>" +
                         "</div>"
                     );
                 }
@@ -73,6 +73,55 @@
             // }
 
             // function removingElements(){
+
+              /* ------------------------------ Click : Removing city ------------------------------ */
+              $("body #trip-global-container").on("click", ".trip .btn-remove-city", function() {
+console.log("remove destination");
+                  var actDestinationToRemove = $(this).parent().children(".trip-city-name").text();
+
+                  $(this).parent().children(".trip-container").children(".trip-days").each(function(){
+
+                    // Remove activities
+                    $(this).children(".trip-days-details").children(".activities-container").children(".activities").each(function(){
+
+                      var nidToRemove = $(this).children("input[type='hidden'].input-hidden-nid").val();
+                      var dayNumberToRemove = $(this).parent().attr("class").substr($(this).parent().attr("class").indexOf("-cont-") + 6);
+                      var activityType = $(this).attr("class");
+                      var activityPackTitle = $(this).children(".activities-titles-container").children(".activities-pack-title").text();
+
+                      // Call removeLocalStorage() function
+                      removeLocalStorage(nidToRemove, dayNumberToRemove, activityType, activityPackTitle, actDestinationToRemove);
+                    });
+
+                    // Remove hosting
+                    if($(this).children(".trip-days-details").children(".hosting-container").length >= 1){
+
+                      var nidHostingToRemove = $(this).children(".trip-days-details").children(".hosting-container").children(".hosting").children("input[type='hidden'].input-hidden-nid").val();
+                      var hostingClassList = $(this).children(".trip-days-details").children(".hosting-container").attr("class");
+                      var dayNumberHostingToRemove = hostingClassList.substr(hostingClassList.indexOf("-cont-") + 6);
+                      var activityPackTitleHosting = $(this).children(".trip-days-details").children(".hosting-container").children(".hosting").children(".activities-titles-container").children(".activities-pack-title").text();
+
+                      // Call removeLocalStorage() function
+                      removeLocalStorage(nidHostingToRemove, dayNumberHostingToRemove, "hosting", activityPackTitleHosting, actDestinationToRemove);
+                    }
+                  });
+
+                  // Remove transfer
+                  $(this).parent().children(".transfer-container").each(function(){
+
+                    if($(this).children(".transfer").length >= 1){
+
+                      var nidToRemove = $(this).children(".transfer").children("input[type='hidden'].input-hidden-nid").val();
+                      var dayNumberToRemove = $(this).attr("class").substr($(this).attr("class").indexOf("-cont-") + 6);
+                      var activityPackTitle = $(this).children(".transfer").children(".activities-titles-container").children(".activities-pack-title").text();
+
+                      // Call removeLocalStorage() function
+                      removeLocalStorage(nidToRemove, dayNumberToRemove, "transfer", activityPackTitle, actDestinationToRemove);
+                    }
+                  });
+
+                  $(this).parent().remove();
+              });
 
               /* ------------------------------ Click : Removing day ------------------------------ */
               // $("body .trip").on("click", ".trip-days .btn-remove-day", function() {
@@ -116,12 +165,12 @@
                   var activityPackTitle = $(this).parent().parent().parent().children(".trip-days:eq(" + (currentDay - 1) + ")").children(".trip-days-details").children(".hosting-container").children(".hosting").children(".activities-titles-container").children(".activities-pack-title").text();
                   var activityDestination = $(this).parent().parent().parent().parent().children(".trip-city-name").text();
 
-                  console.log("------------------");
-                  console.log("nid : " + nidToRemove);
-                  console.log("dayNumber : " + currentDay);
-                  console.log("activityType : " + "hosting");
-                  console.log("activityPackTitle : " + activityPackTitle);
-                  console.log("activityDestination : " + activityDestination);
+                  // console.log("------------------");
+                  // console.log("nid : " + nidToRemove);
+                  // console.log("dayNumber : " + currentDay);
+                  // console.log("activityType : " + "hosting");
+                  // console.log("activityPackTitle : " + activityPackTitle);
+                  // console.log("activityDestination : " + activityDestination);
 
                   // Call removeLocalStorage() function
                   removeLocalStorage(nidToRemove, currentDay, "hosting", activityPackTitle, activityDestination);
@@ -187,8 +236,8 @@
                 // Retrieve the removing activity nid
                 var nidToRemove = $(this).parent(".hosting").children("input[type='hidden'].input-hidden-nid").val();
                 var packTitleToRemove = $(this).parent(".hosting").children(".activities-titles-container").children(".activities-pack-title").text();
-                // var classList = $(this).parent().parent().attr("class");
-                // var dayNumberToRemove = classList.substr(classList.indexOf("hosting-cont-") + 13);
+                var classList = $(this).parent().parent().attr("class");
+                var dayNumberToRemove = classList.substr(classList.indexOf("hosting-cont-") + 13);
                 var actDestinationToRemove = $(this).parent(".hosting").children("input[type='hidden'].input-hidden-destination").val();
 
                 var indexActDestination;
@@ -202,19 +251,24 @@
                 });
 
                 // Call removeLocalStorage() function
-                var totalDaysNumber = $(".trip:eq(" + indexActDestination + ") .trip-days").length - 1;
+                //var totalDaysNumber = $(".trip:eq(" + indexActDestination + ") .trip-days").length - 1;
 
-                for(var i = 1; i <= totalDaysNumber; i++){
-                  removeLocalStorage(nidToRemove, i, "hosting", packTitleToRemove, actDestinationToRemove);
-                }
+                //for(var i = 1; i <= totalDaysNumber; i++){
+                  removeLocalStorage(nidToRemove, dayNumberToRemove, "hosting", packTitleToRemove, actDestinationToRemove);
+                //}
 
                 /* ----- Update - User cart display ----- */
 
-                console.log("remove hsoting");
                 // Remove the activity
-                $(".trip:eq(" + indexActDestination + ") .trip-days .hosting-container .hosting").remove();
-                $(".trip:eq(" + indexActDestination + ") .trip-days .hosting-container > p").show();
-                $(".trip:eq(" + indexActDestination + ") .trip-days .hosting-container > button").show();
+                // $(".trip:eq(" + indexActDestination + ") .trip-days .hosting-container .hosting").remove();
+                // $(".trip:eq(" + indexActDestination + ") .trip-days .hosting-container > p").show();
+                // $(".trip:eq(" + indexActDestination + ") .trip-days .hosting-container > button").show();
+
+                $(this).parent().parent().children("p").show();
+                $(this).parent().parent().children("button").show();
+
+                // Remove the activity
+                $(this).parent().remove();
               });
 
               /* ------------------------------ Click : Removing transfer ------------------------------ */
@@ -952,58 +1006,61 @@
 
             function addNewCity(actCityName){
 
-                var transferTid = $(".transfer-container > button").attr("class");
-                var hostingTid = $(".hosting-container > button").attr("class");
+              var transferTid = $(".transfer-container > button").attr("class");
+              var hostingTid = $(".hosting-container > button").attr("class");
 
-                $("#trip-global-container").append(
-                    "<div class=\"trip\">" +
-                        "<h3 class=\"trip-city-name\">" + actCityName + "</h3>" +
-                        "<div class=\"transfer-container transfer-cont-1\">" +
-                            "<p>Aucun transfert</p>" +
-                            "<button type=\"button\" class=\"" + transferTid + "\">VOIR TRANSFERTS</button>" +
-                        "</div>" +
-                        "<hr class=\"transfer-separation\">" +
-                        "<div class=\"trip-container\">" +
-                        "</div>" +
-                        "<hr class=\"transfer-separation\">" +
-                        "<div class=\"transfer-container transfer-cont-2\">" +
-                            "<p>Aucun transfert</p>" +
-                            "<button type=\"button\" class=\"" + transferTid + "\">VOIR TRANSFERTS</button>" +
-                        "</div>" +
-                    "</div>"
+              $("#trip-global-container").append(
+                "<div class=\"trip\">" +
+                "<h3 class=\"trip-city-name\">" + actCityName + "</h3>" +
+                "<button type=\"button\" class=\"btn-remove-city\">" +
+                "<i class=\"fa fa-times\" aria-hidden=\"true\"></i>" +
+                "</button>" +
+                "<div class=\"transfer-container transfer-cont-1\">" +
+                "<p>Aucun transfert</p>" +
+                "<button type=\"button\" class=\"" + transferTid + "\">VOIR TRANSFERTS</button>" +
+                "</div>" +
+                "<hr class=\"transfer-separation\">" +
+                "<div class=\"trip-container\">" +
+                "</div>" +
+                "<hr class=\"transfer-separation\">" +
+                "<div class=\"transfer-container transfer-cont-2\">" +
+                "<p>Aucun transfert</p>" +
+                "<button type=\"button\" class=\"" + transferTid + "\">VOIR TRANSFERTS</button>" +
+                "</div>" +
+                "</div>"
+              );
+
+              for(var i = 1; i <= 3; i++){
+
+                // Get the last trip previously created
+                $("#trip-global-container > .trip:eq(" + ($("#trip-global-container > .trip").length - 1) + ") .trip-container").append(
+                  "<div class=\"trip-days\">" +
+                  "<div class=\"trip-days-header\">" +
+                  "<i class=\"fa fa-calendar-o\" aria-hidden=\"true\"></i>" +
+                  "<p>Journée n° " + i + "</p>" +
+                  "</div>" +
+                  "<div class=\"trip-days-details\">" +
+                  "<div class=\"activities-container act-cont-" + i + "\">" +
+                  "<p class=\"default-message\">Aucune activité choisie</p>" +
+                  "</div>" +
+                  "<div class=\"hosting-container hosting-cont-" + i + "\">" +
+                  "<p>Aucun hébergement</p>" +
+                  "<button type=\"button\" class=\"" + hostingTid + "\">VOIR HEBERGEMENTS</button>" +
+                  "</div>" +
+                  "</div>" +
+                  "</div>"
                 );
 
-                for(var i = 1; i <= 3; i++){
-
-                    // Get the last trip previously created
-                    $("#trip-global-container > .trip:eq(" + ($("#trip-global-container > .trip").length - 1) + ") .trip-container").append(
-                        "<div class=\"trip-days\">" +
-                            "<div class=\"trip-days-header\">" +
-                                "<i class=\"fa fa-calendar-o\" aria-hidden=\"true\"></i>" +
-                                "<p>Journée n° " + i + "</p>" +
-                            "</div>" +
-                            "<div class=\"trip-days-details\">" +
-                                "<div class=\"activities-container act-cont-" + i + "\">" +
-                                    "<p class=\"default-message\">Aucune activité choisie</p>" +
-                                "</div>" +
-                                "<div class=\"hosting-container hosting-cont-" + i + "\">" +
-                                    "<p>Aucun hébergement</p>" +
-                                    "<button type=\"button\" class=\"" + hostingTid + "\">VOIR HEBERGEMENTS</button>" +
-                                "</div>" +
-                            "</div>" +
-                        "</div>"
-                    );
-
-                    if(i == 3){
-                        $("#trip-global-container > .trip:eq(" + ($("#trip-global-container > .trip").length - 1) + ") .hosting-cont-3").remove();
-                    }
+                if(i == 3){
+                  $("#trip-global-container > .trip:eq(" + ($("#trip-global-container > .trip").length - 1) + ") .hosting-cont-3").remove();
                 }
+              }
 
-                // // Call removingElements(), filtersElements() & movingElements() function
-                // // onClick function need to be redefined when append a new City
-                // removingElements();
-                // filtersElements();
-                // movingElements();
+              // // Call removingElements(), filtersElements() & movingElements() function
+              // // onClick function need to be redefined when append a new City
+              // removingElements();
+              // filtersElements();
+              // movingElements();
             }
 
             /* Retrieve and set to the user cart all activities stocked into localStorage*/
@@ -1252,27 +1309,27 @@
                                 );
                             }
 
-                            // Add hosting(s) if doesn't exist
-                            if($(this).children(".trip-days-details").children(".hosting-container").children(".hosting").length >= 1){
+                            // // Add hosting(s) if doesn't exist
+                            // if($(this).children(".trip-days-details").children(".hosting-container").children(".hosting").length >= 1){
+                            //
+                            //     hostingToAdd = $(this).children(".trip-days-details").children(".hosting-container").children(".hosting").clone();
+                            // }else{
+                            //
+                            //     if($(this).index() < (totalNbDays - 1)){
+                            //         if($(this).children(".trip-days-details").children(".hosting-container").children(".hosting").length === 0){
+                            //
+                            //           $(this).children(".trip-days-details").children(".hosting-container").append(hostingToAdd);
+                            //           $(this).children(".trip-days-details").children(".hosting-container").children("p").hide();
+                            //           $(this).children(".trip-days-details").children(".hosting-container").children("button").hide();
+                            //         }
+                            //     }
+                            // }
 
-                                hostingToAdd = $(this).children(".trip-days-details").children(".hosting-container").children(".hosting").clone();
-                            }else{
-
-                                if($(this).index() < (totalNbDays - 1)){
-                                    if($(this).children(".trip-days-details").children(".hosting-container").children(".hosting").length === 0){
-
-                                      $(this).children(".trip-days-details").children(".hosting-container").append(hostingToAdd);
-                                      $(this).children(".trip-days-details").children(".hosting-container").children("p").hide();
-                                      $(this).children(".trip-days-details").children(".hosting-container").children("button").hide();
-                                    }
-                                }
+                            if(hostingToAdd === null){
+                                $(this).children(".trip-container").children(".trip-days").children(".trip-days-details").children(".hosting-container").children("p").show();
+                                $(this).children(".trip-container").children(".trip-days").children(".trip-days-details").children(".hosting-container").children("button").show();
                             }
                         });
-
-                        if(hostingToAdd === null){
-                            $(this).children(".trip-container").children(".trip-days").children(".trip-days-details").children(".hosting-container").children("p").show();
-                            $(this).children(".trip-container").children(".trip-days").children(".trip-days-details").children(".hosting-container").children("button").show();
-                        }
                     });
 
 //                     if($(".trip:eq(" + indexActDestination +") .trip-days:eq(" + (dayNumberToSet - 1) + ") .trip-days-details .hosting-container").length === 0){
@@ -1381,21 +1438,21 @@
 
             /* Display or Hide cart interface following the page type */
             if($("#cart-container").attr("class") === "destination-page"){
-                $("#block-memory-cart-memory-cart").css("width", "400px");
+                $("#block-memory-cart-memory-cart").css("width", "450px");
                 $("#icon-plus").css("display", "none");
                 $("#icon-minus").css("display", "block");
                 $("#block-memory-cart-memory-cart").css("box-shadow", "-1px 0px 5px #bababa");
 
-                $("div#continent").css("width", "calc(100% - 400px)");
-                $("div#breadcrumb-wrapper").css("width", "calc(100% - 400px)");
+                $("div#continent").css("width", "calc(100% - 450px)");
+                $("div#breadcrumb-wrapper").css("width", "calc(100% - 450px)");
             }else if($("#cart-container").attr("class") === "activity-page"){
-                $("#block-memory-cart-memory-cart").css("width", "400px");
+                $("#block-memory-cart-memory-cart").css("width", "450px");
                 $("#icon-plus").css("display", "none");
                 $("#icon-minus").css("display", "block");
                 $("#block-memory-cart-memory-cart").css("box-shadow", "-1px 0px 5px #bababa");
 
-                $("div#activity-page-container").css("width", "calc(100% - 400px)");
-                $("div#block-memory-blocks-memory-switch-activities").css("width", "calc(100% - 400px)");
+                $("div#activity-page-container").css("width", "calc(100% - 450px)");
+                $("div#block-memory-blocks-memory-switch-activities").css("width", "calc(100% - 450px)");
             }
 
             /* Scroll - Resize header menu */
@@ -1431,18 +1488,18 @@
                     }
                 }else if($("#block-memory-cart-memory-cart").width() === 0){
 
-                    $("#block-memory-cart-memory-cart").css("width", "400px");
+                    $("#block-memory-cart-memory-cart").css("width", "450px");
                     $("#icon-plus").css("display", "none");
                     $("#icon-minus").css("display", "block");
                     $("#block-memory-cart-memory-cart").css("box-shadow", "-1px 0px 5px #bababa");
 
                     if( $("div#activity-page-container").length >= 1 ){
-                        $("div#activity-page-container").css("width", "calc(100% - 400px)");
-                        $("div#block-memory-blocks-memory-switch-activities").css("width", "calc(100% - 400px)");
+                        $("div#activity-page-container").css("width", "calc(100% - 450px)");
+                        $("div#block-memory-blocks-memory-switch-activities").css("width", "calc(100% - 450px)");
                     }
                     if( $("div#continent").length >= 1 ){
-                        $("div#continent").css("width", "calc(100% - 400px)");
-                        $("div#breadcrumb-wrapper").css("width", "calc(100% - 400px)");
+                        $("div#continent").css("width", "calc(100% - 450px)");
+                        $("div#breadcrumb-wrapper").css("width", "calc(100% - 450px)");
                     }
                 }
             });
@@ -1452,21 +1509,14 @@
 
                 if($("#block-memory-cart-memory-cart").width() === 0){
 
-                    $("#block-memory-cart-memory-cart").css("width", "400px");
+                    $("#block-memory-cart-memory-cart").css("width", "450px");
                     $("#icon-plus").css("display", "none");
                     $("#icon-minus").css("display", "block");
                     $("#block-memory-cart-memory-cart").css("box-shadow", "-1px 0px 5px #bababa");
 
-                    $("div#activity-page-container").css("width", "calc(100% - 400px)");
-                    $("div#block-memory-blocks-memory-switch-activities").css("width", "calc(100% - 400px)");
+                    $("div#activity-page-container").css("width", "calc(100% - 450px)");
+                    $("div#block-memory-blocks-memory-switch-activities").css("width", "calc(100% - 450px)");
                 }
-            });
-
-            /* Empty cart */
-            $("#empty-cart").click(function(){
-               $("form#devis input").val("");
-               $("form#devis select").val("0");
-               $("form#devis textarea").val("");
             });
 
             /* Function intended to add a new day when every activity or hosting or transfer are set inside a day */
@@ -1523,42 +1573,46 @@
 
                     var hostingElement = $(".trip:eq(" + activityDestinationIndex + ") .trip-days .hosting-container .hosting").clone()[0];
 
+                    var nbDayInCity = $(".trip:eq(" + activityDestinationIndex + ") .trip-days").length;
+
                     $(".trip:eq(" + activityDestinationIndex + ") .trip-days .hosting-container").each(function(){
 
-                        // Add hosting if it's defined and not set in the trip day
-                        if($(this).children(".hosting").length === 0){
+                        if($(this).parent().parent().index() == (nbDayInCity - 2)) {
 
-                            $(this).append(hostingElement);
-                            $(this).children("p").hide();
-                            $(this).children("button").hide();
+                            // Add hosting if it's defined and not set in the trip day
+                            if ($(this).children(".hosting").length === 0) {
 
-                            // Add LocalStorage
-                            var objActivityDatas = {};
+                                $(this).append(hostingElement);
+                                $(this).children("p").hide();
+                                $(this).children("button").hide();
 
-                            // Add activity datas in object
-                            objActivityDatas.dayNumber = $(this).parent(".trip-days-details").parent(".trip-days").index() + 1;
-                            objActivityDatas.positionInDay = 0;
-                            objActivityDatas.activityType = "hosting";
-                            objActivityDatas.nid = $(this).children(".hosting").children("input[type=\"hidden\"].input-hidden-nid").val();
-                            objActivityDatas.title = $(this).children(".hosting").children(".activities-titles-container").children("p:eq(0)").text();
-                            objActivityDatas.packTitle = $(this).children(".hosting").children(".activities-titles-container").children(".activities-pack-title").text();
-                            objActivityDatas.actPrice = $(this).children(".hosting").children(".activities-price-container").children("p").text();
-                            objActivityDatas.actDestination = $(".trip:eq(" + activityDestinationIndex + ") .trip-city-name").text();
-                            objActivityDatas.image = $(this).children(".hosting").children(".activities-img-container").children("img").attr("src");
+                                // Add LocalStorage
+                                var objActivityDatas = {};
 
-                            console.log(objActivityDatas);
-                            // var localStorageAllActivitiesLength = Object.keys(localStorageAllActivities).length;
+                                // Add activity datas in object
+                                objActivityDatas.dayNumber = $(this).parent(".trip-days-details").parent(".trip-days").index() + 1;
+                                objActivityDatas.positionInDay = 0;
+                                objActivityDatas.activityType = "hosting";
+                                objActivityDatas.nid = $(this).children(".hosting").children("input[type=\"hidden\"].input-hidden-nid").val();
+                                objActivityDatas.title = $(this).children(".hosting").children(".activities-titles-container").children("p:eq(0)").text();
+                                objActivityDatas.packTitle = $(this).children(".hosting").children(".activities-titles-container").children(".activities-pack-title").text();
+                                objActivityDatas.actPrice = $(this).children(".hosting").children(".activities-price-container").children("p").text();
+                                objActivityDatas.actDestination = $(".trip:eq(" + activityDestinationIndex + ") .trip-city-name").text();
+                                objActivityDatas.image = $(this).children(".hosting").children(".activities-img-container").children("img").attr("src");
 
-                            localStorageAllActivities = JSON.parse(localStorage.getItem("localStorageAllActivities")) || [];
-                            // Add activity datas object in global localStorage object with incrementing index
-                            // localStorageAllActivities[localStorageAllActivitiesLength] = objActivityDatas;
-                            localStorageAllActivities.push(objActivityDatas);
+                                console.log(objActivityDatas);
+                                // var localStorageAllActivitiesLength = Object.keys(localStorageAllActivities).length;
 
-                            // Stringify object to pass in localStorage
-                            localStorage.setItem("localStorageAllActivities", JSON.stringify(localStorageAllActivities));
+                                localStorageAllActivities = JSON.parse(localStorage.getItem("localStorageAllActivities")) || [];
+                                // Add activity datas object in global localStorage object with incrementing index
+                                // localStorageAllActivities[localStorageAllActivitiesLength] = objActivityDatas;
+                                localStorageAllActivities.push(objActivityDatas);
+
+                                // Stringify object to pass in localStorage
+                                localStorage.setItem("localStorageAllActivities", JSON.stringify(localStorageAllActivities));
+                            }
                         }
                     });
-
                 }
             }
 
@@ -1710,22 +1764,184 @@
                             });
 
                             if(!isDestinationContainerSet){
-                                addNewCity(actDestination);
+                                //addNewCity(actDestination);
+                                addNewCityUserPermission(actDestination);
+                            }else{
+                                //Get the index of the trip city name
+                                var indexActDestination = null;
+
+                                $(".trip").each(function(){
+
+                                    if(actDestination === $(this).children(".trip-city-name").text().trim()){
+
+                                        indexActDestination = $(this).index();
+                                    }
+                                });
+
+                                // Add activity to cart
+                                $(".trip:eq(" + indexActDestination + ") .trip-days-details > .activities-container.act-cont-" + dayNumber).append(
+                                    "<div class=\"activities\">" +
+                                        "<div class=\"positioning-btn\">" +
+                                            "<button type=\"button\" class=\"btn-go-up\">" +
+                                                "<i class=\"fa fa-chevron-up\" aria-hidden=\"true\"></i>" +
+                                            "</button>" +
+                                            "<button type=\"button\" class=\"btn-go-down\">" +
+                                                "<i class=\"fa fa-chevron-down\" aria-hidden=\"true\"></i>" +
+                                            "</button>" +
+                                        "</div>" +
+                                        "<input class=\"input-hidden-nid\" type=\"hidden\" value=\"" + data.nid + "\">" +
+                                        "<input class=\"input-hidden-destination\" type=\"hidden\" value=\"" + actDestination + "\">" +
+                                        "<div class=\"activities-img-container\">" +
+                                            "<img src=\"" + data.image + "\">" +
+                                        "</div>" +
+                                        "<div class=\"activities-titles-container\">" +
+                                            "<p>" + data.title + "</p>" +
+                                            "<p class='activities-pack-title'>" + packTitle + "</p>" +
+                                        "</div>" +
+                                        "<div class=\"activities-price-container\">" +
+                                            "<p>" + actPrice + "</p>" +
+                                        "</div>" +
+                                        "<button type=\"button\" class=\"btn-remove-activity\">" +
+                                            "<i class=\"fa fa-times\" aria-hidden=\"true\"></i>" +
+                                        "</button>" +
+                                    "</div>"
+                                );
+
+                                // Call addLocalStorage() function - Parameter : day number
+                                addLocalStorage(dayNumber, "activities");
+
+                                //$(".trip:eq(" + indexActDestination + ") .trip-days-details > .activities-container.act-cont-" + dayNumber)
+
+                                /* Remove the default message if exists */
+                                if( $(".trip:eq(" + indexActDestination + ") .act-cont-" + dayNumber + " .default-message").length >= 1 ){
+                                    $(".trip:eq(" + indexActDestination + ") .act-cont-" + dayNumber + " .default-message").remove();
+                                }
                             }
+                        }
+
+                      function addNewCityUserPermission(actCityName){
+
+                        if($("#user-add-new-city-container").length == 0){
+
+                          $("body").append(
+                            "<div id=\"user-add-new-city-container\">" +
+                            "<div id=\"user-add-new-city\">" +
+                            "<p>L'activité choisie ne se situe pas dans la ville actuelle. Voulez-vous ajouter une nouvelle ville ?</p>" +
+                            "<div>" +
+                            "<button type=\"button\" id=\"user-add-new-city-accept\">Oui</button>" +
+                            "<button type=\"button\" id=\"user-add-new-city-decline\">Non</button>" +
+                            "</div>" +
+                            "<input type=\"hidden\" id=\"pending-city-name\" value=\"" + actCityName + "\" />" +
+                            "</div>" +
+                            "</div>"
+                          );
+                        }
+                      }
+
+                      function removeNewCityUserPermission(){
+                        if($("#user-add-new-city-container").length >= 1) {
+                          $("#user-add-new-city-container").remove();
+                        }
+                      }
+
+                      $("body").on("click", "#user-add-new-city-accept", function(){
+
+                        var actCityName = $(this).parent().parent().children("input[type=\"hidden\"]#pending-city-name").val();
+
+                        addNewCityIfUserAccept(actCityName);
+
+                        removeNewCityUserPermission();
+                      });
+
+                      $("body").on("click", "#user-add-new-city-decline", function(){
+
+                        removeNewCityUserPermission();
+                      });
+
+                      function addNewCityIfUserAccept(actCityName){
+
+                        var isCityAlreadySet = false;
+
+                        $(".trip").each(function(){
+
+                          if($(this).children(".trip-city-name").text() == actCityName){
+                            isCityAlreadySet = true;
+                            return false;
+                          }
+                        });
+
+                        if(!isCityAlreadySet){
+
+
+                            var transferTid = $(".transfer-container > button").attr("class");
+                            var hostingTid = $(".hosting-container > button").attr("class");
+
+                            $("#trip-global-container").append(
+                              "<div class=\"trip\">" +
+                              "<h3 class=\"trip-city-name\">" + actCityName + "</h3>" +
+                              "<button type=\"button\" class=\"btn-remove-city\">" +
+                              "<i class=\"fa fa-times\" aria-hidden=\"true\"></i>" +
+                              "</button>" +
+                              "<div class=\"transfer-container transfer-cont-1\">" +
+                              "<p>Aucun transfert</p>" +
+                              "<button type=\"button\" class=\"" + transferTid + "\">VOIR TRANSFERTS</button>" +
+                              "</div>" +
+                              "<hr class=\"transfer-separation\">" +
+                              "<div class=\"trip-container\">" +
+                              "</div>" +
+                              "<hr class=\"transfer-separation\">" +
+                              "<div class=\"transfer-container transfer-cont-2\">" +
+                              "<p>Aucun transfert</p>" +
+                              "<button type=\"button\" class=\"" + transferTid + "\">VOIR TRANSFERTS</button>" +
+                              "</div>" +
+                              "</div>"
+                            );
+
+                            for(var i = 1; i <= 3; i++){
+
+                              // Get the last trip previously created
+                              $("#trip-global-container > .trip:eq(" + ($("#trip-global-container > .trip").length - 1) + ") .trip-container").append(
+                                "<div class=\"trip-days\">" +
+                                "<div class=\"trip-days-header\">" +
+                                "<i class=\"fa fa-calendar-o\" aria-hidden=\"true\"></i>" +
+                                "<p>Journée n° " + i + "</p>" +
+                                "</div>" +
+                                "<div class=\"trip-days-details\">" +
+                                "<div class=\"activities-container act-cont-" + i + "\">" +
+                                "<p class=\"default-message\">Aucune activité choisie</p>" +
+                                "</div>" +
+                                "<div class=\"hosting-container hosting-cont-" + i + "\">" +
+                                "<p>Aucun hébergement</p>" +
+                                "<button type=\"button\" class=\"" + hostingTid + "\">VOIR HEBERGEMENTS</button>" +
+                                "</div>" +
+                                "</div>" +
+                                "</div>"
+                              );
+
+                              if(i == 3){
+                                $("#trip-global-container > .trip:eq(" + ($("#trip-global-container > .trip").length - 1) + ") .hosting-cont-3").remove();
+                              }
+                            }
+
+                            // // Call removingElements(), filtersElements() & movingElements() function
+                            // // onClick function need to be redefined when append a new City
+                            // removingElements();
+                            // filtersElements();
+                            // movingElements();
 
                             //Get the index of the trip city name
                             var indexActDestination = null;
 
                             $(".trip").each(function(){
 
-                                if(actDestination === $(this).children(".trip-city-name").text().trim()){
+                                if(actCityName === $(this).children(".trip-city-name").text().trim()){
 
                                     indexActDestination = $(this).index();
                                 }
                             });
 
                             // Add activity to cart
-                            $(".trip:eq(" + indexActDestination + ") .trip-days-details > .activities-container.act-cont-" + dayNumber).append(
+                            $(".trip:eq(" + indexActDestination + ") .trip-days-details > .activities-container.act-cont-1").append(
                                 "<div class=\"activities\">" +
                                     "<div class=\"positioning-btn\">" +
                                         "<button type=\"button\" class=\"btn-go-up\">" +
@@ -1736,7 +1952,7 @@
                                         "</button>" +
                                     "</div>" +
                                     "<input class=\"input-hidden-nid\" type=\"hidden\" value=\"" + data.nid + "\">" +
-                                    "<input class=\"input-hidden-destination\" type=\"hidden\" value=\"" + actDestination + "\">" +
+                                    "<input class=\"input-hidden-destination\" type=\"hidden\" value=\"" + actCityName + "\">" +
                                     "<div class=\"activities-img-container\">" +
                                         "<img src=\"" + data.image + "\">" +
                                     "</div>" +
@@ -1754,15 +1970,15 @@
                             );
 
                             // Call addLocalStorage() function - Parameter : day number
-                            addLocalStorage(dayNumber, "activities");
-
-                            //$(".trip:eq(" + indexActDestination + ") .trip-days-details > .activities-container.act-cont-" + dayNumber)
+                            addLocalStorage(1, "activities");
 
                             /* Remove the default message if exists */
-                            if( $(".trip:eq(" + indexActDestination + ") .act-cont-" + dayNumber + " .default-message").length >= 1 ){
-                                $(".trip:eq(" + indexActDestination + ") .act-cont-" + dayNumber + " .default-message").remove();
+                            if( $(".trip:eq(" + indexActDestination + ") .act-cont-1 .default-message").length >= 1 ){
+                                $(".trip:eq(" + indexActDestination + ") .act-cont-1 .default-message").remove();
                             }
+
                         }
+                      }
 
                         /* Function intended to check if an activity is already set inside a day */
                         function checkIfActivityIsAlreadyInTheDay(dayNumber){
@@ -1888,11 +2104,28 @@
                                 //   addANewDay();
                                 // }else{
 
-                              console.log("addHosting");
+                                // Check if a hosting is already set
+                                var hostingIsAlreadySet = false;
 
+                                $(".trip:eq(" + indexActivityDestination + ") .hosting").each(function(){
+
+                                    var hostingNid = $(this).children("input[type=\"hidden\"].input-hidden-nid").val();
+                                    var hostingTitle = $(this).children(".activities-titles-container").children("p:eq(0)").text();
+                                    var hostingPackTitle = $(this).children(".activities-titles-container").children(".activities-pack-title").text();
+
+                                    if(
+                                      hostingNid == data.nid &&
+                                      hostingTitle == data.title &&
+                                      hostingPackTitle == data.packTitle
+                                    ){
+                                      hostingIsAlreadySet = false;
+                                    }else{
+                                      hostingIsAlreadySet = true;
+                                    }
+                                });
+
+                                if(!hostingIsAlreadySet){
                                   var nbHostingContainer = $(".trip:eq(" + indexActivityDestination + ") .hosting-container").length;
-
-                              console.log("nbHostingContainer : " + nbHostingContainer);
 
                                   for(var i = 1; i <= nbHostingContainer ; i++){
 
@@ -1938,6 +2171,7 @@
                                           //break;
                                       }
                                   }
+                                }
                                 // }
                             }
                         }
@@ -2075,7 +2309,7 @@
 
                 localStorageAllActivities = JSON.parse(localStorage.getItem("localStorageAllActivities"));
 
-                console.log(localStorageAllActivities);
+                //console.log(localStorageAllActivities);
 
                 for(var i = 0; i < localStorageAllActivities.length; i++){
 
@@ -2193,6 +2427,10 @@
             /* ------------------------------ Click : Empty cart ------------------------------ */
             $("#empty-cart").click(function(){
 
+                $("form#devis input").val("");
+                $("form#devis select").val("0");
+                $("form#devis textarea").val("");
+
                 // Remove all activities
                 $(".activities-container .activities").remove();
 
@@ -2214,6 +2452,17 @@
 
                 // Remove added days
                 $(".trip-days > .trip-days-header > .btn-remove-day").click();
+
+                // Set "Ville" at the first city container
+                $("#trip-global-container > .trip:eq(0) > .trip-city-name").text("Ville");
+
+                // Remove every city containers excepted the first one
+                $("#trip-global-container > .trip:not(:eq(0))").remove();
+
+                // Reset the total quotation cost
+                if( $("#total-quotation-cost").length > 0 ){
+                    $("#total-quotation-cost").remove();
+                }
 
                 // Empty the localStorageAllActivities
                 localStorageAllActivities = [];
