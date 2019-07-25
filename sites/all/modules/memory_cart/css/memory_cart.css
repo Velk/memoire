@@ -57,8 +57,8 @@ form#devis {
     width: 100%;
     display: grid;
     grid-template-areas: "a a b b" "c c d d" "e e e e" "f f f f" ". g g ." "h h h h" "i i i i" ". j j ." "k k k k";
-    grid-template-columns: repeat(4, calc(25% - 25px*3/4));
-    grid-gap: 25px;
+    grid-template-columns: repeat(4, calc(25% - 15px*3/4));
+    grid-gap: 15px;
     background-color: #f7f7f7;
 }
 
@@ -138,11 +138,15 @@ form#devis input {
     border: none;
     border-bottom: 1px solid #26C6DA;
     box-sizing: border-box;
-    padding: 8px 10px;
+    padding: 8px 0px;
     background-color: transparent;
     font-size: 14px;
     /*width: calc(100% - 25px);*/
     width: calc(100% - 20px);
+}
+form#devis input:focus,
+form#devis input:hover {
+  padding: 8px 10px;
 }
 form#devis input:hover {
     background-color: #fdfdfd;
@@ -203,6 +207,7 @@ form#devis textarea:hover {
 
 /* Trip days */
 div.trip {
+    position: relative;
     margin: 25px 0;
     border-top: 5px solid #ffffff;
     border-bottom: 5px solid #ffffff;
@@ -627,6 +632,24 @@ div.trip {
     background-color: #e9e9e9;
 }
 
+button.btn-remove-city {
+  position: absolute;
+  top: 25px;
+  right: 0;
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  cursor: pointer;
+  width: min-content;
+  height: 25px;
+}
+button.btn-remove-city > i.fa {
+  font-size: 20px !important;
+}
+button.btn-remove-city:hover > i.fa {
+  color: #e1e1e1;
+}
+
 /* USER CART - User is NOT logged in */
 div#user-cart-user-not-logged-container,
 div#user-cart-user-logged-container {
@@ -795,7 +818,7 @@ div#total-quotation-cost > p:first-of-type {
 div#total-quotation-cost > p:last-of-type {
   margin: 10px 0 0 0;
   text-align: justify;
-  font-size: 10px;
+  font-size: 11px;
   font-style: italic;
 }
 
@@ -837,4 +860,50 @@ div#send-quotation-loader .lds-dual-ring:after {
   100% {
     transform: rotate(360deg);
   }
+}
+
+/* User permission - Add new city */
+div#user-add-new-city-container{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.60);
+  z-index: 9999;
+}
+div#user-add-new-city-container div#user-add-new-city {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  background-color: #fff;
+  padding: 30px 40px;
+  box-sizing: border-box;
+  border-radius: 3px;
+  z-index: 999;
+}
+div#user-add-new-city-container div#user-add-new-city > p {
+  margin: 0 0 25px 0;
+}
+div#user-add-new-city-container div#user-add-new-city > div {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+}
+div#user-add-new-city-container button#user-add-new-city-accept,
+div#user-add-new-city-container button#user-add-new-city-decline {
+  box-sizing: border-box;
+  padding: 5px 10px;
+  border: 1px solid #26C6DA;
+  background-color: #26C6DA;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+div#user-add-new-city-container button#user-add-new-city-accept,
+div#user-add-new-city-container button#user-add-new-city-decline {
+  background-color: #fdfdfd;
+  color: #26C6DA;
 }

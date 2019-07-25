@@ -36,12 +36,13 @@ function ajax_add_activity_to_cart(){
 
     $node_load = node_load($activity_nid);
 
+    $reel_activity_title = field_get_items("node", $node_load, "field_activity_title");
     /*
     Check authenticity of the asked activity.
     If the title get by the nid isn't the same as the thumbnail title send by ajax,
     it will say that the user change either the nid either the title
     */
-    if( $node_load->title == $activity_title ){
+    if( $reel_activity_title[0]["value"] == $activity_title ){
 
         // Get the Destination field value of the activity
         $activity_field_img = field_get_items("node", $node_load, "field_img_activite");
@@ -55,7 +56,7 @@ function ajax_add_activity_to_cart(){
 
         $arrayCartActivity = array(
             "nid" => $node_load->nid,
-            "title" => $node_load->title,
+            "title" => $activity_title,
             "image" => $activity_img_url,
             "packTitle" => $activity_pack_title,
         );
