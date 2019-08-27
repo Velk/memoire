@@ -153,12 +153,12 @@ div#page {
 
 /* Logo & Site name */
 #logo {
-  display: block;
-  float: left;
-  margin: 0 50px;
-}
+   display: block;
+   float: left;
+   margin: 0 50px;
+ }
 #logo > img {
-    height: 70px;
+  height: 70px;
 }
 
 #name-and-slogan {

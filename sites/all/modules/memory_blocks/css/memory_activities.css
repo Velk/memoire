@@ -177,7 +177,7 @@ a.act-cat-readmore {
     box-sizing: border-box;
     right: 0;
     transform: rotate(45deg) translateY(-25px) translateX(40px);
-    z-index: 50;
+    z-index: 38;
 }
 
 .act-cat-banner-category > p {
