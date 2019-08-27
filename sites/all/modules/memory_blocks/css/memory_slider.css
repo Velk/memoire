@@ -112,14 +112,14 @@ div#go-down > i:hover {
 
 @keyframes move_down_animation {
     0% {
-        transform: translateY(-10px);
+        transform: translateY(-10px) translateX(-50%);
         opacity: 0;
     }
     50% {
         opacity: .75;
     }
     100% {
-        transform: translateY(10px);
+        transform: translateY(10px) translateX(-50%);
         opacity: 0;
     }
 }

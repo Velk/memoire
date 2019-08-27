@@ -134,8 +134,9 @@ foreach ($array_countries as $country){
   }
 }
 ?>
-
+<div id="memory-menu-responsive"><i class="fa fa-bars" aria-hidden="true"></i></div>
 <div id="memory-menu">
+  <div>
     <?php foreach($main_menu as $menu): ?>
 
         <div class="memory-menu-tabs <?php ( $menu['identifier'] == "main-menu_connexion:node/13" || $menu['title'] == "Nous contacter" ) ? print 'menu-pos-right' : print '' ?> <?php ( $menu['title'] == "Nous contacter" ) ? print 'menu-contact-link' : print '' ?>">
@@ -324,4 +325,5 @@ foreach ($array_countries as $country){
             <?php endif; ?>
         </div>
     <?php endforeach; ?>
+  </div>
 </div>

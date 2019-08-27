@@ -11,10 +11,18 @@
     height: 100%;
 }
 div#memory-menu {
-    height: 100%;
-    padding: 0;
-    margin: 0;
-    font-weight: bold;
+  display: block;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  font-weight: bold;
+}
+div#memory-menu > div {
+  position: relative;
+  height: 100%;
+}
+div#memory-menu-responsive {
+  display: none;
 }
 
 .memory-menu-tabs {
@@ -61,7 +69,7 @@ div#memory-menu {
 
 .menu-contact-link {
     margin-right: 90px;
-}
+ }
 
 #destinations-menu {
     /*display: block;*/
