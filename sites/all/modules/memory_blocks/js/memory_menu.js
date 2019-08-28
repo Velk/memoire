@@ -9,18 +9,14 @@
             // Set basic social networks position
             $("div#block-memory-blocks-social-networks").css("top", "calc(80px + " + sliderHeight + "px/2)");
 
-            $( window ).scroll(function() {
+            /*$( window ).scroll(function() {
 
                 if($(window).scrollTop() > 0){
 
+                    $("div#header").css("height", "60px");
                     $("#logo > img").css("height", "50px");
-                    // $("#menu-bar-wrapper").css("padding", "10px 0");
                     $("div#menu-bar-wrapper > div > div > div > ul > li > a").css("padding", "5px 30px");
-                    // $( "a:contains('Connexion')" ).parent("li").css("transform", "translateY(-13px)");
                     $("div#page").css("margin-top", "60px");
-                    $(".memory-menu-tabs").css("line-height", "60px");
-                    // $("div#page").css("margin-top", "calc(60px + 34px)");
-                    // $("div#block-memory-blocks-social-networks").css("top", "calc(60px/2 + " + windowHeight + "px/2)");
                     var topValueScroll = 60/2 + windowHeight/2;
                     $("div#block-memory-blocks-social-networks").stop().animate({
                         top: topValueScroll + "px",
@@ -28,21 +24,17 @@
                 }
                 if($(window).scrollTop() === 0){
 
+                    $("div#header").css("height", "80px");
                     $("#logo > img").css("height", "70px");
-                    // $("#menu-bar-wrapper").css("padding", "15px 0");
                     $("div#menu-bar-wrapper > div > div > div > ul > li > a").css("padding", "10px 30px");
-                    // $( "a:contains('Connexion')" ).parent("li").css("transform", "translateY(-15px)");
                     $("div#page").css("margin-top", "80px");
-                    $(".memory-menu-tabs").css("line-height", "80px");
-                    // $("div#page").css("margin-top", "calc(80px + 34px)");
-                    // $("div#block-memory-blocks-social-networks").css("top", "calc(80px + " + sliderHeight + "px/2)");
                     var topValue = 80 + sliderHeight/2;
                     $("div#block-memory-blocks-social-networks").stop().animate({
                         top: topValue + "px",
                     });
                 }
 
-            });
+            });*/
 
             function setDistanceTabMenu(tabID){
 

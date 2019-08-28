@@ -117,14 +117,15 @@ div#footer-container div#social-media-links-container > div {
     height: 50px;
 }
 div#footer-container div#social-media-links-container > div > a {
-    display: block;
-    width: 100%;
-    height: 100%;
-    padding: 13px;
-    box-sizing: border-box;
-    border-radius: 50px;
-    border: 1px solid #d4d4d4;
-    color: #d4d4d4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border-radius: 50px;
+  border: 1px solid #d4d4d4;
+  color: #d4d4d4;
 }
 div#footer-container div#social-media-links-container > div > a:hover {
     color: #26C6DA;

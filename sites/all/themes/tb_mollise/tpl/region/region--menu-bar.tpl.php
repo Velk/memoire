@@ -154,51 +154,53 @@ foreach ($array_countries as $country){
                             </div>
                         </div>
                         <hr>
-                        <?php foreach($tab_continent as $cont): ?>
-                        <div class="continent-menu">
-                            <h3><?php print $cont[0] ?></h3>
-                            <?php if(!empty($cont['country'])): ?>
-                                <?php foreach($cont['country'] as $cntry): ?>
-                                    <ul class="country-menu">
-                                        <li>
-                                            <?php if(!empty($cntry[2]) && count($cntry[2]) == 1){
-                                                foreach($cntry[2] as $onlyOneCity){
+                        <div id="destination-menu-container">
+                          <?php foreach($tab_continent as $cont): ?>
+                          <div class="continent-menu">
+                              <h3><?php print $cont[0] ?></h3>
+                              <?php if(!empty($cont['country'])): ?>
+                                  <?php foreach($cont['country'] as $cntry): ?>
+                                      <ul class="country-menu">
+                                          <li>
+                                              <?php if(!empty($cntry[2]) && count($cntry[2]) == 1){
+                                                  foreach($cntry[2] as $onlyOneCity){
 
-                                                    // Get dynamically the path alias when there is only 1 city
-                                                    $destination_path_alias = drupal_get_path_alias("taxonomy/term/" . $onlyOneCity[1]);
+                                                      // Get dynamically the path alias when there is only 1 city
+                                                      $destination_path_alias = drupal_get_path_alias("taxonomy/term/" . $onlyOneCity[1]);
 
-                                                    print
-                                                        "<a href=" . strtolower($base_url."/".$destination_path_alias) . ">" .
-                                                        $cntry[0] . " - " . $onlyOneCity[0] .
-                                                        "</a>"
-                                                    ;
-                                                }
-                                            }else{
-                                                print $cntry[0];
-                                            } ?>
-                                        </li>
-                                        <?php if(!empty($cntry[2]) && count($cntry[2]) > 1): ?>
-                                            <ul class="city-menu">
-                                                <?php foreach($cntry[2] as $place){
+                                                      print
+                                                          "<a href=" . strtolower($base_url."/".$destination_path_alias) . ">" .
+                                                          $cntry[0] . " - " . $onlyOneCity[0] .
+                                                          "</a>"
+                                                      ;
+                                                  }
+                                              }else{
+                                                  print $cntry[0];
+                                              } ?>
+                                          </li>
+                                          <?php if(!empty($cntry[2]) && count($cntry[2]) > 1): ?>
+                                              <ul class="city-menu">
+                                                  <?php foreach($cntry[2] as $place){
 
-                                                    // Get dynamically the path alias when there is more than 1 city
-                                                    $destination_path_alias = drupal_get_path_alias("taxonomy/term/" . $place[1]);
+                                                      // Get dynamically the path alias when there is more than 1 city
+                                                      $destination_path_alias = drupal_get_path_alias("taxonomy/term/" . $place[1]);
 
-                                                    print
-                                                        "<li>" .
-                                                            "<a href=" . strtolower($base_url."/".$destination_path_alias) . ">" .
-                                                            "- " . $place[0] .
-                                                            "</a>" .
-                                                        "</li>"
-                                                    ;
-                                                } ?>
-                                            </ul>
-                                        <?php endif; ?>
-                                    </ul>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
+                                                      print
+                                                          "<li>" .
+                                                              "<a href=" . strtolower($base_url."/".$destination_path_alias) . ">" .
+                                                              "- " . $place[0] .
+                                                              "</a>" .
+                                                          "</li>"
+                                                      ;
+                                                  } ?>
+                                              </ul>
+                                          <?php endif; ?>
+                                      </ul>
+                                  <?php endforeach; ?>
+                              <?php endif; ?>
+                          </div>
+                          <?php endforeach; ?>
                         </div>
-                        <?php endforeach; ?>
                     </div>
                 </div>
             <!-- End destination menu part -->
