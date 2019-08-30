@@ -313,7 +313,7 @@ foreach ($array_countries as $country){
                         <i class="fa fa-chevron-down" aria-hidden="true" <?php print((sizeof($countries_phone_datas) <= 1) ? "style='display:none;'" : "")?>></i>
                     </div>
                 </div>
-                <a href="<?php print $base_url . '/contact'; ?>" id="memory-contact-link">Votre demande de devis</a>
+                <a href="<?php print $base_url . '/contact'; ?>" id="memory-contact-link">Besoin d’un conseil ?</a>
             </div>
             <!-- End Connexion menu part -->
 

@@ -72,7 +72,7 @@ svg#svg-container {
     margin: auto;
     display: block;
     /*transform: translateX(-50%) scale(1);*/
-    transform: translateX(-53%) translateY(2%) scale(1);
+    /*transform: translateX(-53%) translateY(2%) scale(1);*/
     margin-left: 50%;
     cursor: move;
     /* transform-origin: center; */

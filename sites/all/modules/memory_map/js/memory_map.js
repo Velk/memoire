@@ -47,8 +47,14 @@
                 });
 
                 // $("svg#svg-container").css("transform", "translateX(-50%) translateY(0) scale(1)");
+              if($(window).width() <= 640){
+                $("svg#svg-container").css("transform", "translateX(-53%) translateY(2%) scale(0.65)");
+              }else{
                 $("svg#svg-container").css("transform", "translateX(-53%) translateY(2%) scale(1)");
+              }
             }
+
+            setBasicPosition();
 
             $(".world").click(function(){
                 setBasicPosition();
