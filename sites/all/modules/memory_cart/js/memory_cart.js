@@ -1409,6 +1409,7 @@ console.log("remove destination");
             /* Positioning of the user cart interface */
             function setCartInterfacePosition(){
 
+              if($("#responsive-user-cart-btn").length == 0){
                 var menuHeight = $("#header-wrapper").height();
                 var cartInterfaceHeight = $("#cart-container").css("top");
 
@@ -1430,6 +1431,7 @@ console.log("remove destination");
                         top: menuHeight + "px",
                     }, 150);
                 }
+              }
             }
 
             setInterval(function(){

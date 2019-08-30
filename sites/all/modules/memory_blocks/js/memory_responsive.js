@@ -4,48 +4,55 @@
 
       if($(window).width() <= 640){
 
+        $("#memory-contact-link").insertAfter("#logo");
+
         $("#memory-menu-responsive > i").click(function(){
 
-          $("div#memory-menu").show();
+          if($("div#memory-menu").is(":visible")){
+            $("div#memory-menu").hide();
+          }else{
+            $("div#memory-menu").show();
+          }
+
           $("#destinations-menu").hide();
           $("#activities-menu").hide();
           $("#responsive-user-cart-btn").hide();
 
-          $("body").css("overflow-y", "hidden");
+          //$("body").css("overflow-y", "hidden");
 
-          $("#header").append(
-            "<i class=\"fa fa-times\" aria-hidden=\"true\" id=\"memory-remove-responsive-menu\"></i>"
-          );
+          // $("#header").append(
+          //   "<i class=\"fa fa-times\" aria-hidden=\"true\" id=\"memory-remove-responsive-menu\"></i>"
+          // );
         });
 
-        $("#header").on( "click", "#memory-remove-responsive-menu", function() {
-
-          $("div#memory-menu").hide();
-          $("#responsive-user-cart-btn").show();
-
-          $("body").css("overflow-y", "scroll");
-
-          $(this).remove();
-        });
+        // $("#header").on( "click", "#memory-remove-responsive-menu", function() {
+        //
+        //   $("div#memory-menu").hide();
+        //   $("#responsive-user-cart-btn").show();
+        //
+        //   $("body").css("overflow-y", "scroll");
+        //
+        //   $(this).remove();
+        // });
 
         /* SubMenu - Destinations */
-        $("#destinations-menu").appendTo("#memory-menu");
+        //$("#destinations-menu").appendTo("#memory-menu");
 
-        $("#memory-menu-tab-destination > a").click(function(e){
-          e.preventDefault();
+        // $("#memory-menu-tab-destination > a").click(function(e){
+        //   e.preventDefault();
+        //
+        //   $("#memory-remove-responsive-menu").hide();
+        //   $("#memory-dest-tab-menu").append(
+        //     "<i class=\"fa fa-times\" aria-hidden=\"true\" id=\"remove-responsive-submenu-destinations\"></i>"
+        //   );
+        //   $("#destinations-menu").show();
+        // });
 
-          $("#memory-remove-responsive-menu").hide();
-          $("#memory-dest-tab-menu").append(
-            "<i class=\"fa fa-times\" aria-hidden=\"true\" id=\"remove-responsive-submenu-destinations\"></i>"
-          );
-          $("#destinations-menu").show();
-        });
-
-        $("#header").on("click", "#remove-responsive-submenu-destinations", function(){
-          $("#memory-remove-responsive-menu").show();
-          $("#destinations-menu").hide();
-          $(this).remove();
-        });
+        // $("#header").on("click", "#remove-responsive-submenu-destinations", function(){
+        //   $("#memory-remove-responsive-menu").show();
+        //   $("#destinations-menu").hide();
+        //   $(this).remove();
+        // });
 
         /* SubMenu - Activities */
         $("#activities-menu").appendTo("#memory-menu");
@@ -53,7 +60,7 @@
         $("#memory-menu-tab-activity > a").click(function(e){
           e.preventDefault();
 
-          $("#memory-remove-responsive-menu").hide();
+          // $("#memory-remove-responsive-menu").hide();
           $("#activities-menu").show();
           $("#memory-act-tab-menu").append(
             "<i class=\"fa fa-times\" aria-hidden=\"true\" id=\"remove-responsive-submenu-activities\"></i>"
@@ -61,7 +68,7 @@
         });
 
         $("#header").on("click", "#remove-responsive-submenu-activities", function(){
-          $("#memory-remove-responsive-menu").show();
+          // $("#memory-remove-responsive-menu").show();
           $("#activities-menu").hide();
           $(this).remove();
         });
@@ -139,6 +146,17 @@
             $("div#block-memory-cart-memory-cart").hide();
           }else{
             $("div#block-memory-cart-memory-cart").show();
+          }
+        });
+
+        /* Go to top page */
+        $( window ).scroll(function() {
+
+          var pageHeight = $(document).height() - $(window).height();
+          if ($(window).scrollTop() === pageHeight) {
+            $("div#block-memory-blocks-memory-go-top-page").attr('style', 'bottom: 65px !important');
+          }else{
+            $("div#block-memory-blocks-memory-go-top-page").attr('style', 'bottom: 10px !important');
           }
         });
       }
