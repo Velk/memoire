@@ -30,8 +30,17 @@
 
           if($("div#memory-menu").is(":visible")){
             $("div#memory-menu").hide();
+
+            $("body").css({
+              "overflow-y": "scroll",
+            });
           }else{
             $("div#memory-menu").show();
+
+            $("body").css({
+              "position": "relative",
+              "overflow-y": "hidden",
+            });
           }
 
           $("#destinations-menu").hide();
@@ -129,14 +138,12 @@
           $("#memory-act-tab-menu").append(
             "<i class=\"fa fa-times\" aria-hidden=\"true\" id=\"remove-responsive-submenu-activities\"></i>"
           );
-          $("body").css("overflow-y", "hidden");
         });
 
         $("#header").on("click", "#remove-responsive-submenu-activities", function(){
           // $("#memory-remove-responsive-menu").show();
           $("#activities-menu").hide();
           $(this).remove();
-          $("body").css("overflow-y", "scroll");
         });
 
         /* Set images at their right position and size */
@@ -216,10 +223,9 @@
         });
 
         /* Go to top page */
-        $( window ).scroll(function() {
+        $(document).scroll(function() {
 
-          var pageHeight = $(document).height() - $(window).height();
-          if ($(window).scrollTop() >= (pageHeight - 10)) {
+          if ($(window).scrollTop() + $(window).height() >= ($(document).height() - 50)) {
             $("div#block-memory-blocks-memory-go-top-page").attr("style", "bottom: 65px !important");
           }else{
             $("div#block-memory-blocks-memory-go-top-page").attr("style", "bottom: 10px !important");
