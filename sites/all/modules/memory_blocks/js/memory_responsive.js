@@ -6,7 +6,27 @@
 
         $("#memory-contact-link").insertAfter("#logo");
 
+        // Add "Nous contacter" menu
+        $("div#memory-menu > div:not(#activities-menu)").append(
+          "<div class=\"memory-menu-tabs\">" +
+            "<li id=\"memory-menu-responsive-contact\">" +
+              "<i class=\"fa fa-phone\" aria-hidden=\"true\"></i><p>Nous contacter</p>" +
+            "</li>" +
+          "</div>"
+        );
+        $("div#memory-menu > div:not(#activities-menu)").prepend(
+          "<div class=\"memory-menu-tabs\">" +
+            "<li id=\"menu-responsive-home-page\">" +
+              "<i class=\"fa fa-home\" aria-hidden=\"true\"></i><p>Page d'accueil</p>" +
+            "</li>" +
+          "</div>"
+        );
+        $("#memory-menu-tab-destination > a").prepend("<i class=\"fa fa-map-signs\" aria-hidden=\"true\"></i>");
+        $("#memory-menu-tab-activity > a").prepend("<i class=\"fa fa-flag-checkered\" aria-hidden=\"true\"></i>");
+
         $("#memory-menu-responsive > i").click(function(){
+
+          $(".menu-contact-link").hide();
 
           if($("div#memory-menu").is(":visible")){
             $("div#memory-menu").hide();
@@ -23,6 +43,50 @@
           // $("#header").append(
           //   "<i class=\"fa fa-times\" aria-hidden=\"true\" id=\"memory-remove-responsive-menu\"></i>"
           // );
+        });
+
+        $("body").on("click", "#memory-menu-responsive-contact", function(){
+
+          // Clickable phone text
+          var phoneText = $("div#other-countries > div > p").text();
+          var phoneTextWithoutSpace = phoneText.replace(/ /g, '');
+
+          $("div#other-countries > div > p").remove();
+
+          $("#other-countries > div").append(
+            "<a href=\"tel:" + phoneTextWithoutSpace + "\">" +
+              phoneText +
+            "</a>"
+          );
+          var frPhoneText = $("div#default-country > p").text();
+          var frPhoneTextWithoutSpace = frPhoneText.replace(/ /g, '');
+
+          $("div#default-country > p").remove();
+
+          $("#default-country").append(
+            "<a href=\"tel:" + frPhoneTextWithoutSpace + "\">" +
+            frPhoneText +
+            "</a>"
+          );
+
+          $("#page").append(
+            "<div id=\"memory-responsive-contact-page\">" +
+              "<i class=\"fa fa-times\" aria-hidden=\"true\"></i>" +
+              "<h2>Pour nous contacter</h2>" +
+              $(".menu-contact-link").html() +
+              "<div id=\"responsive-contact-us\"><p>Nous contacter par e-mail</p></div>" +
+            "</div>"
+          );
+        });
+
+        $("body").on("click", "#memory-responsive-contact-page > i", function() {
+          $("#memory-responsive-contact-page").remove();
+        });
+        $("body").on("click", "#responsive-contact-us", function() {
+          window.location = $("#memory-contact-link").attr("href");
+        });
+        $("body").on("click", "#menu-responsive-home-page", function() {
+          window.location = $("#logo").attr("href");
         });
 
         // $("#header").on( "click", "#memory-remove-responsive-menu", function() {
@@ -65,12 +129,14 @@
           $("#memory-act-tab-menu").append(
             "<i class=\"fa fa-times\" aria-hidden=\"true\" id=\"remove-responsive-submenu-activities\"></i>"
           );
+          $("body").css("overflow-y", "hidden");
         });
 
         $("#header").on("click", "#remove-responsive-submenu-activities", function(){
           // $("#memory-remove-responsive-menu").show();
           $("#activities-menu").hide();
           $(this).remove();
+          $("body").css("overflow-y", "scroll");
         });
 
         /* Set images at their right position and size */
@@ -153,10 +219,10 @@
         $( window ).scroll(function() {
 
           var pageHeight = $(document).height() - $(window).height();
-          if ($(window).scrollTop() === pageHeight) {
-            $("div#block-memory-blocks-memory-go-top-page").attr('style', 'bottom: 65px !important');
+          if ($(window).scrollTop() >= (pageHeight - 10)) {
+            $("div#block-memory-blocks-memory-go-top-page").attr("style", "bottom: 65px !important");
           }else{
-            $("div#block-memory-blocks-memory-go-top-page").attr('style', 'bottom: 10px !important');
+            $("div#block-memory-blocks-memory-go-top-page").attr("style", "bottom: 10px !important");
           }
         });
       }
