@@ -36,40 +36,40 @@
 
             });*/
 
-            function setDistanceTabMenu(tabID){
-
-                if( $(tabID).is(":visible") ){
-
-                    if( $("#admin-menu").is(":visible") ) {
-
-                        var adminToolbarHeight = $("#admin-menu").height();
-
-                        if($(window).scrollTop() > 0){
-
-                            $(tabID).css("top", "calc(60px + " + adminToolbarHeight + "px)");
-                        }
-                        if($(window).scrollTop() === 0) {
-
-                            $(tabID).css("top", "calc(80px + " + adminToolbarHeight + "px)");
-                        }
-                    }else{
-
-                        if($(window).scrollTop() > 0){
-
-                            $(tabID).css("top", "60px");
-                        }
-                        if($(window).scrollTop() === 0){
-
-                            $(tabID).css("top", "80px");
-                        }
-                    }
-                }
-            }
-
-            setInterval(function(){
-                setDistanceTabMenu("#destinations-menu");
-                setDistanceTabMenu("#activities-menu");
-            }, 100);
+            // function setDistanceTabMenu(tabID){
+            //
+            //     if( $(tabID).is(":visible") ){
+            //
+            //         if( $("#admin-menu").is(":visible") ) {
+            //
+            //             var adminToolbarHeight = $("#admin-menu").height();
+            //
+            //             if($(window).scrollTop() > 0){
+            //
+            //                 $(tabID).css("top", "calc(60px + " + adminToolbarHeight + "px)");
+            //             }
+            //             if($(window).scrollTop() === 0) {
+            //
+            //                 $(tabID).css("top", "calc(80px + " + adminToolbarHeight + "px)");
+            //             }
+            //         }else{
+            //
+            //             if($(window).scrollTop() > 0){
+            //
+            //                 $(tabID).css("top", "60px");
+            //             }
+            //             if($(window).scrollTop() === 0){
+            //
+            //                 $(tabID).css("top", "80px");
+            //             }
+            //         }
+            //     }
+            // }
+            //
+            // setInterval(function(){
+            //     setDistanceTabMenu("#destinations-menu");
+            //     setDistanceTabMenu("#activities-menu");
+            // }, 100);
 
             /* ------------------------------------------------------------------------------------------------------------- */
             /* --------------------------------------------- Admin menu ---------------------------------------------------- */

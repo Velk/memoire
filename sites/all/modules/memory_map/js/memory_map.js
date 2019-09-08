@@ -48,7 +48,9 @@
 
                 // $("svg#svg-container").css("transform", "translateX(-50%) translateY(0) scale(1)");
               if($(window).width() <= 640){
-                $("svg#svg-container").css("transform", "translateX(-53%) translateY(2%) scale(0.65)");
+                $("svg#svg-container").css("transform", "translateX(-53%) translateY(2%) scale(0.75)");
+              }else if($(window).width() <= 768){
+                $("svg#svg-container").css("transform", "translateX(-53%) translateY(2%) scale(0.85)");
               }else{
                 $("svg#svg-container").css("transform", "translateX(-53%) translateY(2%) scale(1)");
               }
