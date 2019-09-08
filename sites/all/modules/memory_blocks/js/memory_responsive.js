@@ -2,7 +2,7 @@
   Drupal.behaviors.memory_responsive = {
     attach: function (context, settings) {
 
-      if($(window).width() <= 640){
+      if($(window).width() <= 1024){
 
         $("#memory-contact-link").insertAfter("#logo");
 
@@ -221,6 +221,10 @@
             $("div#block-memory-cart-memory-cart").show();
           }
         });
+      }
+
+
+      if($(window).width() <= 640){
 
         /* Go to top page */
         $(document).scroll(function() {
