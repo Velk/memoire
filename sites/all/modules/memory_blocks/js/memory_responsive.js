@@ -24,6 +24,7 @@
         $("#memory-menu-tab-destination > a").prepend("<i class=\"fa fa-map-signs\" aria-hidden=\"true\"></i>");
         $("#memory-menu-tab-activity > a").prepend("<i class=\"fa fa-flag-checkered\" aria-hidden=\"true\"></i>");
 
+        // Click on the burger menu
         $("#memory-menu-responsive > i").click(function(){
 
           $(".menu-contact-link").hide();
@@ -31,12 +32,13 @@
           if($("div#memory-menu").is(":visible")){
             $("div#memory-menu").hide();
 
+            console.log("click burger menu : body scroll");
             $("body").css({
               "overflow-y": "scroll",
             });
           }else{
             $("div#memory-menu").show();
-
+            console.log("click burger menu : body hidden");
             $("body").css({
               "position": "relative",
               "overflow-y": "hidden",
@@ -46,12 +48,23 @@
           $("#destinations-menu").hide();
           $("#activities-menu").hide();
           $("#responsive-user-cart-btn").hide();
+        });
 
-          //$("body").css("overflow-y", "hidden");
+        // Hide menu when click out the memory menu
+        $("body").click(function(evt){
 
-          // $("#header").append(
-          //   "<i class=\"fa fa-times\" aria-hidden=\"true\" id=\"memory-remove-responsive-menu\"></i>"
-          // );
+          if($("div#memory-menu").is(":visible")){
+
+            if(evt.target.id === "memory-menu"){return;}
+            if($(evt.target).closest("#memory-menu-responsive").length){return;}
+
+            //Do processing of click event here for every element except with id menu_content
+            $("div#memory-menu").hide();
+
+            if(!$("#activities-menu").is(":visible")){
+              $("body").css("overflow-y", "scroll");
+            }
+          }
         });
 
         $("body").on("click", "#memory-menu-responsive-contact", function(){
@@ -128,9 +141,11 @@
         // });
 
         /* SubMenu - Activities */
-        $("#activities-menu").appendTo("#memory-menu");
+        // $("#activities-menu").appendTo("#memory-menu");
+        $("#activities-menu").appendTo("#page");
 
         $("#memory-menu-tab-activity > a").click(function(e){
+          console.log("click on activity menu");
           e.preventDefault();
 
           // $("#memory-remove-responsive-menu").hide();
@@ -138,12 +153,16 @@
           $("#memory-act-tab-menu").append(
             "<i class=\"fa fa-times\" aria-hidden=\"true\" id=\"remove-responsive-submenu-activities\"></i>"
           );
+
+          $("body").css("overflow-y", "hidden");
         });
 
-        $("#header").on("click", "#remove-responsive-submenu-activities", function(){
+        $("body").on("click", "#remove-responsive-submenu-activities", function(){
           // $("#memory-remove-responsive-menu").show();
           $("#activities-menu").hide();
           $(this).remove();
+
+          $("body").css("overflow-y", "scroll");
         });
 
         /* Set images at their right position and size */
