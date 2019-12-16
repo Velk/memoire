@@ -53,6 +53,8 @@ div#page {
     background-color: #00000038;
     top: 0;
     left: 0;
+
+	display:none;
 }
 
 .node-activite .field-name-field-activity-title .field-item {
