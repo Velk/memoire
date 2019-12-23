@@ -145,7 +145,7 @@
         $("#activities-menu").appendTo("#page");
 
         $("#memory-menu-tab-activity > a").click(function(e){
-          console.log("click on activity menu");
+
           e.preventDefault();
 
           // $("#memory-remove-responsive-menu").hide();

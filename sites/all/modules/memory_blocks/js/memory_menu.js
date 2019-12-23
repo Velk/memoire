@@ -9,32 +9,45 @@
             // Set basic social networks position
             $("div#block-memory-blocks-social-networks").css("top", "calc(80px + " + sliderHeight + "px/2)");
 
-            /*$( window ).scroll(function() {
+            // Change display when user scroll down
+            $( window ).scroll(function() {
 
-                if($(window).scrollTop() > 0){
+                // Remove this behavior under tablet responsive mode
+                if($(window).width() > 1024) {
 
-                    $("div#header").css("height", "60px");
-                    $("#logo > img").css("height", "50px");
-                    $("div#menu-bar-wrapper > div > div > div > ul > li > a").css("padding", "5px 30px");
-                    $("div#page").css("margin-top", "60px");
-                    var topValueScroll = 60/2 + windowHeight/2;
-                    $("div#block-memory-blocks-social-networks").stop().animate({
-                        top: topValueScroll + "px",
-                    });
+                    if ($(window).scrollTop() > 0) {
+
+                        $("div#header").css("height", "60px");
+                        $("#logo > img").css("height", "50px");
+                        $("div#menu-bar-wrapper > div > div > div > ul > li > a").css("padding", "5px 30px");
+                        $("div#page").css("margin-top", "60px");
+
+                        $("div##activities-menu").css("top", "60px");
+                        $("div##destinations-menu").css("top", "60px");
+
+                        var topValueScroll = 60 / 2 + windowHeight / 2;
+                        $("div#block-memory-blocks-social-networks").stop().animate({
+                            top: topValueScroll + "px",
+                        });
+                    }
+
+                    if ($(window).scrollTop() === 0) {
+
+                        $("div#header").css("height", "80px");
+                        $("#logo > img").css("height", "70px");
+                        $("div#menu-bar-wrapper > div > div > div > ul > li > a").css("padding", "10px 30px");
+                        $("div#page").css("margin-top", "80px");
+
+                        $("div##activities-menu").css("top", "80px");
+                        $("div##destinations-menu").css("top", "80px");
+
+                        var topValue = 80 + sliderHeight / 2;
+                        $("div#block-memory-blocks-social-networks").stop().animate({
+                            top: topValue + "px",
+                        });
+                    }
                 }
-                if($(window).scrollTop() === 0){
-
-                    $("div#header").css("height", "80px");
-                    $("#logo > img").css("height", "70px");
-                    $("div#menu-bar-wrapper > div > div > div > ul > li > a").css("padding", "10px 30px");
-                    $("div#page").css("margin-top", "80px");
-                    var topValue = 80 + sliderHeight/2;
-                    $("div#block-memory-blocks-social-networks").stop().animate({
-                        top: topValue + "px",
-                    });
-                }
-
-            });*/
+            });
 
             // function setDistanceTabMenu(tabID){
             //
