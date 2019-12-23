@@ -157,9 +157,9 @@ div#page {
    float: left;
    margin: 0 50px;
  }
-#logo > img {
-  height: 70px;
-}
+/*#logo > img {*/
+/*  height: 70px;*/
+/*}*/
 
 #name-and-slogan {
 	float: left;
