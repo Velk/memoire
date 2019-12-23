@@ -18,7 +18,7 @@
                     if ($(window).scrollTop() > 0) {
 
                         $("div#header").css("height", "60px");
-                        $("#logo > img").css("height", "50px");
+                        $("#logo > img").css("height", "60px");
                         $("div#menu-bar-wrapper > div > div > div > ul > li > a").css("padding", "5px 30px");
                         $("div#page").css("margin-top", "60px");
 
@@ -34,7 +34,7 @@
                     if ($(window).scrollTop() === 0) {
 
                         $("div#header").css("height", "80px");
-                        $("#logo > img").css("height", "70px");
+                        $("#logo > img").css("height", "80px");
                         $("div#menu-bar-wrapper > div > div > div > ul > li > a").css("padding", "10px 30px");
                         $("div#page").css("margin-top", "80px");
 

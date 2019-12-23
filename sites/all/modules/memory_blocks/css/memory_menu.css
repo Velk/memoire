@@ -18,10 +18,11 @@ a#logo {
   width: auto;
   height: 100%;
   margin: 0 50px 0 0 !important;
+  box-sizing: border-box !important;
 }
 #logo > img {
-  height: 100% !important;
-  width: auto !important;
+  height: 80px;
+  /*width: auto !important;*/
 }
 #menu-bar-wrapper {
   position: relative;

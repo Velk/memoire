@@ -31,14 +31,13 @@
 
           if($("div#memory-menu").is(":visible")){
             $("div#memory-menu").hide();
-
-            console.log("click burger menu : body scroll");
+            
             $("body").css({
               "overflow-y": "scroll",
             });
           }else{
             $("div#memory-menu").show();
-            console.log("click burger menu : body hidden");
+
             $("body").css({
               "position": "relative",
               "overflow-y": "hidden",
