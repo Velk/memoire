@@ -9,6 +9,15 @@
         // Add "Nous contacter" menu
         $("div#memory-menu > div:not(#activities-menu)").append(
           "<div class=\"memory-menu-tabs\">" +
+              "<li id=\"menu-responsive-your-cart\">" +
+                  "<i class=\"fa fa-shopping-cart\" aria-hidden=\"true\"></i><p>Votre panier</p>" +
+              "</li>" +
+          "</div>"
+        );
+
+        // Add "Nous contacter" menu
+        $("div#memory-menu > div:not(#activities-menu)").append(
+          "<div class=\"memory-menu-tabs\">" +
             "<li id=\"memory-menu-responsive-contact\">" +
               "<i class=\"fa fa-phone\" aria-hidden=\"true\"></i><p>Nous contacter</p>" +
             "</li>" +
@@ -240,6 +249,23 @@
           }
         });
       }
+
+      $("body").on("click", "#menu-responsive-your-cart", function(){
+
+          if($("div#block-memory-cart-memory-cart").is(":visible")){
+              $("div#block-memory-cart-memory-cart").hide();
+              $("#user-cart-display-through-menu").remove();
+          }else{
+              $("div#block-memory-cart-memory-cart").show();
+              $("body").append("<i id=\"user-cart-display-through-menu\" class=\"fa fa-arrow-circle-left\" aria-hidden=\"true\"></i>");
+          }
+      });
+
+      $("body").on("click", "#user-cart-display-through-menu", function(){
+        $("div#block-memory-cart-memory-cart").hide();
+        $("#user-cart-display-through-menu").remove();
+        $("#responsive-user-cart-btn").show();
+      });
 
 
       if($(window).width() <= 640){
