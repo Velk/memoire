@@ -1082,7 +1082,7 @@
     height: 50px;
     border-radius: 40px;
     background-color: #26c6da;
-    z-index: 999;
+    z-index: 9995 !important;
     box-sizing: border-box;
     box-shadow: 0px 0px 5px #a8a8a8;
     display: flex;
@@ -1100,7 +1100,7 @@
     width: 450px !important;
     height: 100vh !important;
     background-color: #f7f7f7 !important;
-    z-index: 999 !important;
+    z-index: 9990 !important;
   }
   button#btn-display {
     display: none !important;
