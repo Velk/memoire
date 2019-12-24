@@ -21,7 +21,7 @@ a#logo {
   box-sizing: border-box !important;
 }
 #logo > img {
-  height: 80px;
+  height: 100%;
   /*width: auto !important;*/
 }
 #menu-bar-wrapper {

@@ -328,7 +328,8 @@
     border-bottom: 1px solid #fff;
   }
   .memory-menu-tabs > li#menu-responsive-home-page,
-  .memory-menu-tabs > li#memory-menu-responsive-contact {
+  .memory-menu-tabs > li#memory-menu-responsive-contact,
+  .memory-menu-tabs > li#menu-responsive-your-cart {
     width: 100%;
     padding: 15px 20px;
     box-sizing: border-box;
@@ -1463,4 +1464,14 @@
   form.webform-client-form > div {
     padding: 25px 20px !important;
   }
+}
+
+
+/* Menu - user cart */
+#user-cart-display-through-menu {
+  position: fixed;
+  z-index: 9999;
+  left: 15px;
+  top: 15px;
+  font-size: 25px;
 }
