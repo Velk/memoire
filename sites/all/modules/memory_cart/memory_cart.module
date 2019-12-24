@@ -376,8 +376,8 @@ function memory_cart_block_info() {
         'weight' => 1,
         'status' => 1,
         'region' => 'content',
-        'visibility' => BLOCK_VISIBILITY_LISTED,
-        'pages' => 'destinations/*',
+        'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+        'pages' => 'admin/*',
     );
 
     return $blocks;

@@ -259,27 +259,26 @@
 
           if($("div#block-memory-cart-memory-cart").is(":visible")){
             $("div#block-memory-cart-memory-cart").hide();
-            $("#user-cart-display-through-menu").remove();
 
-            // Remove scroll page when user cart is displayed
+            // Set scroll page when user cart is not displayed
             $("body").css("overflow-y", "scroll");
           }else{
             $("div#block-memory-cart-memory-cart").show();
-            $("body").append("<i id=\"user-cart-display-through-menu\" class=\"fa fa-arrow-circle-left\" aria-hidden=\"true\"></i>");
+            $("div#responsive-user-cart-btn").show();
 
             // Remove scroll page when user cart is displayed
             $("body").css("overflow", "hidden");
           }
         });
 
-        $("body").on("click", "#user-cart-display-through-menu", function(){
-          $("div#block-memory-cart-memory-cart").hide();
-          $("#user-cart-display-through-menu").remove();
-          $("#responsive-user-cart-btn").show();
-
-          // Remove scroll page when user cart is displayed
-          $("body").css("overflow-y", "scroll");
-        });
+        // $("body").on("click", "#user-cart-display-through-menu", function(){
+        //   $("div#block-memory-cart-memory-cart").hide();
+        //   $("#user-cart-display-through-menu").remove();
+        //   $("#responsive-user-cart-btn").show();
+        //
+        //   // Set scroll page when user cart is not displayed
+        //   $("body").css("overflow-y", "scroll");
+        // });
       }
 
       if($(window).width() <= 640){
