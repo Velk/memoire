@@ -1,0 +1,89 @@
+#memory_reviews_container > h2 {
+  font-family: oswaldregular;
+  font-size: 25px;
+  text-align: center;
+  margin: 0 0 50px 0;
+  font-weight: normal;
+}
+
+#memory_reviews_container > div {
+  width: 650px;
+  height: auto;
+  overflow: hidden;
+  margin: 0 auto;
+  border: 1px solid #efefef;
+  box-shadow: 1px 1px 5px #e1e1e1;
+  border-radius: 3px;
+}
+#memory_reviews_container > div > div {
+  display: flex;
+  flex-direction: row;
+  width: 300%;
+  height: auto;
+  padding: 0;
+  margin: 0;
+}
+
+.memory_review {
+  display: grid;
+  grid-template-areas:
+    "a b"
+    "c c"
+    "d e";
+  box-sizing: border-box;
+  width: 650px;
+  padding: 15px 25px;
+  background-color: white;
+}
+.memory_review:last-of-type{
+  margin:0;
+}
+
+.memory_review > p {
+  margin: 0;
+}
+
+p.review_person {
+  grid-area: a;
+  font-weight: bold;
+  color: #26c6da;
+  padding-right: 15px;
+  line-height: 1.2;
+}
+p.review_notation {
+  grid-area: b;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  font-size: 10px;
+}
+div.review_description {
+  grid-area: c;
+  margin: 25px 0;
+  font-size: 12px;
+}
+p.review_nature {
+  grid-area: d;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  font-weight: bold;
+  font-size: 12px;
+  padding-right: 15px;
+  line-height: 1.2;
+}
+p.review_date {
+  grid-area: e;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  font-style: italic;
+  font-size: 10px;
+}
+
+p.review_notation .fa-star {
+  color: #ffee58;
+}
+p.review_notation .fa-star-o {
+  color: #e1e1e1;
+}

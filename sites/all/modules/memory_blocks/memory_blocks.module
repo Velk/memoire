@@ -560,11 +560,6 @@ function memory_blocks_theme($existing, $type, $theme, $path) {
             'path' => drupal_get_path('module', 'memory_blocks'),
             'variables' => array('infos' => NULL),
         ),
-        'tpl_memory_reviews' => array(
-            'template' => 'tpl/memory_reviews',
-            'path' => drupal_get_path('module', 'memory_blocks'),
-            'variables' => array('infos' => NULL),
-        ),
         'tpl_memory_top_destinations' => array(
             'template' => 'tpl/memory_top_destinations',
             'path' => drupal_get_path('module', 'memory_blocks'),
@@ -625,15 +620,6 @@ function memory_blocks_block_info() {
       'region' => 'content',
 //      'region' => 'header_top',
 //      'visibility' => BLOCK_VISIBILITY_NOTLISTED,
-      'visibility' => BLOCK_VISIBILITY_LISTED,
-      'pages' => '<front>',
-    );
-
-    $blocks['memory_reviews'] = array(
-      'info' => t('Memory Reviews'),
-      'weight' => 2,
-      'status' => 1,
-      'region' => 'content',
       'visibility' => BLOCK_VISIBILITY_LISTED,
       'pages' => '<front>',
     );
@@ -741,18 +727,6 @@ function memory_blocks_block_view($delta = '') {
             // Link a css file 
             $block['content']['#attached']['css'][] = array(
                 'data' => drupal_get_path('module', 'memory_blocks') . '/css/social_networks.css',
-                'type' => 'file'
-            );
-
-            break;
-        case 'memory_reviews':
-
-            // Link the template
-            $block['content']['#markup'] = theme('tpl_memory_reviews');
-
-            // Link a css file
-            $block['content']['#attached']['css'][] = array(
-                'data' => drupal_get_path('module', 'memory_blocks') . '/css/memory_reviews.css',
                 'type' => 'file'
             );
 

@@ -2,7 +2,6 @@
     Drupal.behaviors.memory_blocks_script = {
         attach: function (context, settings) {
 
-
             /* Autocomplete Destination title */
             if(
                 window.location.pathname.match(/^.*\/taxonomy\/term\/[0-9]*\/edit$/) &&
