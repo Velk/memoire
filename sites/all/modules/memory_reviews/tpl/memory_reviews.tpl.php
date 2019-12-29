@@ -1,8 +1,10 @@
 <div id="memory-reviews-container">
   <h2><?=$reviews_title;?></h2>
+  <?php if(!empty($reviews_trustpilot)){ ?>
   <div id="reviews-image">
     <img src="<?=$reviews_trustpilot;?>" alt="Trustpilot assessment">
   </div>
+  <?php } ?>
   <div id="reviews-slider">
     <?php for($k = 0; $k < sizeof($arrayReviews); $k = $k + 3){ ?>
     <div class="memory-group-reviews group-nb-<?=($k==0)?0:$k/3;?>">
