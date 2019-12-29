@@ -4,7 +4,7 @@ global $base_url;
 if(!empty($world_map_title) && !empty($world_map_description)){
 ?>
 <div id="map-header">
-    <h1 id="title"><?php echo $world_map_title; ?></h1>
+    <h2 id="memory-map-title"><?php echo $world_map_title; ?></h2>
     <div id="description"><?php echo $world_map_description; ?></div>
 </div>
 <?php

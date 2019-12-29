@@ -37,6 +37,31 @@ function memory_reviews_admin_reviews_manager($form, &$form_state) {
     '#required' => TRUE,
   );
 
+  // Trustpilot image
+  $form['reviews_trustpilot'] = array(
+    '#type'          => 'media',
+    '#title'         => 'Trustpilot image',
+    '#theme'         => 'media_widget', // Without that, you only get text input
+    '#default_value' => variable_get('reviews_trustpilot'), //The fid
+    '#media_options' => array(
+      'global' => array(
+        'file_directory'  => 'icons_folder',
+        'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
+          'upload',
+          'media_default--media_browser_my_files'
+        ),
+        'file_extensions' => 'png gif jpg jpeg',
+        'max_filesize'    => '2 MB',
+        'uri_scheme'      => 'public',
+        'types'           => array('image'),
+        'schemes'         => array(
+          'public' => 'public',
+        ),
+      ),
+    ),
+    '#weight' => 2,
+  );
+
   // Sliding time between each review (in seconds)
   $form['review_sliding_time'] = array(
     '#type' => 'textfield',
@@ -47,7 +72,7 @@ function memory_reviews_admin_reviews_manager($form, &$form_state) {
     '#title' => t('Sliding time'),
     '#description' => t('Sliding time between each review. The time is expressed in seconds.'),
     '#required' => TRUE,
-    '#weight' => 2,
+    '#weight' => 3,
   );
 
   // Sliding time between each review (in seconds)
@@ -60,7 +85,7 @@ function memory_reviews_admin_reviews_manager($form, &$form_state) {
     '#title' => t('Sliding time (in s)'),
     '#description' => t('Sliding time between each review. The time is expressed in seconds.'),
     '#required' => TRUE,
-    '#weight' => 2,
+    '#weight' => 4,
   );
 
   // Sliding speed between each review (in seconds)
@@ -73,17 +98,30 @@ function memory_reviews_admin_reviews_manager($form, &$form_state) {
     '#title' => t('Sliding speed (in s)'),
     '#description' => t('Sliding speed between each review. The speed is expressed in seconds.'),
     '#required' => TRUE,
-    '#weight' => 3,
+    '#weight' => 5,
+  );
+
+  $form['reviews_nb_reviews'] = array(
+    '#type' => 'textfield',
+    '#attributes' => array(
+      ' type' => 'number', // insert space before attribute name
+      ' min' => '0',
+    ),
+    '#default_value' => variable_get('reviews_nb_reviews', 9),
+    '#title' => t('Number of reviews'),
+    '#description' => t('By default the number of reviews equals to 9 but if you can change this number filling this field then save the configuration.'),
+    '#required' => TRUE,
+    '#weight' => 6,
   );
 
   /* Review */
-  for( $i = 1 ; $i <= 3 ; $i++ ){
+  for( $i = 1 ; $i <= variable_get('reviews_nb_reviews') ; $i++ ){
 
     // Fieldset
     $form['review_' . $i] = array(
       '#type' => 'fieldset',
       '#title' => t('Review n°' . $i),
-      '#weight' => 3 + $i,
+      '#weight' => 6 + $i,
       '#collapsible' => TRUE,
       '#collapsed' => TRUE,
       '#tree' => TRUE
@@ -199,9 +237,18 @@ function memory_reviews_block_view($delta = '') {
 
       $data["reviews_title"] = variable_get('reviews_title', array());
 
+      /*
+       * $arrayName['image'] correspond to the fid
+       * Load the file by its fid.
+       * Create the URL file by using the file URI
+       */
+      $file = file_load(variable_get('reviews_trustpilot', array()));
+      $url = file_create_url($file->uri);
+      $data['reviews_trustpilot'] = $url;
+
       $arrayReviews = array();
 
-      for ($i = 1; $i <= 3; $i++) {
+      for ($i = 1; $i <= variable_get('reviews_nb_reviews'); $i++) {
 
         $arrayReview = variable_get('review_' . $i, array());
 
@@ -212,13 +259,12 @@ function memory_reviews_block_view($delta = '') {
 
       $data['arrayReviews'] = $arrayReviews;
 
-
       $nb_reviews = count($arrayReviews);
       $review_sliding_time = variable_get('review_sliding_time', array());
       $review_sliding_speed = variable_get('review_sliding_speed', array());
       drupal_add_js(
         array(
-          'common' => array(
+          'memory_reviews' => array(
             'nb_reviews' => intval($nb_reviews),
             'review_sliding_time' => intval($review_sliding_time) * 1000,
             'review_sliding_speed' => intval($review_sliding_speed) * 1000,
@@ -226,7 +272,6 @@ function memory_reviews_block_view($delta = '') {
         ),
         array('type' => 'setting')
       );
-
 
       // Link the template
       $block['content']['#markup'] = theme('tpl_memory_reviews', $data);
