@@ -411,8 +411,6 @@ function memory_footer_block_view($delta = '') {
       $footer_partners = variable_get('footer_partners', array());
       $arrayPartnersUrl = array();
 
-      drupal_set_message("<pre>" . print_r($footer_partners, TRUE) . "</pre>");
-
       for($i = 1; $i <= $footer_partners["partners_number"]; $i++){
 
         /*
