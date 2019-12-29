@@ -66,10 +66,10 @@
           <hr><p>Nos partenaires</p><hr>
         </div>
         <div id="partners-slider">
-          <?php for($k = 0; $k < sizeof($arrayPartnersUrl); $k = $k + 7){ ?>
+          <?php for($k = 0; $k < sizeof($arrayPartnersUrl); $k = $k + 5){ ?>
             <div class="memory-group-partners">
               <?php
-              for($i = $k; $i < $k+7; $i++) {
+              for($i = $k; $i < $k+5; $i++) {
                 if(!empty($arrayPartnersUrl[$i])){
               ?>
               <div class="memory-partner">
