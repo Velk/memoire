@@ -181,7 +181,7 @@ div#footer-container div#header-partners > hr {
 
 .memory-partner {
   position: relative;
-  width: calc(100% / 10);
+  width: calc(100% / 7);
   height: 75px;
   padding: 0;
   background-color: transparent;
@@ -192,7 +192,7 @@ div#footer-container div#header-partners > hr {
 .memory-partner:last-of-type{
   margin:0;
 }
-.memory-partner > img {
+.memory-partner img {
   width: auto;
   height: 100%;
 }
