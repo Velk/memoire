@@ -242,13 +242,69 @@ function memory_footer_admin_footer_manager($form, &$form_state) {
 
   $footer_partners = variable_get('footer_partners', array());
 
-  $form['footer_partners']['partners'] = array(
-    '#type' => 'text_format',
-    '#format' => 'wysiwyg',
-    '#default_value' => $footer_partners['partners']['value'],
-    '#title' => t('Partenaires'),
+  $form['footer_partners']['partners_number'] = array(
+    '#type' => 'textfield',
+    '#attributes' => array(
+      ' type' => 'number', // insert space before attribute name
+      ' min' => '0'
+    ),
+    '#title' => t('Number of partners'),
+    '#default_value' => $footer_partners['partners_number'],
     '#weight' => 1,
   );
+
+  // Sliding time between each partner group (in seconds)
+  $form['footer_partners']['partner_sliding_time'] = array(
+    '#type' => 'textfield',
+    '#attributes' => array(
+      ' type' => 'number', // insert space before attribute name
+    ),
+    '#default_value' => $footer_partners['partner_sliding_time'],
+    '#title' => t('Sliding time (in s)'),
+    '#description' => t('Sliding time between each partner group. The time is expressed in seconds.'),
+    '#required' => TRUE,
+    '#weight' => 2,
+  );
+
+  // Sliding speed between each partner group (in seconds)
+  $form['footer_partners']['partner_sliding_speed'] = array(
+    '#type' => 'textfield',
+    '#attributes' => array(
+      ' type' => 'number', // insert space before attribute name
+    ),
+    '#default_value' => $footer_partners['partner_sliding_speed'],
+    '#title' => t('Sliding speed (in s)'),
+    '#description' => t('Sliding speed between each partner group. The speed is expressed in seconds.'),
+    '#required' => TRUE,
+    '#weight' => 3,
+  );
+
+  for($i = 1; $i <= $footer_partners['partners_number']; $i++){
+
+    $form['footer_partners']['partners_' . $i] = array(
+      '#type'          => 'media',
+      '#title'         => 'Logo - Partner n°' . $i,
+      '#theme'         => 'media_widget', // Without that, you only get text input
+      '#default_value' => $footer_partners['partners_' . $i], //The fid
+      '#media_options' => array(
+        'global' => array(
+          'file_directory'  => 'icons_folder',
+          'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
+            'upload',
+            'media_default--media_browser_my_files'
+          ),
+          'file_extensions' => 'png gif jpg jpeg',
+          'max_filesize'    => '2 MB',
+          'uri_scheme'      => 'public',
+          'types'           => array('image'),
+          'schemes'         => array(
+            'public' => 'public',
+          ),
+        ),
+      ),
+      '#weight' => 3 + $i,
+    );
+  }
 
   return system_settings_form($form);
 }
@@ -352,8 +408,38 @@ function memory_footer_block_view($delta = '') {
       }
 
       /* Partners */
-      $data['footer_partners'] = variable_get('footer_partners', array());
-      $data['footer_partners'] = $data['footer_partners']['partners']['value'];
+      $footer_partners = variable_get('footer_partners', array());
+      $arrayPartnersUrl = array();
+
+      drupal_set_message("<pre>" . print_r($footer_partners, TRUE) . "</pre>");
+
+      for($i = 1; $i <= $footer_partners["partners_number"]; $i++){
+
+        /*
+         * $arrayName['image'] correspond to the fid
+         * Load the file by its fid.
+         * Create the URL file by using the file URI
+         */
+        if($footer_partners["partners_" . $i] != 0){ // Don't create a data[] if there is no image
+
+          $file = file_load($footer_partners["partners_" . $i]);
+          $url = file_create_url($file->uri);
+          array_push($arrayPartnersUrl, $url);
+        }
+      }
+
+      $data["arrayPartnersUrl"] = $arrayPartnersUrl;
+
+      drupal_add_js(
+        array(
+          'memory_footer' => array(
+            'partners_number' => intval($footer_partners["partners_number"]),
+            'partner_sliding_time' => intval($footer_partners['partner_sliding_time']) * 1000,
+            'partner_sliding_speed' => intval($footer_partners['partner_sliding_speed']) * 1000,
+          )
+        ),
+        array('type' => 'setting')
+      );
 
       // Link the template
       $block['content']['#markup'] = theme('tpl_memory_footer', $data);
@@ -361,6 +447,12 @@ function memory_footer_block_view($delta = '') {
       // Link a css file
       $block['content']['#attached']['css'][] = array(
         'data' => drupal_get_path('module', 'memory_footer').'/css/memory_footer.css',
+        'type' => 'file'
+      );
+
+      // Link a js file
+      $block['content']['#attached']['js'][] = array(
+        'data' => drupal_get_path('module', 'memory_footer').'/js/memory_footer.js',
         'type' => 'file'
       );
   }

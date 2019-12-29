@@ -60,18 +60,30 @@
           ?>
         </div>
       </div>
-      <?php
-      if( !empty($footer_partners) ){
-        ?>
-        <div id="partners-container">
-          <div id="header-partners">
-            <hr><p>Nos partenaires</p><hr>
-          </div>
-          <?php echo $footer_partners; ?>
+      <?php if( sizeof($arrayPartnersUrl) > 0 ){ ?>
+      <div id="partners-container">
+        <div id="header-partners">
+          <hr><p>Nos partenaires</p><hr>
         </div>
-        <?php
-      }
-      ?>
+        <div id="partners-slider">
+          <?php for($k = 0; $k < sizeof($arrayPartnersUrl); $k = $k + 7){ ?>
+            <div class="memory-group-partners">
+              <?php
+              for($i = $k; $i < $k+7; $i++) {
+                if(!empty($arrayPartnersUrl[$i])){
+              ?>
+              <div class="memory-partner">
+                <img src="<?= $arrayPartnersUrl[$i] ?>">
+              </div>
+              <?php
+                }
+              }
+              ?>
+            </div>
+          <?php } ?>
+        </div>
+      </div>
+      <?php } ?>
     </div>
   </div>
 </div>

@@ -242,9 +242,12 @@ function memory_reviews_block_view($delta = '') {
        * Load the file by its fid.
        * Create the URL file by using the file URI
        */
-      $file = file_load(variable_get('reviews_trustpilot', array()));
-      $url = file_create_url($file->uri);
-      $data['reviews_trustpilot'] = $url;
+      if(variable_get('reviews_trustpilot', array()) != 0){ // Don't create a data[] if there is no image
+
+        $file = file_load(variable_get('reviews_trustpilot', array()));
+        $url = file_create_url($file->uri);
+        $data['reviews_trustpilot'] = $url;
+      }
 
       $arrayReviews = array();
 
