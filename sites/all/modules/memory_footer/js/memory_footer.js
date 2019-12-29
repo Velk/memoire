@@ -11,13 +11,9 @@
         var partnerSlidingTime = Drupal.settings.memory_footer.partner_sliding_time;
         var partnerSlidingSpeed = Drupal.settings.memory_footer.partner_sliding_speed;
 
-        console.log(nbPartners);
-        console.log(partnerSlidingTime);
-        console.log(partnerSlidingSpeed);
-
         function infiniteSlider(){
 
-          if(nbPartners > 5){ // Because a group of reviews is composed of 3 reviews
+          if(nbPartners > 7){ // Because a group of reviews is composed of 3 reviews
 
             // Infinite partners carousel
             setInterval(function(){

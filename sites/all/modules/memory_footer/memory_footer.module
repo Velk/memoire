@@ -279,6 +279,8 @@ function memory_footer_admin_footer_manager($form, &$form_state) {
     '#weight' => 3,
   );
 
+  $dynamic_weight = 4;
+
   for($i = 1; $i <= $footer_partners['partners_number']; $i++){
 
     $form['footer_partners']['partners_' . $i] = array(
@@ -302,8 +304,20 @@ function memory_footer_admin_footer_manager($form, &$form_state) {
           ),
         ),
       ),
-      '#weight' => 3 + $i,
+      '#weight' => $dynamic_weight,
     );
+
+    $dynamic_weight++;
+
+    $form['footer_partners']['partners_url_' . $i] = array(
+      '#type' => 'textfield',
+      '#title' => 'URL - Partner n°' . $i,
+      '#default_value' => $footer_partners['partners_url_' . $i],
+      '#maxlength' => 512,
+      '#weight' => $dynamic_weight,
+    );
+
+    $dynamic_weight++;
   }
 
   return system_settings_form($form);
@@ -409,7 +423,7 @@ function memory_footer_block_view($delta = '') {
 
       /* Partners */
       $footer_partners = variable_get('footer_partners', array());
-      $arrayPartnersUrl = array();
+      $arrayPartners = array();
 
       for($i = 1; $i <= $footer_partners["partners_number"]; $i++){
 
@@ -420,13 +434,22 @@ function memory_footer_block_view($delta = '') {
          */
         if($footer_partners["partners_" . $i] != 0){ // Don't create a data[] if there is no image
 
+          $tempArrayPartners = array();
+
           $file = file_load($footer_partners["partners_" . $i]);
-          $url = file_create_url($file->uri);
-          array_push($arrayPartnersUrl, $url);
+          $image_url = file_create_url($file->uri);
+
+          array_push($tempArrayPartners, $image_url);
+
+          if(!empty($footer_partners["partners_url_" . $i])){
+            array_push($tempArrayPartners, $footer_partners["partners_url_" . $i]);
+          }
+
+          array_push($arrayPartners, $tempArrayPartners);
         }
       }
 
-      $data["arrayPartnersUrl"] = $arrayPartnersUrl;
+      $data["arrayPartners"] = $arrayPartners;
 
       drupal_add_js(
         array(

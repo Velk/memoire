@@ -60,20 +60,26 @@
           ?>
         </div>
       </div>
-      <?php if( sizeof($arrayPartnersUrl) > 0 ){ ?>
+      <?php if( sizeof($arrayPartners) > 0 ){ ?>
       <div id="partners-container">
         <div id="header-partners">
           <hr><p>Nos partenaires</p><hr>
         </div>
         <div id="partners-slider">
-          <?php for($k = 0; $k < sizeof($arrayPartnersUrl); $k = $k + 5){ ?>
+          <?php for($k = 0; $k < sizeof($arrayPartners); $k = $k + 7){ ?>
             <div class="memory-group-partners">
               <?php
-              for($i = $k; $i < $k+5; $i++) {
-                if(!empty($arrayPartnersUrl[$i])){
+              for($i = $k; $i < $k+7; $i++) {
+                if(!empty($arrayPartners[$i][0])){
               ?>
               <div class="memory-partner">
-                <img src="<?= $arrayPartnersUrl[$i] ?>">
+                <?php if(isset($arrayPartners[$i][1])){?>
+                <a href="<?= $arrayPartners[$i][1]?>" target="_blank">
+                  <img src="<?= $arrayPartners[$i][0] ?>">
+                </a>
+                <?php }else{ ?>
+                <img src="<?= $arrayPartners[$i][0] ?>">
+                <?php } ?>
               </div>
               <?php
                 }
