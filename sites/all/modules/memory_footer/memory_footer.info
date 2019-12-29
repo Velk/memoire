@@ -1,0 +1,5 @@
+name = Memory Footer
+description = Footer for memory website
+package = Memory
+version = VERSION
+core = 7.x

@@ -1,0 +1,369 @@
+<?php
+
+/**
+ * Implementation of hook_menu()
+ *
+ * @return array
+ */
+function memory_footer_menu() {
+  $items = array();
+
+  $items['admin/memory/footer'] = array(
+    'title' => t('Memory - Footer'),
+    'description' => t('Memory - Footer manager'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('memory_footer_admin_footer_manager'),
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+/**
+ * @param $form
+ * @param $form_state
+ * @return mixed
+ */
+function memory_footer_admin_footer_manager($form, &$form_state) {
+
+  /* Society Column */
+  $form['footer_column_1'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Colonne Société'),
+    '#weight' => 1,
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#tree' => TRUE
+  );
+
+  $footer_column_1 = variable_get('footer_column_1', array());
+
+  $form['footer_column_1']['society'] = array(
+    '#type' => 'text_format',
+    '#format' => 'wysiwyg',
+    '#default_value' => $footer_column_1['society']['value'],
+    '#title' => t('Société'),
+    '#weight' => 1,
+  );
+
+  /* Contact Column */
+  $form['footer_column_2'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Colonne Contact'),
+    '#weight' => 2,
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#tree' => TRUE
+  );
+
+  $footer_column_2 = variable_get('footer_column_2', array());
+
+  $form['footer_column_2']['contact'] = array(
+    '#type' => 'text_format',
+    '#format' => 'wysiwyg',
+    '#default_value' => $footer_column_2['contact']['value'],
+    '#title' => t('Contact'),
+    '#weight' => 1,
+  );
+
+  /* Communication Column */
+  $form['footer_column_3'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Colonne Communication'),
+    '#weight' => 3,
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#tree' => TRUE
+  );
+
+  $footer_column_3 = variable_get('footer_column_3', array());
+
+  $form['footer_column_3']['communication'] = array(
+    '#type' => 'text_format',
+    '#format' => 'wysiwyg',
+    '#default_value' => $footer_column_3['communication']['value'],
+    '#title' => t('Communication'),
+    '#weight' => 1,
+  );
+
+  /* You and Us Column */
+  $form['footer_column_4'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Colonne Vous et Nous'),
+    '#weight' => 4,
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#tree' => TRUE
+  );
+
+  $footer_column_4 = variable_get('footer_column_4', array());
+
+  $form['footer_column_4']['youandus'] = array(
+    '#type' => 'text_format',
+    '#format' => 'wysiwyg',
+    '#default_value' => $footer_column_4['youandus']['value'],
+    '#title' => t('Vous et Nous'),
+    '#weight' => 1,
+  );
+
+  /* Certifications Column */
+  $form['footer_column_5'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Colonne Certifications'),
+    '#weight' => 5,
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#tree' => TRUE
+  );
+
+  $footer_column_5 = variable_get('footer_column_5', array());
+
+  $form['footer_column_5']['certifications'] = array(
+    '#type' => 'text_format',
+    '#format' => 'wysiwyg',
+    '#default_value' => $footer_column_5['certifications']['value'],
+    '#title' => t('Certifications'),
+    '#weight' => 1,
+  );
+
+  /* Facebook Likes and Shares */
+  $form['facebook'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Facebook'),
+    '#weight' => 6,
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#tree' => TRUE
+  );
+
+  $facebook = variable_get('facebook', array());
+
+  $form['facebook']['url'] = array(
+    '#type' => 'textfield',
+    '#default_value' => $facebook['url'],
+    '#title' => t('URL'),
+    '#description' => t('Renseignez la partie de l\'URL correspondant à votre page Facebook.<br>Exemple : Pour l\'URL https://www.facebook.com/FacebookFrance/ , renseignez seulement FacebookFrance'),
+    '#weight' => 1,
+  );
+
+  $form['facebook']['display_type'] = array(
+    '#type' => 'radios',
+    '#title' => t('Type d\'affichage'),
+    '#default_value' => $facebook['display_type'],
+    '#options' => array(
+      0 => t('Sans le nombre de likes'),
+      1 => t('Avec le nombre de likes')
+    ),
+    '#description' => t('Choix de l\'affichage pour le bouton j\'aime de Facebook.'),
+    '#weight' => 2,
+  );
+
+  /* Twitter Tweets */
+  $form['twitter'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Twitter'),
+    '#weight' => 7,
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#tree' => TRUE
+  );
+
+  $twitter = variable_get('twitter', array());
+
+  $form['twitter']['url'] = array(
+    '#type' => 'textfield',
+    '#default_value' => $twitter['url'],
+    '#title' => t('URL'),
+    '#description' => t('Renseignez la partie de l\'URL correspondant à votre page Twitter.<br>Exemple : Pour l\'URL https://twitter.com/twitter , renseignez seulement twitter'),
+    '#weight' => 1,
+  );
+
+  /* Social networks */
+  $form['footer_social_networks'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Social networks'),
+    '#weight' => 8,
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#tree' => TRUE
+  );
+
+  $footer_social_networks = variable_get('footer_social_networks', array());
+
+  for( $i = 1 ; $i <= 5 ; $i++ ){
+
+    $form['footer_social_networks']['social_networks_'.$i] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Social networks n°'.$i),
+      '#weight' => $i,
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#tree' => TRUE
+    );
+
+    $form['footer_social_networks']['social_networks_'.$i]['name'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Nom'),
+      '#default_value' => $footer_social_networks['social_networks_'.$i]['name'],
+      '#weight' => 1,
+    );
+
+    $form['footer_social_networks']['social_networks_'.$i]['url'] = array(
+      '#type' => 'textfield',
+      '#title' => t('URL ou adresse e-mail'),
+      '#default_value' => $footer_social_networks['social_networks_'.$i]['url'],
+      '#weight' => 2,
+    );
+
+    $form['footer_social_networks']['social_networks_'.$i]['icon'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Icône'),
+      '#description' => t(
+        'Choississez l\'icône représentant votre média sur : '.
+        '<em>https://fontawesome.com/v4.7.0/icons</em>'.
+        '<br> Puis renseigné le nom de l\'icône. '.
+        '<em>Exemple : fa-facebook</em>'
+      ),
+      '#default_value' => $footer_social_networks['social_networks_'.$i]['icon'],
+      '#weight' => 3,
+    );
+  }
+
+  /* Partners */
+  $form['footer_partners'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Partners'),
+    '#weight' => 9,
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#tree' => TRUE
+  );
+
+  $footer_partners = variable_get('footer_partners', array());
+
+  $form['footer_partners']['partners'] = array(
+    '#type' => 'text_format',
+    '#format' => 'wysiwyg',
+    '#default_value' => $footer_partners['partners']['value'],
+    '#title' => t('Partenaires'),
+    '#weight' => 1,
+  );
+
+  return system_settings_form($form);
+}
+
+/**
+ * Implement hook_theme()
+ *
+ * @param $existing
+ * @param $type
+ * @param $theme
+ * @param $path
+ * @return array
+ */
+function memory_footer_theme($existing, $type, $theme, $path) {
+  return array(
+    'tpl_memory_footer' => array(
+      'template' => 'tpl/memory_footer',
+      'path' => drupal_get_path('module', 'memory_footer'),
+      'variables' => array('infos' => NULL),
+    ),
+  );
+}
+
+/**
+ * @return mixed
+ */
+function memory_footer_block_info() {
+
+  $blocks['memory_footer'] = array(
+    'info' => t('Memory footer'),
+    'weight' => 1,
+    'status' => 1,
+    'region' => 'footer',
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+  );
+
+  return $blocks;
+}
+
+/**
+ * @param string $delta
+ * @return array
+ * @throws Exception
+ */
+function memory_footer_block_view($delta = '') {
+
+  $block = array();
+
+  switch ($delta) {
+    case 'memory_footer':
+
+      /* Footer Column Society */
+      $data['footer_column_1'] = variable_get("footer_column_1", array());
+      $data['footer_column_1'] = $data['footer_column_1']['society']['value'];
+
+      /* Footer Column Contact */
+      $data['footer_column_2'] = variable_get("footer_column_2", array());
+      $data['footer_column_2'] = $data['footer_column_2']['contact']['value'];
+
+      /* Footer Column Communication */
+      $data['footer_column_3'] = variable_get("footer_column_3", array());
+      $data['footer_column_3'] = $data['footer_column_3']['communication']['value'];
+
+      /* Footer Column You and Us */
+      $data['footer_column_4'] = variable_get("footer_column_4", array());
+      $data['footer_column_4'] = $data['footer_column_4']['youandus']['value'];
+
+      /* Footer Column Certifications */
+      $data['footer_column_5'] = variable_get("footer_column_5", array());
+      $data['footer_column_5'] = $data['footer_column_5']['certifications']['value'];
+
+      /* Facebook */
+      $data['facebook'] = variable_get('facebook', array());
+      $data['facebook_url'] = $data['facebook']['url'];
+      $facebook_display_type = $data['facebook']['display_type'];
+
+      if ($facebook_display_type == 0) {
+
+        $data['facebook_display_type'] = "button";
+      } else {
+
+        $data['facebook_display_type'] = "button_count";
+      }
+      $data['facebook_display_height'] = "30";
+
+      /* Twitter */
+      $data['twitter'] = variable_get('twitter', array());
+      $data['twitter_url'] = $data['twitter']['url'];
+      $data['twitter_display_height'] = "30";
+
+      /* Social networks */
+      $footer_social_networks = variable_get('footer_social_networks', array());
+
+      $data["array_size_snl"] = sizeof($footer_social_networks);
+
+      for ($i = 1; $i <= sizeof($footer_social_networks); $i++) {
+
+        $data["social_networks_" . $i . "_name"] = $footer_social_networks["social_networks_" . $i]["name"];
+        $data["social_networks_" . $i . "_url"] = $footer_social_networks["social_networks_" . $i]["url"];
+        $data["social_networks_" . $i . "_icon"] = $footer_social_networks["social_networks_" . $i]["icon"];
+      }
+
+      /* Partners */
+      $data['footer_partners'] = variable_get('footer_partners', array());
+      $data['footer_partners'] = $data['footer_partners']['partners']['value'];
+
+      // Link the template
+      $block['content']['#markup'] = theme('tpl_memory_footer', $data);
+
+      // Link a css file
+      $block['content']['#attached']['css'][] = array(
+        'data' => drupal_get_path('module', 'memory_footer').'/css/memory_footer.css',
+        'type' => 'file'
+      );
+  }
+
+  return $block;
+}

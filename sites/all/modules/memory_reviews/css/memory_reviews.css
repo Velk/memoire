@@ -1,4 +1,4 @@
-#memory_reviews_container > h2 {
+#memory-reviews-container > h2 {
   font-family: oswaldregular;
   font-size: 25px;
   text-align: center;
@@ -6,63 +6,82 @@
   font-weight: normal;
 }
 
-#memory_reviews_container > div {
-  width: 650px;
+div#reviews-image {
+  position: relative;
+  width: 100%;
+  text-align: center;
+  margin: 0 auto 40px 0;
+}
+
+div#reviews-image > img {
+  width: 175px;
+}
+
+#memory-reviews-container > div#reviews-slider {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
   height: auto;
   overflow: hidden;
   margin: 0 auto;
-  border: 1px solid #efefef;
-  box-shadow: 1px 1px 5px #e1e1e1;
-  border-radius: 3px;
 }
-#memory_reviews_container > div > div {
+#memory-reviews-container > div#reviews-slider > div.memory-group-reviews {
   display: flex;
   flex-direction: row;
-  width: 300%;
+  justify-content: space-evenly;
+  min-width: 100%;
+  width: 100%;
+  max-width: 100%;
+  position: relative;
   height: auto;
   padding: 0;
   margin: 0;
 }
 
-.memory_review {
+.memory-review {
   display: grid;
   grid-template-areas:
     "a b"
     "c c"
     "d e";
   box-sizing: border-box;
-  width: 650px;
+  width: calc(100% / 3);
   padding: 15px 25px;
   background-color: white;
+  margin-right: 25px;
+  border: 1px solid #efefef;
+  box-shadow: 1px 1px 5px #e1e1e1;
+  border-radius: 3px;
 }
-.memory_review:last-of-type{
+.memory-review:last-of-type{
   margin:0;
 }
 
-.memory_review > p {
+.memory-review > p {
   margin: 0;
 }
 
-p.review_person {
+p.review-person {
   grid-area: a;
   font-weight: bold;
   color: #26c6da;
   padding-right: 15px;
   line-height: 1.2;
 }
-p.review_notation {
+p.review-notation {
   grid-area: b;
   display: flex;
   align-items: flex-start;
   justify-content: flex-end;
   font-size: 10px;
 }
-div.review_description {
+div.review-description {
   grid-area: c;
   margin: 25px 0;
   font-size: 12px;
 }
-p.review_nature {
+p.review-nature {
   grid-area: d;
   display: flex;
   align-items: flex-end;
@@ -72,7 +91,7 @@ p.review_nature {
   padding-right: 15px;
   line-height: 1.2;
 }
-p.review_date {
+p.review-date {
   grid-area: e;
   display: flex;
   align-items: flex-end;
@@ -81,9 +100,19 @@ p.review_date {
   font-size: 10px;
 }
 
-p.review_notation .fa-star {
-  color: #ffee58;
+p.review-notation .fa-star {
+  color: #00b67a;
 }
-p.review_notation .fa-star-o {
+p.review-notation .fa-star-o {
   color: #e1e1e1;
+}
+
+div#reviews-touchable-manager {
+  text-align: center;
+  margin: 10px 0 0 0;
+  font-size: 9px;
+}
+div#reviews-touchable-manager > i {
+  margin: 0 10px 0 0;
+  cursor: pointer;
 }

@@ -1,6 +1,6 @@
 <?php global $base_url; ?>
 <div id="top-destinations-container">
-    <h1><?php echo $title; ?></h1>
+    <h2><?php echo $title; ?></h2>
     <div id="description"><?php echo $description; ?></div>
     <div id="top-destinations-grid">
         <?php

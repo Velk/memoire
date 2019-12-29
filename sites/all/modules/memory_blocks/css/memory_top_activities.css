@@ -5,7 +5,7 @@ div#top-activities-grid {
     width: 100%;
 }
 
-div#top-activities-container > h1 {
+div#top-activities-container > h2 {
     font-family: oswaldregular;
     font-size: 25px;
     text-align: center;

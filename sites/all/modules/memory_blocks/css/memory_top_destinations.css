@@ -5,7 +5,7 @@ div#top-destinations-grid {
     width: 100%;
 }
 
-div#top-destinations-container > h1 {
+div#top-destinations-container > h2 {
     font-family: oswaldregular;
     font-size: 25px;
     text-align: center;
