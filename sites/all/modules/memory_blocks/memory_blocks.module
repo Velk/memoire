@@ -651,6 +651,7 @@ function memory_blocks_block_info() {
       'status' => 1,
       'region' => 'content',
       'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+      'pages' => 'admin/*\rmedia/*',
     );
 
     $blocks['memory_3_columns_block'] = array(
@@ -677,7 +678,7 @@ function memory_blocks_block_info() {
       'status' => 1,
       'region' => 'content',
       'visibility' => BLOCK_VISIBILITY_NOTLISTED,
-      'pages' => '<front>\radmin/*',
+      'pages' => '<front>\radmin/*\rmedia/*',
     );
 
     return $blocks;
