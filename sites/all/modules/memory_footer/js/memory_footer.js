@@ -17,7 +17,7 @@
 
         function infiniteSlider(){
 
-          if(nbPartners > 7){ // Because a group of reviews is composed of 3 reviews
+          if(nbPartners > 5){ // Because a group of reviews is composed of 3 reviews
 
             // Infinite partners carousel
             setInterval(function(){
