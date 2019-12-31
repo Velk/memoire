@@ -62,6 +62,20 @@ function memory_reviews_admin_reviews_manager($form, &$form_state) {
     '#weight' => 2,
   );
 
+  // Configurable width for the trustpilot image
+  $form['reviews_trustpilot_width'] = array(
+    '#type' => 'textfield',
+    '#attributes' => array(
+      ' type' => 'number', // insert space before attribute name
+      ' min' => '0',
+      ' max' => '1500'
+    ),
+    '#default_value' => variable_get('reviews_trustpilot_width', 160),
+    '#title' => t('Width of the Trustpilot image'),
+    '#description' => t('This width is expressed in pixels. The default width is set to 160px.'),
+    '#weight' => 3,
+  );
+
   // Sliding time between each review (in seconds)
   $form['review_sliding_time'] = array(
     '#type' => 'textfield',
@@ -72,7 +86,7 @@ function memory_reviews_admin_reviews_manager($form, &$form_state) {
     '#title' => t('Sliding time'),
     '#description' => t('Sliding time between each review. The time is expressed in seconds.'),
     '#required' => TRUE,
-    '#weight' => 3,
+    '#weight' => 4,
   );
 
   // Sliding time between each review (in seconds)
@@ -85,7 +99,7 @@ function memory_reviews_admin_reviews_manager($form, &$form_state) {
     '#title' => t('Sliding time (in s)'),
     '#description' => t('Sliding time between each review. The time is expressed in seconds.'),
     '#required' => TRUE,
-    '#weight' => 4,
+    '#weight' => 5,
   );
 
   // Sliding speed between each review (in seconds)
@@ -98,7 +112,7 @@ function memory_reviews_admin_reviews_manager($form, &$form_state) {
     '#title' => t('Sliding speed (in s)'),
     '#description' => t('Sliding speed between each review. The speed is expressed in seconds.'),
     '#required' => TRUE,
-    '#weight' => 5,
+    '#weight' => 6,
   );
 
   $form['reviews_nb_reviews'] = array(
@@ -111,7 +125,7 @@ function memory_reviews_admin_reviews_manager($form, &$form_state) {
     '#title' => t('Number of reviews'),
     '#description' => t('By default the number of reviews equals to 9 but if you can change this number filling this field then save the configuration.'),
     '#required' => TRUE,
-    '#weight' => 6,
+    '#weight' => 7,
   );
 
   /* Review */
@@ -121,7 +135,7 @@ function memory_reviews_admin_reviews_manager($form, &$form_state) {
     $form['review_' . $i] = array(
       '#type' => 'fieldset',
       '#title' => t('Review n°' . $i),
-      '#weight' => 6 + $i,
+      '#weight' => 7 + $i,
       '#collapsible' => TRUE,
       '#collapsed' => TRUE,
       '#tree' => TRUE
@@ -248,6 +262,8 @@ function memory_reviews_block_view($delta = '') {
         $url = file_create_url($file->uri);
         $data['reviews_trustpilot'] = $url;
       }
+
+      $data['reviews_trustpilot_width'] = variable_get('reviews_trustpilot_width');
 
       $arrayReviews = array();
 

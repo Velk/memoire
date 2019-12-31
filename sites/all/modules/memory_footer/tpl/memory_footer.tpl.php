@@ -25,6 +25,7 @@
             style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media">
           </iframe>
         </div>
+        <?php if(!empty($twitter_url)){ ?>
         <div id="twitter">
           <iframe
             src="https://platform.twitter.com/widgets/tweet_button.html?url=https%3A%2F%2F<?php echo $twitter_url; ?>%2Fweb%2Ftweet-button&via=twitterdev&related=twitterapi%2Ctwitter&text=Bonjour%20Memory%20!&hashtags=Super%2CMemory"
@@ -33,8 +34,8 @@
             title="Twitter Tweet Button"
             style="border: 0; overflow: hidden;">
           </iframe>
-
         </div>
+        <?php } ?>
       </div>
       <div id="social-media-links">
         <div id="header-social-media-links">
