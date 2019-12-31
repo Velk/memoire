@@ -23,14 +23,10 @@ div#memory-footer > div {
   display: grid;
   grid-template-areas:
     "a b c d e"
-    "a b c d e"
-    "a b c d e"
-    "a f c d e"
     "g g g g g"
     "h h h h h";
   grid-gap: 0 50px;
   grid-template-columns: repeat(4, calc(21% - (200px/5))) calc(16% - (200px/5));
-  grid-template-rows: auto auto auto 60px;
   text-align: left;
 }
 
@@ -50,7 +46,9 @@ div#fifth-col {
   grid-area: e;
 }
 div#social-media-shortcuts {
-  grid-area: f;
+  grid-area: b;
+  position: absolute;
+  bottom: 0;
 }
 div#social-media-links {
   grid-area: g;
@@ -83,15 +81,22 @@ div#footer-container > div a:hover {
   color: #26C6DA;
 }
 
+div#footer-container > div#first-col > p:last-child,
+div#footer-container > div#second-col > p:last-child,
+div#footer-container > div#third-col > p:last-child,
+div#footer-container > div#fourth-col > p:last-child {
+  margin-bottom: 0;
+}
+
 /* Footer - Social networks */
 div#footer-container > div#social-media-links {
-  margin-top: 25px;
+  margin-top: 30px;
 }
 div#footer-container > div#social-media-links > #header-social-media-links {
   display: grid;
   grid-template-columns: 1fr 100px 1fr;
   align-items: center;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
 }
 div#footer-container div#header-social-media-links > #follow-us {
   margin: 0;
@@ -134,13 +139,13 @@ div#footer-container div#social-media-links-container > div > a:hover {
 
 /* Footer - Partners */
 div#footer-container > div#partners-container {
-  margin-top: 50px;
+  margin-top: 30px;
 }
 div#footer-container > div#partners-container > #header-partners {
   display: grid;
   grid-template-columns: 1fr 125px 1fr;
   align-items: center;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
 }
 div#footer-container div#header-partners > p {
   margin: 0;

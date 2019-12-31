@@ -66,11 +66,11 @@ a.custom-link:hover {
   background-color: #fff;
 }
 
-.region-content .block h2.block-title {
+body .block h2 {
     text-align: center;
     margin-bottom: 25px;
     font-size: 25px;
-    color: #424242;
+    color: #16889b;
 }
 
 .sidebar .block {

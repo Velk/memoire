@@ -2,7 +2,7 @@
   font-family: oswaldregular;
   font-size: 25px;
   text-align: center;
-  margin: 0 0 50px 0;
+  margin: 0 0 15px 0;
   font-weight: normal;
 }
 
@@ -11,10 +11,6 @@ div#reviews-image {
   width: 100%;
   text-align: center;
   margin: 0 auto 40px 0;
-}
-
-div#reviews-image > img {
-  width: 175px;
 }
 
 #memory-reviews-container > div#reviews-slider {

@@ -402,7 +402,7 @@ function memory_footer_block_view($delta = '') {
 
         $data['facebook_display_type'] = "button_count";
       }
-      $data['facebook_display_height'] = "30";
+      $data['facebook_display_height'] = "20";
 
       /* Twitter */
       $data['twitter'] = variable_get('twitter', array());
