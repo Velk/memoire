@@ -251,7 +251,7 @@ foreach ($activity_family_field as $activity_family_iteration){
         echo '<div id="memory-img-filter"></div>';
       }
       if( isset($title) ){
-        echo '<h1>' . $title . '</h1>';
+        echo '<h2>' . $title . '</h2>';
       }
 
       echo '</div>';

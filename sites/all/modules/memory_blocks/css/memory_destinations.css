@@ -28,6 +28,9 @@ div#cont-head-img-container > h2 {
     color: #fff;
     z-index: 20;
     text-align: center;
+  background-color: #00000075;
+  padding: 3px 20px;
+  box-sizing: border-box;
 }
 
 div#cont-head-img-container > img {
@@ -71,6 +74,9 @@ div#cont-filters {
     line-height: 1.25;
     word-break: break-word;
 }
+.cont-filter:hover > p {
+  color: #ff8f00;
+}
 
 .cont-filter > p > i {
     font-size: 18px;
@@ -95,7 +101,7 @@ div#cont-main {
     margin: 0 0 25px 0;
     text-transform: uppercase;
     font-size: 20px;
-    color: #424242;
+    color: #16889b;
 }
 
 .cont-container > h2 > i {
@@ -148,7 +154,7 @@ h3.cont-stick-title {
 }
 p.cont-price {
     position: absolute;
-    bottom: 41px;
+    bottom: 10px;
     right: 10px;
     min-width: 40px;
     text-align: center;
@@ -170,7 +176,7 @@ p.cont-price {
 /*    height: 26px;*/
 /*    width: 45px;*/
 /*    text-align: center;*/
-/*    background-color: #26C6DA;*/
+/*    background-color: #ff8f00;*/
 /*    border: none;*/
 /*    border-radius: 2px;*/
 /*    color: #fff;*/

@@ -28,6 +28,9 @@ div#act-cat-head-img-container > h2 {
     color: #fff;
     z-index: 20;
     text-align: center;
+  background-color: #00000075;
+  padding: 3px 20px;
+  box-sizing: border-box;
 }
 
 div#act-cat-head-img-container > img {
@@ -70,6 +73,9 @@ div#act-cat-filters {
     text-transform: uppercase;
     line-height: 1.25;
 }
+.act-cat-filter:hover > p {
+  color: #ff8f00;
+}
 
 .act-cat-filter > p > i {
     font-size: 18px;
@@ -94,7 +100,7 @@ div#act-cat-main {
     margin: 0 0 25px 0;
     text-transform: uppercase;
     font-size: 20px;
-    color: #424242;
+    color: #16889b;
 }
 
 .act-cat-container > h2 > i {

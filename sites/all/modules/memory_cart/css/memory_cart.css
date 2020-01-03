@@ -21,16 +21,19 @@ button#btn-display {
     font: bold 12px Arial;
     border-bottom-left-radius: 100px;
     border-top-left-radius: 100px;
-    color: #26C6DA;
+    color: #ff8f00;
     text-transform: uppercase;
     outline: none;
-    border: none;
     cursor: pointer;
     box-shadow: 0px 2px 5px #bababa;
+  border: 1px solid #fff;
+  box-sizing: border-box;
 }
 button#btn-display:hover {
-    background-color: #26C6DA;
-    color: #f7f7f7;
+    background-color: #fff;
+  border: 1px solid #ff8f00;
+  border-right: 1px solid #fff;
+    color: #ff8f00;
 }
 
 button#btn-display > i#icon-plus {
@@ -130,13 +133,13 @@ div#cart-container > h1 {
     margin: 25px 0 30px 0;
     padding: 0 20px;
     text-align: center;
-    color: #26C6DA;
+    color: #16889b;
     font-size: 28px;
 }
 
 form#devis input {
     border: none;
-    border-bottom: 1px solid #26C6DA;
+    border-bottom: 1px solid #21acbe;
     box-sizing: border-box;
     padding: 8px 0px;
     background-color: transparent;
@@ -158,7 +161,7 @@ form#devis i.fa {
 }
 
 form#devis select {
-    border: 1px solid #26C6DA;
+    border: 1px solid #21acbe;
     box-sizing: border-box;
     padding: 8px 15px;
     background-color: transparent;
@@ -175,17 +178,20 @@ form#devis label {
 }
 
 button#empty-cart {
-    box-sizing: border-box;
-    padding: 5px 10px;
-    border: 1px solid #26C6DA;
-    background-color: #26C6DA;
-    color: #fff;
-    font-size: 14px;
-    cursor: pointer;
+  box-sizing: border-box;
+  padding: 5px 10px;
+  border: 1px solid #ff8f00;
+  background-color: #ff8f00;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 3px;
+  margin-top: 20px;
 }
 button#empty-cart:hover {
-    background-color: #fdfdfd;
-    color: #26C6DA;
+    background-color: #fff;
+    color: #ff8f00;
+  border: 1px solid #ff8f00;
 }
 
 form#devis textarea {
@@ -195,13 +201,13 @@ form#devis textarea {
     width: 100%;
     height: 75px;
     font-size: 12px;
-    border: 1px solid #26C6DA;
+    border: 1px solid #21acbe;
     resize: vertical;
 }
 
 form#devis textarea:hover {
     background-color: #fdfdfd;
-    border: 1px solid #26C6DA;
+    border: 1px solid #21acbe;
     cursor: pointer;
 }
 
@@ -298,8 +304,8 @@ div.trip {
 .transfer-container > button {
     box-sizing: border-box;
     padding: 5px 10px;
-    border: 1px solid #26C6DA;
-    background-color: #26C6DA;
+    border: 1px solid #ff8f00;
+    background-color: #ff8f00;
     color: #fff;
     font-size: 12px;
     cursor: pointer;
@@ -308,7 +314,8 @@ div.trip {
 .hosting-container > button:hover,
 .transfer-container > button:hover {
     background-color: #fdfdfd;
-    color: #26C6DA;
+    color: #ff8f00;
+  border: 1px solid #ff8f00;
 }
 .trip .transfer-container {
   box-sizing: border-box;
@@ -382,7 +389,7 @@ div.trip {
 .activities-price-container > p {
   margin: 0;
   font-size: 14px;
-  color: #26C6DA;
+  color: #21acbe;
 }
 
 .activities .positioning-btn {
@@ -485,7 +492,7 @@ div.trip {
 .hosting .activities-price-container > p {
   margin: 0;
   font-size: 14px;
-  color: #26C6DA;
+  color: #21acbe;
 }
 
 .hosting .positioning-btn {
@@ -588,7 +595,7 @@ div.trip {
 .transfer .activities-price-container > p {
   margin: 0;
   font-size: 14px;
-  color: #26C6DA;
+  color: #21acbe;
 }
 .transfer .positioning-btn {
     position: relative;
@@ -676,10 +683,10 @@ div#user-cart-user-logged-container > div {
 div#user-cart-user-not-logged-container > div > h2,
 div#user-cart-user-logged-container > div > h2 {
   font-size: 24px;
-  color: #26C6DA;
+  color: #16889b;
   text-transform: uppercase;
   margin: 0 0 35px 0;
-  border: 2px solid #26C6DA;
+  border: 2px solid #16889b;
   padding: 5px 15px;
   box-sizing: border-box;
 }
@@ -744,21 +751,22 @@ div#user-cart-user-datas-container input:-webkit-autofill:active  {
 button#user-not-logged-validate-cart {
   box-sizing: border-box;
   padding: 5px 10px;
-  border: 1px solid #26C6DA;
-  background-color: #26C6DA;
+  border: 1px solid #ff8f00;
+  background-color: #ff8f00;
   color: #fff;
   font-size: 14px;
   cursor: pointer;
 }
 button#user-not-logged-validate-cart:hover {
-  background-color: #fdfdfd;
-  color: #26C6DA;
+  background-color: #fff;
+  color: #ff8f00;
+  border: 1px solid #ff8f00;
 }
 button#user-not-logged-validate-cart {
   box-sizing: border-box;
   padding: 5px 10px;
-  border: 1px solid #26C6DA;
-  background-color: #26C6DA;
+  border: 1px solid #ff8f00;
+  background-color: #ff8f00;
   color: #fff;
   font-size: 14px;
   cursor: pointer;
@@ -787,15 +795,18 @@ button#user-logged-remove-overlay:hover{
 button#validate-cart {
   box-sizing: border-box;
   padding: 5px 10px;
-  border: 1px solid #26C6DA;
-  background-color: #26C6DA;
+  border: 1px solid #ff8f00;
+  background-color: #ff8f00;
   color: #fff;
   font-size: 14px;
   cursor: pointer;
+  border-radius: 3px;
+  margin: 15px 0;
 }
 button#validate-cart:hover {
-  background-color: #fdfdfd;
-  color: #26C6DA;
+  background-color: #fff;
+  color: #ff8f00;
+  border: 1px solid #ff8f00;
 }
 #user-cart-user-not-logged-container .user-alert-datas-lack {
   font-style: italic;
@@ -896,14 +907,15 @@ div#user-add-new-city-container button#user-add-new-city-accept,
 div#user-add-new-city-container button#user-add-new-city-decline {
   box-sizing: border-box;
   padding: 5px 10px;
-  border: 1px solid #26C6DA;
-  background-color: #26C6DA;
+  border: 1px solid #ff8f00;
+  background-color: #ff8f00;
   color: #fff;
   font-size: 14px;
   cursor: pointer;
 }
 div#user-add-new-city-container button#user-add-new-city-accept,
 div#user-add-new-city-container button#user-add-new-city-decline {
-  background-color: #fdfdfd;
-  color: #26C6DA;
+  background-color: #fff;
+  color: #ff8f00;
+  border: 1px solid #ff8f00;
 }
