@@ -33,6 +33,9 @@ div#img-container > h2 {
     color: #fff;
     z-index: 20;
     text-align: center;
+  background-color: #00000075;
+  padding: 3px 20px;
+  box-sizing: border-box;
 }
 
 div#description-container {

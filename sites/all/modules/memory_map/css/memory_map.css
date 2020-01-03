@@ -94,7 +94,7 @@ div#info-map {
     top: 0;
     left: 0;
     width: auto;
-    background-color: #26C6DA;
+    background-color: #ff8f00;
     border: 1px solid #fff;
     z-index: 999;
     padding: 7px 25px;
@@ -111,7 +111,7 @@ div#info-map > p {
 }
 
 svg#svg-container path.country-redirection {
-    fill: #26C6DA;
+    fill: #ff8f00;
 }
 
 /* Map menu */
@@ -148,8 +148,8 @@ div#menu-map > div > button {
     line-height: 1;
 }
 div#menu-map > div > button:hover {
-    border-bottom: 1px solid #26C6DA;
-    color: #26C6DA;
+    border-bottom: 1px solid #ff8f00;
+    color: #ff8f00;
     /*text-decoration: underline;*/
 }
 

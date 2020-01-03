@@ -5,7 +5,7 @@ div#header-container {
   height: 70vh;
   overflow: hidden;
 }
-div#header-container > h1 {
+div#header-container > h2 {
   position: absolute;
   display: block;
   margin: 0;
@@ -16,6 +16,9 @@ div#header-container > h1 {
   color: #fff;
   z-index: 20;
   text-align: center;
+  background-color: #00000075;
+  padding: 3px 20px;
+  box-sizing: border-box;
 }
 div#header-container > img {
   position: absolute;
@@ -37,7 +40,7 @@ div#description-container {
   margin: 50px auto;
 }
 h2.activity-page-label {
-  color: #26C6DA;
+  color: #16889b;
   font-size: 16px;
   text-transform: uppercase;
   margin: 0 0 20px 0;
@@ -76,7 +79,7 @@ p.prestation-price-prefix {
   padding: 0;
   font-size: 12px;
   font-style: italic;
-  color: #26C6DA;
+  color: #21acbe;
   text-align: left;
   box-sizing: border-box;
   width: fit-content;
@@ -86,7 +89,7 @@ p.prestation-price {
   font-size: 20px;
   font-weight: bold;
   line-height: 1;
-  color: #26C6DA;
+  color: #21acbe;
   text-align: center;
   padding: 0 5px;
   box-sizing: border-box;
@@ -98,7 +101,7 @@ p.prestation-price-precision {
   margin: 10px 0 0 0;
   font-size: 12px;
   font-style: italic;
-  color: #26C6DA;
+  color: #21acbe;
 }
 
 div.prestation-details-container {
@@ -153,7 +156,7 @@ div#activity-memory-opinion {
   margin: 100px 0;
 }
 div#activity-memory-opinion > h2{
-  border-bottom: 1px solid #26C6DA;
+  border-bottom: 1px solid #16889b;
 }
 
 /* ACTIVITY PAGE - SLIDER */
@@ -266,7 +269,7 @@ div#activity-slider-thumbnails {
   width: 70px;
   border-top-right-radius: 70px;
   text-align: center;
-  background-color: #26C6DA;
+  background-color: #ff8f00;
   border: 1px solid #fff;
   color: #fff;
   z-index: 20;
@@ -295,17 +298,18 @@ button.cont-add-cart{
   -moz-border-radius: 3px;
   border-radius: 3px;
   text-align: center;
-  background-color: #26C6DA;
-  border: none;
+  background-color: #ff8f00;
+  border: 1px solid #ff8f00;
   color: #fff;
   cursor: pointer;
   padding: 13px 33px;
   box-sizing: border-box;
 }
 button.cont-add-cart:hover {
-  background-color: #4196a0;
+  background-color: #fff;
   box-sizing: border-box;
-  color: #ffffff;
+  color: #ff8f00;
+  border: 1px solid #ff8f00;
 }
 button.cont-add-cart > i {
   position: absolute;

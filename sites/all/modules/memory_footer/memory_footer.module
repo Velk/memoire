@@ -30,7 +30,7 @@ function memory_footer_admin_footer_manager($form, &$form_state) {
   /* Society Column */
   $form['footer_column_1'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Colonne Société'),
+    '#title' => t('Section - Society'),
     '#weight' => 1,
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
@@ -43,14 +43,14 @@ function memory_footer_admin_footer_manager($form, &$form_state) {
     '#type' => 'text_format',
     '#format' => 'wysiwyg',
     '#default_value' => $footer_column_1['society']['value'],
-    '#title' => t('Société'),
+    '#title' => t('Society'),
     '#weight' => 1,
   );
 
   /* Contact Column */
   $form['footer_column_2'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Colonne Contact'),
+    '#title' => t('Section - Contact'),
     '#weight' => 2,
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
@@ -70,7 +70,7 @@ function memory_footer_admin_footer_manager($form, &$form_state) {
   /* Communication Column */
   $form['footer_column_3'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Colonne Communication'),
+    '#title' => t('Section - Communication'),
     '#weight' => 3,
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
@@ -90,7 +90,7 @@ function memory_footer_admin_footer_manager($form, &$form_state) {
   /* You and Us Column */
   $form['footer_column_4'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Colonne Vous et Nous'),
+    '#title' => t('Section - You and Us'),
     '#weight' => 4,
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
@@ -103,14 +103,14 @@ function memory_footer_admin_footer_manager($form, &$form_state) {
     '#type' => 'text_format',
     '#format' => 'wysiwyg',
     '#default_value' => $footer_column_4['youandus']['value'],
-    '#title' => t('Vous et Nous'),
+    '#title' => t('You and Us'),
     '#weight' => 1,
   );
 
   /* Certifications Column */
   $form['footer_column_5'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Colonne Certifications'),
+    '#title' => t('Section - Certifications'),
     '#weight' => 5,
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
@@ -130,7 +130,7 @@ function memory_footer_admin_footer_manager($form, &$form_state) {
   /* Facebook Likes and Shares */
   $form['facebook'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Facebook'),
+    '#title' => t('Button - Facebook'),
     '#weight' => 6,
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
@@ -143,26 +143,26 @@ function memory_footer_admin_footer_manager($form, &$form_state) {
     '#type' => 'textfield',
     '#default_value' => $facebook['url'],
     '#title' => t('URL'),
-    '#description' => t('Renseignez la partie de l\'URL correspondant à votre page Facebook.<br>Exemple : Pour l\'URL https://www.facebook.com/FacebookFrance/ , renseignez seulement FacebookFrance'),
+    '#description' => t("Enter only the part of the URL relative to your Facebook page.<br>For example : for the following URL https://www.facebook.com/FacebookFrance/ , write only \"FacebookFrance\""),
     '#weight' => 1,
   );
 
   $form['facebook']['display_type'] = array(
     '#type' => 'radios',
-    '#title' => t('Type d\'affichage'),
+    '#title' => t('Display type'),
     '#default_value' => $facebook['display_type'],
     '#options' => array(
-      0 => t('Sans le nombre de likes'),
-      1 => t('Avec le nombre de likes')
+      0 => t('Without the number of likes'),
+      1 => t('With the number of likes')
     ),
-    '#description' => t('Choix de l\'affichage pour le bouton j\'aime de Facebook.'),
+    '#description' => t('Choice of display for the Facebook Like button.'),
     '#weight' => 2,
   );
 
   /* Twitter Tweets */
   $form['twitter'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Twitter'),
+    '#title' => t('Button - Twitter'),
     '#weight' => 7,
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
@@ -175,14 +175,14 @@ function memory_footer_admin_footer_manager($form, &$form_state) {
     '#type' => 'textfield',
     '#default_value' => $twitter['url'],
     '#title' => t('URL'),
-    '#description' => t('Renseignez la partie de l\'URL correspondant à votre page Twitter.<br>Exemple : Pour l\'URL https://twitter.com/twitter , renseignez seulement twitter'),
+    '#description' => t("Enter only the part of the URL relative to your Twitter page.<br>For example : for the following URL https://twitter.com/twitter , write only \"twitter\""),
     '#weight' => 1,
   );
 
   /* Social networks */
   $form['footer_social_networks'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Social networks'),
+    '#title' => t('Section - Social networks'),
     '#weight' => 8,
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
@@ -204,26 +204,26 @@ function memory_footer_admin_footer_manager($form, &$form_state) {
 
     $form['footer_social_networks']['social_networks_'.$i]['name'] = array(
       '#type' => 'textfield',
-      '#title' => t('Nom'),
+      '#title' => t('Name'),
       '#default_value' => $footer_social_networks['social_networks_'.$i]['name'],
       '#weight' => 1,
     );
 
     $form['footer_social_networks']['social_networks_'.$i]['url'] = array(
       '#type' => 'textfield',
-      '#title' => t('URL ou adresse e-mail'),
+      '#title' => t('URL or e-mail address'),
       '#default_value' => $footer_social_networks['social_networks_'.$i]['url'],
       '#weight' => 2,
     );
 
     $form['footer_social_networks']['social_networks_'.$i]['icon'] = array(
       '#type' => 'textfield',
-      '#title' => t('Icône'),
+      '#title' => t('Icon'),
       '#description' => t(
-        'Choississez l\'icône représentant votre média sur : '.
-        '<em>https://fontawesome.com/v4.7.0/icons</em>'.
-        '<br> Puis renseigné le nom de l\'icône. '.
-        '<em>Exemple : fa-facebook</em>'
+        "Choose the icon representing your media on : ".
+        "<em>https://fontawesome.com/v4.7.0/icons</em>".
+        "<br> Then write the icon's name like that : ".
+        "<em>fa-facebook</em>"
       ),
       '#default_value' => $footer_social_networks['social_networks_'.$i]['icon'],
       '#weight' => 3,
@@ -233,7 +233,7 @@ function memory_footer_admin_footer_manager($form, &$form_state) {
   /* Partners */
   $form['footer_partners'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Partners'),
+    '#title' => t('Section - Partners'),
     '#weight' => 9,
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,

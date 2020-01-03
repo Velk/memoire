@@ -54,15 +54,15 @@ div#page {
 
 a.custom-link {
   color: #fff !important;
-  border: 1px solid #26c6da;
+  border: 1px solid #ff8f00;
   box-sizing: border-box;
   padding: 3px 10px;
   border-radius: 3px;
-  background-color: #26c6da;
+  background-color: #ff8f00;
 }
 a.custom-link:hover {
   color: #000 !important;
-  border: 1px solid #26c6da;
+  border: 1px solid #ff8f00;
   background-color: #fff;
 }
 

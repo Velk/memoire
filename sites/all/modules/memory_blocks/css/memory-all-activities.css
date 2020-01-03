@@ -32,6 +32,9 @@ div#img-container > h2 {
     font-size: 35px;
     color: #fff;
     z-index: 20;
+  background-color: #00000075;
+  padding: 3px 20px;
+  box-sizing: border-box;
 }
 
 div#description-container {
@@ -118,7 +121,7 @@ a.all-act-readmore {
     margin-top: 25px;
     left: calc(50% - 13px);
     font-size: 26px;
-    color: #26C6DA;
+    color: #ff8f00;
     -webkit-animation:spin 4s linear infinite;
     -moz-animation:spin 4s linear infinite;
     animation:spin 4s linear infinite;

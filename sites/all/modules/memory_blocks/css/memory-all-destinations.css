@@ -32,6 +32,9 @@ div#img-container > h2 {
     font-size: 35px;
     color: #fff;
     z-index: 20;
+  background-color: #00000075;
+  padding: 3px 20px;
+  box-sizing: border-box;
 }
 
 div#description-container {
@@ -48,14 +51,14 @@ div#container > div > div#destinations-container {
     margin: 50px auto;
 }
 .continent-container > h3 {
-    color: #424242;
-    text-transform: uppercase;
-    text-align: left;
-    font-size: 16px;
-    border-bottom: 1px solid #424242;
-    margin: 0 0 25px 0;
-    padding-bottom: 5px;
-    box-sizing: border-box;
+  color: #21acbe;
+  text-transform: uppercase;
+  text-align: left;
+  font-size: 16px;
+  border-bottom: 1px solid #000;
+  margin: 0 0 25px 0;
+  padding-bottom: 5px;
+  box-sizing: border-box;
 }
 
 ul.country-container {
@@ -94,7 +97,7 @@ ul.country-container > ul.city > li > a {
 }
 ul.country-container > ul.city > li > a:hover,
 ul.country-container > ul.city > li > a:active {
-    color: #26C6DA;
+    color: #ff8f00;
 }
 
 .country-container img {

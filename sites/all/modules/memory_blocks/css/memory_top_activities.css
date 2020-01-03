@@ -47,13 +47,14 @@ p.ta-name {
     z-index: 10;
     color: #fff;
     border: 1px solid transparent;
-    padding: 3px 10px;
+    padding: 3px 20px;
     box-sizing: border-box;
     text-align: center;
+    background-color: #00000075;
 }
 #top-activities-grid > div > a:hover > p.ta-name {
-    border: 1px solid #fff;
-
+    border: 1px solid #ff8f00;
+    color: #ff8f00;
 }
 
 img.ta-img {
