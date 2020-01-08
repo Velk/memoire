@@ -57,20 +57,5 @@
                 });
             }
         });
-
-        /* ------------------------------------------------------------------------------------------------------------------------------------------------ */
-        /* ---------------------------------------------- Set scroll position to activity ---------------------------------------------------------------- */
-        /* ------------------------------------------------------------------------------------------------------------------------------------------------ */
-
-        if(location.hash){
-            console.log("go");
-            var urlHashDecode = decodeURIComponent(location.hash);
-            var activityOffsetTop = $(urlHashDecode).offset().top;
-            console.log("Offset : " + activityOffsetTop);
-            var menuHeight = $("#header-wrapper").height();
-            console.log("Menu height : " + menuHeight);
-
-            $("html, body").stop().animate({ scrollTop: activityOffsetTop - menuHeight }, 600);
-        }
     });
 })(jQuery);

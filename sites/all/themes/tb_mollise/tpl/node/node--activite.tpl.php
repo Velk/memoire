@@ -55,6 +55,14 @@ $activity_memory_opinion = $activity_memory_opinion_field[0]["value"];
 $activity_basic_prest_title_field = field_get_items('node', $node, 'field_title_prestation_base');
 $activity_basic_prest_title = $activity_basic_prest_title_field[0]["value"];
 
+// Retrieve the activity basic prestation quote
+$activity_basic_prest_quote_field = field_get_items('node', $node, 'field_quote_prestation_base');
+$activity_basic_prest_quote = $activity_basic_prest_quote_field[0]["value"];
+
+// Retrieve the activity basic prestation image
+$activity_basic_prest_image_field = field_get_items('node', $node, 'field_image_prestation_base');
+$activity_basic_prest_image = file_create_url($activity_basic_prest_image_field[0]["uri"]);
+
 // Retrieve the activity basic prestation text
 $activity_basic_prest_text_field = field_get_items('node', $node, 'field_text_prestation_base');
 $activity_basic_prest_text = $activity_basic_prest_text_field[0]["value"];
@@ -91,6 +99,26 @@ $activity_options = array();
 
 for($i = 0 ; $i < sizeof($activity_options_field) ; $i++){
 
+  // Option display type
+  $query_option_display_type = db_select('field_data_field_option_display_type', 'option_display_type');
+  $query_option_display_type->fields('option_display_type', array('field_option_display_type_value'));
+  $query_option_display_type->condition('option_display_type.entity_id', $activity_options_field[$i]["value"], '=');
+  $results_option_display_type = $query_option_display_type->execute();
+
+  foreach ($results_option_display_type as $result_option_display_type){
+    $activity_options[$i]["display_type"] = $result_option_display_type->field_option_display_type_value;
+  }
+
+  // Option display lock
+  $query_option_display_lock = db_select('field_data_field_fold', 'option_fold');
+  $query_option_display_lock->fields('option_fold', array('field_fold_value'));
+  $query_option_display_lock->condition('option_fold.entity_id', $activity_options_field[$i]["value"], '=');
+  $results_option_display_lock = $query_option_display_lock->execute();
+
+  foreach ($results_option_display_lock as $result_option_display_lock){
+    $activity_options[$i]["display_lock"] = $result_option_display_lock->field_fold_value;
+  }
+
   // Option title
   $query_option_title = db_select('field_data_field_titre_option', 'option_title');
   $query_option_title->fields('option_title', array('field_titre_option_value'));
@@ -99,6 +127,26 @@ for($i = 0 ; $i < sizeof($activity_options_field) ; $i++){
 
   foreach ($results_option_title as $result_option_title){
     $activity_options[$i]["title"] = $result_option_title->field_titre_option_value;
+  }
+
+  // Option quote
+  $query_option_quote = db_select('field_data_field_quote_option', 'option_quote');
+  $query_option_quote->fields('option_quote', array('field_quote_option_value'));
+  $query_option_quote->condition('option_quote.entity_id', $activity_options_field[$i]["value"], '=');
+  $results_option_quote = $query_option_quote->execute();
+
+  foreach ($results_option_quote as $result_option_quote){
+    $activity_options[$i]["quote"] = $result_option_quote->field_quote_option_value;
+  }
+
+  // Option image
+  $query_option_image = db_select('field_data_field_image_option', 'option_image');
+  $query_option_image->fields('option_image', array('field_image_option_fid'));
+  $query_option_image->condition('option_image.entity_id', $activity_options_field[$i]["value"], '=');
+  $results_option_image = $query_option_image->execute();
+
+  foreach ($results_option_image as $result_option_image){
+    $activity_options[$i]["image"] = file_create_url(file_load($result_option_image->field_image_option_fid)->uri);
   }
 
   // Option text
@@ -244,7 +292,7 @@ foreach ($activity_family_field as $activity_family_iteration){
     <?php
     if( isset($image) || isset($title) ){
 
-      echo '<div id="header-container">';
+      echo '<div id="activity-header-container">';
 
       if( isset($image) ){
         echo '<img src="' . $image . '">';
@@ -256,219 +304,281 @@ foreach ($activity_family_field as $activity_family_iteration){
 
       echo '</div>';
     }
-
-    if( isset($description) ){
-      echo
-        '<div id="description-container">' .
-          '<h2 class="activity-page-label">DESCRIPTIF: </h2>' .
-          '<div>' .
-            $description .
-          '</div>' .
-        '</div>'
-      ;
-    }
     ?>
     <div id="activity-page-main">
+        <?php
+        if( isset($description) ){
+          echo
+            '<div id="description-container">' .
+              '<h2 class="activity-page-label">DESCRIPTIF: </h2>' .
+              '<div>' . $description . '</div>' .
+            '</div>'
+          ;
+        }
+        ?>
         <div id="activity-prestations">
-            <div class="activity-prestation-container">
-                <?php if( isset($activity_basic_prest_title) ){
-                    echo
-                        '<h2 class="activity-page-label">' .
-                        $activity_basic_prest_title .
-                        '</h2>'
-                    ;
-                } ?>
-                <div class="prestation-information-container">
-                    <?php
-                    if( isset($activity_basic_prest_text) ){
-                        echo
-                            '<div class="prestation-description">' .
-                            $activity_basic_prest_text .
-                            '</div>'
-                        ;
+          <?php
+          /* ------------------------------------------ BASIC ACTIVITY -----------------------------------------------*/
+
+          $prestation_base_title = "";
+          $prestation_base_price = "";
+          $prestation_base_quote = "";
+          $prestation_base_image = "";
+          $prestation_base_description = "";
+          $prestation_base_details = "";
+
+          // Construct the section : Title
+          if( !empty($activity_basic_prest_title) )
+            $prestation_base_title = "<h2>" . $activity_basic_prest_title . "</h2>";
+
+          // Construct the section : Price
+          if(
+            !empty($activity_basic_prest_price_prefix) ||
+            !empty($activity_basic_prest_price) ||
+            !empty($activity_basic_prest_price_precision)
+          ){
+            $prestation_base_price = "<div class=\"prestation-price-container\">";
+
+            if( !empty($activity_basic_prest_price_prefix) )
+              $prestation_base_price =
+                $prestation_base_price .
+                "<p class=\"prestation-price-prefix\">" . $activity_basic_prest_price_prefix . "</p>";
+
+            if( !empty($activity_basic_prest_price) )
+              $prestation_base_price =
+                $prestation_base_price .
+                "<p class=\"prestation-price\">" . $activity_basic_prest_price . " €</p>" .
+                "<button class=\"cont-add-cart\" type=\"button\"><i class=\"fa fa-cart-plus\" aria-hidden=\"true\"></i></button>";
+
+            if( !empty($activity_basic_prest_price_precision) )
+              $prestation_base_price =
+                $prestation_base_price .
+                "<p class=\"prestation-price-precision\">" . $activity_basic_prest_price_precision . " €</p>";
+
+            $prestation_base_price = $prestation_base_price . "</div>";
+          }
+
+          // Construct the section : Quote
+          if( !empty($activity_basic_prest_quote) )
+            $prestation_base_quote = "<p class=\"prestation-quote\">" . $activity_basic_prest_quote . "</p>";
+
+          // Construct the section : Image
+          if( !empty($activity_basic_prest_image) )
+            $prestation_base_image =
+              "<div class=\"prestation-image\" style=\"background-image: url(" . $activity_basic_prest_image . ")\"></div>";
+
+          // Construct the section : Description
+          if( !empty($activity_basic_prest_text) )
+            $prestation_base_description = "<div class=\"prestation-description\">" . $activity_basic_prest_text . "</div>";
+
+          // Construct the section : Details
+          if(
+            !empty($activity_basic_prest_duration) ||
+            !empty($activity_basic_prest_group) ||
+            !empty($activity_basic_prest_availability)
+          ){
+            $prestation_base_details = "<div class=\"prestation-details-container\">";
+
+            if( !empty($activity_basic_prest_duration) )
+              $prestation_base_details =
+                $prestation_base_details .
+                "<div class=\"prestation-detail\">" .
+                  "<div class=\"activity-page-detail-label\">" .
+                    "<i class=\"fa fa-clock-o\" aria-hidden=\"true\"></i>" .
+                    "<h3>Durée totale de l'activité (transferts inclus) :</h3>" .
+                  "</div>" .
+                  "<p>" . $activity_basic_prest_duration . "</p>" .
+                "</div>";
+
+            if( !empty($activity_basic_prest_group) )
+              $prestation_base_details =
+                $prestation_base_details .
+                "<div class=\"prestation-detail\">" .
+                  "<div class=\"activity-page-detail-label\">" .
+                    "<i class=\"fa fa-users\" aria-hidden=\"true\"></i>" .
+                    "<h3>Groupe :</h3>" .
+                  "</div>" .
+                  "<p>" . $activity_basic_prest_group . "</p>" .
+                "</div>";
+
+            if( !empty($activity_basic_prest_availability) )
+              $prestation_base_details =
+                $prestation_base_details .
+                "<div class=\"prestation-detail\">" .
+                  "<div class=\"activity-page-detail-label\">" .
+                    "<i class=\"fa fa-calendar-o\" aria-hidden=\"true\"></i>" .
+                    "<h3>Période de validité :</h3>" .
+                  "</div>" .
+                  "<p>" . $activity_basic_prest_availability . "</p>" .
+                "</div>";
+
+            $prestation_base_details = $prestation_base_details . "</div>";
+          }
+
+          echo
+            "<div class=\"activity-prestation-container\">" .
+              "<div class=\"prestation-header\">" .
+                "<div>" .
+                  $prestation_base_title .
+                  $prestation_base_quote .
+                "</div>" .
+                $prestation_base_price .
+              "</div>" .
+              "<div class=\"prestation-main\">" .
+                "<hr>" .
+                "<div>" .
+                  $prestation_base_image .
+                  $prestation_base_description .
+                "</div>" .
+                $prestation_base_details .
+              "</div>" .
+            "</div>"
+          ;
+
+          /* -------------------------------------------- OPTIONS ----------------------------------------------------*/
+
+          if( sizeof($activity_options) != 0 ){
+              for($i = 0 ; $i < sizeof($activity_options) ; $i++){
+
+                  // Display LOCK equals TRUE means the option is show without any button to hide it
+                  $prestation_display_lock = ($activity_options[$i]["display_lock"] == 1) ? true : false;
+                  $prestation_display_type = "";
+                  $prestation_button_display_type = "";
+                  $prestation_title = "";
+                  $prestation_price = "";
+                  $prestation_quote = "";
+                  $prestation_image = "";
+                  $prestation_description = "";
+                  $prestation_details = "";
+
+                  if(empty($prestation_display_lock)){ // If lock is not set. Case of old contents without saving the configuration since the adding of this admin button
+
+                    $prestation_display_type = "prestation-hide";
+                    $prestation_button_display_type = "<button class=\"option-more\"><i class=\"fa fa-caret-down\" aria-hidden=\"true\"></i>Voir plus</button>";
+                  }else{
+
+                    if(!$prestation_display_lock){ // If contributor does not lock the display type
+
+                      $prestation_display_type = ($activity_options[$i]["display_type"] == 1) ? "prestation-hide" : "prestation-show";
+
+                      // Construct the section : Button display_type
+                      if( $activity_options[$i]["display_type"] == 1 )
+                        $prestation_button_display_type = "<button class=\"option-more\"><i class=\"fa fa-caret-down\" aria-hidden=\"true\"></i>Voir plus</button>";
+                      else
+                        $prestation_button_display_type = "<button class=\"option-less\"><i class=\"fa fa-caret-up\" aria-hidden=\"true\"></i>Voir moins</button>";
                     }
+                  }
 
-                    if(
-                        //isset($activity_basic_prest_price_prefix) &&
-                        isset($activity_basic_prest_price) &&
-                        isset($activity_basic_prest_price_precision)
-                    ){
+                  // Construct the section : Title
+                  if( !empty($activity_options[$i]["title"]) )
+                    $prestation_title = "<h2>" . $activity_options[$i]["title"] . "</h2>";
 
-                        echo '<div class="prestation-price-container">';
-                            if( isset($activity_basic_prest_price_prefix) ){
-                                echo
-                                    '<p class="prestation-price-prefix">' .
-                                    $activity_basic_prest_price_prefix .
-                                    '</p>'
-                                ;
-                            }
+                  // Construct the section : Price
+                  if(
+                    !empty($activity_options[$i]["price_prefix"]) ||
+                    !empty($activity_options[$i]["price"]) ||
+                    !empty($activity_options[$i]["price_precision"])
+                  ){
+                    $prestation_price = "<div class=\"prestation-price-container\">";
 
-                            if( isset($activity_basic_prest_price) ){
-                                echo
-                                    '<p class="prestation-price">' .
-                                    $activity_basic_prest_price .
-                                    ' €</p>' .
-                                    '<button class="cont-add-cart" type="button">' .
-                                        '<i class="fa fa-cart-plus" aria-hidden="true"></i>' .
-                                    '</button>'
-                                ;
-                            }
+                    if( !empty($activity_options[$i]["price_prefix"]) )
+                      $prestation_price =
+                        $prestation_price .
+                        "<p class=\"prestation-price-prefix\">" . $activity_options[$i]["price_prefix"] . "</p>";
 
-                            if( isset($activity_basic_prest_price_precision) ){
-                                echo
-                                    '<p class="prestation-price-precision">' .
-                                    $activity_basic_prest_price_precision .
-                                    '</p>'
-                                ;
-                            }
-                        echo '</div>';
-                    }
-                    ?>
-                </div>
-                <div class="prestation-details-container">
-                    <?php
-                    if( isset($activity_basic_prest_duration) ){
-                        echo
-                            '<div class="prestation-detail">' .
-                                '<div class="activity-page-detail-label">' .
-                                    '<i class="fa fa-clock-o" aria-hidden="true"></i>' .
-                                    '<h3>Durée totale de l\'activité (transferts inclus) :</h3>' .
-                                '</div>' .
-                                '<p>' . $activity_basic_prest_duration . '</p>' .
-                            '</div>'
-                        ;
-                    }
+                    if( !empty($activity_options[$i]["price"]) )
+                      $prestation_price =
+                        $prestation_price .
+                        "<p class=\"prestation-price\">" . $activity_options[$i]["price"] . " €</p>" .
+                        "<button class=\"cont-add-cart\" type=\"button\"><i class=\"fa fa-cart-plus\" aria-hidden=\"true\"></i></button>";
 
-                    if( isset($activity_basic_prest_group) ){
-                        echo
-                            '<div class="prestation-detail">' .
-                                '<div class="activity-page-detail-label">' .
-                                    '<i class="fa fa-users" aria-hidden="true"></i>' .
-                                    '<h3>Groupe :</h3>' .
-                                '</div>' .
-                                '<p>' . $activity_basic_prest_group . '</p>' .
-                            '</div>'
-                        ;
-                    }
+                    if( !empty($activity_options[$i]["price_precision"]) )
+                      $prestation_price =
+                        $prestation_price .
+                        "<p class=\"prestation-price-precision\">" . $activity_options[$i]["price_precision"] . " €</p>";
 
-                    if( isset($activity_basic_prest_availability) ){
-                        echo
-                            '<div class="prestation-detail">' .
-                                '<div class="activity-page-detail-label">' .
-                                    '<i class="fa fa-calendar-o" aria-hidden="true"></i>' .
-                                    '<h3>Période de validité :</h3>' .
-                                '</div>' .
-                                '<p>' . $activity_basic_prest_availability . '</p>' .
-                            '</div>'
-                        ;
-                    }
-                    ?>
-                </div>
-            </div>
-            <?php
-            if( sizeof($activity_options) != 0 ){
-                for($i = 0 ; $i < sizeof($activity_options) ; $i++){
-                    echo '<div class="activity-prestation-container">';
+                    $prestation_price = $prestation_price . "</div>";
+                  }
 
-                        if( isset($activity_options[$i]["title"]) ){
-                            echo
-                                '<h2 class="activity-page-label">' .
-                                $activity_options[$i]["title"] .
-                                '</h2>'
-                            ;
-                        }
-                        echo '<div class="prestation-information-container">';
+                  // Construct the section : Quote
+                  if( !empty($activity_options[$i]["quote"]) )
+                    $prestation_quote = "<p class=\"prestation-quote\">" . $activity_options[$i]["quote"] . "</p>";
 
-                            if( isset($activity_options[$i]["text"]) ){
-                                echo
-                                  '<div class="prestation-description">' .
-                                  $activity_options[$i]["text"] .
-                                  '</div>'
-                                ;
-                            }
+                  // Construct the section : Image
+                  if( !empty($activity_options[$i]["image"]) )
+                    $prestation_image =
+                      "<div class=\"prestation-image\" style=\"background-image: url(" . $activity_options[$i]["image"] . ")\"></div>";
 
-                            if(
-                              isset($activity_options[$i]["price_prefix"]) &&
-                              isset($activity_options[$i]["price"]) &&
-                              isset($activity_options[$i]["price_precision"])
-                            ){
+                  // Construct the section : Description
+                  if( !empty($activity_options[$i]["text"]) )
+                    $prestation_description = "<div class=\"prestation-description\">" . $activity_options[$i]["text"] . "</div>";
 
-                                echo '<div class="prestation-price-container">';
-                                if( isset($activity_options[$i]["price_prefix"]) ){
-                                  echo
-                                    '<p class="prestation-price-prefix">' .
-                                    $activity_options[$i]["price_prefix"] .
-                                    '</p>'
-                                  ;
-                                }
+                  // Construct the section : Details
+                  if(
+                    !empty($activity_options[$i]["duration"]) ||
+                    !empty($activity_options[$i]["group"]) ||
+                    !empty($activity_options[$i]["availability"])
+                  ){
+                    $prestation_details = "<div class=\"prestation-details-container\">";
 
-                                if( isset($activity_options[$i]["price"]) ){
-                                  echo
-                                    '<p class="prestation-price">' .
-                                    $activity_options[$i]["price"] .
-                                    ' €</p>' .
-                                    '<button class="cont-add-cart" type="button">' .
-                                    '<i class="fa fa-cart-plus" aria-hidden="true"></i>' .
-                                    '</button>'
-                                  ;
-                                }
+                    if( !empty($activity_options[$i]["duration"]) )
+                      $prestation_details =
+                        $prestation_details .
+                        "<div class=\"prestation-detail\">" .
+                          "<div class=\"activity-page-detail-label\">" .
+                            "<i class=\"fa fa-clock-o\" aria-hidden=\"true\"></i>" .
+                            "<h3>Durée totale de l'activité (transferts inclus) :</h3>" .
+                          "</div>" .
+                          "<p>" . $activity_options[$i]["duration"] . "</p>" .
+                        "</div>";
 
-                                if( isset($activity_options[$i]["price_precision"]) ){
-                                  echo
-                                    '<p class="prestation-price-precision">' .
-                                    $activity_options[$i]["price_precision"] .
-                                    '</p>'
-                                  ;
-                                }
-                                echo '</div>';
-                            }
+                    if( !empty($activity_options[$i]["group"]) )
+                      $prestation_details =
+                        $prestation_details .
+                        "<div class=\"prestation-detail\">" .
+                          "<div class=\"activity-page-detail-label\">" .
+                            "<i class=\"fa fa-users\" aria-hidden=\"true\"></i>" .
+                            "<h3>Groupe :</h3>" .
+                          "</div>" .
+                          "<p>" . $activity_options[$i]["group"] . "</p>" .
+                        "</div>";
 
-                        echo '</div>';
+                    if( !empty($activity_options[$i]["availability"]) )
+                      $prestation_details =
+                        $prestation_details .
+                        "<div class=\"prestation-detail\">" .
+                          "<div class=\"activity-page-detail-label\">" .
+                            "<i class=\"fa fa-calendar-o\" aria-hidden=\"true\"></i>" .
+                            "<h3>Période de validité :</h3>" .
+                          "</div>" .
+                          "<p>" . $activity_options[$i]["availability"] . "</p>" .
+                        "</div>";
 
-                        echo '<div class="prestation-details-container">';
+                    $prestation_details = $prestation_details . "</div>";
+                  }
 
-                            if( isset($activity_options[$i]["duration"]) ){
-                                echo
-                                    '<div class="prestation-detail">' .
-                                        '<div class="activity-page-detail-label">' .
-                                            '<i class="fa fa-clock-o" aria-hidden="true"></i>' .
-                                            '<h3>Durée totale de l\'activité (transferts inclus) :</h3>' .
-                                        '</div>' .
-                                        '<p>' . $activity_options[$i]["duration"] . '</p>' .
-                                    '</div>'
-                                ;
-                            }
-
-                            if( isset($activity_options[$i]["group"]) ){
-                                echo
-                                    '<div class="prestation-detail">' .
-                                        '<div class="activity-page-detail-label">' .
-                                            '<i class="fa fa-users" aria-hidden="true"></i>' .
-                                            '<h3>Groupe :</h3>' .
-                                        '</div>' .
-                                        '<p>' . $activity_options[$i]["group"] . '</p>' .
-                                    '</div>'
-                                ;
-                            }
-
-                            if( isset($activity_options[$i]["availability"]) ){
-                                echo
-                                  '<div class="prestation-detail">' .
-                                      '<div class="activity-page-detail-label">' .
-                                          '<i class="fa fa-calendar-o" aria-hidden="true"></i>' .
-                                          '<h3>Période de validité :</h3>' .
-                                      '</div>' .
-                                      '<p>' . $activity_options[$i]["availability"] . '</p>' .
-                                  '</div>'
-                                ;
-                            }
-
-                        echo '</div>';
-
-                    echo '</div>';
-                }
-            }
-            ?>
+                  echo
+                    "<div class=\"activity-prestation-container\">" .
+                      "<div class=\"prestation-header\">" .
+                        "<div>" .
+                          $prestation_title .
+                          $prestation_quote .
+                        "</div>" .
+                        $prestation_price .
+                      "</div>" .
+                      "<div class=\"prestation-main " . $prestation_display_type . "\">" .
+                        "<hr>" .
+                        "<div>" .
+                          $prestation_image .
+                          $prestation_description .
+                        "</div>" .
+                        $prestation_details .
+                      "</div>" .
+                      $prestation_button_display_type .
+                    "</div>";
+              }
+          }
+          ?>
         </div>
         <?php
         if( isset($activity_memory_opinion) ){

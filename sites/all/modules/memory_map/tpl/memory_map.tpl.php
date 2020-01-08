@@ -40,7 +40,6 @@ if(!empty($world_map_title) && !empty($world_map_description)){
             LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
             OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
             THE SOFTWARE.
-
             -->
 
             <svg
@@ -52,66 +51,7 @@ if(!empty($world_map_title) && !empty($world_map_description)){
                 style="stroke-linejoin: round; stroke:#000; fill: none;"
                 version="1.1"
                 viewBox="0 0 2000 1001"
-                id="svg-container"
-                inkscape:version="0.48.4 r9939"
-                sodipodi:docname="world.svg">
-                <sodipodi:namedview
-                    pagecolor="#ffffff"
-                    bordercolor="#666666"
-                    borderopacity="1"
-                    objecttolerance="10"
-                    gridtolerance="10"
-                    guidetolerance="10"
-                    inkscape:pageopacity="0"
-                    inkscape:pageshadow="2"
-                    inkscape:window-width="1920"
-                    inkscape:window-height="1137"
-                    id="namedview231"
-                    showgrid="false"
-                    inkscape:zoom="1.144"
-                    inkscape:cx="593.00732"
-                    inkscape:cy="460.46398"
-                    inkscape:window-x="1192"
-                    inkscape:window-y="118"
-                    inkscape:window-maximized="1"
-                    inkscape:current-layer="svg2" />
-                <defs
-                    id="defs4">
-                    <style
-                        type="text/css"
-                        id="style6">path { fill-rule: evenodd; }</style>
-                </defs>
-                <metadata
-                    id="metadata8">
-                    <views
-                        id="views10">
-                        <view
-                            h="1001"
-                            padding="0"
-                            w="2000"
-                            id="view12">
-                            <proj
-                                flip="auto"
-                                id="robinson"
-                                lon0="100.0" />
-                            <bbox
-                                h="2233.1"
-                                w="5271.17"
-                                x="-2635.59"
-                                y="-1308.06"
-                                id="bbox15" />
-                        </view>
-                    </views>
-                    <rdf:RDF>
-                        <cc:Work
-                            rdf:about="">
-                            <dc:format>image/svg+xml</dc:format>
-                            <dc:type
-                                rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-                            <dc:title />
-                        </cc:Work>
-                    </rdf:RDF>
-                </metadata>
+                id="svg-container">
                 <?php
                 for($i = 1 ; $i <= $array_size_countries_list ; $i++){
 
@@ -124,7 +64,6 @@ if(!empty($world_map_title) && !empty($world_map_description)){
                     <a href="<?php echo $base_url . $$country_redirect_link; ?>">
                     <?php } ?>
                         <path
-                            inkscape:connector-curvature="0"
                             <?php echo ( !empty($$country_redirect_link) ) ? "class=\"country-redirection\"" : ""; ?>
                             id="<?php echo $$country_id; ?>"
                             data-name="<?php echo $$country_name; ?>"

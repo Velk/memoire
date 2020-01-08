@@ -16,7 +16,7 @@
   $all_act_description_array = variable_get('all_act_description', array());
   $all_act_description = $all_act_description_array['value'];
 
-  $all_act_nb_thumbnails = variable_get('all_act_nb_thumbnails');
+//  $all_act_nb_thumbnails = variable_get('all_act_nb_thumbnails');
 
   /* ---------------- All activities page - Activities ---------------- */
 
@@ -85,21 +85,10 @@
       $activities_count[$node->field_activity_title['und'][0]['value']]["destination"] = $array_taxonomy_tree[$node->field_acti_content_desti['und'][0]['tid']]["name"];
       $activities_count[$node->field_activity_title['und'][0]['value']]["destination_path"] = $array_taxonomy_tree[$node->field_acti_content_desti['und'][0]['tid']]["path_alias"];
       $activities_count[$node->field_activity_title['und'][0]['value']]["intermediate_path"] = $clean_string_to_url;
-
-  //    $activities_content[$node->field_activity_title['und'][0]['value']][$node->vid] = array(
-  //        'title' => $node->field_activity_title['und'][0]['value'],
-  //        'img_alt_text' => $node->field_img_activite['und'][0]['field_file_image_alt_text']['und'][0]['value'],
-  //        'img_uri' => $img_url_activity,
-  //        'price' => $node->field_price_prestation['und'][0]['value'],
-  //        'vid' => $node->vid,
-  //        'path' => $base_url."/".drupal_get_path_alias('node/'.$node->vid),
-  //        'destination' => $array_taxonomy_tree[$node->field_acti_content_desti['und'][0]['tid']]["name"],
-  //        'destination_path' => $array_taxonomy_tree[$node->field_acti_content_desti['und'][0]['tid']]["path_alias"],
-  //    );
   }
 
-  $maxThumbnailsToDisplay = (!empty($all_act_nb_thumbnails)) ? $all_act_nb_thumbnails : 20;
-  $maxThumbnailsCounter = 0;
+//  $maxThumbnailsToDisplay = (!empty($all_act_nb_thumbnails)) ? $all_act_nb_thumbnails : 20;
+//  $maxThumbnailsCounter = 0;
 ?>
 
 <div id="container">
@@ -132,9 +121,9 @@
             <?php
             foreach ($activities_count as $activity_count){
 
-                if( $maxThumbnailsCounter == $maxThumbnailsToDisplay){
-                    break;
-                }else {
+//                if( $maxThumbnailsCounter == $maxThumbnailsToDisplay){
+//                    break;
+//                }else {
             ?>
                     <div class="all-act-scop">
                         <img src="<?php print $activity_count['img_uri'] ?>"
@@ -148,8 +137,8 @@
                         </div>
                     </div>
             <?php
-                }
-                $maxThumbnailsCounter++;
+//                }
+//                $maxThumbnailsCounter++;
             }
             ?>
         </div>

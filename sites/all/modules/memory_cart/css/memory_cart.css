@@ -304,8 +304,8 @@ div.trip {
 .transfer-container > button {
     box-sizing: border-box;
     padding: 5px 10px;
-    border: 1px solid #ff8f00;
-    background-color: #ff8f00;
+    border: 1px solid #21acbe;
+    background-color: #21acbe;
     color: #fff;
     font-size: 12px;
     cursor: pointer;
@@ -314,8 +314,8 @@ div.trip {
 .hosting-container > button:hover,
 .transfer-container > button:hover {
     background-color: #fdfdfd;
-    color: #ff8f00;
-  border: 1px solid #ff8f00;
+    color: #21acbe;
+  border: 1px solid #21acbe;
 }
 .trip .transfer-container {
   box-sizing: border-box;
