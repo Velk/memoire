@@ -16,8 +16,8 @@ div#memory-switch-act-container {
 div.memory-switch-act {
     display: flex;
     align-items: center;
-    background-color: #ff8f00;
-  border: 1px solid #ff8f00;
+    background-color: #21acbe;
+  border: 1px solid #21acbe;
     border-radius: 0;
     position: relative;
     text-transform: uppercase;
@@ -27,11 +27,11 @@ div.memory-switch-act {
 }
 div.memory-switch-act:hover {
     background-color: #fff;
-  border: 1px solid #ff8f00;
+  border: 1px solid #21acbe;
     cursor: pointer;
 }
 div.memory-switch-act:hover * {
-  color: #ff8f00;
+  color: #21acbe;
 }
 
 div.memory-switch-act > a {

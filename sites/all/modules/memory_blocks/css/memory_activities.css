@@ -129,6 +129,11 @@ div#act-cat-main {
     height: 100%;
     background-image: linear-gradient(180deg, rgba(0,0,0,0.4), rgba(255,255,255,0));
     background-image: -webkit-linear-gradient(-90deg, rgba(0,0,0,0.4), rgba(255,255,255,0));
+  cursor: pointer;
+  box-sizing: border-box;
+}
+.act-cat-datas-container:hover {
+  border: 4px solid #ff8f00;
 }
 
 h3.act-cat-stick-title {

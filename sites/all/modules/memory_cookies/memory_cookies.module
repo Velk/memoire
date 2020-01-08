@@ -143,7 +143,7 @@ function memory_cookies_block_info() {
         'status' => 1,
         'region' => 'content',
         'visibility' => BLOCK_VISIBILITY_NOTLISTED,
-        'pages' => 'admin/*\rmedia/*',
+        'pages' => 'admin/*\rmedia/*\rnode/*/edit',
     );
 
     return $blocks;
