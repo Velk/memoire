@@ -42,11 +42,11 @@ if(!empty($world_map_title) && !empty($world_map_description)){
             THE SOFTWARE.
             -->
 
+          <!--                width="2000px"-->
+          <!--                height="1001px"-->
             <svg
                 xmlns:svg="http://www.w3.org/2000/svg"
                 xmlns="http://www.w3.org/2000/svg"
-                width="2000px"
-                height="1001px"
                 pretty_print="False"
                 style="stroke-linejoin: round; stroke:#000; fill: none;"
                 version="1.1"

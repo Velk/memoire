@@ -22,8 +22,8 @@
                         $("div#menu-bar-wrapper > div > div > div > ul > li > a").css("padding", "5px 30px");
                         $("div#page").css("margin-top", "60px");
 
-                        $("div##activities-menu").css("top", "60px");
-                        $("div##destinations-menu").css("top", "60px");
+                        $("div#activities-menu").css("top", "60px");
+                        $("div#destinations-menu").css("top", "60px");
 
                         var topValueScroll = 60 / 2 + windowHeight / 2;
                         $("div#block-memory-blocks-social-networks").stop().animate({
@@ -38,8 +38,8 @@
                         $("div#menu-bar-wrapper > div > div > div > ul > li > a").css("padding", "10px 30px");
                         $("div#page").css("margin-top", "80px");
 
-                        $("div##activities-menu").css("top", "80px");
-                        $("div##destinations-menu").css("top", "80px");
+                        $("div#activities-menu").css("top", "80px");
+                        $("div#destinations-menu").css("top", "80px");
 
                         var topValue = 80 + sliderHeight / 2;
                         $("div#block-memory-blocks-social-networks").stop().animate({

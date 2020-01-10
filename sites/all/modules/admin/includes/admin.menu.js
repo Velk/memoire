@@ -55,7 +55,7 @@ Drupal.behaviors.adminToolbarMenu.attach = function(context) {
 
         // Init drilldown plugin.
         menu.drilldown('init', {
-          activePath: Drupal.settings.activePath,
+          activePath: "\"" + Drupal.settings.activePath + "\"",
           trail: trail,
           rootTitle: rootTitle
         });
