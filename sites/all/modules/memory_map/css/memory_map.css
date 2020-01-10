@@ -43,18 +43,29 @@ div#world-map-container > div {
     margin: auto;
 }
 
+/*#world-map {*/
+/*    position: relative;*/
+/*    display: block;*/
+/*    !*width: 90%;*!*/
+/*    width: 100%;*/
+/*    max-width: 1000px;*/
+/*    height: 70vh;*/
+/*    margin: auto;*/
+/*    overflow: hidden;*/
+/*    box-shadow: inset 0px 0px 5px #d8d8d8;*/
+/*    !*background-color: #ffffff75;*!*/
+/*    background-color: #ffffffeb;*/
+/*}*/
 #world-map {
-    position: relative;
-    display: block;
-    /*width: 90%;*/
-    width: 100%;
-    max-width: 1000px;
-    height: 70vh;
-    margin: auto;
-    overflow: hidden;
-    box-shadow: inset 0px 0px 5px #d8d8d8;
-    /*background-color: #ffffff75;*/
-    background-color: #ffffffeb;
+  position: relative;
+  display: flex;
+  width: 100%;
+  max-width: 1000px;
+  height: 70vh;
+  margin: auto;
+  overflow: hidden;
+  box-shadow: inset 0px 0px 5px #d8d8d8;
+  background-color: #ffffffeb;
 }
 
 h2#memory-map-title {
@@ -65,17 +76,25 @@ h2#memory-map-title {
     font-weight: normal;
 }
 
+/*svg#svg-container {*/
+/*    position: relative;*/
+/*    width: auto;*/
+/*    height: 100%;*/
+/*    margin: auto;*/
+/*    display: block;*/
+/*    !*transform: translateX(-50%) scale(1);*!*/
+/*    !*transform: translateX(-53%) translateY(2%) scale(1);*!*/
+/*    margin-left: 50%;*/
+/*    cursor: move;*/
+/*    !* transform-origin: center; *!*/
+/*}*/
 svg#svg-container {
-    position: relative;
-    width: auto;
-    height: 100%;
-    margin: auto;
-    display: block;
-    /*transform: translateX(-50%) scale(1);*/
-    /*transform: translateX(-53%) translateY(2%) scale(1);*/
-    margin-left: 50%;
-    cursor: move;
-    /* transform-origin: center; */
+  position: relative;
+  width: 100%;
+  height: auto;
+  margin: auto;
+  display: block;
+  cursor: move;
 }
 
 svg#svg-container path {

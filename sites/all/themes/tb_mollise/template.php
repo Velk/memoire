@@ -31,4 +31,10 @@ function tb_mollise_preprocess_html(&$vars) {
 //  );
 //  drupal_add_html_head($selectivizr, 'selectivizr');
 
+  // Add font awesome
+  $filepath = path_to_theme() . '/font-awesome/font-awesome-4.7.0/css/font-awesome.min.css';
+
+  drupal_add_css($filepath, array(
+    'group' => CSS_THEME,
+  ));
 }

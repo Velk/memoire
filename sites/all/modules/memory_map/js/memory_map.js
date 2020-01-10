@@ -47,11 +47,11 @@
                 });
 
                 if($(window).width() <= 640){
-                  $("svg#svg-container").css("transform", "translateX(-53%) translateY(2%) scale(0.75)");
+                  //$("svg#svg-container").css("transform", "translateX(-53%) translateY(2%) scale(0.75)");
                 }else if($(window).width() <= 768){
-                  $("svg#svg-container").css("transform", "translateX(-53%) translateY(2%) scale(0.85)");
+                  //$("svg#svg-container").css("transform", "translateX(-53%) translateY(2%) scale(0.85)");
                 }else{
-                  $("svg#svg-container").css("transform", "translateX(-53%) translateY(2%) scale(1)");
+                  $("svg#svg-container").css("transform", "translateX(0%) translateY(0%) scale(1)");
                 }
             }
 
@@ -63,37 +63,44 @@
 
             $(".europe").click(function(){
                 setBasicPosition();
-               $("svg#svg-container").css("transform", "translateX(-50%) translateY(100%) scale(4)");
+               // $("svg#svg-container").css("transform", "translateX(-50%) translateY(100%) scale(4)");
+               $("svg#svg-container").css("transform", "translateX(0%) translateY(100%) scale(4)");
             });
 
             $(".north-america").click(function(){
                 setBasicPosition();
-               $("svg#svg-container").css("transform", "translateX(10%) translateY(45%) scale(2.25)");
+               // $("svg#svg-container").css("transform", "translateX(10%) translateY(45%) scale(2.25)");
+               $("svg#svg-container").css("transform", "translateX(60%) translateY(45%) scale(2.25)");
             });
 
             $(".south-america").click(function(){
                 setBasicPosition();
-               $("svg#svg-container").css("transform", "translateX(-10%) translateY(-46%) scale(2.25)");
+               // $("svg#svg-container").css("transform", "translateX(-10%) translateY(-46%) scale(2.25)");
+               $("svg#svg-container").css("transform", "translateX(40%) translateY(-47%) scale(2.25)");
             });
 
             $(".asia").click(function(){
                 setBasicPosition();
-               $("svg#svg-container").css("transform", "translateX(-105%) translateY(42%) scale(2.25)");
+               // $("svg#svg-container").css("transform", "translateX(-105%) translateY(42%) scale(2.25)");
+               $("svg#svg-container").css("transform", "translateX(-58%) translateY(42%) scale(2.25)");
             });
 
             $(".africa").click(function(){
                 setBasicPosition();
-               $("svg#svg-container").css("transform", "translateX(-60%) translateY(-10%) scale(2)");
+               // $("svg#svg-container").css("transform", "translateX(-60%) translateY(-10%) scale(2)");
+               $("svg#svg-container").css("transform", "translateX(-10%) translateY(-14%) scale(2.25)");
             });
 
             $(".middle-east").click(function(){
                 setBasicPosition();
-               $("svg#svg-container").css("transform", "translateX(-90%) translateY(40%) scale(3.5)");
+               // $("svg#svg-container").css("transform", "translateX(-90%) translateY(40%) scale(3.5)");
+               $("svg#svg-container").css("transform", "translateX(-45%) translateY(40%) scale(4)");
             });
 
             $(".oceania").click(function(){
                 setBasicPosition();
-               $("svg#svg-container").css("transform", "translateX(-140%) translateY(-50%) scale(2.5)");
+               // $("svg#svg-container").css("transform", "translateX(-140%) translateY(-50%) scale(2.5)");
+               $("svg#svg-container").css("transform", "translateX(-100%) translateY(-52%) scale(2.75)");
             });
 
             /* Manual zoom */
