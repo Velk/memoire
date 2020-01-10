@@ -1,3 +1,76 @@
+/* Register form */
+#user-register-form {
+  position: relative;
+  width: 100%;
+  margin: 50px 0;
+}
+
+#user-register-form > div {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+  margin: auto;
+  padding: 40px 25px 30px 25px;
+  border-radius: 3px;
+  box-sizing: border-box;
+  box-shadow: 1px 1px 5px #bbb;
+}
+
+#user-register-form > div div.form-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 30px 0;
+}
+
+#user-register-form > div div.form-item > label {
+  width: auto;
+  margin: 0;
+  position: absolute;
+  font-size: 12px;
+  text-transform: uppercase;
+  top: -15px;
+  left: 10px;
+  background-color: #fff;
+  padding: 0 7px;
+  box-sizing: border-box;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#user-register-form > div div.form-item > input {
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #000;
+  border-radius: 2px;
+  padding: 15px 15px 5px 15px;
+}
+
+#user-register-form > div #edit-actions {
+  margin: 0 auto;
+}
+#user-register-form > div #edit-actions span {
+  margin: 0;
+  padding: 0;
+}
+#user-register-form > div #edit-actions input {
+  box-sizing: border-box;
+  padding: 7px 15px;
+  border: 1px solid #21acbe;
+  background-color: #21acbe;
+  color: #fff;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+#user-register-form > div #edit-actions input:hover {
+  border: 1px solid #21acbe;
+  background-color: #fff;
+  color: #21acbe;
+}
+
 /* Login form */
 #user-login {
   position: relative;
