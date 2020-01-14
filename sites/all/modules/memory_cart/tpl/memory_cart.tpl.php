@@ -1,13 +1,19 @@
 <?php
 global $base_url;
 
-/* Retrieve URL path to know if the current page is an activity or a destination */
-$currentPathUrl = drupal_get_path_alias(current_path());
-$arrayCurrentPathUrl = explode("/", $currentPathUrl);
+// Check if the current page is an activity or a destination
+$isActivityPage = false;
+$isDestinationPage = false;
 
-$isActivityPage = ( sizeof($arrayCurrentPathUrl) == 3 ) ? true : false;
-$isDestinationPage = ( sizeof($arrayCurrentPathUrl) == 2 ) ? true : false;
+if ( arg(0) == 'node' && is_numeric(arg(1)) ) {
+  $node = node_load(arg(1));
+  if ($node->type  == "activite" ) $isActivityPage = true;
+}
 
+if(arg(0) == "taxonomy" && arg(1) == "term" && is_numeric(arg(2))){
+  $taxonomy = taxonomy_term_load(arg(2));
+  if($taxonomy->vocabulary_machine_name == "continent") $isDestinationPage = true;
+}
 
 /* Retrieve activity categories */
 $vocab_activity = taxonomy_vocabulary_machine_name_load('activite');
@@ -19,13 +25,19 @@ foreach ($vocab_activities_tree as $vocab_activity_tree){
     $arrayFilters[$vocab_activity_tree->name] = $vocab_activity_tree->tid;
 }
 
+// HTML Structure
+$cart_class = "";
+
+if(drupal_is_front_page())
+  $cart_class = "cart-hide";
+else if($isActivityPage)
+  $cart_class = "activity-page cart-show";
+else if($isDestinationPage)
+  $cart_class = "destination-page cart-show";
 ?>
-<button type="button" id="btn-display">
-    <i class="fa fa-plus" id="icon-plus"></i>
-    <i class="fa fa-minus" id="icon-minus"></i>
-</button>
-<div id="cart-container" class="<?php print ($isActivityPage)? 'activity-page' : ''; ?><?php print ($isDestinationPage)? 'destination-page' : ''; ?>">
-    <h1>Préparez votre aventure</h1>
+<div id="cart-container">
+  <div class="<?=$cart_class?>">
+    <h2>Préparez votre aventure</h2>
     <form id="devis">
         <div id="location">
             <i class="fa fa-map-marker" aria-hidden="true"></i>
@@ -112,6 +124,17 @@ foreach ($vocab_activities_tree as $vocab_activity_tree){
         </div>
         <button type="button" id="validate-cart">Demander un devis</button>
     </form>
+  </div>
+  <?php
+  if(!drupal_is_front_page()){
+  echo
+  "<button type=\"button\" class=\"toggle-user-cart\">" .
+    "<i class=\"fa fa-plus\" id=\"icon-plus\"></i>" .
+    "<i class=\"fa fa-minus\" id=\"icon-minus\"></i>" .
+  "</button>"
+  ;
+  }
+  ?>
 </div>
 <?php if(!$is_user_logged_in){ ?>
 <div id="user-cart-user-not-logged-container">

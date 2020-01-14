@@ -436,13 +436,13 @@ foreach ($activity_family_field as $activity_family_iteration){
           ;
 
           /* -------------------------------------------- OPTIONS ----------------------------------------------------*/
-
+          drupal_set_message("<pre>" . print_r($activity_options, true) . "</pre>");
           if( sizeof($activity_options) != 0 ){
               for($i = 0 ; $i < sizeof($activity_options) ; $i++){
 
                   // Display LOCK equals TRUE means the option is show without any button to hide it
                   $prestation_display_lock = ($activity_options[$i]["display_lock"] == 1) ? true : false;
-                  $prestation_display_type = "";
+                  $prestation_display_type = ($activity_options[$i]["display_type"] == 1) ? "prestation-hide" : "prestation-show";;
                   $prestation_button_display_type = "";
                   $prestation_title = "";
                   $prestation_price = "";
@@ -451,22 +451,15 @@ foreach ($activity_family_field as $activity_family_iteration){
                   $prestation_description = "";
                   $prestation_details = "";
 
-                  if(empty($prestation_display_lock)){ // If lock is not set. Case of old contents without saving the configuration since the adding of this admin button
+                  if($activity_options[$i]["display_lock"] == 1){ // Lock
 
-                    $prestation_display_type = "prestation-hide";
-                    $prestation_button_display_type = "<button class=\"option-more\"><i class=\"fa fa-caret-down\" aria-hidden=\"true\"></i>Voir plus</button>";
+                    $prestation_display_type = "prestation-show";
                   }else{
 
-                    if(!$prestation_display_lock){ // If contributor does not lock the display type
-
-                      $prestation_display_type = ($activity_options[$i]["display_type"] == 1) ? "prestation-hide" : "prestation-show";
-
-                      // Construct the section : Button display_type
-                      if( $activity_options[$i]["display_type"] == 1 )
-                        $prestation_button_display_type = "<button class=\"option-more\"><i class=\"fa fa-caret-down\" aria-hidden=\"true\"></i>Voir plus</button>";
-                      else
-                        $prestation_button_display_type = "<button class=\"option-less\"><i class=\"fa fa-caret-up\" aria-hidden=\"true\"></i>Voir moins</button>";
-                    }
+                    if( $activity_options[$i]["display_type"] == 1 )
+                      $prestation_button_display_type = "<button class=\"option-more\"><i class=\"fa fa-caret-down\" aria-hidden=\"true\"></i>Voir plus</button>";
+                    else
+                      $prestation_button_display_type = "<button class=\"option-less\"><i class=\"fa fa-caret-up\" aria-hidden=\"true\"></i>Voir moins</button>";
                   }
 
                   // Construct the section : Title

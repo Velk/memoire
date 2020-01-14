@@ -90,7 +90,8 @@ jQuery(window).load(function() {
         jQuery('#panel-seventh-wrapper .panel-column > .grid-inner').matchHeights();
         jQuery('#sidebar-home-second-wrapper .grid-inner, #sidebar-home-third-wrapper .grid-inner').matchHeights();
         jQuery('#sidebar-home-first-wrapper .grid-inner, .container-home-inner .container-inner').matchHeights();
-        jQuery('#sidebar-first-wrapper > .grid-inner, #sidebar-second-wrapper > .grid-inner, #main-content').matchHeights();
+        if(jQuery("#sidebar-first-wrapper").length === 1)
+          jQuery('#sidebar-first-wrapper > .grid-inner, #sidebar-second-wrapper > .grid-inner, #main-content').matchHeights();
         jQuery('#panel-social-wrapper .grid-inner').matchHeights();
         jQuery('.quicktabs-wrapper ul.quicktabs-tabs li a').click(function () {
             window.setTimeout(nucleus_sidebar_equal_height, 500);
