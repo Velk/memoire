@@ -5,6 +5,7 @@
             /* Scroll - Resize header menu */
             var sliderHeight = $("#slider-container").height();
             var windowHeight = $(window).height();
+            var adminMenuHeight = 0;
 
             // Set basic social networks position
             $("div#block-memory-blocks-social-networks").css("top", "calc(80px + " + sliderHeight + "px/2)");
@@ -15,20 +16,22 @@
                 // Remove this behavior under tablet responsive mode
                 if($(window).width() > 1024) {
 
+                    if(typeof settings.admin_menu !== "undefined"){ adminMenuHeight = $("#admin-menu").height(); }
+
                     if ($(window).scrollTop() > 0) {
 
-                        $("div#header").css("height", "60px");
-                        $("#logo > img").css("height", "60px");
-                        $("div#menu-bar-wrapper > div > div > div > ul > li > a").css("padding", "5px 30px");
-                        $("div#page").css("margin-top", "60px");
+                      $("div#header").css("height", "60px");
+                      $("#logo > img").css("height", "60px");
+                      $("div#menu-bar-wrapper > div > div > div > ul > li > a").css("padding", "5px 30px");
+                      $("div#page").css("margin-top", "60px");
 
-                        $("div#activities-menu").css("top", "60px");
-                        $("div#destinations-menu").css("top", "60px");
+                      $("div#activities-menu").css("top", "calc(60px + " + adminMenuHeight + "px)");
+                      $("div#destinations-menu").css("top", "calc(60px + " + adminMenuHeight + "px)");
 
-                        var topValueScroll = 60 / 2 + windowHeight / 2;
-                        $("div#block-memory-blocks-social-networks").stop().animate({
-                            top: topValueScroll + "px",
-                        });
+                      var topValueScroll = 60 / 2 + windowHeight / 2;
+                      $("div#block-memory-blocks-social-networks").stop().animate({
+                          top: topValueScroll + "px",
+                      }, 150);
                     }
 
                     if ($(window).scrollTop() === 0) {
@@ -38,8 +41,8 @@
                         $("div#menu-bar-wrapper > div > div > div > ul > li > a").css("padding", "10px 30px");
                         $("div#page").css("margin-top", "80px");
 
-                        $("div#activities-menu").css("top", "80px");
-                        $("div#destinations-menu").css("top", "80px");
+                        $("div#activities-menu").css("top", "calc(80px + " + adminMenuHeight + "px)");
+                        $("div#destinations-menu").css("top", "calc(80px + " + adminMenuHeight + "px)");
 
                         var topValue = 80 + sliderHeight / 2;
                         $("div#block-memory-blocks-social-networks").stop().animate({
@@ -99,9 +102,10 @@
 
                     $("#header-wrapper").css("margin-top", adminToolbarHeight);
 
-                    var menuHeight = $("#header-wrapper").height();
+                    var menuHeight = $("#header-wrapper").outerHeight(true);
 
-                    $("#page").css("margin-top", (menuHeight + adminToolbarHeight));
+                    // $("#page").css("margin-top", (menuHeight + adminToolbarHeight));
+                    $("#page").css("margin-top", menuHeight);
 
                     clearInterval(adminToolbarVisibility);
                 }

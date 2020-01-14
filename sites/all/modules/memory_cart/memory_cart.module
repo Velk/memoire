@@ -99,19 +99,6 @@ function ajax_cart_send_user_quotation_ask(){
 
       $cart_user_is_anonymous = $_POST['userIsAnonymous'];
 
-//      drupal_set_message("Location : " . $cart_location);
-//      drupal_set_message("Date : " . $cart_date);
-//      drupal_set_message("Participants : " . $cart_participants);
-//      drupal_set_message("Budget : " . $cart_budget);
-//      drupal_set_message("Transport : " . $cart_transport);
-//      drupal_set_message("Trip : " . $cart_trip);
-//      drupal_set_message("Wish : " . $cart_wish);
-//      drupal_set_message("User firstname : " . $cart_user_firstname);
-//      drupal_set_message("User lastname : " . $cart_user_lastname);
-//      drupal_set_message("User email : " . $cart_user_email);
-//      drupal_set_message("User phone : " . $cart_user_phone);
-//      drupal_set_message("Destination EMAIL : " . $destination_email);
-
       /* Start - E-mail body */
       $body =
         "DEMANDE DE DEVIS : " . "\n\n"
@@ -163,15 +150,6 @@ function ajax_cart_send_user_quotation_ask(){
         $cart_trip_sorted[$cart_trip[$i]["actDestination"]][$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["nid"] = $cart_trip[$i]["nid"];
         $cart_trip_sorted[$cart_trip[$i]["actDestination"]][$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["packTitle"] = $cart_trip[$i]["packTitle"];
         $cart_trip_sorted[$cart_trip[$i]["actDestination"]][$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["actPrice"] = $cart_trip[$i]["actPrice"];
-
-//        $cart_trip_sorted[$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["actDestination"] = $cart_trip[$i]["actDestination"];
-//        $cart_trip_sorted[$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["positionInDay"] = $cart_trip[$i]["positionInDay"];
-//        $cart_trip_sorted[$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["activityType"] = $cart_trip[$i]["activityType"];
-//        $cart_trip_sorted[$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["title"] = $cart_trip[$i]["title"];
-//        $cart_trip_sorted[$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["nid"] = $cart_trip[$i]["nid"];
-//        $cart_trip_sorted[$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["packTitle"] = $cart_trip[$i]["packTitle"];
-//        $cart_trip_sorted[$cart_trip[$i]["dayNumber"]][$cart_trip[$i]["activityType"]][$cart_trip[$i]["positionInDay"]]["actPrice"] = $cart_trip[$i]["actPrice"];
-
       }
 
       $final_cart_trip = [];
@@ -187,21 +165,16 @@ function ajax_cart_send_user_quotation_ask(){
           $final_cart_trip[$key] = $value;
       }
 
-//      // Sort array by day then by activity position in the day
-//      ksort($cart_trip_sorted);
-//      for($i = 0 ; $i < sizeof($cart_trip_sorted) ; $i++){
-//        ksort($cart_trip_sorted[$i]["activities"]);
-//      }
-
-      $body_activities_info = "";
+      $body_activities_info_memory = "";
+      $body_activities_info_providers = "";
       $total_nb_city = 0;
       $totalDaysNb = 0;
       $totalNightsNb= 0;
 
       foreach($final_cart_trip as $key=>$value){
 
-          $body_activities_info =
-            $body_activities_info .
+          $body_activities_info_memory =
+            $body_activities_info_memory .
             "\n\n------------------------- Ville : " . $key . " -------------------------\n\n"
           ;
 
@@ -210,23 +183,39 @@ function ajax_cart_send_user_quotation_ask(){
           // Add transfer to the body e-mail
           if( !empty($value[1]["transfer"]) ){
 
-              $body_activities_info =
-                  $body_activities_info .
+              $body_activities_info_memory =
+                $body_activities_info_memory .
                   "Transfert - Aller : " . "\n" .
                   "   - Titre : " . $value[1]["transfer"][0]["title"] . "\n" .
                   "   - Pack : " . $value[1]["transfer"][0]["packTitle"] . "\n" .
                   "   - Prix : " . $value[1]["transfer"][0]["actPrice"] . "\n" .
                   "   - URL : " . $base_url . "/" . drupal_get_path_alias("node/" . $value[1]["transfer"][0]["nid"]) . "\n\n"
               ;
+
+              $body_activities_info_providers =
+                $body_activities_info_providers .
+                  "Transfert - Aller : " . "\n" .
+                  "   - Titre : " . $value[1]["transfer"][0]["title"] . "\n" .
+                  "   - Pack : " . $value[1]["transfer"][0]["packTitle"] . "\n" .
+                  "   - URL : " . $base_url . "/" . drupal_get_path_alias("node/" . $value[1]["transfer"][0]["nid"]) . "\n\n"
+              ;
           }
           if( !empty($value[2]["transfer"]) ){
 
-              $body_activities_info =
-                  $body_activities_info .
+              $body_activities_info_memory =
+                $body_activities_info_memory .
                   "Transfert - Retour : " . "\n" .
                   "   - Titre : " . $value[2]["transfer"][0]["title"] . "\n" .
                   "   - Pack : " . $value[2]["transfer"][0]["packTitle"] . "\n" .
                   "   - Prix : " . $value[2]["transfer"][0]["actPrice"] . "\n" .
+                  "   - URL : " . $base_url . "/" . drupal_get_path_alias("node/" . $value[2]["transfer"][0]["nid"]) . "\n\n"
+              ;
+
+              $body_activities_info_providers =
+                $body_activities_info_providers .
+                  "Transfert - Retour : " . "\n" .
+                  "   - Titre : " . $value[2]["transfer"][0]["title"] . "\n" .
+                  "   - Pack : " . $value[2]["transfer"][0]["packTitle"] . "\n" .
                   "   - URL : " . $base_url . "/" . drupal_get_path_alias("node/" . $value[2]["transfer"][0]["nid"]) . "\n\n"
               ;
           }
@@ -239,19 +228,27 @@ function ajax_cart_send_user_quotation_ask(){
 
                   $totalDaysNb++;
 
-                  $body_activities_info =
-                      $body_activities_info .
+                  $body_activities_info_memory =
+                    $body_activities_info_memory .
                       "\n\n" . "--- JOUR " . $i . " : " . "\n\n"
                   ;
 
                   for($j = 0 ; $j < sizeof($value[$i]["activities"]) ; $j++){
 
-                      $body_activities_info =
-                          $body_activities_info .
+                      $body_activities_info_memory =
+                        $body_activities_info_memory .
                           "Activité n°" . $value[$i]["activities"][$j]["positionInDay"] . " : " . "\n" .
                           "   - Titre : " . $value[$i]["activities"][$j]["title"] . "\n" .
                           "   - Pack : " . $value[$i]["activities"][$j]["packTitle"] . "\n" .
                           "   - Prix : " . $value[$i]["activities"][$j]["actPrice"] . "\n" .
+                          "   - URL : " . $base_url . "/" . drupal_get_path_alias("node/" . $value[$i]["activities"][$j]["nid"]) . "\n\n"
+                      ;
+
+                      $body_activities_info_providers =
+                        $body_activities_info_providers .
+                          "Activité n°" . $value[$i]["activities"][$j]["positionInDay"] . " : " . "\n" .
+                          "   - Titre : " . $value[$i]["activities"][$j]["title"] . "\n" .
+                          "   - Pack : " . $value[$i]["activities"][$j]["packTitle"] . "\n" .
                           "   - URL : " . $base_url . "/" . drupal_get_path_alias("node/" . $value[$i]["activities"][$j]["nid"]) . "\n\n"
                       ;
                   }
@@ -260,12 +257,20 @@ function ajax_cart_send_user_quotation_ask(){
 
                       $totalNightsNb++;
 
-                      $body_activities_info =
-                          $body_activities_info .
+                      $body_activities_info_memory =
+                        $body_activities_info_memory .
                           "Hébergement : " . "\n" .
                           "   - Titre : " . $value[$i]["hosting"][$j]["title"] . "\n" .
                           "   - Pack : " . $value[$i]["hosting"][$j]["packTitle"] . "\n" .
                           "   - Prix : " . $value[$i]["hosting"][$j]["actPrice"] . "\n" .
+                          "   - URL : " . $base_url . "/" . drupal_get_path_alias("node/" . $value[$i]["hosting"][$j]["nid"]) . "\n\n"
+                      ;
+
+                    $body_activities_info_providers =
+                        $body_activities_info_providers .
+                          "Hébergement : " . "\n" .
+                          "   - Titre : " . $value[$i]["hosting"][$j]["title"] . "\n" .
+                          "   - Pack : " . $value[$i]["hosting"][$j]["packTitle"] . "\n" .
                           "   - URL : " . $base_url . "/" . drupal_get_path_alias("node/" . $value[$i]["hosting"][$j]["nid"]) . "\n\n"
                       ;
                   }
@@ -290,7 +295,8 @@ function ajax_cart_send_user_quotation_ask(){
           "Détails sur les activités souhaitées : \n\n"
       ;
 
-      $body = $body . $body_quotation_info . $body_activities_info;
+      $body_providers = $body . $body_quotation_info . $body_activities_info_providers;
+      $body_memory = $body . $body_quotation_info . $body_activities_info_memory;
       /* End - E-mail body */
 
       // Mail's parameters
@@ -298,15 +304,23 @@ function ajax_cart_send_user_quotation_ask(){
       $from = $destination_email;
 
       // Subject of the mail
-      $subject = "Memory - Demande de devis";
+      $subject_memory = "Memory - Demande de devis";
+      $subject_providers = "Memory - Demande de devis - Fournisseurs";
 
       // Call mail function
-      $params = array(
-        'subject' => $subject,
-        'body' => $body,
+      $params_memory = array(
+        'subject' => $subject_memory,
+        'body' => $body_memory,
+      );
+      $params_providers = array(
+        'subject' => $subject_providers,
+        'body' => $body_providers,
       );
 
-      if(drupal_mail('memory_cart', '10', $to, "fr", $params, $from)){
+      if(
+        drupal_mail('memory_cart', '10', $to, "fr", $params_memory, $from) &&
+        drupal_mail('memory_cart', '11', $to, "fr", $params_providers, $from)
+      ){
 
           $array_result_callback = array(
             "result_sentence" => "La demande de devis a été envoyé.",
@@ -344,6 +358,10 @@ function memory_cart_mail($key, &$message, $params) {
       $message['subject'] = $params['subject'];
       $message['body'][] = $params['body'];
       break;
+    case '11':
+      $message['subject'] = $params['subject'];
+      $message['body'][] = $params['body'];
+      break;
   }
 }
 
@@ -377,7 +395,7 @@ function memory_cart_block_info() {
         'status' => 1,
         'region' => 'content',
         'visibility' => BLOCK_VISIBILITY_NOTLISTED,
-        'pages' => 'admin/*\rmedia/*\rnode/*/edit',
+        'pages' => 'contact\radmin/*\rmedia/*\rnode/*/edit',
     );
 
     return $blocks;
@@ -416,7 +434,11 @@ function memory_cart_block_view($delta = '') {
 
             // Link a js file
             $block['content']['#attached']['js'][] = array(
-                'data' => drupal_get_path('module', 'memory_cart').'/js/memory_cart.js',
+              'data' => drupal_get_path('module', 'memory_cart').'/js/memory_cart.js',
+              'type' => 'file'
+            );
+            $block['content']['#attached']['js'][] = array(
+                'data' => drupal_get_path('module', 'memory_cart').'/js/memory_cart_form.js',
                 'type' => 'file'
             );
 

@@ -314,6 +314,14 @@ foreach ($array_countries as $country){
                     </div>
                 </div>
                 <a href="<?php print $base_url . '/contact'; ?>" id="memory-contact-link">Besoin d’un conseil ?</a>
+                <?php if(drupal_is_front_page() && module_exists("memory_cart")){
+                  echo
+                    "<button type=\"button\" class=\"toggle-user-cart\" id=\"menu-tab-cart\">" .
+                      "<i class=\"fa fa-shopping-cart\" aria-hidden=\"true\"></i>" .
+                    "</button>"
+                  ;
+
+                } ?>
             </div>
             <!-- End Connexion menu part -->
 

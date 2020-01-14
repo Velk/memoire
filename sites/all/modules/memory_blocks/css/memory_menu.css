@@ -78,6 +78,7 @@ div#memory-menu > div {
     border: 1px solid #ff8f00;
     box-sizing: border-box;
     width: auto;
+    font-size: 14px;
 }
 .memory-menu-tabs a#memory-contact-link:hover {
     background-color: #fff;

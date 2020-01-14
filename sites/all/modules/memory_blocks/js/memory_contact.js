@@ -2,7 +2,6 @@
     Drupal.behaviors.memory_blocks_contact = {
         attach: function (context, settings) {
 
-
             /* Show Quote request section when the nature request option is Demande de devis */
             $("fieldset.webform-component--quote-request").hide();
 

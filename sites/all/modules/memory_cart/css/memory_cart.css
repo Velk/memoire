@@ -1,58 +1,3 @@
-div#block-memory-cart-memory-cart {
-    position: fixed;
-    right: 0;
-    top: 0;
-    width: 400px;
-    padding: 0;
-    height: 100vh;
-    z-index: 40;
-    box-shadow: -1px 0px 5px #bababa;
-    background-color: #f7f7f7;
-}
-
-button#btn-display {
-    position: absolute;
-    z-index: 90;
-    left: -30px;
-    top: calc(50% - 30px);
-    width: 30px;
-    height: 60px;
-    background-color: #f7f7f7;
-    font: bold 12px Arial;
-    border-bottom-left-radius: 100px;
-    border-top-left-radius: 100px;
-    color: #ff8f00;
-    text-transform: uppercase;
-    outline: none;
-    cursor: pointer;
-    box-shadow: 0px 2px 5px #bababa;
-  border: 1px solid #fff;
-  box-sizing: border-box;
-}
-button#btn-display:hover {
-    background-color: #fff;
-  border: 1px solid #ff8f00;
-  border-right: 1px solid #fff;
-    color: #ff8f00;
-}
-
-button#btn-display > i#icon-plus {
-    display: none;
-}
-
-div#cart-container {
-    z-index: 99;
-    position: absolute;
-    top: 80px;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: transparent;
-    border-left: 1px solid #fff;
-    box-sizing: border-box;
-    overflow-y: scroll;
-}
-
 form#devis {
     margin: auto;
     padding: 7.5%;
@@ -62,7 +7,6 @@ form#devis {
     grid-template-areas: "a a b b" "c c d d" "e e e e" "f f f f" ". g g ." "h h h h" "i i i i" ". j j ." "k k k k";
     grid-template-columns: repeat(4, calc(25% - 15px*3/4));
     grid-gap: 15px;
-    background-color: #f7f7f7;
 }
 
 div#location {
@@ -127,14 +71,6 @@ div#departure-date > input,
 div#return-date > input {
   width: calc(100% - 20px);
   margin-left: 20px;
-}
-
-div#cart-container > h1 {
-    margin: 25px 0 30px 0;
-    padding: 0 20px;
-    text-align: center;
-    color: #16889b;
-    font-size: 28px;
 }
 
 form#devis input {
@@ -918,4 +854,101 @@ div#user-add-new-city-container button#user-add-new-city-decline {
   background-color: #fff;
   color: #ff8f00;
   border: 1px solid #ff8f00;
+}
+
+/* Menu - Button toggle cart */
+#menu-tab-cart.toggle-user-cart {
+  border: 1px solid #21acbe;
+  background-color: #21acbe;
+  border-radius: 3px;
+  padding: 7px 12px;
+  margin-left: 10px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+button#menu-tab-cart.toggle-user-cart i {
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+  color: #fff;
+  width: 20px;
+}
+#menu-tab-cart.toggle-user-cart:hover {
+  border: 1px solid #21acbe;
+  background-color: #fff;
+}
+#menu-tab-cart.toggle-user-cart:hover i {
+  color: #21acbe;
+}
+
+
+/* Main CSS */
+.cart-hide {
+  display: none;
+}
+.cart-show {
+  display: block;
+}
+div#block-memory-cart-memory-cart {
+  position: fixed;
+  width: auto;
+  height: 100vh;
+  top: 0;
+  right: 0;
+  z-index: 90;
+  background-color: #f7f7f7;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+div#block-memory-cart-memory-cart > div.block-inner,
+div#block-memory-cart-memory-cart > div.block-inner > div.block-content {
+  margin: 0;
+  padding: 0;
+}
+div#cart-container {
+  position: relative;
+  height: 100vh;
+  top: 0;
+  right: 0;
+}
+
+#cart-container .toggle-user-cart {
+position: absolute;
+left: -30px;
+z-index: 90;
+width: 30px;
+height: 60px;
+background-color: #f7f7f7;
+font: bold 12px Arial;
+border-bottom-left-radius: 100px;
+border-top-left-radius: 100px;
+color: #ff8f00;
+outline: none;
+cursor: pointer;
+box-shadow: 0px 2px 5px #bababa;
+border: 1px solid #fff;
+box-sizing: border-box;
+}
+#cart-container .toggle-user-cart:hover {
+background-color: #fff;
+border: 1px solid #ff8f00;
+border-right: 1px solid #fff;
+color: #ff8f00;
+}
+#cart-container .toggle-user-cart i:nth-child(1) {
+display: none;
+}
+
+div#cart-container > div {
+width: 450px;
+overflow: scroll;
+}
+
+div#cart-container > div > h2 {
+margin: 25px 0 30px 0;
+padding: 0 20px;
+text-align: center;
+color: #16889b;
+font-size: 28px;
 }
