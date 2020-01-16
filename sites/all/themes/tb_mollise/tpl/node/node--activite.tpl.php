@@ -436,7 +436,6 @@ foreach ($activity_family_field as $activity_family_iteration){
           ;
 
           /* -------------------------------------------- OPTIONS ----------------------------------------------------*/
-          drupal_set_message("<pre>" . print_r($activity_options, true) . "</pre>");
           if( sizeof($activity_options) != 0 ){
               for($i = 0 ; $i < sizeof($activity_options) ; $i++){
 
