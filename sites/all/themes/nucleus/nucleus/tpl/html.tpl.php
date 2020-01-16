@@ -62,6 +62,39 @@
     </script>
     <!-- Script end -->
 
+    <!-- Acquero GTAG compaign -->
+	<!-- Global site tag (gtag.js) - Google Ads: 684294559 -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=AW-684294559"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+	  gtag('config', 'AW-684294559');
+	</script>
+	<!-- End of global js tag -->
+
+	<!-- Specific tag for contact form -->
+	<?php $node = menu_get_object(); ?>
+	<?php if($node->vid == 129): ?>
+	  <!-- Event snippet for Demande de devis conversion page
+	  In your html page, add the snippet and call gtag_report_conversion when someone clicks on the chosen link or button. -->
+	  <script>
+	  function gtag_report_conversion(url) {
+	    var callback = function () {
+	      if (typeof(url) != 'undefined') {
+	        window.location = url;
+	      }
+	    };
+	    gtag('event', 'conversion', {
+	      'send_to': 'AW-684294559/mwTKCJnx2rgBEJ-DpsYC',
+	      'event_callback': callback
+	    });
+	    return false;
+	  }
+	</script>
+    <?php endif; ?>
+	<!-- End of specific tag for conteact form -->
+    <!-- End of Acquero Campaign -->
   </head>
 
   <body class="<?php print $classes; ?>"<?php print $attributes;?>>
