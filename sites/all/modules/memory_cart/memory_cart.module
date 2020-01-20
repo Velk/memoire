@@ -441,6 +441,14 @@ function memory_cart_block_view($delta = '') {
                 'data' => drupal_get_path('module', 'memory_cart').'/js/memory_cart_form.js',
                 'type' => 'file'
             );
+            $block['content']['#attached']['js'][] = array(
+                'data' => drupal_get_path('module', 'memory_cart').'/js/memory_cart_advanced_form.js',
+                'type' => 'file'
+            );
+            $block['content']['#attached']['js'][] = array(
+                'data' => drupal_get_path('module', 'memory_cart').'/js/memory_cart_ajax_request.js',
+                'type' => 'file'
+            );
 
             break;
     }

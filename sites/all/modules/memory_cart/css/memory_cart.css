@@ -1,151 +1,151 @@
-form#devis {
-    margin: auto;
-    padding: 7.5%;
-    box-sizing: border-box;
-    width: 100%;
-    display: grid;
-    grid-template-areas: "a a b b" "c c d d" "e e e e" "f f f f" ". g g ." "h h h h" "i i i i" ". j j ." "k k k k";
-    grid-template-columns: repeat(4, calc(25% - 15px*3/4));
-    grid-gap: 15px;
-}
+/*form#devis {*/
+/*    margin: auto;*/
+/*    padding: 7.5%;*/
+/*    box-sizing: border-box;*/
+/*    width: 100%;*/
+/*    display: grid;*/
+/*    grid-template-areas: "a a b b" "c c d d" "e e e e" "f f f f" ". g g ." "h h h h" "i i i i" ". j j ." "k k k k";*/
+/*    grid-template-columns: repeat(4, calc(25% - 15px*3/4));*/
+/*    grid-gap: 15px;*/
+/*}*/
 
-div#location {
-    grid-area: a;
-}
-div#participants {
-  grid-area: b;
-}
-div#departure-date {
-    grid-area: c;
-}
-div#return-date {
-    grid-area: d;
-}
-div#budget {
-    grid-area: e;
-}
-div#transport {
-    grid-area: f;
-}
-button#empty-cart {
-    grid-area: g;
-}
-div#trip-global-container {
-    grid-area: h;
-}
-div#wish {
-    grid-area: i;
-}
-button#validate-cart {
-    grid-area: j;
-}
-div#total-quotation-cost {
-  grid-area: k;
-}
+/*div#location {*/
+/*    grid-area: a;*/
+/*}*/
+/*div#participants {*/
+/*  grid-area: b;*/
+/*}*/
+/*div#departure-date {*/
+/*    grid-area: c;*/
+/*}*/
+/*div#return-date {*/
+/*    grid-area: d;*/
+/*}*/
+/*div#budget {*/
+/*    grid-area: e;*/
+/*}*/
+/*div#transport {*/
+/*    grid-area: f;*/
+/*}*/
+/*button#empty-cart {*/
+/*    grid-area: g;*/
+/*}*/
+/*div#trip-global-container {*/
+/*    grid-area: h;*/
+/*}*/
+/*div#wish {*/
+/*    grid-area: i;*/
+/*}*/
+/*button#validate-cart {*/
+/*    grid-area: j;*/
+/*}*/
+/*div#total-quotation-cost {*/
+/*  grid-area: k;*/
+/*}*/
 
-#location, #participants, #dates {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-div#departure-date,
-div#return-date {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-}
-div#departure-date > i,
-div#return-date > i {
-  width: 20px !important;
-}
-div#departure-date > label,
-div#return-date > label {
-  width: calc(100% - 20px);
-  font-size: 14px;
-  margin: 0 !important;
-  font-weight: normal;
+/*#location, #participants, #dates {*/
+/*  display: flex;*/
+/*  flex-direction: row;*/
+/*  align-items: center;*/
+/*}*/
+/*div#departure-date,*/
+/*div#return-date {*/
+/*  display: flex;*/
+/*  flex-direction: row;*/
+/*  flex-wrap: wrap;*/
+/*  align-items: center;*/
+/*}*/
+/*div#departure-date > i,*/
+/*div#return-date > i {*/
+/*  width: 20px !important;*/
+/*}*/
+/*div#departure-date > label,*/
+/*div#return-date > label {*/
+/*  width: calc(100% - 20px);*/
+/*  font-size: 14px;*/
+/*  margin: 0 !important;*/
+/*  font-weight: normal;*/
 
-}
-div#departure-date > input,
-div#return-date > input {
-  width: calc(100% - 20px);
-  margin-left: 20px;
-}
+/*}*/
+/*div#departure-date > input,*/
+/*div#return-date > input {*/
+/*  width: calc(100% - 20px);*/
+/*  margin-left: 20px;*/
+/*}*/
 
-form#devis input {
-    border: none;
-    border-bottom: 1px solid #21acbe;
-    box-sizing: border-box;
-    padding: 8px 0px;
-    background-color: transparent;
-    font-size: 14px;
-    /*width: calc(100% - 25px);*/
-    width: calc(100% - 20px);
-}
-form#devis input:focus,
-form#devis input:hover {
-  padding: 8px 10px;
-}
-form#devis input:hover {
-    background-color: #fdfdfd;
-    cursor: pointer;
-}
-form#devis i.fa {
-    font-size: 14px;
-    width: 20px;
-}
+/*form#devis input {*/
+/*    border: none;*/
+/*    border-bottom: 1px solid #21acbe;*/
+/*    box-sizing: border-box;*/
+/*    padding: 8px 0px;*/
+/*    background-color: transparent;*/
+/*    font-size: 14px;*/
+/*    !*width: calc(100% - 25px);*!*/
+/*    width: calc(100% - 20px);*/
+/*}*/
+/*form#devis input:focus,*/
+/*form#devis input:hover {*/
+/*  padding: 8px 10px;*/
+/*}*/
+/*form#devis input:hover {*/
+/*    background-color: #fdfdfd;*/
+/*    cursor: pointer;*/
+/*}*/
+/*form#devis i.fa {*/
+/*    font-size: 14px;*/
+/*    width: 20px;*/
+/*}*/
 
-form#devis select {
-    border: 1px solid #21acbe;
-    box-sizing: border-box;
-    padding: 8px 15px;
-    background-color: transparent;
-    font-size: 14px;
-    width: 100%;
-}
-form#devis select:hover {
-    background-color: #fdfdfd;
-    cursor: pointer;
-}
+/*form#devis select {*/
+/*    border: 1px solid #21acbe;*/
+/*    box-sizing: border-box;*/
+/*    padding: 8px 15px;*/
+/*    background-color: transparent;*/
+/*    font-size: 14px;*/
+/*    width: 100%;*/
+/*}*/
+/*form#devis select:hover {*/
+/*    background-color: #fdfdfd;*/
+/*    cursor: pointer;*/
+/*}*/
 
-form#devis label {
-    margin-bottom: 10px;
-}
+/*form#devis label {*/
+/*    margin-bottom: 10px;*/
+/*}*/
 
-button#empty-cart {
-  box-sizing: border-box;
-  padding: 5px 10px;
-  border: 1px solid #ff8f00;
-  background-color: #ff8f00;
-  color: #fff;
-  font-size: 14px;
-  cursor: pointer;
-  border-radius: 3px;
-  margin-top: 20px;
-}
-button#empty-cart:hover {
-    background-color: #fff;
-    color: #ff8f00;
-  border: 1px solid #ff8f00;
-}
+/*button#empty-cart {*/
+/*  box-sizing: border-box;*/
+/*  padding: 5px 10px;*/
+/*  border: 1px solid #ff8f00;*/
+/*  background-color: #ff8f00;*/
+/*  color: #fff;*/
+/*  font-size: 14px;*/
+/*  cursor: pointer;*/
+/*  border-radius: 3px;*/
+/*  margin-top: 20px;*/
+/*}*/
+/*button#empty-cart:hover {*/
+/*    background-color: #fff;*/
+/*    color: #ff8f00;*/
+/*  border: 1px solid #ff8f00;*/
+/*}*/
 
-form#devis textarea {
-    background: none;
-    background-color: transparent;
-    padding: 8px 15px;
-    width: 100%;
-    height: 75px;
-    font-size: 12px;
-    border: 1px solid #21acbe;
-    resize: vertical;
-}
+/*form#devis textarea {*/
+/*    background: none;*/
+/*    background-color: transparent;*/
+/*    padding: 8px 15px;*/
+/*    width: 100%;*/
+/*    height: 75px;*/
+/*    font-size: 12px;*/
+/*    border: 1px solid #21acbe;*/
+/*    resize: vertical;*/
+/*}*/
 
-form#devis textarea:hover {
-    background-color: #fdfdfd;
-    border: 1px solid #21acbe;
-    cursor: pointer;
-}
+/*form#devis textarea:hover {*/
+/*    background-color: #fdfdfd;*/
+/*    border: 1px solid #21acbe;*/
+/*    cursor: pointer;*/
+/*}*/
 
 /* Trip days */
 div.trip {
@@ -185,9 +185,24 @@ div.trip {
     box-sizing: border-box;
     margin: 0;
 }
-.trip-days-header > i.fa {
+.trip-days-header > i.fa-calendar-o {
     font-size: 18px !important;
     margin-right: 10px;
+}
+.trip-days-header > i.trip-delete-day {
+  position: absolute;
+  top: 0;
+  right: 5px;
+  height: 100%;
+  font-size: 18px !important;
+  padding: 7px 0px;
+  text-align: center;
+  box-sizing: border-box;
+  cursor: pointer;
+  color: #000;
+}
+.trip-days-header > i.trip-delete-day:hover {
+  color: #bbb;
 }
 .trip-days-header > p {
     margin: 0;
@@ -212,31 +227,31 @@ div.trip {
     color: #000000;
 }
 
-.trip-days-details {
+.trip-days-body {
     padding: 15px 0 0 15px;
     box-sizing: border-box;
 }
 
-.trip-days-details > div {
+.trip-days-body > div {
     margin-bottom: 20px;
 }
-.trip-days-details > div:last-of-type {
+.trip-days-body > div:last-of-type {
     margin-bottom: 0;
 }
 
-.hosting-container,
+.trip-accommodation,
 .transfer-container {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
 }
-.hosting-container > p,
+.trip-accommodation > p,
 .transfer-container > p {
     margin: 0 10px 0 0;
     font-size: 14px;
 }
-.hosting-container > button,
+.trip-accommodation > button,
 .transfer-container > button {
     box-sizing: border-box;
     padding: 5px 10px;
@@ -247,7 +262,7 @@ div.trip {
     cursor: pointer;
     min-width: 160px;
 }
-.hosting-container > button:hover,
+.trip-accommodation > button:hover,
 .transfer-container > button:hover {
     background-color: #fdfdfd;
     color: #21acbe;
@@ -728,22 +743,22 @@ button#user-logged-remove-overlay:hover{
   color: #e9e9e9;
 }
 
-button#validate-cart {
-  box-sizing: border-box;
-  padding: 5px 10px;
-  border: 1px solid #ff8f00;
-  background-color: #ff8f00;
-  color: #fff;
-  font-size: 14px;
-  cursor: pointer;
-  border-radius: 3px;
-  margin: 15px 0;
-}
-button#validate-cart:hover {
-  background-color: #fff;
-  color: #ff8f00;
-  border: 1px solid #ff8f00;
-}
+/*button#validate-cart {*/
+/*  box-sizing: border-box;*/
+/*  padding: 5px 10px;*/
+/*  border: 1px solid #ff8f00;*/
+/*  background-color: #ff8f00;*/
+/*  color: #fff;*/
+/*  font-size: 14px;*/
+/*  cursor: pointer;*/
+/*  border-radius: 3px;*/
+/*  margin: 15px 0;*/
+/*}*/
+/*button#validate-cart:hover {*/
+/*  background-color: #fff;*/
+/*  color: #ff8f00;*/
+/*  border: 1px solid #ff8f00;*/
+/*}*/
 #user-cart-user-not-logged-container .user-alert-datas-lack {
   font-style: italic;
   color: #e85757;
@@ -916,6 +931,7 @@ div#cart-container {
 #cart-container .toggle-user-cart {
 position: absolute;
 left: -30px;
+top: 50%;
 z-index: 90;
 width: 30px;
 height: 60px;
@@ -941,8 +957,11 @@ display: none;
 }
 
 div#cart-container > div {
-width: 450px;
+  width: calc(100vw/3);
+  min-width: 450px;
+  max-width: 750px;
 overflow: scroll;
+box-shadow: 1px 1px 5px #bbb;
 }
 
 div#cart-container > div > h2 {
@@ -951,4 +970,182 @@ padding: 0 20px;
 text-align: center;
 color: #16889b;
 font-size: 28px;
+}
+
+/* Form : Basic */
+form#devis {
+  position: relative;
+  width: 100%;
+  padding: 0 35px;
+  box-sizing: border-box;
+}
+
+form#devis > div:nth-child(1),
+form#devis > div:nth-child(2) {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 15px;
+}
+
+form#devis #location,
+form#devis #participants {
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+form#devis div#departure-date,
+form#devis div#return-date {
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+/* Start - Datepicker */
+div.ui-datepicker {
+  background-color: #fff;
+  border: 1px solid #bbb;
+  border-radius: 3px;
+  box-shadow: 1px 1px 5px #bbb;
+}
+
+.ui-datepicker-header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.ui-datepicker-title {
+  width: 100%;
+  font-size: 14px;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin: 7px 0;
+  box-sizing: border-box;
+}
+
+a.ui-datepicker-prev,
+a.ui-datepicker-next {
+  width: 50%;
+  cursor: pointer;
+  background-color: #21acbe;
+  color: #fff;
+  border: 1px solid #21acbe;
+  box-sizing: border-box;
+}
+a.ui-datepicker-prev:hover,
+a.ui-datepicker-next:hover {
+  background-color: #fff;
+  color: #21acbe;
+}
+
+a.ui-datepicker-current-day {}
+
+td.ui-datepicker-current-day {
+  position: relative;
+}
+td.ui-datepicker-current-day > a {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  color: #fff;
+  background-color: #ff8f10;
+  padding: 7px;
+  border-radius: 50px;
+  text-align: center;
+}
+/* End - Datepicker */
+
+form#devis > div:nth-child(3) {
+  display: flex;
+  flex-direction: column;
+}
+form#devis > div:nth-child(3) label {
+  margin-bottom: 10px;
+}
+form#devis > div:nth-child(3) div#budget {
+  margin-bottom: 15px;
+}
+
+form#devis input {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #21acbe;
+  box-sizing: border-box;
+  padding: 8px 0px;
+  background-color: transparent;
+  font-size: 14px;
+  cursor: pointer;
+}
+form#devis select {
+  border: 1px solid #21acbe;
+  box-sizing: border-box;
+  padding: 8px 15px;
+  background-color: transparent;
+  font-size: 14px;
+  width: 100%;
+  cursor: pointer;
+}
+form#devis textarea {
+  background: transparent;
+  padding: 8px 15px;
+  width: 100%;
+  height: 75px;
+  font-size: 12px;
+  border: 1px solid #21acbe;
+  resize: vertical;
+  cursor: pointer;
+}
+form#devis select:hover,
+form#devis textarea:hover {
+  background-color: #fdfdfd;
+  border: 1px solid #21acbe;
+}
+
+form#devis i.fa {
+  font-size: 14px;
+  width: 20px;
+}
+
+form#devis hr {
+  width: 100%;
+  height: 1px;
+  background-color: #bbb;
+  border: none;
+  margin: 50px 0;
+}
+
+form#devis button#empty-cart,
+form#devis button#validate-cart {
+  box-sizing: border-box;
+  padding: 7px 15px;
+  border: 1px solid #ff8f00;
+  background-color: #ff8f00;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 3px;
+  margin: 25px auto 25px 50%;
+  transform: translateX(-50%);
+}
+form#devis button#empty-cart {
+  margin-bottom: 0;
+}
+form#devis button#empty-cart:hover,
+form#devis button#validate-cart:hover {
+  background-color: #fff;
+  color: #ff8f00;
+  border: 1px solid #ff8f00;
+}
+
+form#devis #trip-global-container #trip-disclaimer {
+  font-style: italic;
+  color: #ce0707;
+  font-size: 14px;
 }
