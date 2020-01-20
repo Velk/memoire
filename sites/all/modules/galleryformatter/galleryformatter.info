@@ -13,9 +13,8 @@ files[] = includes/galleryformatter.theme.inc
 files[] = includes/galleryformatter_imagecache.inc
 files[] = theme/galleryformatter.tpl.php
 
-; Information added by Drupal.org packaging script on 2015-09-18
-version = "7.x-1.4"
+; Information added by Drupal.org packaging script on 2019-06-16
+version = "7.x-1.5"
 core = "7.x"
 project = "galleryformatter"
-datestamp = "1442600640"
-
+datestamp = "1560709987"
