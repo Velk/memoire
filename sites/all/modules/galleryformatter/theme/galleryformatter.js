@@ -163,13 +163,15 @@
 
     if ($slides.length > 1) {
       // Setup buttons for next/prev slide
-      $slideButtons = ('<a class="prev-slide slide-button" title="'+ Drupal.t('Previous image') +'">&lt;</a><a class="next-slide slide-button" title="'+ Drupal.t('Next image') +'">&gt;</a>');
+      $slideButtons = ('<a href="#" class="prev-slide slide-button" title="'+ Drupal.t('Previous image') +'">&lt;</a><a href="#" class="next-slide slide-button" title="'+ Drupal.t('Next image') +'">&gt;</a>');
       $('.gallery-slides', $el).append($slideButtons);
       // Trigger the appropiate events on click
-      $('a.prev-slide', $el).click(function(){
+      $('a.prev-slide', $el).click(function(e){
+        e.preventDefault();
         $thumbs.trigger('showPrev');
       });
-      $('a.next-slide', $el).click(function(){
+      $('a.next-slide', $el).click(function(e){
+        e.preventDefault();
         $thumbs.trigger('showNext');
       });
     }

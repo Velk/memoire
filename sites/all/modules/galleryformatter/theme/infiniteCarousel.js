@@ -20,7 +20,7 @@
               $single = $items.filter(':first'),
 
               singleWidth = $single.outerWidth(),
-              visible = Math.floor($wrapper.innerWidth() / singleWidth), // note: doesn't include padding or border
+              visible = Math.max(1, Math.floor($wrapper.innerWidth() / singleWidth)), // note: doesn't include padding or border
               currentPage = 1,
               pages = Math.ceil($items.length / visible);
 
@@ -63,7 +63,7 @@
               return false;
           }
 
-          $wrapper.after('<a class="arrow back" title="'+ Drupal.t('Previous page') +'">&lt;</a><a class="arrow forward" title="'+ Drupal.t('Next page') +'">&gt;</a>');
+          $wrapper.after('<a href="#" class="arrow back" title="'+ Drupal.t('Previous page') +'">&lt;</a><a href="#" class="arrow forward" title="'+ Drupal.t('Next page') +'">&gt;</a>');
 
           // 5. Bind to the forward and back buttons
           $('a.back', this).click(function () {

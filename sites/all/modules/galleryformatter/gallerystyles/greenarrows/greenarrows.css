@@ -8,6 +8,7 @@
 .galleryformatter-greenarrows .gallery-thumbs .wrapper,
 .galleryformatter-greenarrows .gallery-thumbs li.active a,
 .galleryformatter-greenarrows .gallery-thumbs li a:hover,
+.galleryformatter-greenarrows .gallery-thumbs li a:focus,
 .galleryformatter-greenarrows .view-full { background:url("images/sprite.png") no-repeat scroll 0 0 transparent; }
 
 .galleryformatter-greenarrows .gallery-slides .panel-overlay {
@@ -33,7 +34,8 @@
   right:0; top:0;
   text-indent:-9999px;
 }
-.galleryformatter-greenarrows a:hover .view-full {
+.galleryformatter-greenarrows a:hover .view-full,
+.galleryformatter-greenarrows a:focus .view-full {
   background-position: center -252px;
 }
 .galleryformatter-greenarrows .gallery-thumbs ul { list-style: none; }
@@ -47,11 +49,15 @@
   display: block;
   padding: 19px 0 7px;
 }
-.galleryformatter-greenarrows .gallery-thumbs li a:hover { background-position: center -307px; }
+.galleryformatter-greenarrows .gallery-thumbs li a:hover,
+.galleryformatter-greenarrows .gallery-thumbs li a:focus {
+  background-position: center -307px;
+}
 .galleryformatter-greenarrows .gallery-thumbs li.active a { background-position: center -303px; }
 
 .galleryformatter-greenarrows .gallery-thumbs li.active img,
-.galleryformatter-greenarrows .gallery-thumbs li a:hover img {
+.galleryformatter-greenarrows .gallery-thumbs li a:hover img,
+.galleryformatter-greenarrows .gallery-thumbs li a:focus img {
   filter:alpha(opacity=100);
   -ms-filter:”alpha(opacity=100)”;
   -moz-opacity:1;
@@ -85,9 +91,15 @@
   left: 0;
 }
 
-.galleryformatter-greenarrows .gallery-thumbs .forward:hover { background-position: 0px -52px; }
+.galleryformatter-greenarrows .gallery-thumbs .forward:hover,
+.galleryformatter-greenarrows .gallery-thumbs .forward:focus {
+  background-position: 0px -52px;
+}
 
-.galleryformatter-greenarrows .gallery-thumbs .back:hover { background-position: -4px -156px; }
+.galleryformatter-greenarrows .gallery-thumbs .back:hover,
+.galleryformatter-greenarrows .gallery-thumbs .back:focus {
+  background-position: -4px -156px;
+}
 
 .galleryformatter-greenarrows .slide-button {
   background: transparent url(images/next-prev.png) no-repeat top left;
@@ -108,7 +120,8 @@
 .galleryformatter-greenarrows .next-slide {
   background-position: top right;
 }
-.galleryformatter-greenarrows .slide-button:hover {
+.galleryformatter-greenarrows .slide-button:hover,
+.galleryformatter-greenarrows .slide-button:focus {
     filter: alpha(opacity=100);
   -ms-filter: ”alpha(opacity=100)”;
   -moz-opacity: 1;
