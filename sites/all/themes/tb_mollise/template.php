@@ -19,22 +19,24 @@ function tb_mollise_preprocess_html(&$vars) {
 
   drupal_add_html_head($viewport, 'viewport');
 
-//  $path = $GLOBALS['base_url'] . '/' . path_to_theme() . '/js/memory.js';
-//  $selectivizr = array(
-//    '#tag' => 'script',
-////    '#attributes' => array(
-////      'src' => $path,
-////    ),
-////    '#prefix' => '<!--[if lte IE 8]>',
-////    '#suffix' => '</script><![endif]-->',
-//    '#value' => ''
-//  );
-//  drupal_add_html_head($selectivizr, 'selectivizr');
-
   // Add font awesome
-  $filepath = path_to_theme() . '/font-awesome/font-awesome-4.7.0/css/font-awesome.min.css';
+  $FontAwesome_filepath = libraries_get_path("font-awesome-4.7.0") . '/css/font-awesome.min.css';
 
-  drupal_add_css($filepath, array(
+  drupal_add_css($FontAwesome_filepath, array(
     'group' => CSS_THEME,
+  ));
+
+  // Add jQuery UI
+  $jQuery_UI_filepath = libraries_get_path("jquery-ui-1.12.1") .  '/jquery-ui.min.js';
+
+  drupal_add_js($jQuery_UI_filepath, array(
+    'group' => JS_THEME,
+  ));
+
+  // Add jQuery UI french language
+  $jQuery_UI_filepath = libraries_get_path("jquery-ui-datepicker-language") .  '/datepicker-fr.js';
+
+  drupal_add_js($jQuery_UI_filepath, array(
+    'group' => JS_THEME,
   ));
 }

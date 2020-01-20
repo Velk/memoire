@@ -52,17 +52,11 @@ else if($isDestinationPage)
       <div>
         <div id="departure-date">
           <i class="fa fa-calendar-o" aria-hidden="true"></i>
-          <div>
-            <label for="departure-date">Date de départ</label>
-            <input type="date" name="departure-date" min="<?= date("Y-m-d"); ?>">
-          </div>
+          <input type="text" id="departure-datepicker" placeholder="Date de départ">
         </div>
         <div id="return-date" style="display:none;">
           <i class="fa fa-calendar-o" aria-hidden="true"></i>
-          <div>
-            <label for="return-date">Date de retour</label>
-            <input type="date" name="return-date" disabled>
-          </div>
+          <input type="text" id="return-datepicker" placeholder="Date de retour" disabled>
         </div>
       </div>
       <div>
@@ -94,6 +88,7 @@ else if($isDestinationPage)
       <hr>
       <div id="trip-global-container">
         <p id="trip-disclaimer">Pour planifier votre devis, veuillez selectionner une date de départ et une date de retour</p>
+        <div></div>
       </div>
       <hr>
       <div id="wish">

@@ -185,9 +185,24 @@ div.trip {
     box-sizing: border-box;
     margin: 0;
 }
-.trip-days-header > i.fa {
+.trip-days-header > i.fa-calendar-o {
     font-size: 18px !important;
     margin-right: 10px;
+}
+.trip-days-header > i.trip-delete-day {
+  position: absolute;
+  top: 0;
+  right: 5px;
+  height: 100%;
+  font-size: 18px !important;
+  padding: 7px 0px;
+  text-align: center;
+  box-sizing: border-box;
+  cursor: pointer;
+  color: #000;
+}
+.trip-days-header > i.trip-delete-day:hover {
+  color: #bbb;
 }
 .trip-days-header > p {
     margin: 0;
@@ -212,31 +227,31 @@ div.trip {
     color: #000000;
 }
 
-.trip-days-details {
+.trip-days-body {
     padding: 15px 0 0 15px;
     box-sizing: border-box;
 }
 
-.trip-days-details > div {
+.trip-days-body > div {
     margin-bottom: 20px;
 }
-.trip-days-details > div:last-of-type {
+.trip-days-body > div:last-of-type {
     margin-bottom: 0;
 }
 
-.hosting-container,
+.trip-accommodation,
 .transfer-container {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
 }
-.hosting-container > p,
+.trip-accommodation > p,
 .transfer-container > p {
     margin: 0 10px 0 0;
     font-size: 14px;
 }
-.hosting-container > button,
+.trip-accommodation > button,
 .transfer-container > button {
     box-sizing: border-box;
     padding: 5px 10px;
@@ -247,7 +262,7 @@ div.trip {
     cursor: pointer;
     min-width: 160px;
 }
-.hosting-container > button:hover,
+.trip-accommodation > button:hover,
 .transfer-container > button:hover {
     background-color: #fdfdfd;
     color: #21acbe;
@@ -985,12 +1000,67 @@ form#devis div#return-date {
   width: 50%;
   display: flex;
   flex-direction: row;
-  align-items: end;
+  align-items: center;
 }
-form#devis div#departure-date > div,
-form#devis div#return-date > div {
+
+/* Start - Datepicker */
+div.ui-datepicker {
+  background-color: #fff;
+  border: 1px solid #bbb;
+  border-radius: 3px;
+  box-shadow: 1px 1px 5px #bbb;
+}
+
+.ui-datepicker-header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.ui-datepicker-title {
   width: 100%;
+  font-size: 14px;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin: 7px 0;
+  box-sizing: border-box;
 }
+
+a.ui-datepicker-prev,
+a.ui-datepicker-next {
+  width: 50%;
+  cursor: pointer;
+  background-color: #21acbe;
+  color: #fff;
+  border: 1px solid #21acbe;
+  box-sizing: border-box;
+}
+a.ui-datepicker-prev:hover,
+a.ui-datepicker-next:hover {
+  background-color: #fff;
+  color: #21acbe;
+}
+
+a.ui-datepicker-current-day {}
+
+td.ui-datepicker-current-day {
+  position: relative;
+}
+td.ui-datepicker-current-day > a {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  color: #fff;
+  background-color: #ff8f10;
+  padding: 7px;
+  border-radius: 50px;
+  text-align: center;
+}
+/* End - Datepicker */
 
 form#devis > div:nth-child(3) {
   display: flex;
