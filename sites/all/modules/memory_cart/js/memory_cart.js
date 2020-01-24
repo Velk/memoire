@@ -7,6 +7,14 @@
       var cartForm = $("#cart-container > div");
       var mainMenuHeight = $("#header-wrapper").outerHeight(true);
 
+      /* Set user cart display in local storage */
+      var currentUserCartVisibility = cartForm.is(":visible");
+      var localStorageCartVisibility = JSON.parse(localStorage.getItem("isCartFormVisible"));
+
+      if(localStorageCartVisibility != null){
+        currentUserCartVisibility = JSON.parse(localStorageCartVisibility);
+      }
+
       // Positioning of the user cart interface
       function setCartInterfacePosition() {
 
@@ -32,12 +40,22 @@
 
           $("#cart-container .toggle-user-cart i:eq(0)").css("display", "none");
           $("#cart-container .toggle-user-cart i:eq(1)").css("display", "block");
+
+          // Set localStorage preference
+          cartForm.show();
+          currentUserCartVisibility = true;
+          localStorage.setItem("isCartFormVisible", JSON.stringify(currentUserCartVisibility));
         }else{
 
           $("#page > div:not(#header-wrapper)").css("width", "100%");
 
           $("#cart-container .toggle-user-cart i:eq(0)").css("display", "block");
           $("#cart-container .toggle-user-cart i:eq(1)").css("display", "none");
+
+          // Set localStorage preference
+          cartForm.hide();
+          currentUserCartVisibility = false;
+          localStorage.setItem("isCartFormVisible", JSON.stringify(currentUserCartVisibility));
         }
       }
 
@@ -58,8 +76,7 @@
       });
 
       // Run functions
-      shiftMainContainer(cartForm.is(":visible"));
-
+      shiftMainContainer(currentUserCartVisibility);
     }
   };
 }(jQuery));
