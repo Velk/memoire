@@ -980,27 +980,112 @@ form#devis {
   box-sizing: border-box;
 }
 
-form#devis > div:nth-child(1),
-form#devis > div:nth-child(2) {
+/* Form : Personnal data */
+form#devis div#personnal-data {
+  display: flex;
+  flex-direction: column;
+}
+form#devis div#personnal-data > h3 {
+  margin: 0 0 15px 0;
+}
+form#devis div#personnal-data > div:nth-of-type(1),
+form#devis div#personnal-data > div:nth-of-type(2) {
   display: flex;
   flex-direction: row;
   margin-bottom: 15px;
 }
-
-form#devis #location,
-form#devis #participants {
-  width: 50%;
+form#devis div#personnal-data > div:nth-of-type(3) {
+  display: flex;
+  flex-direction: column;
+}
+form#devis div#personnal-data #firstname,
+form#devis div#personnal-data #lastname,
+form#devis div#personnal-data #email,
+form#devis div#personnal-data #phone {
   display: flex;
   flex-direction: row;
   align-items: center;
+  width: 50%;
+}
+form#devis #express-validation {
+  text-align: center;
+  margin: 0;
+}
+form#devis div#express-validation > p {
+  margin: 0 0 5px 0;
+  color: #21acbe;
+}
+form#devis #express-validate-cart {
+  box-sizing: border-box;
+  padding: 7px 15px;
+  border: 1px solid #ff8f00;
+  background-color: #ff8f00;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+form#devis #express-validate-cart:hover {
+  background-color: #fff;
+  color: #ff8f00;
+  border: 1px solid #ff8f00;
+}
+form#devis div#personnal-data hr {
+  margin: 30px 0;
 }
 
-form#devis div#departure-date,
-form#devis div#return-date {
-  width: 50%;
+/*form#devis > div:nth-child(1),*/
+/*form#devis > div:nth-child(2) {*/
+/*  display: flex;*/
+/*  flex-direction: row;*/
+/*  margin-bottom: 15px;*/
+/*}*/
+
+/* Form : Quotation data */
+form#devis div#quotation-data {
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 30px 0;
+}
+form#devis div#quotation-data > h3 {
+  margin: 0 0 15px 0;
+}
+form#devis div#quotation-data > div:nth-of-type(1),
+form#devis div#quotation-data > div:nth-of-type(2) {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 15px;
+}
+form#devis div#quotation-data > div:nth-of-type(3) {
+  display: flex;
+  flex-direction: column;
+}
+form#devis div#quotation-data #location,
+form#devis div#quotation-data #participants,
+form#devis div#quotation-data #departure-date,
+form#devis div#quotation-data #return-date {
+  position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
+  width: 50%;
+}
+form#devis #budget {
+  margin-bottom: 15px;
+}
+
+form#devis .clear-input {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px !important;
+  color: #000;
+  cursor: pointer;
+}
+form#devis .clear-input:hover {
+  color: #bbb;
 }
 
 /* Start - Datepicker */
@@ -1062,16 +1147,16 @@ td.ui-datepicker-current-day > a {
 }
 /* End - Datepicker */
 
-form#devis > div:nth-child(3) {
-  display: flex;
-  flex-direction: column;
-}
-form#devis > div:nth-child(3) label {
-  margin-bottom: 10px;
-}
-form#devis > div:nth-child(3) div#budget {
-  margin-bottom: 15px;
-}
+/*form#devis > div:nth-child(3) {*/
+/*  display: flex;*/
+/*  flex-direction: column;*/
+/*}*/
+/*form#devis > div:nth-child(3) label {*/
+/*  margin-bottom: 10px;*/
+/*}*/
+/*form#devis > div:nth-child(3) div#budget {*/
+/*  margin-bottom: 15px;*/
+/*}*/
 
 form#devis input {
   width: 100%;
@@ -1121,7 +1206,31 @@ form#devis hr {
   margin: 50px 0;
 }
 
-form#devis button#empty-cart,
+/* Form : Quotation activities */
+form#devis div#quotation-activities > div:first-of-type {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0 30px 0;
+}
+form#devis button#empty-cart {
+  border: 1px solid #21acbe;
+  background-color: #21acbe;
+  color: #fff;
+  border-radius: 3px;
+  padding: 7px;
+  margin-left: 10px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+form#devis button#empty-cart:hover {
+  border: 1px solid #21acbe;
+  background-color: #fff;
+  color: #21acbe;
+}
+
+
 form#devis button#validate-cart {
   box-sizing: border-box;
   padding: 7px 15px;
@@ -1134,10 +1243,6 @@ form#devis button#validate-cart {
   margin: 25px auto 25px 50%;
   transform: translateX(-50%);
 }
-form#devis button#empty-cart {
-  margin-bottom: 0;
-}
-form#devis button#empty-cart:hover,
 form#devis button#validate-cart:hover {
   background-color: #fff;
   color: #ff8f00;
@@ -1146,6 +1251,6 @@ form#devis button#validate-cart:hover {
 
 form#devis #trip-global-container #trip-disclaimer {
   font-style: italic;
-  color: #ce0707;
+  color: #e40e0e;
   font-size: 14px;
 }

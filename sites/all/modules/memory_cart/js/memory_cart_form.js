@@ -4,30 +4,37 @@
 
       console.log("--- Load : memory_cart_form");
 
-      settings.memory_cart_form = {};
+      var currentLocalStorage = JSON.parse(localStorage.getItem("localStorageCartFormSettings"));
 
-      var location = null;
-      var participants = null;
-      var departureDate = null;
-      var returnDate = null;
-      var budget = null;
-      var transport = null;
-      var wish = null;
+      if(currentLocalStorage === null){
+        settings.memory_cart_form = {
+          "firstname" : null,
+          "lastname" : null,
+          "email" : null,
+          "phone" : null,
+          "location" : null,
+          "participants" : null,
+          "departureDate" : null,
+          "returnDate" : null,
+          "budget" : null,
+          "transport" : null,
+          "wish" : null
+        };
+      }else{
+        settings.memory_cart_form = currentLocalStorage;
+      }
 
-      function setDatePicker(){
+      function initDatePicker(){
 
         var todayDate = new Date();
 
         $( "#departure-datepicker" ).datepicker({
           minDate: new Date(todayDate.getFullYear(), (todayDate.getMonth()), todayDate.getDate()),
-          // defaultDate: "+1w",
-          // changeMonth: true,
           numberOfMonths: 1
         });
 
         $( "#return-datepicker" ).datepicker({
           defaultDate: "+1w",
-          // changeMonth: true,
           numberOfMonths: 1
         });
 
@@ -37,83 +44,107 @@
           $("#return-datepicker").datepicker( $.datepicker.regional["fr"] );
         }
       }
-      setDatePicker();
+      initDatePicker();
 
-      function setFieldsValueToObject(){
-
-        location = $("#location > input").val();
-        participants = $("#participants > input").val();
-        departureDate = $("#departure-datepicker").datepicker("getDate");
-        returnDate = $("#return-datepicker").datepicker("getDate");
-        budget = $("#budget > select").val();
-        transport = $("#transport > select").val();
-        wish = $("#wish > textarea").val();
-
-        settings.memory_cart_form = {
-          "location" : (location === "") ? null : location,
-          "participants" : (participants === "") ? null : participants,
-          "departureDate" : (departureDate === null) ? null : departureDate.getTime(),
-          "returnDate" : (returnDate === null) ? null : returnDate.getTime(),
-          "budget" : parseInt(budget),
-          "transport" : parseInt(transport),
-          "wish" : (wish === "") ? null : wish,
-        };
+      function setLocalStorage(){
+        // Stringify object to pass in localStorage
+        localStorage.setItem("localStorageCartFormSettings", JSON.stringify(settings.memory_cart_form));
       }
+      setLocalStorage();
 
-      $("#validate-cart").click(function(){
-        setFieldsValueToObject();
+      function initLocalStorage(){
+
+        // Retrieve and parse localStorage
+        // var cartFormSettings = JSON.parse(localStorage.getItem("localStorageCartFormSettings"));
+        //
+        // console.log(cartFormSettings);
+      }
+      initLocalStorage();
+
+      // Update field : Firstname
+      $("#firstname input").keyup(function() {
+        var firstname = $(this).val();
+
+        settings.memory_cart_form.firstname = (firstname === "") ? null : firstname;
+        setLocalStorage();
       });
 
-      $("#empty-cart").click(function(){
+      // Update field : Lastname
+      $("#lastname input").keyup(function() {
+        var lastname = $(this).val();
 
-        $("#location > input").val("");
-        $("#participants > input").val("");
-        $("#departure-datepicker").datepicker("setDate", null);
-        // $("#departure-datepicker").datepicker("option", "minDate", null);
-        $("#departure-datepicker").datepicker("option", "maxDate", null);
-        $("#return-datepicker").datepicker("setDate", null);
-        $("#return-datepicker").datepicker("option", "minDate", null);
-        $("#return-datepicker").datepicker("option", "maxDate", null);
-        $("#return-date").prop("disabled", true);
-        $("#return-date").hide();
-        $("#budget > select").find("option").removeAttr("selected");
-        $("#budget > select").find("option[value=\"0\"]").attr("selected", "selected");
-        $("#budget > select").val(0);
-        $("#transport > select").find("option").removeAttr("selected");
-        $("#transport > select").find("option[value=\"0\"]").attr("selected", "selected");
-        $("#transport > select").val(0);
-        $("#wish > select").val("");
+        settings.memory_cart_form.lastname = (lastname === "") ? null : lastname;
+        setLocalStorage();
+      });
 
-        location = null;
-        participants = null;
-        departureDate = null;
-        returnDate = null;
-        budget = null;
-        transport = null;
-        wish = null;
+      // Update field : E-mail
+      $("#email input").keyup(function() {
+        var email = $(this).val();
 
-        $("#trip-global-container > div").empty();
-        $("#trip-disclaimer").show();
+        settings.memory_cart_form.email = (email === "") ? null : email;
+        setLocalStorage();
+      });
+
+      // Update field : Phone
+      $("#phone input").keyup(function() {
+        var phone = $(this).val();
+
+        settings.memory_cart_form.phone = (phone === "") ? null : phone;
+        setLocalStorage();
+      });
+
+      // Update field : Location
+      $("#location input").keyup(function() {
+        var location = $(this).val();
+
+        settings.memory_cart_form.location = (location === "") ? null : location;
+        setLocalStorage();
+      });
+
+      // Update field : Participants
+      $("#participants input").keypress(function (e) {
+        e.preventDefault();
+      });
+      $("#participants input").change(function() {
+        var participants = $(this).val();
+
+        settings.memory_cart_form.participants = (participants === "") ? null : participants;
+        setLocalStorage();
       });
 
       // Update field : Budget
       $("#budget > select").click(function(){
         var budget = $(this).val();
+
         $(this).find("option").removeAttr("selected");
         $(this).find("option[value=\"" + budget + "\"]").attr("selected", "selected");
         $(this).val(budget);
+
+        settings.memory_cart_form.budget = (budget === "") ? null : budget;
+        setLocalStorage();
       });
 
       // Update field : Transport
       $("#transport > select").click(function(){
         var transport = $(this).val();
+
         $(this).find("option").removeAttr("selected");
         $(this).find("option[value=\"" + transport + "\"]").attr("selected", "selected");
         $(this).val(transport);
+
+        settings.memory_cart_form.transport = (transport === "") ? null : transport;
+        setLocalStorage();
+      });
+
+      // Update field : Wish
+      $("#wish textarea").keyup(function() {
+        var wish = $(this).val();
+
+        settings.memory_cart_form.wish = (wish === "") ? null : wish;
+        setLocalStorage();
       });
 
       /* ---------- Date management ---------- */
-
       var lastValueDepartureDate;
       var lastValueReturnDate;
 
@@ -134,12 +165,13 @@
 
           var incrementDate = new Date(currentDepartureDate);
           incrementDate.setDate(incrementDate.getDate() + i);
+          var dayName = $.datepicker.formatDate("DD", incrementDate);
 
           $("#trip-global-container > div").append(
             "<div class=\"trip-days day-" + i + "\">" +
               "<div class=\"trip-days-header\">" +
                 "<i class=\"fa fa-calendar-o\" aria-hidden=\"true\"></i>" +
-                "<p>" + incrementDate.toLocaleDateString() + "</p>" +
+                "<p style=\"text-transform: capitalize;\">" + dayName + " " + incrementDate.toLocaleDateString() + "</p>" +
               "</div>" +
               "<div class=\"trip-days-body\">" +
                 "<div class=\"trip-activities\">" +
@@ -182,7 +214,7 @@
         lastValueDepartureDate = $(this).datepicker("getDate");
       }).on( "change", function() {
 
-        departureDate = $(this).datepicker("getDate");
+        var departureDate = $(this).datepicker("getDate");
 
         if(lastValueDepartureDate === null){ // Initialize the departure date
 
@@ -191,36 +223,47 @@
           $("#return-datepicker").datepicker("option", "minDate", departureDate);
         }else{
 
-          if(departureDate === null){ // Delete the departure date
+          var isConfirmed = confirm("Attention, vous avez sélectionné de nouvelle date. Certaines journées ainsi que leurs activités seront supprimées.");
 
-            var isConfirmed = confirm("Attention, vous avez sélectionné de nouvelle date. Certaines journées ainsi que leurs activités seront supprimées.");
+          if(isConfirmed){
 
-            if(isConfirmed) {
-              $("#return-datepicker").datepicker("option", "minDate", null);
-              $("#return-datepicker").prop("disabled", true);
-              $("#return-datepicker").datepicker("setDate", null);
-              $("#return-date").hide();
-              returnDate = null;
+            $("#return-datepicker").datepicker("option", "minDate", departureDate);
 
-              $("#departure-datepicker").datepicker("option", "maxDate", null);
-
-              updateDates();
-            }else{ // Cancel change
-              $(this).datepicker("setDate", lastValueDepartureDate);
-            }
-          }else{ // Change the departure date
-
-            var isConfirmed = confirm("Attention, vous avez sélectionné de nouvelle date. Certaines journées ainsi que leurs activités seront supprimées.");
-
-            if(isConfirmed){
-
-              $("#return-datepicker").datepicker("option", "minDate", departureDate);
-
-              updateDates();
-            }else{
-              $(this).datepicker("setDate", lastValueDepartureDate);
-            }
+            updateDates();
+          }else{
+            $(this).datepicker("setDate", lastValueDepartureDate);
           }
+        }
+
+        settings.memory_cart_form.departureDate = (departureDate === null) ? null : departureDate.getTime();
+        setLocalStorage();
+
+        $("#departure-date i.clear-input").css("display", "block");
+      });
+
+      // Delete the departure date
+      $("#departure-date i.clear-input").click(function(){
+
+        var isConfirmed = confirm("Attention, vous avez sélectionné de nouvelle date. Certaines journées ainsi que leurs activités seront supprimées.");
+
+        if(isConfirmed) {
+
+          $("#return-datepicker").datepicker("option", "minDate", null);
+          $("#return-datepicker").prop("disabled", true);
+          $("#return-datepicker").datepicker("setDate", null);
+          $("#return-date").hide();
+
+          settings.memory_cart_form.returnDate = null;
+          settings.memory_cart_form.departureDate = null;
+
+          $("#departure-datepicker").datepicker("option", "maxDate", null);
+          $("#departure-datepicker").datepicker("setDate", null);
+
+          setLocalStorage();
+          updateDates();
+
+          $("#departure-date i.clear-input").css("display", "none");
+          $("#return-date i.clear-input").css("display", "none");
         }
       });
 
@@ -228,7 +271,7 @@
         lastValueReturnDate = $(this).datepicker("getDate");
       }).on( "change", function() {
 
-        returnDate = $(this).datepicker("getDate");
+        var returnDate = $(this).datepicker("getDate");
 
         if(lastValueReturnDate === null) { // Initialize the return date
 
@@ -236,29 +279,39 @@
           updateDates();
         }else{
 
-          if(returnDate === null){ // Delete the return date
+          var isConfirmed = confirm("Attention, vous avez sélectionné de nouvelle date. Certaines journées ainsi que leurs activités seront supprimées.");
 
-            var isConfirmed = confirm("Attention, vous avez sélectionné de nouvelle date. Certaines journées ainsi que leurs activités seront supprimées.");
+          if(isConfirmed){
 
-            if(isConfirmed){
-
-              $("#departure-datepicker").datepicker("option", "maxDate", null);
-              updateDates();
-            }else{ // Cancel change
-              $(this).datepicker("setDate", lastValueReturnDate);
-            }
-          }else{ // Change the return date
-
-            var isConfirmed = confirm("Attention, vous avez sélectionné de nouvelle date. Certaines journées ainsi que leurs activités seront supprimées.");
-
-            if(isConfirmed){
-
-              $("#departure-datepicker").datepicker("option", "maxDate", returnDate);
-              updateDates();
-            }else{ // Cancel change
-              $(this).datepicker("setDate", lastValueReturnDate);
-            }
+            $("#departure-datepicker").datepicker("option", "maxDate", returnDate);
+            updateDates();
+          }else{ // Cancel change
+            $(this).datepicker("setDate", lastValueReturnDate);
           }
+        }
+
+        settings.memory_cart_form.returnDate = (returnDate === null) ? null : returnDate.getTime();
+        setLocalStorage();
+
+        $("#return-date i.clear-input").css("display", "block");
+      });
+
+      // Delete the return date
+      $("#return-date i.clear-input").click(function(){
+
+        var isConfirmed = confirm("Attention, vous avez sélectionné de nouvelle date. Certaines journées ainsi que leurs activités seront supprimées.");
+
+        if(isConfirmed){
+
+          $("#departure-datepicker").datepicker("option", "maxDate", null);
+          $("#return-datepicker").datepicker("setDate", null);
+
+          settings.memory_cart_form.returnDate = null;
+          setLocalStorage();
+
+          updateDates();
+
+          $("#return-date i.clear-input").css("display", "none");
         }
       });
 
@@ -277,7 +330,89 @@
           $("#return-datepicker").datepicker("setDate", newReturnDate);
           $("#departure-datepicker").datepicker("option", "maxDate", newReturnDate);
 
+          settings.memory_cart_form.returnDate = currentReturnDate.getTime();
+          setLocalStorage();
+
           updateDates();
+        }
+      });
+
+      /* ---------- Validate cart ---------- */
+      // function setFieldsValueToObject(){
+      //
+      //   location = $("#location > input").val();
+      //   participants = $("#participants > input").val();
+      //   departureDate = $("#departure-datepicker").datepicker("getDate");
+      //   returnDate = $("#return-datepicker").datepicker("getDate");
+      //   budget = $("#budget > select").val();
+      //   transport = $("#transport > select").val();
+      //   wish = $("#wish > textarea").val();
+      //
+      //   settings.memory_cart_form = {
+      //     "location" : (location === "") ? null : location,
+      //     "participants" : (participants === "") ? null : participants,
+      //     "departureDate" : (departureDate === null) ? null : departureDate.getTime(),
+      //     "returnDate" : (returnDate === null) ? null : returnDate.getTime(),
+      //     "budget" : parseInt(budget),
+      //     "transport" : parseInt(transport),
+      //     "wish" : (wish === "") ? null : wish,
+      //   };
+      // }
+
+      // $("#validate-cart").click(function(){
+      //   setFieldsValueToObject();
+      // });
+
+      /* ---------- Empty cart ---------- */
+      $("#empty-cart").click(function(){
+
+        var isConfirmed = confirm("Attention, les données relatives à votre séjour ainsi que les activités seront supprimées. Voulez-vous continuer ?");
+
+        if(isConfirmed){
+
+          $("#location > input").val("");
+
+          $("#participants > input").val("");
+
+          $("#departure-datepicker").datepicker("setDate", null);
+          $("#departure-datepicker").datepicker("option", "maxDate", null);
+
+          $("#return-datepicker").datepicker("setDate", null);
+          $("#return-datepicker").datepicker("option", "minDate", null);
+          $("#return-datepicker").datepicker("option", "maxDate", null);
+          $("#return-date").prop("disabled", true);
+          $("#return-date").hide();
+
+          $("#budget > select").find("option").removeAttr("selected");
+          $("#budget > select").find("option[value=\"\"]").attr("selected", "selected");
+          $("#budget > select").val("");
+
+          $("#transport > select").find("option").removeAttr("selected");
+          $("#transport > select").find("option[value=\"\"]").attr("selected", "selected");
+          $("#transport > select").val("");
+
+          $("#wish textarea").val("");
+
+          settings.memory_cart_form = {
+            "firstname" : settings.memory_cart_form.firstname,
+            "lastname" : settings.memory_cart_form.lastname,
+            "email" : settings.memory_cart_form.email,
+            "phone" : settings.memory_cart_form.phone,
+            "location" : null,
+            "participants" : null,
+            "departureDate" : null,
+            "returnDate" : null,
+            "budget" : null,
+            "transport" : null,
+            "wish" : null,
+          };
+
+          setLocalStorage();
+
+          $("#trip-global-container > div").empty();
+          $("#trip-disclaimer").show();
+          $("#departure-date i.clear-input").css("display", "none");
+          $("#return-date i.clear-input").css("display", "none");
         }
       });
     }

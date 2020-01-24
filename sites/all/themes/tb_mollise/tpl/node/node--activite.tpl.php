@@ -353,7 +353,7 @@ foreach ($activity_family_field as $activity_family_iteration){
             if( !empty($activity_basic_prest_price_precision) )
               $prestation_base_price =
                 $prestation_base_price .
-                "<p class=\"prestation-price-precision\">" . $activity_basic_prest_price_precision . " €</p>";
+                "<p class=\"prestation-price-precision\">" . $activity_basic_prest_price_precision . "</p>";
 
             $prestation_base_price = $prestation_base_price . "</div>";
           }
@@ -487,7 +487,7 @@ foreach ($activity_family_field as $activity_family_iteration){
                     if( !empty($activity_options[$i]["price_precision"]) )
                       $prestation_price =
                         $prestation_price .
-                        "<p class=\"prestation-price-precision\">" . $activity_options[$i]["price_precision"] . " €</p>";
+                        "<p class=\"prestation-price-precision\">" . $activity_options[$i]["price_precision"] . "</p>";
 
                     $prestation_price = $prestation_price . "</div>";
                   }
