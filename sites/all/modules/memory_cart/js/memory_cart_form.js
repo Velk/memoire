@@ -34,7 +34,7 @@
         });
 
         $( "#return-datepicker" ).datepicker({
-          defaultDate: "+1w",
+          //defaultDate: "+1w",
           numberOfMonths: 1
         });
 
@@ -51,15 +51,6 @@
         localStorage.setItem("localStorageCartFormSettings", JSON.stringify(settings.memory_cart_form));
       }
       setLocalStorage();
-
-      function initLocalStorage(){
-
-        // Retrieve and parse localStorage
-        // var cartFormSettings = JSON.parse(localStorage.getItem("localStorageCartFormSettings"));
-        //
-        // console.log(cartFormSettings);
-      }
-      initLocalStorage();
 
       // Update field : Firstname
       $("#firstname input").keyup(function() {
@@ -362,6 +353,49 @@
       // $("#validate-cart").click(function(){
       //   setFieldsValueToObject();
       // });
+
+
+      function initLocalStorage(){
+
+        // Retrieve and parse localStorage
+        var cartFormSettings = JSON.parse(localStorage.getItem("localStorageCartFormSettings"));
+
+        console.log("--- cartFormSettings");
+        console.log(cartFormSettings);
+
+        $("#firstname input").val(cartFormSettings.firstname);
+        $("#lastname input").val(cartFormSettings.lastname);
+        $("#email input").val(cartFormSettings.email);
+        $("#phone input").val(cartFormSettings.phone);
+
+        $("#location input").val(cartFormSettings.location);
+        $("#participants input").val(cartFormSettings.participants);
+
+        if(cartFormSettings.departureDate != null){
+          $("#departure-datepicker").datepicker("setDate", new Date(cartFormSettings.departureDate));
+          $("#return-date").show();
+          $("#return-datepicker").removeAttr("disabled");
+          $("#return-datepicker").datepicker("option", "minDate", new Date(cartFormSettings.departureDate));
+          $("#departure-date i.clear-input").css("display", "block");
+        }
+
+        if(cartFormSettings.returnDate != null){
+          $("#return-datepicker").datepicker("setDate", new Date(cartFormSettings.returnDate));
+          $("#departure-datepicker").datepicker("option", "maxDate", new Date(cartFormSettings.returnDate));
+          updateDates();
+          $("#return-date i.clear-input").css("display", "block");
+        }
+
+        $("#budget select").find("option").removeAttr("selected");
+        $("#budget select").find("option[value=\"" + ((cartFormSettings.budget != null) ? cartFormSettings.budget : "") + "\"]").attr("selected", "selected");
+        $("#budget select").val(cartFormSettings.budget);
+        $("#transport select").find("option").removeAttr("selected");
+        $("#transport select").find("option[value=\"" + ((cartFormSettings.transport != null) ? cartFormSettings.transport : "") + "\"]").attr("selected", "selected");
+        $("#transport select").val(cartFormSettings.transport);
+
+        $("#wish textarea").val(cartFormSettings.wish);
+      }
+      initLocalStorage();
 
       /* ---------- Empty cart ---------- */
       $("#empty-cart").click(function(){
