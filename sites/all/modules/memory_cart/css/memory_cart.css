@@ -691,14 +691,6 @@ div#user-cart-user-approval > label {
   font-weight: 300;
 }
 
-div#user-cart-user-datas-container input:-webkit-autofill,
-div#user-cart-user-datas-container input:-webkit-autofill:hover,
-div#user-cart-user-datas-container input:-webkit-autofill:focus,
-div#user-cart-user-datas-container input:-webkit-autofill:active  {
-  -webkit-box-shadow: 0 0 0 30px #fff inset !important;
-  -webkit-text-fill-color: #212121 !important;
-}
-
 button#user-not-logged-validate-cart {
   box-sizing: border-box;
   padding: 5px 10px;
@@ -1167,6 +1159,7 @@ form#devis input {
   background-color: transparent;
   font-size: 14px;
   cursor: pointer;
+  color: #000;
 }
 form#devis select {
   border: 1px solid #21acbe;
@@ -1176,6 +1169,7 @@ form#devis select {
   font-size: 14px;
   width: 100%;
   cursor: pointer;
+  color: #000;
 }
 form#devis textarea {
   background: transparent;
@@ -1186,6 +1180,7 @@ form#devis textarea {
   border: 1px solid #21acbe;
   resize: vertical;
   cursor: pointer;
+  color: #000;
 }
 form#devis select:hover,
 form#devis textarea:hover {
