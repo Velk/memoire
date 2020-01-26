@@ -125,7 +125,7 @@ else if($isDestinationPage)
         </div>
         <div id="trip-global-container">
           <p id="trip-disclaimer">Pour planifier votre devis, veuillez selectionner une date de départ et une date de retour</p>
-          <div></div>
+          <div id="trip-activities-container"></div>
         </div>
         <hr>
       </div>

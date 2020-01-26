@@ -189,7 +189,8 @@ div.trip {
     font-size: 18px !important;
     margin-right: 10px;
 }
-.trip-days-header > i.trip-delete-day {
+.trip-days-header > i.trip-delete-day,
+.trip-days-header > i.trip-delete-default-day {
   position: absolute;
   top: 0;
   right: 5px;
@@ -201,7 +202,8 @@ div.trip {
   cursor: pointer;
   color: #000;
 }
-.trip-days-header > i.trip-delete-day:hover {
+.trip-days-header > i.trip-delete-day:hover,
+.trip-days-header > i.trip-delete-default-day:hover {
   color: #bbb;
 }
 .trip-days-header > p {
