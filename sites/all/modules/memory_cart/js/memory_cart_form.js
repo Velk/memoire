@@ -156,10 +156,12 @@
 
           var incrementDate = new Date(currentDepartureDate);
           incrementDate.setDate(incrementDate.getDate() + i);
-          var dayName = $.datepicker.formatDate("DD", incrementDate);
 
-          $("#trip-global-container > div").append(
-            "<div class=\"trip-days day-" + i + "\">" +
+          var dayName = $.datepicker.formatDate("DD", incrementDate);
+          var timestamp = $.datepicker.formatDate("@", incrementDate)
+
+          $("#trip-global-container > div#trip-activities-container").append(
+            "<div class=\"trip-days day-" + i + "\" data-day-timestamp=\"" + timestamp + "\">" +
               "<div class=\"trip-days-header\">" +
                 "<i class=\"fa fa-calendar-o\" aria-hidden=\"true\"></i>" +
                 "<p style=\"text-transform: capitalize;\">" + dayName + " " + incrementDate.toLocaleDateString() + "</p>" +
@@ -176,6 +178,11 @@
             "</div>"
           );
 
+          // Delete accomodation for the last day
+          if(i === totalNumberOfDays){
+            $("div.trip-days.day-" + i).find(".trip-accommodation").remove();
+          }
+
           // Add deleting day button when there are more than 1 day
           if(totalNumberOfDays > 0){
             $("#trip-global-container .trip-days-header").append("<i class=\"fa fa-times trip-delete-day\" aria-hidden=\"true\"></i>");
@@ -189,7 +196,7 @@
         var currentReturnDate = $("#return-datepicker").datepicker("getDate");
         var currentDepartureDate = $("#departure-datepicker").datepicker("getDate");
 
-        $("#trip-global-container > div").empty();
+        $("#trip-global-container > div#trip-activities-container").empty();
 
         if(currentReturnDate !== null && currentDepartureDate !== null){
           $("#trip-disclaimer").hide();
@@ -309,13 +316,12 @@
       // Delete day
       $("#trip-global-container").on("click", "i.trip-delete-day", function(){
 
-        var isConfirmed = confirm("Attention, vous avez sélectionné de nouvelle date. Certaines journées ainsi que leurs activités seront supprimées.");
+        var isConfirmed = confirm("Attention, vous allez supprimer une journée ce qui modifiera le calendrier. Les activités relatives à cette date seront supprimées.");
 
         if(isConfirmed) {
 
           var currentReturnDate = $("#return-datepicker").datepicker("getDate");
           currentReturnDate.setDate(currentReturnDate.getDate() - 1);
-          // var newReturnDate = currentReturnDate.toISOString().split('T')[0];
           var newReturnDate = $.datepicker.formatDate( "dd/mm/yy", currentReturnDate);
 
           $("#return-datepicker").datepicker("setDate", newReturnDate);
@@ -327,33 +333,6 @@
           updateDates();
         }
       });
-
-      /* ---------- Validate cart ---------- */
-      // function setFieldsValueToObject(){
-      //
-      //   location = $("#location > input").val();
-      //   participants = $("#participants > input").val();
-      //   departureDate = $("#departure-datepicker").datepicker("getDate");
-      //   returnDate = $("#return-datepicker").datepicker("getDate");
-      //   budget = $("#budget > select").val();
-      //   transport = $("#transport > select").val();
-      //   wish = $("#wish > textarea").val();
-      //
-      //   settings.memory_cart_form = {
-      //     "location" : (location === "") ? null : location,
-      //     "participants" : (participants === "") ? null : participants,
-      //     "departureDate" : (departureDate === null) ? null : departureDate.getTime(),
-      //     "returnDate" : (returnDate === null) ? null : returnDate.getTime(),
-      //     "budget" : parseInt(budget),
-      //     "transport" : parseInt(transport),
-      //     "wish" : (wish === "") ? null : wish,
-      //   };
-      // }
-
-      // $("#validate-cart").click(function(){
-      //   setFieldsValueToObject();
-      // });
-
 
       function initLocalStorage(){
 
@@ -443,7 +422,7 @@
 
           setLocalStorage();
 
-          $("#trip-global-container > div").empty();
+          $("#trip-global-container > div#trip-activities-container").empty();
           $("#trip-disclaimer").show();
           $("#departure-date i.clear-input").css("display", "none");
           $("#return-date i.clear-input").css("display", "none");
