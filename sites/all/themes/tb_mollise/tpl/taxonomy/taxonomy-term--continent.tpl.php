@@ -72,7 +72,7 @@
         <?php
         foreach($activities as $activity){
             if( isset( $cnt[$activity->tid] ) ) {
-                echo '<div class="cont-filter cont-filter-' . $activity->tid . '">';
+                echo '<div class="cont-filter filter-' . $activity->tid . '">';
                 switch ($activity->name) {
                     case "Activités de jour" :
                         print '<p><i class="fa fa-sun-o" aria-hidden="true"></i>' . $activity->name . '</p>';
@@ -98,7 +98,7 @@
     <div id="cont-main">
         <?php foreach($activities as $activity): ?>
             <?php if( isset( $cnt[$activity->tid] ) ){ ?>
-            <div id="cont-<?php print $activity->tid ?>" class="cont-container">
+            <div id="filter-<?php print $activity->tid ?>" class="cont-container">
                 <?php
                 switch($activity->name){
                     case "Activités de jour" :

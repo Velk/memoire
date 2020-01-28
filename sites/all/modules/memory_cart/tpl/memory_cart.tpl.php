@@ -27,16 +27,20 @@ foreach ($vocab_activities_tree as $vocab_activity_tree){
 
 // HTML Structure
 $cart_class = "";
+$cart_display = "";
 
 if(drupal_is_front_page())
-  $cart_class = "cart-hide";
-else if($isActivityPage)
-  $cart_class = "activity-page cart-show";
-else if($isDestinationPage)
-  $cart_class = "destination-page cart-show";
+  $cart_display = "cart-hide";
+else if($isActivityPage) {
+  $cart_class = "activity-page";
+  $cart_display = "cart-show";
+}else if($isDestinationPage) {
+  $cart_class = "destination-page";
+  $cart_display = "cart-show";
+}
 ?>
-<div id="cart-container">
-  <div class="<?=$cart_class?>">
+<div id="cart-container" class="<?=$cart_class?>">
+  <div class="<?=$cart_display?>">
     <h2>Préparez votre aventure</h2>
     <form id="devis">
       <div id="personnal-data">
@@ -146,30 +150,3 @@ else if($isDestinationPage)
   }
   ?>
 </div>
-<?php if(!$is_user_logged_in){ ?>
-<div id="user-cart-user-not-logged-container">
-    <div>
-        <h2>Demande d'informations</h2>
-        <div id="user-cart-user-datas-container">
-            <div id="user-cart-user-firstname">
-              <input type="text" name="firstname"  placeholder="Prénom">
-            </div>
-            <div id="user-cart-user-lastname">
-              <input type="text" name="lastname"  placeholder="Nom">
-            </div>
-            <div id="user-cart-user-email">
-              <input type="text" name="email"  placeholder="E-mail">
-            </div>
-            <div id="user-cart-user-phone">
-              <input type="text" name="phone"  placeholder="Téléphone">
-            </div>
-            <div id="user-cart-user-approval">
-              <input type="checkbox" name="approval">
-              <label for="approval">J'accepte d'être contacté par Memory.</label>
-            </div>
-            <button type="button" id="user-not-logged-validate-cart">Valider</button>
-        </div>
-        <button type="button" id="user-not-logged-remove-overlay"><i class="fa fa-times" aria-hidden="true"></i></button>
-    </div>
-</div>
-<?php } ?>

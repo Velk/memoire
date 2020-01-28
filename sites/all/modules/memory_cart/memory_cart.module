@@ -413,18 +413,8 @@ function memory_cart_block_view($delta = '') {
     switch ($delta) {
         case 'memory_cart':
 
-            $is_user_logged_in = null;
-
-            if(user_is_logged_in()){
-              $is_user_logged_in = true;
-            }else{
-              $is_user_logged_in = false;
-            }
-
-            $data['is_user_logged_in'] = $is_user_logged_in;
-
             // Link the template
-            $block['content']['#markup'] = theme('tpl_memory_cart', $data);
+            $block['content']['#markup'] = theme('tpl_memory_cart');
 
             // Link a css file
             $block['content']['#attached']['css'][] = array(
