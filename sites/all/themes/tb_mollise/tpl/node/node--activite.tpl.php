@@ -61,7 +61,7 @@ $activity_basic_prest_quote = $activity_basic_prest_quote_field[0]["value"];
 
 // Retrieve the activity basic prestation image
 $activity_basic_prest_image_field = field_get_items('node', $node, 'field_image_prestation_base');
-$activity_basic_prest_image = file_create_url($activity_basic_prest_image_field[0]["uri"]);
+$activity_basic_prest_image = (!empty($activity_basic_prest_image_field)) ? file_create_url($activity_basic_prest_image_field[0]["uri"]) : null;
 
 // Retrieve the activity basic prestation text
 $activity_basic_prest_text_field = field_get_items('node', $node, 'field_text_prestation_base');

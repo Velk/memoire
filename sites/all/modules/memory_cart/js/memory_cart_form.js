@@ -188,6 +188,18 @@
             $("#trip-global-container .trip-days-header").append("<i class=\"fa fa-times trip-delete-day\" aria-hidden=\"true\"></i>");
           }
         }
+
+        // Add transfer for the first and last day
+        var transferStructureHTML =
+          "<div class=\"trip-transfer\">" +
+            "<p>Aucun transfert</p>" +
+            "<button type=\"button\" class=\"filter-68\">VOIR TRANSFERTS</button>" +
+          "</div>"
+        ;
+
+        $("#trip-global-container")
+          .prepend(transferStructureHTML)
+          .append(transferStructureHTML);
       }
 
       // Clean the HTML days container then add the new HTML structure
@@ -197,6 +209,7 @@
         var currentDepartureDate = $("#departure-datepicker").datepicker("getDate");
 
         $("#trip-global-container > div#trip-activities-container").empty();
+        $(".trip-transfer").remove();
 
         if(currentReturnDate !== null && currentDepartureDate !== null){
           $("#trip-disclaimer").hide();
@@ -423,6 +436,7 @@
           setLocalStorage();
 
           $("#trip-global-container > div#trip-activities-container").empty();
+          $(".trip-transfer").remove();
           $("#trip-disclaimer").show();
           $("#departure-date i.clear-input").css("display", "none");
           $("#return-date i.clear-input").css("display", "none");
