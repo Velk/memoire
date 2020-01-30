@@ -289,9 +289,10 @@ div.trip {
   margin: 25px;
 }
 
-/* Design for activities, transfer*/
+/* Design for activities, transfer, accommodations*/
 #trip-global-container .activities,
-#trip-global-container .transfer {
+#trip-global-container .transfer,
+#trip-global-container .accommodation {
     display: flex;
     width: 100%;
     flex-direction: row;
@@ -303,7 +304,8 @@ div.trip {
     margin-bottom: 5px;
 }
 #trip-global-container .activities:last-of-type,
-#trip-global-container .transfer:last-of-type {
+#trip-global-container .transfer:last-of-type,
+#trip-global-container .accommodation:last-of-type {
     margin-bottom: 0;
 }
 #trip-global-container .activities-img-container {
@@ -371,7 +373,8 @@ div.trip {
 }
 
 #trip-global-container button.btn-remove-activity,
-#trip-global-container button.btn-remove-transfer {
+#trip-global-container button.btn-remove-transfer,
+#trip-global-container button.btn-remove-accommodation {
     margin-left: auto;
     position: relative;
     height: 100%;
@@ -382,7 +385,8 @@ div.trip {
     padding: 0;
 }
 #trip-global-container button.btn-remove-activity > i.fa,
-#trip-global-container button.btn-remove-transfer > i.fa {
+#trip-global-container button.btn-remove-transfer > i.fa,
+#trip-global-container button.btn-remove-accommodation > i.fa {
     font-size: 14px;
     width: 20px;
 }
