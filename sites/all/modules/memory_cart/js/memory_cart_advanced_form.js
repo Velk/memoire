@@ -17,6 +17,10 @@
   Drupal.behaviors.memory_cart_advanced_form = {
 
     setDrupalConfig : function(){
+      activityCategory = $(".activity-category").val();
+      activityNid = $(".activity-nid").val();
+      activityTitle = $(".activity-title").val();
+      activityDestinationPath = $(".activity-destination-path").val();
       _advancedFormConfig = Drupal.behaviors.memory_cart_advanced_form;
     },
 
@@ -196,10 +200,6 @@
       // Add an activity to the user cart
       $(".cont-add-cart").click(function(){
 
-        activityCategory = $(".activity-category").val();
-        activityNid = $(".activity-nid").val();
-        activityTitle = $(".activity-title").val();
-        activityDestinationPath = $(".activity-destination-path").val();
         activityContainer = $(this).parent().parent().parent();
 
         optionImage = activityContainer.children("div.prestation-main").find("div.prestation-image").css("background-image");
