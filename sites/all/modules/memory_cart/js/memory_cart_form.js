@@ -178,7 +178,7 @@
             "</div>"
           );
 
-          // Delete accomodation for the last day
+          // Delete accommodation for the last day
           if(i === totalNumberOfDays){
             $("div.trip-days.day-" + i).find(".trip-accommodation").remove();
           }
@@ -341,9 +341,29 @@
           $("#departure-datepicker").datepicker("option", "maxDate", newReturnDate);
 
           settings.memory_cart_form.returnDate = currentReturnDate.getTime();
+
+          // Update localStorage for accommodations
+          settings.memory_cart_advanced_form.accommodations.splice($(this).parent().parent().index(),1);
+
+          // Update accommodation localStorage if an accommodation is set in the N-1 day
+          var currentDayIndex = $(this).parent().parent().index();
+          if(currentDayIndex === $("#trip-activities-container .trip-days").length - 1){ // Check if the removing day is the last one
+
+            var accommodationIndexToRemove = (currentDayIndex === 0) ? 0 : (currentDayIndex - 1);
+
+            if($("#trip-activities-container div.trip-days.day-" + accommodationIndexToRemove + " .accommodation").length !== 0){
+              // Remove the last accommodation : Update localStorage for accommodations
+              settings.memory_cart_advanced_form.accommodations.splice(accommodationIndexToRemove,1);
+            }
+          }
+
+          Drupal.behaviors.memory_cart_advanced_form.setLocalStorage(settings);
+
           setLocalStorage();
 
           updateDates();
+
+          Drupal.behaviors.memory_cart_advanced_form.initLocalStorage(settings);
         }
       });
 
