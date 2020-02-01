@@ -24,6 +24,18 @@
         settings.memory_cart_form = currentLocalStorage;
       }
 
+      var localStorageCartTrip = JSON.parse(localStorage.getItem("localStorageCartTrip"));
+
+      if(localStorageCartTrip === null){
+        settings.memory_cart_advanced_form = {
+          "transfers" : [null, null],
+          "accommodations" : [],
+          "activities" : {},
+        };
+      }else{
+        settings.memory_cart_advanced_form = localStorageCartTrip;
+      }
+
       function initDatePicker(){
 
         var todayDate = new Date();
@@ -158,10 +170,10 @@
           incrementDate.setDate(incrementDate.getDate() + i);
 
           var dayName = $.datepicker.formatDate("DD", incrementDate);
-          var timestamp = $.datepicker.formatDate("@", incrementDate)
+          var timestamp = $.datepicker.formatDate("@", incrementDate);
 
           $("#trip-global-container > div#trip-activities-container").append(
-            "<div class=\"trip-days day-" + i + "\" data-day-timestamp=\"" + timestamp + "\">" +
+            "<div class=\"trip-days day-" + (i + 1) + "\" data-day-timestamp=\"" + timestamp + "\">" +
               "<div class=\"trip-days-header\">" +
                 "<i class=\"fa fa-calendar-o\" aria-hidden=\"true\"></i>" +
                 "<p style=\"text-transform: capitalize;\">" + dayName + " " + incrementDate.toLocaleDateString() + "</p>" +
@@ -180,12 +192,18 @@
 
           // Delete accommodation for the last day
           if(i === totalNumberOfDays){
-            $("div.trip-days.day-" + i).find(".trip-accommodation").remove();
+            $("div.trip-days.day-" + (i + 1)).find(".trip-accommodation").remove();
           }
 
           // Add deleting day button when there are more than 1 day
           if(totalNumberOfDays > 0){
-            $("#trip-global-container .trip-days-header").append("<i class=\"fa fa-times trip-delete-day\" aria-hidden=\"true\"></i>");
+            $("#trip-global-container div.trip-days.day-" + (i + 1) + " .trip-days-header").append("<i class=\"fa fa-times trip-delete-day\" aria-hidden=\"true\"></i>");
+          }
+
+          // Set localStorage timestamp structure
+          if(!((i + 1) in settings.memory_cart_advanced_form.activities)){ // If key index does not exist
+            settings.memory_cart_advanced_form.activities[(i + 1)] = [];
+            Drupal.behaviors.memory_cart_advanced_form.setLocalStorage(settings);
           }
         }
 
@@ -275,6 +293,10 @@
 
           $("#departure-date i.clear-input").css("display", "none");
           $("#return-date i.clear-input").css("display", "none");
+
+          // Drupal.behaviors.memory_cart_advanced_form.switchLocalStorageActivityKeys(settings, false);
+          // // isHtmlDefaultStructureSet = false;
+          Drupal.behaviors.memory_cart_advanced_form.initLocalStorage(settings, false,false);
         }
       });
 
@@ -288,6 +310,12 @@
 
           $("#departure-datepicker").datepicker("option", "maxDate", returnDate);
           updateDates();
+
+          // Drupal.behaviors.memory_cart_advanced_form.switchLocalStorageActivityKeys(settings, true);
+
+          console.log("CHANGE INIT");
+
+          Drupal.behaviors.memory_cart_advanced_form.initLocalStorage(settings, true,true);
         }else{
 
           var isConfirmed = confirm("Attention, vous avez sélectionné de nouvelle date. Certaines journées ainsi que leurs activités seront supprimées.");
@@ -296,6 +324,8 @@
 
             $("#departure-datepicker").datepicker("option", "maxDate", returnDate);
             updateDates();
+
+            Drupal.behaviors.memory_cart_advanced_form.initLocalStorage(settings, true,true);
           }else{ // Cancel change
             $(this).datepicker("setDate", lastValueReturnDate);
           }
@@ -323,6 +353,10 @@
           updateDates();
 
           $("#return-date i.clear-input").css("display", "none");
+
+          // Drupal.behaviors.memory_cart_advanced_form.switchLocalStorageActivityKeys(settings, false);
+          // // isHtmlDefaultStructureSet = false;
+          Drupal.behaviors.memory_cart_advanced_form.initLocalStorage(settings, false,false);
         }
       });
 
@@ -342,8 +376,11 @@
 
           settings.memory_cart_form.returnDate = currentReturnDate.getTime();
 
+          var activitiesContainerToDelete = $(this).parent().parent();
+          var dayIndexToDelete = activitiesContainerToDelete.index() + 1; // Day starts at 1 not 0
+
           // Update localStorage for accommodations
-          settings.memory_cart_advanced_form.accommodations.splice($(this).parent().parent().index(),1);
+          settings.memory_cart_advanced_form.accommodations.splice(activitiesContainerToDelete.index(),1);
 
           // Update accommodation localStorage if an accommodation is set in the N-1 day
           var currentDayIndex = $(this).parent().parent().index();
@@ -357,13 +394,24 @@
             }
           }
 
+          // Remove activities : Update localStorage for activities
+          delete(settings.memory_cart_advanced_form.activities[dayIndexToDelete]);
+
+          // Update localStorage in order to change the key (day) value for day greater than the one to delete
+          for(var[key, value] of Object.entries(settings.memory_cart_advanced_form.activities)) {
+            if(key > dayIndexToDelete){
+              Object.defineProperty(settings.memory_cart_advanced_form.activities, (key - 1), Object.getOwnPropertyDescriptor(settings.memory_cart_advanced_form.activities, key));
+              delete settings.memory_cart_advanced_form.activities[key];
+            }
+          }
+
           Drupal.behaviors.memory_cart_advanced_form.setLocalStorage(settings);
 
           setLocalStorage();
 
           updateDates();
 
-          Drupal.behaviors.memory_cart_advanced_form.initLocalStorage(settings);
+          Drupal.behaviors.memory_cart_advanced_form.initLocalStorage(settings, true, true);
         }
       });
 
