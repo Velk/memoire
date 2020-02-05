@@ -8,7 +8,7 @@
   var optionImage = null;
   var optionTitle = null;
   var optionPrice = null;
-  var maximumActivitiesNumber = 3;
+  var maximumActivitiesNumber = 6;
   var categoryTransfersID = "68";
   var categoryAccommodationsID = "70";
   var isHtmlDefaultStructureSet = false;
@@ -36,7 +36,7 @@
         settings.memory_cart_advanced_form = {
           "transfers" : [null, null],
           "accommodations" : [],
-          "activities" : [],
+          "activities" : {},
         };
       }else{
         settings.memory_cart_advanced_form = localStorageCartTrip;
@@ -51,151 +51,50 @@
         if(isConfirmed) {
 
           var activitiesContainerToDelete = $(this).parent().parent();
+          var dayIndexToDelete = activitiesContainerToDelete.index() + 1; // Day starts at 1 not 0
 
           $("div.trip-days").each(function() {
 
-            // Modify element day number data for every trip days with an index greater than the future delete one.
-            if($(this).index() > activitiesContainerToDelete.index()){
+            var dayIndexToCompare = $(this).index() + 1;
 
-              $(this).removeClass("day-" + $(this).index());
-              $(this).addClass("day-" + ($(this).index() - 1));
-              $(this).find(".trip-days-header p").text("Jour " + $(this).index());
+            // Modify element day number data for every trip days with an index greater than the future delete one.
+            if(dayIndexToCompare > dayIndexToDelete){
+
+              $(this).removeClass("day-" + dayIndexToCompare);
+              $(this).addClass("day-" + (dayIndexToCompare - 1));
+              $(this).find(".trip-days-header p").text("Jour " + (dayIndexToCompare - 1));
             }
           });
 
           // Remove an accommodation : Update localStorage for accommodations
-          settings.memory_cart_advanced_form.accommodations.splice(activitiesContainerToDelete.index(),1);
+          settings.memory_cart_advanced_form.accommodations.splice(dayIndexToDelete,1);
+
+          // Remove activities : Update localStorage for activities
+          delete(settings.memory_cart_advanced_form.activities[dayIndexToDelete]);
+
+          // Update localStorage in order to change the key (day) value for day greater than the one to delete
+          for(var[key, value] of Object.entries(settings.memory_cart_advanced_form.activities)) {
+            if(key > dayIndexToDelete){
+              Object.defineProperty(settings.memory_cart_advanced_form.activities, (key - 1), Object.getOwnPropertyDescriptor(settings.memory_cart_advanced_form.activities, key));
+              delete settings.memory_cart_advanced_form.activities[key];
+            }
+          }
           _advancedFormConfig.setLocalStorage(settings);
 
           activitiesContainerToDelete.remove();
 
-          if($(".trip-days").length === 0){
-            $("#trip-disclaimer").show();
-          }else{
-            // Remove the accommodation section for the last day
-            $(".trip-days").eq($(".trip-days").length - 1).find(".trip-accommodation").remove();
-
-            // Remove the last accommodation : Update localStorage for accommodations
-            settings.memory_cart_advanced_form.accommodations.splice(($(".trip-days").length - 1),1);
-            _advancedFormConfig.setLocalStorage(settings);
+          if($(".trip-days").length === 1){ // Remove the delete day button
+            $(".trip-days.day-1 .trip-delete-default-day").remove();
           }
+
+          // Remove the accommodation section for the last day
+          $(".trip-days.day-" + $(".trip-days").length).find(".trip-accommodation").remove();
+
+          // Remove the last accommodation : Update localStorage for accommodations
+          settings.memory_cart_advanced_form.accommodations.splice(($(".trip-days").length - 1),1);
+          _advancedFormConfig.setLocalStorage(settings);
         }
       });
-
-      function addActivityToCart(dayIndex){
-
-        if($(".trip-days.day-" + dayIndex + " .trip-activities").children("p").length === 1){
-          $(".trip-days.day-" + dayIndex + " .trip-activities > p").remove();
-        }
-
-        // Add activity to cart
-        $(".trip-days.day-" + dayIndex + " .trip-activities").append(
-          "<div class=\"activities\">" +
-            "<div class=\"positioning-btn\">" +
-              "<button type=\"button\" class=\"btn-go-up\">" +
-                "<i class=\"fa fa-chevron-up\" aria-hidden=\"true\"></i>" +
-              "</button>" +
-              "<button type=\"button\" class=\"btn-go-down\">" +
-                "<i class=\"fa fa-chevron-down\" aria-hidden=\"true\"></i>" +
-              "</button>" +
-            "</div>" +
-            "<input class=\"input-hidden-nid\" type=\"hidden\" value=\"" + activityNid + "\">" +
-            "<input class=\"input-hidden-destination\" type=\"hidden\" value=\"" + activityDestinationPath + "\">" +
-            "<div class=\"activities-img-container\">" +
-              "<img src=\"" + optionImage + "\">" +
-            "</div>" +
-            "<div class=\"activities-titles-container\">" +
-              "<p>" + activityTitle + "</p>" +
-              "<p class='activities-pack-title'>" + optionTitle + "</p>" +
-            "</div>" +
-            "<div class=\"activities-price-container\">" +
-              "<p>" + optionPrice + "</p>" +
-            "</div>" +
-            "<button type=\"button\" class=\"btn-remove-activity\">" +
-              "<i class=\"fa fa-times\" aria-hidden=\"true\"></i>" +
-            "</button>" +
-          "</div>"
-        );
-      }
-
-      function checkActivityNotAlreadySet(dayIndex){
-
-        var isActivityExists = false;
-        var activityContainer = $("div.trip-days.day-" + dayIndex + " .trip-activities .activities");
-
-        activityContainer.each(function(){
-
-          var thisActivityNid = $(this).find(".input-hidden-nid").val();
-          var thisActivityTitle = $(this).find(".activities-titles-container").children("p:eq(0)").text();
-          var thisActivityDestinationPath = $(this).find(".input-hidden-destination").val();
-          var thisOptionTitle = $(this).find(".activities-pack-title").text();
-
-          if(
-            activityNid === thisActivityNid &&
-            activityTitle === thisActivityTitle &&
-            activityDestinationPath === thisActivityDestinationPath &&
-            optionTitle === thisOptionTitle
-          ){
-            isActivityExists = true;
-            return false;
-          }
-        });
-
-        return isActivityExists;
-      }
-
-      function addToCalendarOrDefaultDates(dayIndex, alertMessage){
-
-        var isCalendarDates = $("div.trip-days.day-" + dayIndex + "").attr("data-day-timestamp");
-
-        if(typeof isCalendarDates === "undefined"){ // If dates were set by default.
-          _advancedFormConfig.addNewDay(dayIndex + 1);
-          addActivityToCart(dayIndex + 1);
-        }else{ // If dates were set through calendar.
-
-          alert(alertMessage);
-        }
-      }
-
-      function checkDaysAvailability() {
-
-        var alertMessage = "";
-        var calendarNbDays = $("#trip-activities-container").children("div.trip-days").length; // Get the number of days
-
-        if (calendarNbDays === 0) { // If any dates/days are set in the trip container. That means user didn't select dates through the calendar.
-          addActivityToCart(0);
-        } else { // If dates/days are already set in the trip container.
-
-          for (var i = 0; i < calendarNbDays; i++) { // Browse through days container
-
-            var isActivityExists = checkActivityNotAlreadySet(i); // Can't add twice the same activity in the same day
-
-            if(isActivityExists){
-
-              if(i === (calendarNbDays - 1)){ // If it's the last day.
-                alertMessage = "L'activité sélectionnée est déjà présente une fois dans chaque journée. Veuillez étendre votre séjour pour ajouter d'autres activités.";
-                addToCalendarOrDefaultDates(i, alertMessage);
-              }
-            }else{
-
-              var nbActivitiesInDay = $("div.trip-days.day-" + i + " .trip-activities").children("div.activities").length;
-
-              if (nbActivitiesInDay < maximumActivitiesNumber) { // Set activity to cart.
-                addActivityToCart(i);
-                break; // Add once then break statement.
-              }
-
-              if(nbActivitiesInDay === maximumActivitiesNumber && i === (calendarNbDays - 1)){ // If every days are filled.
-                alertMessage = "Vos journées sont complètes. Veuillez étendre votre séjour pour ajouter d'autres activités.";
-                addToCalendarOrDefaultDates(i, alertMessage);
-              }
-            }
-          }
-        }
-
-        // TODO : Set to localStorage
-        var activityObj = {};
-      }
 
       // Add an activity to the user cart
       $(".cont-add-cart").click(function(){
@@ -203,7 +102,7 @@
         activityContainer = $(this).parent().parent().parent();
 
         optionImage = activityContainer.children("div.prestation-main").find("div.prestation-image").css("background-image");
-        if(typeof optionImage === "undefined"){ // If option has not image, set the activity image by default
+        if(typeof optionImage === typeof undefined || optionImage === false){ // If option has not image, set the activity image by default
           optionImage = $("#activity-header-container > img").attr("src");
         }else{
           optionImage = optionImage.split("url(\"")[1].split("\")")[0];
@@ -217,7 +116,7 @@
           !isHtmlDefaultStructureSet &&
           (settings.memory_cart_form.departureDate === null ||
           settings.memory_cart_form.returnDate === null)
-        ){ _advancedFormConfig.setDefaultStructureHTML(); }
+        ){ _advancedFormConfig.setDefaultStructureHTML(settings); }
 
         switch(activityCategory){
           case categoryTransfersID : // Add transfer
@@ -256,16 +155,80 @@
             break;
           default : // Add activity
             console.log("--- Add activity");
-            checkDaysAvailability();
+
+            var activityToAddContainer = $(this).parent().parent().parent();
+            var thisActivityNid = $("#activity-page-container .activity-nid").val();
+            var thisActivityTitle = $("#activity-page-container .activity-title").val();
+            var thisActivityDestinationPath = $("#activity-page-container .activity-destination-path").val();
+            var thisOptionTitle = activityToAddContainer.find(".prestation-header > div:eq(0) > h2").text();
+            var dayIndex = null;
+            var activityIndex = null;
+
+            for(let [key, value] of Object.entries(settings.memory_cart_advanced_form.activities)){
+
+              if(settings.memory_cart_advanced_form.activities[key].length < maximumActivitiesNumber){ // If days are not full. Means there is enough place to set an activity
+
+                if(settings.memory_cart_advanced_form.activities[key].length === 0){ // If the day contains no activity
+                  dayIndex = parseInt(key);
+                  activityIndex = 0;
+
+                  if($("#return-datepicker").datepicker("getDate") === null){ // If no dates are set in calendar
+                    _advancedFormConfig.addNewDay(settings, (dayIndex + 1));
+                  }
+
+                  break;
+                }else{ // If the day contains activities
+
+                  var isActivityExists = false;
+
+                  for(var l = 0; l < settings.memory_cart_advanced_form.activities[key].length; l++){ // Check if activity exists
+
+                    if(
+                      settings.memory_cart_advanced_form.activities[key][l].activityNid === thisActivityNid &&
+                      settings.memory_cart_advanced_form.activities[key][l].activityTitle === thisActivityTitle &&
+                      settings.memory_cart_advanced_form.activities[key][l].activityDestinationPath === thisActivityDestinationPath &&
+                      settings.memory_cart_advanced_form.activities[key][l].optionTitle === thisOptionTitle
+                    ){
+                      isActivityExists = true;
+                      break;
+                    }
+                  }
+
+                  if(!isActivityExists){ // If the activity does not exist, add it.
+                    dayIndex = key;
+                    activityIndex = settings.memory_cart_advanced_form.activities[key].length;
+                    break;
+                  }
+                }
+              }
+            }
+
+            if($("#return-datepicker").datepicker("getDate") === null){ // If no dates are set in calendar
+              if(dayIndex === null && activityIndex === null){ // Case when every day contain the activity
+                dayIndex = Object.keys(settings.memory_cart_advanced_form.activities).length + 1;
+                activityIndex = 0;
+                _advancedFormConfig.addNewDay(settings, dayIndex);
+                _advancedFormConfig.addNewDay(settings, (dayIndex + 1));
+              }
+            }
+
+            console.log("--------------");
+            console.log("dayIndex : " + dayIndex);
+            console.log("activityIndex : " + activityIndex);
+
+            if(dayIndex !== null && activityIndex !== null){
+              console.log("-- ADD ACTIVITY");
+              _advancedFormConfig.addActivityToCart(settings, dayIndex, activityIndex, true);
+            }
         }
       });
 
       $("#empty-cart").click(function() {
         isHtmlDefaultStructureSet = false;
 
-        // TODO : Reset localStorage
         settings.memory_cart_advanced_form.transfers = [null, null];
         settings.memory_cart_advanced_form.accommodations = [];
+        settings.memory_cart_advanced_form.activities = {};
 
         _advancedFormConfig.setLocalStorage(settings);
       });
@@ -292,14 +255,33 @@
         var accommodationContainer = $(this).parent().parent();
         var accommodationIndex = accommodationContainer.parent().parent().index();
 
-        // Update Transfers localStorage
+        // Update Accommodations localStorage
         settings.memory_cart_advanced_form.accommodations[accommodationIndex] = null;
         _advancedFormConfig.setLocalStorage(settings);
 
-        // Update HTML transfer container
+        // Update HTML accommodation container
         accommodationContainer.children("p").show();
         accommodationContainer.children("button").show();
         accommodationContainer.children("div.accommodation").remove();
+      });
+
+      // Remove an activity
+      $("#trip-global-container").on("click", ".btn-remove-activity", function(){
+
+        var activityContainer = $(this).parent(".activities");
+        var activitiesContainer = activityContainer.parent(".trip-activities");
+        var activityIndex = activityContainer.index();
+        var dayContainerIndex = parseInt(activitiesContainer.parent().parent().attr("class").split("day-")[1]);
+
+        // Update Transfers localStorage
+        settings.memory_cart_advanced_form.activities[dayContainerIndex].splice(activityIndex, 1);
+        _advancedFormConfig.setLocalStorage(settings);
+
+        // Update HTML transfer container
+        if(activitiesContainer.length === 0){
+          activitiesContainer.append("<p>Aucune activité choisie</p>");
+        }
+        activityContainer.remove();
       });
 
       // Filters part
@@ -358,29 +340,13 @@
         localStorage.removeItem("showTransfers");
       }
 
-      _advancedFormConfig.initLocalStorage(settings);
-
-      // Delete the return date
-      $("#return-date i.clear-input").click(function(){
-        isHtmlDefaultStructureSet = false;
-        _advancedFormConfig.initLocalStorage(settings);
-      });
-      // Delete the departure date
-      $("#departure-date i.clear-input").click(function(){
-        isHtmlDefaultStructureSet = false;
-        _advancedFormConfig.initLocalStorage(settings);
-      });
-
-      // When return date is set, call initLocalStorage() in order to set user cart choices
-      $("#return-datepicker").on( "change", function() {
-        _advancedFormConfig.initLocalStorage(settings);
-      });
+      _advancedFormConfig.initLocalStorage(settings, false, false);
     },
 
     // Init localStorage by setting every parameters in there right place
-    initLocalStorage : function(settings){
+    initLocalStorage : function(settings, isTimestampMode, isHtmlDefaultStructureSet){
 
-      console.log("initLocalStorage ADVANCED FORM ");
+      console.log("--- initLocalStorage");
 
       // Init transfer localStorage
       if(
@@ -392,7 +358,10 @@
           !isHtmlDefaultStructureSet &&
           (settings.memory_cart_form.departureDate === null ||
             settings.memory_cart_form.returnDate === null)
-        ){ _advancedFormConfig.setDefaultStructureHTML(); }
+        ){
+          _advancedFormConfig.setDefaultStructureHTML(settings);
+          isHtmlDefaultStructureSet = true;
+        }
 
         if(settings.memory_cart_advanced_form.transfers[0] !== null){
           _advancedFormConfig.addTransferToCart(settings, "0", false);
@@ -402,43 +371,62 @@
         }
       }
 
-      // Init accommodation localStorage
-      if(settings.memory_cart_advanced_form.accommodations.length !== 0){
-
+      if(
+        settings.memory_cart_advanced_form.accommodations.length !== 0 ||
+        Object.keys(settings.memory_cart_advanced_form.activities).length !== 0
+      ){
         // Add default HTML structure. Should called once.
         if(
           !isHtmlDefaultStructureSet &&
           (settings.memory_cart_form.departureDate === null ||
             settings.memory_cart_form.returnDate === null)
         ){
-          _advancedFormConfig.setDefaultStructureHTML();
+          _advancedFormConfig.setDefaultStructureHTML(settings);
+          isHtmlDefaultStructureSet = true;
         }
 
+        // Set the number of days
         if(
           (settings.memory_cart_form.departureDate === null ||
             settings.memory_cart_form.returnDate === null)
-        ) {
-          for (var j = 0; j < settings.memory_cart_advanced_form.accommodations.length; j++) {
-            _advancedFormConfig.addNewDay(j + 1);
+        ){
+          var nbDaysToAdd = Object.keys(settings.memory_cart_advanced_form.activities).length;
+
+          if(settings.memory_cart_advanced_form.accommodations.length > nbDaysToAdd){
+            nbDaysToAdd = settings.memory_cart_advanced_form.accommodations.length;
+          }
+
+          if(!isTimestampMode){
+            for (var k = 2; k <= nbDaysToAdd; k++) { // setDefaultStructureHTML() add the first day so start here from the second
+              _advancedFormConfig.addNewDay(settings,k);
+            }
           }
         }
 
+        // Init accommodation localStorage
         for(var i = 0; i < settings.memory_cart_advanced_form.accommodations.length; i++){
           if(settings.memory_cart_advanced_form.accommodations[i] !== null){
             _advancedFormConfig.addAccommodationToCart(settings, i, false);
+          }
+        }
+
+        // Init activities localStorage
+        for(var[key, value] of Object.entries(settings.memory_cart_advanced_form.activities)){
+          for(var l = 0; l < settings.memory_cart_advanced_form.activities[key].length; l++){
+            _advancedFormConfig.addActivityToCart(settings, key, l, false);
           }
         }
       }
     },
 
     // Construct the HTML structure of a day
-    setDefaultStructureHTML : function(){
+    setDefaultStructureHTML : function(settings){
 
       $("#trip-disclaimer").hide();
 
       // Add one day
       $("#trip-global-container > div#trip-activities-container").append(
-        "<div class=\"trip-days day-0\">" +
+        "<div class=\"trip-days day-1\">" +
         "<div class=\"trip-days-header\">" +
         "<i class=\"fa fa-calendar-o\" aria-hidden=\"true\"></i>" +
         "<p style=\"text-transform: capitalize;\">Jour 1</p>" +
@@ -451,6 +439,10 @@
         "</div>" +
         "</div>"
       );
+
+      if(Object.keys(settings.memory_cart_advanced_form.activities).length === 1){ // Remove trip delete button
+        $(".trip-days.day-1 .trip-delete-default-day").remove();
+      }
 
       // Add transfer for the first and last day
       var transferStructureHTML =
@@ -465,42 +457,63 @@
         .append(transferStructureHTML);
 
       isHtmlDefaultStructureSet = true;
+
+      // Set localStorage first day structure
+      if(!(1 in settings.memory_cart_advanced_form.activities)){ // If key index does not exist
+        settings.memory_cart_advanced_form.activities[1] = [];
+        _advancedFormConfig.setLocalStorage(settings);
+      }
     },
 
-    addNewDay : function(dayIndexToAdd){
+    addNewDay : function(settings, dayIndexToAdd){
 
       $("#trip-disclaimer").hide();
 
       $("#trip-global-container > div#trip-activities-container").append(
         "<div class=\"trip-days day-" + dayIndexToAdd + "\">" +
-        "<div class=\"trip-days-header\">" +
-        "<i class=\"fa fa-calendar-o\" aria-hidden=\"true\"></i>" +
-        "<p style=\"text-transform: capitalize;\">Jour " + (dayIndexToAdd + 1) + "</p>" +
-        "<i class=\"fa fa-times trip-delete-default-day\" aria-hidden=\"true\"></i>" +
-        "</div>" +
-        "<div class=\"trip-days-body\">" +
-        "<div class=\"trip-activities\">" +
-        "<p>Aucune activité choisie</p>" +
-        "</div>" +
-        "</div>" +
+          "<div class=\"trip-days-header\">" +
+            "<i class=\"fa fa-calendar-o\" aria-hidden=\"true\"></i>" +
+            "<p style=\"text-transform: capitalize;\">Jour " + dayIndexToAdd + "</p>" +
+            "<i class=\"fa fa-times trip-delete-default-day\" aria-hidden=\"true\"></i>" +
+          "</div>" +
+          "<div class=\"trip-days-body\">" +
+            "<div class=\"trip-activities\">" +
+              "<p>Aucune activité choisie</p>" +
+            "</div>" +
+          "</div>" +
         "</div>"
       );
 
       $(".trip-days").each(function(){
 
-        if($(this).index() < ($(".trip-days").length - 1)){ // Add accommodation except for the last day
+        var dayIndexToCompare = $(this).index() + 1;
+
+        if(dayIndexToCompare < $(".trip-days").length){ // Add accommodation except for the last day
 
           if($(this).find(".trip-accommodation").length === 0){
 
             $(this).find(".trip-days-body").append(
               "<div class=\"trip-accommodation\">" +
-              "<p>Aucun hébergement</p>" +
-              "<button type=\"button\" class=\"filter-70\">VOIR HEBERGEMENTS</button>" +
+                "<p>Aucun hébergement</p>" +
+                "<button type=\"button\" class=\"filter-70\">VOIR HEBERGEMENTS</button>" +
               "</div>"
             );
           }
         }
       });
+
+      // If the first day does not contain delete button, add it
+      if($(".trip-days").length > 1){
+        if($(".trip-days.day-1 .trip-delete-default-day").length === 0){
+          $(".trip-days.day-1 .trip-days-header").append("<i class=\"fa fa-times trip-delete-default-day\" aria-hidden=\"true\"></i>");
+        }
+      }
+
+      // Set localStorage day structure
+      if(!((dayIndexToAdd) in settings.memory_cart_advanced_form.activities)){ // If key index does not exist
+        settings.memory_cart_advanced_form.activities[(dayIndexToAdd)] = [];
+        _advancedFormConfig.setLocalStorage(settings);
+      }
     },
 
     addAccommodationToCart : function(settings, accommodationIndex, isAccommodationAdd){
@@ -540,38 +553,36 @@
 
       $(".trip-accommodation:eq(" + accommodationIndex + ")").append(
         "<div class=\"accommodation\">" +
-        "<div class=\"positioning-btn\">" +
-        "<button type=\"button\" class=\"btn-go-up\">" +
-        "<i class=\"fa fa-chevron-up\" aria-hidden=\"true\"></i>" +
-        "</button>" +
-        "<button type=\"button\" class=\"btn-go-down\">" +
-        "<i class=\"fa fa-chevron-down\" aria-hidden=\"true\"></i>" +
-        "</button>" +
-        "</div>" +
-        "<input class=\"input-hidden-nid\" type=\"hidden\" value=\"" + settings.memory_cart_advanced_form.accommodations[accommodationIndex].activityNid + "\">" +
-        "<input class=\"input-hidden-destination\" type=\"hidden\" value=\"" + settings.memory_cart_advanced_form.accommodations[accommodationIndex].activityDestinationPath + "\">" +
-        "<div class=\"activities-img-container\">" +
-        "<img src=\"" + settings.memory_cart_advanced_form.accommodations[accommodationIndex].optionImage + "\">" +
-        "</div>" +
-        "<div class=\"activities-titles-container\">" +
-        "<p>" + settings.memory_cart_advanced_form.accommodations[accommodationIndex].activityTitle + "</p>" +
-        "<p class='activities-pack-title'>" + settings.memory_cart_advanced_form.accommodations[accommodationIndex].optionTitle + "</p>" +
-        "</div>" +
-        "<div class=\"activities-price-container\">" +
-        "<p>" + settings.memory_cart_advanced_form.accommodations[accommodationIndex].optionPrice + "</p>" +
-        "</div>" +
-        "<button type=\"button\" class=\"btn-remove-accommodation\">" +
-        "<i class=\"fa fa-times\" aria-hidden=\"true\"></i>" +
-        "</button>" +
+          "<div class=\"positioning-btn\">" +
+            "<button type=\"button\" class=\"btn-go-up\">" +
+              "<i class=\"fa fa-chevron-up\" aria-hidden=\"true\"></i>" +
+            "</button>" +
+            "<button type=\"button\" class=\"btn-go-down\">" +
+              "<i class=\"fa fa-chevron-down\" aria-hidden=\"true\"></i>" +
+            "</button>" +
+          "</div>" +
+          "<input class=\"input-hidden-nid\" type=\"hidden\" value=\"" + settings.memory_cart_advanced_form.accommodations[accommodationIndex].activityNid + "\">" +
+          "<input class=\"input-hidden-destination\" type=\"hidden\" value=\"" + settings.memory_cart_advanced_form.accommodations[accommodationIndex].activityDestinationPath + "\">" +
+          "<div class=\"activities-img-container\">" +
+            "<img src=\"" + settings.memory_cart_advanced_form.accommodations[accommodationIndex].optionImage + "\">" +
+          "</div>" +
+          "<div class=\"activities-titles-container\">" +
+            "<p>" + settings.memory_cart_advanced_form.accommodations[accommodationIndex].activityTitle + "</p>" +
+            "<p class='activities-pack-title'>" + settings.memory_cart_advanced_form.accommodations[accommodationIndex].optionTitle + "</p>" +
+          "</div>" +
+          "<div class=\"activities-price-container\">" +
+            "<p>" + settings.memory_cart_advanced_form.accommodations[accommodationIndex].optionPrice + "</p>" +
+          "</div>" +
+          "<button type=\"button\" class=\"btn-remove-accommodation\">" +
+            "<i class=\"fa fa-times\" aria-hidden=\"true\"></i>" +
+          "</button>" +
         "</div>"
       );
     },
 
     setLocalStorage : function(settings){
-      console.log("setLocalStorage");
       // Stringify object to pass in localStorage
       localStorage.setItem("localStorageCartTrip", JSON.stringify(settings.memory_cart_advanced_form));
-      // localStorage.setItem("localStorageCartTransfers", JSON.stringify(settings.memory_cart_advanced_form.transfer));
     },
 
     addTransferToCart : function(settings, transferIndex, isTransferAdd){
@@ -596,29 +607,95 @@
 
       $(".trip-transfer:eq(" + transferIndex + ")").append(
         "<div class=\"transfer\">" +
-        "<div class=\"positioning-btn\">" +
-        "<button type=\"button\" class=\"btn-go-up\">" +
-        "<i class=\"fa fa-chevron-up\" aria-hidden=\"true\"></i>" +
-        "</button>" +
-        "<button type=\"button\" class=\"btn-go-down\">" +
-        "<i class=\"fa fa-chevron-down\" aria-hidden=\"true\"></i>" +
-        "</button>" +
-        "</div>" +
-        "<input class=\"input-hidden-nid\" type=\"hidden\" value=\"" + settings.memory_cart_advanced_form.transfers[transferIndex].activityNid + "\">" +
-        "<input class=\"input-hidden-destination\" type=\"hidden\" value=\"" + settings.memory_cart_advanced_form.transfers[transferIndex].activityDestinationPath + "\">" +
-        "<div class=\"activities-img-container\">" +
-        "<img src=\"" + settings.memory_cart_advanced_form.transfers[transferIndex].optionImage + "\">" +
-        "</div>" +
-        "<div class=\"activities-titles-container\">" +
-        "<p>" + settings.memory_cart_advanced_form.transfers[transferIndex].activityTitle + "</p>" +
-        "<p class='activities-pack-title'>" + settings.memory_cart_advanced_form.transfers[transferIndex].optionTitle + "</p>" +
-        "</div>" +
-        "<div class=\"activities-price-container\">" +
-        "<p>" + settings.memory_cart_advanced_form.transfers[transferIndex].optionPrice + "</p>" +
-        "</div>" +
-        "<button type=\"button\" class=\"btn-remove-transfer\">" +
-        "<i class=\"fa fa-times\" aria-hidden=\"true\"></i>" +
-        "</button>" +
+          "<div class=\"positioning-btn\">" +
+            "<button type=\"button\" class=\"btn-go-up\">" +
+              "<i class=\"fa fa-chevron-up\" aria-hidden=\"true\"></i>" +
+            "</button>" +
+            "<button type=\"button\" class=\"btn-go-down\">" +
+              "<i class=\"fa fa-chevron-down\" aria-hidden=\"true\"></i>" +
+            "</button>" +
+          "</div>" +
+          "<input class=\"input-hidden-nid\" type=\"hidden\" value=\"" + settings.memory_cart_advanced_form.transfers[transferIndex].activityNid + "\">" +
+          "<input class=\"input-hidden-destination\" type=\"hidden\" value=\"" + settings.memory_cart_advanced_form.transfers[transferIndex].activityDestinationPath + "\">" +
+          "<div class=\"activities-img-container\">" +
+            "<img src=\"" + settings.memory_cart_advanced_form.transfers[transferIndex].optionImage + "\">" +
+          "</div>" +
+          "<div class=\"activities-titles-container\">" +
+            "<p>" + settings.memory_cart_advanced_form.transfers[transferIndex].activityTitle + "</p>" +
+            "<p class='activities-pack-title'>" + settings.memory_cart_advanced_form.transfers[transferIndex].optionTitle + "</p>" +
+          "</div>" +
+          "<div class=\"activities-price-container\">" +
+            "<p>" + settings.memory_cart_advanced_form.transfers[transferIndex].optionPrice + "</p>" +
+          "</div>" +
+          "<button type=\"button\" class=\"btn-remove-transfer\">" +
+            "<i class=\"fa fa-times\" aria-hidden=\"true\"></i>" +
+          "</button>" +
+        "</div>"
+      );
+    },
+
+    addActivityToCart : function(settings, dayIndex, activityIndex, isActivityAdd){
+
+      var dayDataTimestamp = $(".trip-days.day-" + dayIndex).attr("data-day-timestamp");
+      dayDataTimestamp = (typeof dayDataTimestamp === typeof undefined) ? null : dayDataTimestamp;
+
+      if(isActivityAdd){ // Check if it's an activity in order to avoid the reset of settings...activities fields.
+
+        // Set activity localStorage
+        var activityObject = {
+          "activityNid" : activityNid,
+          "activityDestinationPath" : activityDestinationPath,
+          "optionImage" : optionImage,
+          "activityTitle" : activityTitle,
+          "optionTitle" : optionTitle,
+          "optionPrice" : optionPrice,
+          "dayTimestamp" : parseInt(dayDataTimestamp)
+        };
+
+        settings.memory_cart_advanced_form.activities[dayIndex][activityIndex] = activityObject;
+
+        _advancedFormConfig.setLocalStorage(settings);
+      }else{ // Update day timestamp if it changes
+
+        var currentDayTimestamp = settings.memory_cart_advanced_form.activities[dayIndex][activityIndex].dayTimestamp;
+
+        if(currentDayTimestamp !== dayDataTimestamp){
+
+          settings.memory_cart_advanced_form.activities[dayIndex][activityIndex].dayTimestamp = parseInt(dayDataTimestamp);
+          _advancedFormConfig.setLocalStorage(settings);
+        }
+      }
+
+      if($(".trip-days.day-" + dayIndex + " .trip-activities").children("p").length === 1){
+        $(".trip-days.day-" + dayIndex + " .trip-activities > p").remove();
+      }
+
+      // Add activity to cart
+      $(".trip-days.day-" + dayIndex + " .trip-activities").append(
+        "<div class=\"activities\">" +
+          "<div class=\"positioning-btn\">" +
+            "<button type=\"button\" class=\"btn-go-up\">" +
+              "<i class=\"fa fa-chevron-up\" aria-hidden=\"true\"></i>" +
+            "</button>" +
+            "<button type=\"button\" class=\"btn-go-down\">" +
+              "<i class=\"fa fa-chevron-down\" aria-hidden=\"true\"></i>" +
+            "</button>" +
+          "</div>" +
+          "<input class=\"input-hidden-nid\" type=\"hidden\" value=\"" + settings.memory_cart_advanced_form.activities[dayIndex][activityIndex].activityNid + "\">" +
+          "<input class=\"input-hidden-destination\" type=\"hidden\" value=\"" + settings.memory_cart_advanced_form.activities[dayIndex][activityIndex].activityDestinationPath + "\">" +
+          "<div class=\"activities-img-container\">" +
+            "<img src=\"" + settings.memory_cart_advanced_form.activities[dayIndex][activityIndex].optionImage + "\">" +
+          "</div>" +
+          "<div class=\"activities-titles-container\">" +
+            "<p>" + settings.memory_cart_advanced_form.activities[dayIndex][activityIndex].activityTitle + "</p>" +
+            "<p class='activities-pack-title'>" + settings.memory_cart_advanced_form.activities[dayIndex][activityIndex].optionTitle + "</p>" +
+          "</div>" +
+          "<div class=\"activities-price-container\">" +
+            "<p>" + settings.memory_cart_advanced_form.activities[dayIndex][activityIndex].optionPrice + "</p>" +
+          "</div>" +
+          "<button type=\"button\" class=\"btn-remove-activity\">" +
+            "<i class=\"fa fa-times\" aria-hidden=\"true\"></i>" +
+          "</button>" +
         "</div>"
       );
     }
