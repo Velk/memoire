@@ -259,6 +259,10 @@
             $("#return-datepicker").datepicker("option", "minDate", departureDate);
 
             updateDates();
+
+            if(settings.memory_cart_form.returnDate !== null){
+              Drupal.behaviors.memory_cart_advanced_form.initLocalStorage(settings, true,true);
+            }
           }else{
             $(this).datepicker("setDate", lastValueDepartureDate);
           }
@@ -311,10 +315,6 @@
           $("#departure-datepicker").datepicker("option", "maxDate", returnDate);
           updateDates();
 
-          // Drupal.behaviors.memory_cart_advanced_form.switchLocalStorageActivityKeys(settings, true);
-
-          console.log("CHANGE INIT");
-
           Drupal.behaviors.memory_cart_advanced_form.initLocalStorage(settings, true,true);
         }else{
 
@@ -354,8 +354,6 @@
 
           $("#return-date i.clear-input").css("display", "none");
 
-          // Drupal.behaviors.memory_cart_advanced_form.switchLocalStorageActivityKeys(settings, false);
-          // // isHtmlDefaultStructureSet = false;
           Drupal.behaviors.memory_cart_advanced_form.initLocalStorage(settings, false,false);
         }
       });

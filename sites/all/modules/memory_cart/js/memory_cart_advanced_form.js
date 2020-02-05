@@ -8,7 +8,7 @@
   var optionImage = null;
   var optionTitle = null;
   var optionPrice = null;
-  var maximumActivitiesNumber = 3;
+  var maximumActivitiesNumber = 6;
   var categoryTransfersID = "68";
   var categoryAccommodationsID = "70";
   var isHtmlDefaultStructureSet = false;
@@ -358,7 +358,10 @@
           !isHtmlDefaultStructureSet &&
           (settings.memory_cart_form.departureDate === null ||
             settings.memory_cart_form.returnDate === null)
-        ){ _advancedFormConfig.setDefaultStructureHTML(settings); }
+        ){
+          _advancedFormConfig.setDefaultStructureHTML(settings);
+          isHtmlDefaultStructureSet = true;
+        }
 
         if(settings.memory_cart_advanced_form.transfers[0] !== null){
           _advancedFormConfig.addTransferToCart(settings, "0", false);
@@ -377,7 +380,10 @@
           !isHtmlDefaultStructureSet &&
           (settings.memory_cart_form.departureDate === null ||
             settings.memory_cart_form.returnDate === null)
-        ){ _advancedFormConfig.setDefaultStructureHTML(settings); }
+        ){
+          _advancedFormConfig.setDefaultStructureHTML(settings);
+          isHtmlDefaultStructureSet = true;
+        }
 
         // Set the number of days
         if(
@@ -630,6 +636,9 @@
 
     addActivityToCart : function(settings, dayIndex, activityIndex, isActivityAdd){
 
+      var dayDataTimestamp = $(".trip-days.day-" + dayIndex).attr("data-day-timestamp");
+      dayDataTimestamp = (typeof dayDataTimestamp === typeof undefined) ? null : dayDataTimestamp;
+
       if(isActivityAdd){ // Check if it's an activity in order to avoid the reset of settings...activities fields.
 
         // Set activity localStorage
@@ -639,16 +648,22 @@
           "optionImage" : optionImage,
           "activityTitle" : activityTitle,
           "optionTitle" : optionTitle,
-          "optionPrice" : optionPrice
+          "optionPrice" : optionPrice,
+          "dayTimestamp" : parseInt(dayDataTimestamp)
         };
-
-        // TODO : Add timestamp if exists to the activity object. If does not exist, set null
-        // TODO : Check if accommodations work well yet
-        // TODO : Check if transfers work well yet too
 
         settings.memory_cart_advanced_form.activities[dayIndex][activityIndex] = activityObject;
 
         _advancedFormConfig.setLocalStorage(settings);
+      }else{ // Update day timestamp if it changes
+
+        var currentDayTimestamp = settings.memory_cart_advanced_form.activities[dayIndex][activityIndex].dayTimestamp;
+
+        if(currentDayTimestamp !== dayDataTimestamp){
+
+          settings.memory_cart_advanced_form.activities[dayIndex][activityIndex].dayTimestamp = parseInt(dayDataTimestamp);
+          _advancedFormConfig.setLocalStorage(settings);
+        }
       }
 
       if($(".trip-days.day-" + dayIndex + " .trip-activities").children("p").length === 1){
