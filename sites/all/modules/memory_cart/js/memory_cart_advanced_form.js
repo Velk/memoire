@@ -34,6 +34,7 @@
 
       if(localStorageCartTrip === null){
         settings.memory_cart_advanced_form = {
+          "city" : null,
           "transfers" : [null, null],
           "accommodations" : [],
           "activities" : {},
@@ -67,7 +68,7 @@
           });
 
           // Remove an accommodation : Update localStorage for accommodations
-          settings.memory_cart_advanced_form.accommodations.splice(dayIndexToDelete,1);
+          settings.memory_cart_advanced_form.accommodations.splice((dayIndexToDelete - 2),1);
 
           // Remove activities : Update localStorage for activities
           delete(settings.memory_cart_advanced_form.activities[dayIndexToDelete]);
@@ -93,139 +94,157 @@
           // Remove the last accommodation : Update localStorage for accommodations
           settings.memory_cart_advanced_form.accommodations.splice(($(".trip-days").length - 1),1);
           _advancedFormConfig.setLocalStorage(settings);
+
+          _advancedFormConfig.anyActivitiesSet(settings);
         }
       });
 
       // Add an activity to the user cart
       $(".cont-add-cart").click(function(){
 
-        activityContainer = $(this).parent().parent().parent();
+        var cityName = settings.memory_cart_advanced_form.city;
+        var currentCityName = activityDestinationPath.split("/");
+        currentCityName = currentCityName[currentCityName.length - 1];
 
-        optionImage = activityContainer.children("div.prestation-main").find("div.prestation-image").css("background-image");
-        if(typeof optionImage === typeof undefined || optionImage === false){ // If option has not image, set the activity image by default
-          optionImage = $("#activity-header-container > img").attr("src");
-        }else{
-          optionImage = optionImage.split("url(\"")[1].split("\")")[0];
-        }
+        if(cityName === null || cityName === currentCityName){ // If city name is not set or activities are located in the city choosed
 
-        optionTitle = activityContainer.children("div.prestation-header").find("h2").text();
-        optionPrice = activityContainer.children("div.prestation-header").find("p.prestation-price").text();
+          activityContainer = $(this).parent().parent().parent();
 
-        // Add default HTML structure. Should called once.
-        if(
-          !isHtmlDefaultStructureSet &&
-          (settings.memory_cart_form.departureDate === null ||
-          settings.memory_cart_form.returnDate === null)
-        ){ _advancedFormConfig.setDefaultStructureHTML(settings); }
+          optionImage = activityContainer.children("div.prestation-main").find("div.prestation-image").css("background-image");
+          if(typeof optionImage === typeof undefined || optionImage === false){ // If option has not image, set the activity image by default
+            optionImage = $("#activity-header-container > img").attr("src");
+          }else{
+            optionImage = optionImage.split("url(\"")[1].split("\")")[0];
+          }
 
-        switch(activityCategory){
-          case categoryTransfersID : // Add transfer
+          optionTitle = activityContainer.children("div.prestation-header").find("h2").text();
+          optionPrice = activityContainer.children("div.prestation-header").find("p.prestation-price").text();
 
-            var isFirstTransferSet = ($(".trip-transfer:eq(0) .transfer").length === 1 ) ? true : false;
-            var isSecondTransferSet = ($(".trip-transfer:eq(1) .transfer").length === 1 ) ? true : false;
+          // Add default HTML structure. Should called once.
+          if(
+            !isHtmlDefaultStructureSet &&
+            (settings.memory_cart_form.departureDate === null ||
+            settings.memory_cart_form.returnDate === null)
+          ){ _advancedFormConfig.setDefaultStructureHTML(settings); }
 
-            if(!isFirstTransferSet || !isSecondTransferSet) {
-              var transferIndex = (!isFirstTransferSet) ? 0 : 1; // Define the container number
-              _advancedFormConfig.addTransferToCart(settings, transferIndex, true);
-            }
+          switch(activityCategory){
+            case categoryTransfersID : // Add transfer
 
-            break;
-          case categoryAccommodationsID : // Add accommodation
-            console.log("--- Add accommodation");
+              var isFirstTransferSet = ($(".trip-transfer:eq(0) .transfer").length === 1 ) ? true : false;
+              var isSecondTransferSet = ($(".trip-transfer:eq(1) .transfer").length === 1 ) ? true : false;
 
-            var isAccommodationField = ($(".trip-accommodation").length === 0) ? false : true;
-
-            if(isAccommodationField){
-
-              var accommodationIndex = null;
-
-              $(".trip-accommodation").each(function(elIndex){
-
-                if($(this).find(".accommodation").length === 0){
-                  accommodationIndex = elIndex;
-                  return false;
-                }
-              });
-
-              if(accommodationIndex !== null){
-                _advancedFormConfig.addAccommodationToCart(settings, accommodationIndex, true);
+              if(!isFirstTransferSet || !isSecondTransferSet) {
+                var transferIndex = (!isFirstTransferSet) ? 0 : 1; // Define the container number
+                _advancedFormConfig.addTransferToCart(settings, transferIndex, true);
               }
-            }
 
-            break;
-          default : // Add activity
-            console.log("--- Add activity");
+              break;
+            case categoryAccommodationsID : // Add accommodation
+              console.log("--- Add accommodation");
 
-            var activityToAddContainer = $(this).parent().parent().parent();
-            var thisActivityNid = $("#activity-page-container .activity-nid").val();
-            var thisActivityTitle = $("#activity-page-container .activity-title").val();
-            var thisActivityDestinationPath = $("#activity-page-container .activity-destination-path").val();
-            var thisOptionTitle = activityToAddContainer.find(".prestation-header > div:eq(0) > h2").text();
-            var dayIndex = null;
-            var activityIndex = null;
+              var isAccommodationField = ($(".trip-accommodation").length === 0) ? false : true;
 
-            for(let [key, value] of Object.entries(settings.memory_cart_advanced_form.activities)){
+              if(isAccommodationField){
 
-              if(settings.memory_cart_advanced_form.activities[key].length < maximumActivitiesNumber){ // If days are not full. Means there is enough place to set an activity
+                var accommodationIndex = null;
 
-                if(settings.memory_cart_advanced_form.activities[key].length === 0){ // If the day contains no activity
-                  dayIndex = parseInt(key);
-                  activityIndex = 0;
+                $(".trip-accommodation").each(function(elIndex){
 
-                  if($("#return-datepicker").datepicker("getDate") === null){ // If no dates are set in calendar
-                    _advancedFormConfig.addNewDay(settings, (dayIndex + 1));
+                  if($(this).find(".accommodation").length === 0){
+                    accommodationIndex = elIndex;
+                    return false;
                   }
+                });
 
-                  break;
-                }else{ // If the day contains activities
+                if(accommodationIndex !== null){
+                  _advancedFormConfig.addAccommodationToCart(settings, accommodationIndex, true);
+                }
+              }
 
-                  var isActivityExists = false;
+              break;
+            default : // Add activity
+              console.log("--- Add activity");
 
-                  for(var l = 0; l < settings.memory_cart_advanced_form.activities[key].length; l++){ // Check if activity exists
+              var activityToAddContainer = $(this).parent().parent().parent();
+              var thisActivityNid = $("#activity-page-container .activity-nid").val();
+              var thisActivityTitle = $("#activity-page-container .activity-title").val();
+              var thisActivityDestinationPath = $("#activity-page-container .activity-destination-path").val();
+              var thisOptionTitle = activityToAddContainer.find(".prestation-header > div:eq(0) > h2").text();
+              var dayIndex = null;
+              var activityIndex = null;
+
+              for(let [key, value] of Object.entries(settings.memory_cart_advanced_form.activities)){
+
+                if(settings.memory_cart_advanced_form.activities[key].length < maximumActivitiesNumber){ // If days are not full. Means there is enough place to set an activity
+
+                  if(settings.memory_cart_advanced_form.activities[key].length === 0){ // If the day contains no activity
+                    dayIndex = parseInt(key);
+                    activityIndex = 0;
 
                     if(
-                      settings.memory_cart_advanced_form.activities[key][l].activityNid === thisActivityNid &&
-                      settings.memory_cart_advanced_form.activities[key][l].activityTitle === thisActivityTitle &&
-                      settings.memory_cart_advanced_form.activities[key][l].activityDestinationPath === thisActivityDestinationPath &&
-                      settings.memory_cart_advanced_form.activities[key][l].optionTitle === thisOptionTitle
-                    ){
-                      isActivityExists = true;
+                      $("#return-datepicker").datepicker("getDate") === null &&
+                      Object.keys(settings.memory_cart_advanced_form.activities).indexOf((dayIndex + 1).toString()) === -1
+                    ){ // If no dates are set in calendar
+                      _advancedFormConfig.addNewDay(settings, (dayIndex + 1));
+                    }
+
+                    break;
+                  }else{ // If the day contains activities
+
+                    var isActivityExists = false;
+
+                    for(var l = 0; l < settings.memory_cart_advanced_form.activities[key].length; l++){ // Check if activity exists
+
+                      if(
+                        settings.memory_cart_advanced_form.activities[key][l].activityNid === thisActivityNid &&
+                        settings.memory_cart_advanced_form.activities[key][l].activityTitle === thisActivityTitle &&
+                        settings.memory_cart_advanced_form.activities[key][l].activityDestinationPath === thisActivityDestinationPath &&
+                        settings.memory_cart_advanced_form.activities[key][l].optionTitle === thisOptionTitle
+                      ){
+                        isActivityExists = true;
+                        break;
+                      }
+                    }
+
+                    if(!isActivityExists){ // If the activity does not exist, add it.
+                      dayIndex = key;
+                      activityIndex = settings.memory_cart_advanced_form.activities[key].length;
                       break;
                     }
                   }
-
-                  if(!isActivityExists){ // If the activity does not exist, add it.
-                    dayIndex = key;
-                    activityIndex = settings.memory_cart_advanced_form.activities[key].length;
-                    break;
-                  }
                 }
               }
-            }
 
-            if($("#return-datepicker").datepicker("getDate") === null){ // If no dates are set in calendar
-              if(dayIndex === null && activityIndex === null){ // Case when every day contain the activity
-                dayIndex = Object.keys(settings.memory_cart_advanced_form.activities).length + 1;
-                activityIndex = 0;
-                _advancedFormConfig.addNewDay(settings, dayIndex);
-                _advancedFormConfig.addNewDay(settings, (dayIndex + 1));
+              if($("#return-datepicker").datepicker("getDate") === null){ // If no dates are set in calendar
+                if(dayIndex === null && activityIndex === null){ // Case when every day contain the activity
+                  dayIndex = Object.keys(settings.memory_cart_advanced_form.activities).length + 1;
+                  activityIndex = 0;
+                  _advancedFormConfig.addNewDay(settings, dayIndex);
+                  _advancedFormConfig.addNewDay(settings, (dayIndex + 1));
+                }
               }
-            }
 
-            console.log("--------------");
-            console.log("dayIndex : " + dayIndex);
-            console.log("activityIndex : " + activityIndex);
+              console.log("--------------");
+              console.log("dayIndex : " + dayIndex);
+              console.log("activityIndex : " + activityIndex);
 
-            if(dayIndex !== null && activityIndex !== null){
-              console.log("-- ADD ACTIVITY");
-              _advancedFormConfig.addActivityToCart(settings, dayIndex, activityIndex, true);
-            }
+              if(dayIndex !== null && activityIndex !== null){
+                console.log("-- ADD ACTIVITY");
+                _advancedFormConfig.addActivityToCart(settings, dayIndex, activityIndex, true);
+              }
+          }
+
+          settings.memory_cart_advanced_form.city = currentCityName;
+          _advancedFormConfig.setLocalStorage(settings);
+        }else{
+          alert("Si vous souhaitez effectuer un séjour sur plusieurs destinations, contactez-nous directement par e-mail.");
         }
       });
 
       $("#empty-cart").click(function() {
         isHtmlDefaultStructureSet = false;
 
+        settings.memory_cart_advanced_form.city = null;
         settings.memory_cart_advanced_form.transfers = [null, null];
         settings.memory_cart_advanced_form.accommodations = [];
         settings.memory_cart_advanced_form.activities = {};
@@ -247,6 +266,8 @@
         transferContainer.children("p").show();
         transferContainer.children("button").show();
         transferContainer.children("div.transfer").remove();
+
+        _advancedFormConfig.anyActivitiesSet(settings);
       });
 
       // Remove an accommodation
@@ -263,6 +284,8 @@
         accommodationContainer.children("p").show();
         accommodationContainer.children("button").show();
         accommodationContainer.children("div.accommodation").remove();
+
+        _advancedFormConfig.anyActivitiesSet(settings);
       });
 
       // Remove an activity
@@ -278,10 +301,13 @@
         _advancedFormConfig.setLocalStorage(settings);
 
         // Update HTML transfer container
-        if(activitiesContainer.length === 0){
+        if(activitiesContainer.children().length === 1 && activitiesContainer.children("p").length === 0){
           activitiesContainer.append("<p>Aucune activité choisie</p>");
         }
+
         activityContainer.remove();
+
+        _advancedFormConfig.anyActivitiesSet(settings);
       });
 
       // Filters part
@@ -698,6 +724,39 @@
           "</button>" +
         "</div>"
       );
+    },
+
+    anyActivitiesSet : function(settings){
+
+      var isAnyActivities = false;
+      var isAnyAccommodations = false;
+      var isAnyTransfers = false;
+
+      // Check if any activity is set
+      for(var[key, value] of Object.entries(settings.memory_cart_advanced_form.activities)) {
+        if(settings.memory_cart_advanced_form.activities[key].length !== 0){
+          isAnyActivities = true;
+        }
+      }
+
+      // Check if any accommodation is set
+      for(var i = 0; i < settings.memory_cart_advanced_form.accommodations.length; i++){
+        if(settings.memory_cart_advanced_form.accommodations[i] !== null){
+          isAnyAccommodations = true;
+        }
+      }
+
+      // Check if any transfer is set
+      for(var i = 0; i < settings.memory_cart_advanced_form.transfers.length; i++){
+        if(settings.memory_cart_advanced_form.transfers[i] !== null){
+          isAnyTransfers = true;
+        }
+      }
+
+      if(!isAnyActivities && !isAnyAccommodations && !isAnyTransfers){
+        settings.memory_cart_advanced_form.city = null;
+        _advancedFormConfig.setLocalStorage(settings);
+      }
     }
   };
 }(jQuery));

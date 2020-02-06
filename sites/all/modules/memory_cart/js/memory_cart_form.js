@@ -55,6 +55,8 @@
           $("#departure-datepicker").datepicker( $.datepicker.regional["fr"] );
           $("#return-datepicker").datepicker( $.datepicker.regional["fr"] );
         }
+
+        $( "#ui-datepicker-div" ).css("display", "none");
       }
       initDatePicker();
 
@@ -239,6 +241,30 @@
         }
       }
 
+      // Update localStorage to remove activities outside the range of dates
+      function deleteActivitiesOutsideDaysRange(isDeparture, thisDate){
+
+        var dayRange;
+
+        if(isDeparture){
+          dayRange = getTripDuration(settings.memory_cart_form.returnDate, thisDate) + 1;
+        }else{
+          dayRange = getTripDuration(thisDate, settings.memory_cart_form.departureDate) + 1;
+        }
+
+        // Delete accommodations outside the days range
+        for(var i = (settings.memory_cart_advanced_form.accommodations.length - 1); i >= (dayRange - 1); i--){
+          settings.memory_cart_advanced_form.accommodations.splice(i,1);
+        }
+
+        // Delete activities outside the days range
+        for(var[key, value] of Object.entries(settings.memory_cart_advanced_form.activities)){
+          if(key > dayRange){
+            delete settings.memory_cart_advanced_form.activities[key];
+          }
+        }
+      }
+
       $("#departure-datepicker").click(function() {
         lastValueDepartureDate = $(this).datepicker("getDate");
       }).on( "change", function() {
@@ -261,6 +287,9 @@
             updateDates();
 
             if(settings.memory_cart_form.returnDate !== null){
+
+              deleteActivitiesOutsideDaysRange(true, departureDate);
+
               Drupal.behaviors.memory_cart_advanced_form.initLocalStorage(settings, true,true);
             }
           }else{
@@ -277,7 +306,7 @@
       // Delete the departure date
       $("#departure-date i.clear-input").click(function(){
 
-        var isConfirmed = confirm("Attention, vous avez sélectionné de nouvelle date. Certaines journées ainsi que leurs activités seront supprimées.");
+        var isConfirmed = confirm("Attention, si vous continuez votre séjour n'aura pas de plage horaire de définie.");
 
         if(isConfirmed) {
 
@@ -315,6 +344,8 @@
           $("#departure-datepicker").datepicker("option", "maxDate", returnDate);
           updateDates();
 
+          deleteActivitiesOutsideDaysRange(false, returnDate);
+
           Drupal.behaviors.memory_cart_advanced_form.initLocalStorage(settings, true,true);
         }else{
 
@@ -324,6 +355,8 @@
 
             $("#departure-datepicker").datepicker("option", "maxDate", returnDate);
             updateDates();
+
+            deleteActivitiesOutsideDaysRange(false, returnDate);
 
             Drupal.behaviors.memory_cart_advanced_form.initLocalStorage(settings, true,true);
           }else{ // Cancel change
@@ -340,7 +373,7 @@
       // Delete the return date
       $("#return-date i.clear-input").click(function(){
 
-        var isConfirmed = confirm("Attention, vous avez sélectionné de nouvelle date. Certaines journées ainsi que leurs activités seront supprimées.");
+        var isConfirmed = confirm("Attention, si vous continuez votre séjour n'aura pas de plage horaire de définie.");
 
         if(isConfirmed){
 
@@ -378,7 +411,7 @@
           var dayIndexToDelete = activitiesContainerToDelete.index() + 1; // Day starts at 1 not 0
 
           // Update localStorage for accommodations
-          settings.memory_cart_advanced_form.accommodations.splice(activitiesContainerToDelete.index(),1);
+          settings.memory_cart_advanced_form.accommodations.splice((activitiesContainerToDelete.index() - 1),1);
 
           // Update accommodation localStorage if an accommodation is set in the N-1 day
           var currentDayIndex = $(this).parent().parent().index();
@@ -410,6 +443,8 @@
           updateDates();
 
           Drupal.behaviors.memory_cart_advanced_form.initLocalStorage(settings, true, true);
+
+          Drupal.behaviors.memory_cart_advanced_form.anyActivitiesSet(settings);
         }
       });
 
