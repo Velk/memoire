@@ -28,8 +28,6 @@
 
       this.setDrupalConfig();
 
-      console.log("--- Load : memory_cart_advanced_form");
-
       var localStorageCartTrip = JSON.parse(localStorage.getItem("localStorageCartTrip"));
 
       if(localStorageCartTrip === null){
@@ -140,7 +138,6 @@
 
               break;
             case categoryAccommodationsID : // Add accommodation
-              console.log("--- Add accommodation");
 
               var isAccommodationField = ($(".trip-accommodation").length === 0) ? false : true;
 
@@ -163,7 +160,6 @@
 
               break;
             default : // Add activity
-              console.log("--- Add activity");
 
               var activityToAddContainer = $(this).parent().parent().parent();
               var thisActivityNid = $("#activity-page-container .activity-nid").val();
@@ -224,12 +220,7 @@
                 }
               }
 
-              console.log("--------------");
-              console.log("dayIndex : " + dayIndex);
-              console.log("activityIndex : " + activityIndex);
-
               if(dayIndex !== null && activityIndex !== null){
-                console.log("-- ADD ACTIVITY");
                 _advancedFormConfig.addActivityToCart(settings, dayIndex, activityIndex, true);
               }
           }
@@ -371,8 +362,6 @@
 
     // Init localStorage by setting every parameters in there right place
     initLocalStorage : function(settings, isTimestampMode, isHtmlDefaultStructureSet){
-
-      console.log("--- initLocalStorage");
 
       // Init transfer localStorage
       if(

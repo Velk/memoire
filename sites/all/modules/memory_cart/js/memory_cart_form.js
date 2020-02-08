@@ -2,8 +2,6 @@
   Drupal.behaviors.memory_cart_form = {
     attach: function (context, settings) {
 
-      console.log("--- Load : memory_cart_form");
-
       var currentLocalStorage = JSON.parse(localStorage.getItem("localStorageCartFormSettings"));
 
       if(currentLocalStorage === null){
@@ -452,9 +450,6 @@
 
         // Retrieve and parse localStorage
         var cartFormSettings = JSON.parse(localStorage.getItem("localStorageCartFormSettings"));
-
-        console.log("--- cartFormSettings");
-        console.log(cartFormSettings);
 
         $("#firstname input").val(cartFormSettings.firstname);
         $("#lastname input").val(cartFormSettings.lastname);
