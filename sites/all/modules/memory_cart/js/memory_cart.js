@@ -2,8 +2,6 @@
   Drupal.behaviors.memory_cart = {
     attach: function (context, settings) {
 
-      console.log("--- Load : memory_cart");
-
       var cartForm = $("#cart-container > div");
       var mainMenuHeight = $("#header-wrapper").outerHeight(true);
 

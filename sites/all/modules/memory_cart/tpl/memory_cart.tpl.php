@@ -48,21 +48,21 @@ else if($isActivityPage) {
         <div>
           <div id="firstname">
             <i class="fa fa-user" aria-hidden="true"></i>
-            <input type="text" name="firstname" placeholder="Nom *">
+            <input type="text" name="firstname" placeholder="Nom *" required>
           </div>
           <div id="lastname">
             <i class="fa fa-user" aria-hidden="true"></i>
-            <input type="text" name="lastname" placeholder="Prénom *">
+            <input type="text" name="lastname" placeholder="Prénom *" required>
           </div>
         </div>
         <div>
           <div id="email">
             <i class="fa fa-envelope-o" aria-hidden="true"></i>
-            <input type="email" name="email" placeholder="E-mail *">
+            <input type="email" name="email" placeholder="E-mail *" required>
           </div>
           <div id="phone">
             <i class="fa fa-phone" aria-hidden="true"></i>
-            <input type="tel" name="phone" placeholder="Téléphone *" pattern="^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$">
+            <input type="tel" name="phone" placeholder="Téléphone *" required>
           </div>
         </div>
         <div>
