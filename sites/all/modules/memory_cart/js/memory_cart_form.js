@@ -151,103 +151,15 @@
       var lastValueDepartureDate;
       var lastValueReturnDate;
 
-      // Get trip duration by subtracting departure and return dates
-      function getTripDuration(currentReturnDate, currentDepartureDate){
-
-        var date1 = new Date(currentDepartureDate).getTime();
-        var date2 = new Date(currentReturnDate).getTime();
-        var daysDifference = (date2 - date1) / (1000 * 3600 * 24);
-
-        return daysDifference;
-      }
-
-      // Construct the HTML structure of a day
-      function setStructureHTML(totalNumberOfDays, currentDepartureDate){
-
-        for(var i = 0; i <= totalNumberOfDays; i++){
-
-          var incrementDate = new Date(currentDepartureDate);
-          incrementDate.setDate(incrementDate.getDate() + i);
-
-          var dayName = $.datepicker.formatDate("DD", incrementDate);
-          var timestamp = $.datepicker.formatDate("@", incrementDate);
-
-          $("#trip-global-container > div#trip-activities-container").append(
-            "<div class=\"trip-days day-" + (i + 1) + "\" data-day-timestamp=\"" + timestamp + "\">" +
-              "<div class=\"trip-days-header\">" +
-                "<i class=\"fa fa-calendar-o\" aria-hidden=\"true\"></i>" +
-                "<p style=\"text-transform: capitalize;\">" + dayName + " " + incrementDate.toLocaleDateString() + "</p>" +
-              "</div>" +
-              "<div class=\"trip-days-body\">" +
-                "<div class=\"trip-activities\">" +
-                  "<p>Aucune activité choisie</p>" +
-                "</div>" +
-                "<div class=\"trip-accommodation\">" +
-                  "<p>Aucun hébergement</p>" +
-                  "<button type=\"button\" class=\"filter-70\">VOIR HEBERGEMENTS</button>" +
-                "</div>" +
-              "</div>" +
-            "</div>"
-          );
-
-          // Delete accommodation for the last day
-          if(i === totalNumberOfDays){
-            $("div.trip-days.day-" + (i + 1)).find(".trip-accommodation").remove();
-          }
-
-          // Add deleting day button when there are more than 1 day
-          if(totalNumberOfDays > 0){
-            $("#trip-global-container div.trip-days.day-" + (i + 1) + " .trip-days-header").append("<i class=\"fa fa-times trip-delete-day\" aria-hidden=\"true\"></i>");
-          }
-
-          // Set localStorage timestamp structure
-          if(!((i + 1) in settings.memory_cart_advanced_form.activities)){ // If key index does not exist
-            settings.memory_cart_advanced_form.activities[(i + 1)] = [];
-            Drupal.behaviors.memory_cart_advanced_form.setLocalStorage(settings);
-          }
-        }
-
-        // Add transfer for the first and last day
-        var transferStructureHTML =
-          "<div class=\"trip-transfer\">" +
-            "<p>Aucun transfert</p>" +
-            "<button type=\"button\" class=\"filter-68\">VOIR TRANSFERTS</button>" +
-          "</div>"
-        ;
-
-        $("#trip-global-container")
-          .prepend(transferStructureHTML)
-          .append(transferStructureHTML);
-      }
-
-      // Clean the HTML days container then add the new HTML structure
-      function updateDates(){
-
-        var currentReturnDate = $("#return-datepicker").datepicker("getDate");
-        var currentDepartureDate = $("#departure-datepicker").datepicker("getDate");
-
-        $("#trip-global-container > div#trip-activities-container").empty();
-        $(".trip-transfer").remove();
-
-        if(currentReturnDate !== null && currentDepartureDate !== null){
-          $("#trip-disclaimer").hide();
-
-          var totalNumberOfDays = getTripDuration(currentReturnDate, currentDepartureDate);
-          setStructureHTML(totalNumberOfDays, currentDepartureDate);
-        }else{
-          $("#trip-disclaimer").show();
-        }
-      }
-
       // Update localStorage to remove activities outside the range of dates
       function deleteActivitiesOutsideDaysRange(isDeparture, thisDate){
 
         var dayRange;
 
         if(isDeparture){
-          dayRange = getTripDuration(settings.memory_cart_form.returnDate, thisDate) + 1;
+          dayRange =  Drupal.behaviors.memory_cart_form.getTripDuration(settings.memory_cart_form.returnDate, thisDate) + 1;
         }else{
-          dayRange = getTripDuration(thisDate, settings.memory_cart_form.departureDate) + 1;
+          dayRange =  Drupal.behaviors.memory_cart_form.getTripDuration(thisDate, settings.memory_cart_form.departureDate) + 1;
         }
 
         // Delete accommodations outside the days range
@@ -282,7 +194,7 @@
 
             $("#return-datepicker").datepicker("option", "minDate", departureDate);
 
-            updateDates();
+            Drupal.behaviors.memory_cart_form.updateDates(settings);
 
             if(settings.memory_cart_form.returnDate !== null){
 
@@ -320,7 +232,7 @@
           $("#departure-datepicker").datepicker("setDate", null);
 
           setLocalStorage();
-          updateDates();
+          Drupal.behaviors.memory_cart_form.updateDates(settings);
 
           $("#departure-date i.clear-input").css("display", "none");
           $("#return-date i.clear-input").css("display", "none");
@@ -340,7 +252,7 @@
         if(lastValueReturnDate === null) { // Initialize the return date
 
           $("#departure-datepicker").datepicker("option", "maxDate", returnDate);
-          updateDates();
+          Drupal.behaviors.memory_cart_form.updateDates(settings);
 
           deleteActivitiesOutsideDaysRange(false, returnDate);
 
@@ -352,7 +264,7 @@
           if(isConfirmed){
 
             $("#departure-datepicker").datepicker("option", "maxDate", returnDate);
-            updateDates();
+            Drupal.behaviors.memory_cart_form.updateDates(settings);
 
             deleteActivitiesOutsideDaysRange(false, returnDate);
 
@@ -381,7 +293,7 @@
           settings.memory_cart_form.returnDate = null;
           setLocalStorage();
 
-          updateDates();
+          Drupal.behaviors.memory_cart_form.updateDates(settings);
 
           $("#return-date i.clear-input").css("display", "none");
 
@@ -438,7 +350,7 @@
 
           setLocalStorage();
 
-          updateDates();
+          Drupal.behaviors.memory_cart_form.updateDates(settings);
 
           Drupal.behaviors.memory_cart_advanced_form.initLocalStorage(settings, true, true);
 
@@ -470,7 +382,7 @@
         if(cartFormSettings.returnDate != null){
           $("#return-datepicker").datepicker("setDate", new Date(cartFormSettings.returnDate));
           $("#departure-datepicker").datepicker("option", "maxDate", new Date(cartFormSettings.returnDate));
-          updateDates();
+          Drupal.behaviors.memory_cart_form.updateDates(settings);
           $("#return-date i.clear-input").css("display", "block");
         }
 
@@ -538,6 +450,94 @@
           $("#return-date i.clear-input").css("display", "none");
         }
       });
+    },
+
+    // Clean the HTML days container then add the new HTML structure
+    updateDates : function(settings){
+
+      var currentReturnDate = $("#return-datepicker").datepicker("getDate");
+      var currentDepartureDate = $("#departure-datepicker").datepicker("getDate");
+
+      $("#trip-global-container > div#trip-activities-container").empty();
+      $(".trip-transfer").remove();
+
+      if(currentReturnDate !== null && currentDepartureDate !== null){
+        $("#trip-disclaimer").hide();
+
+        var totalNumberOfDays = Drupal.behaviors.memory_cart_form.getTripDuration(currentReturnDate, currentDepartureDate);
+        Drupal.behaviors.memory_cart_form.setStructureHTML(settings, totalNumberOfDays, currentDepartureDate);
+      }else{
+        $("#trip-disclaimer").show();
+      }
+    },
+
+    // Get trip duration by subtracting departure and return dates
+    getTripDuration : function(currentReturnDate, currentDepartureDate){
+
+      var date1 = new Date(currentDepartureDate).getTime();
+      var date2 = new Date(currentReturnDate).getTime();
+      var daysDifference = (date2 - date1) / (1000 * 3600 * 24);
+
+      return daysDifference;
+    },
+
+    // Construct the HTML structure of a day
+    setStructureHTML : function(settings, totalNumberOfDays, currentDepartureDate){
+
+      for(var i = 0; i <= totalNumberOfDays; i++){
+
+        var incrementDate = new Date(currentDepartureDate);
+        incrementDate.setDate(incrementDate.getDate() + i);
+
+        var dayName = $.datepicker.formatDate("DD", incrementDate);
+        var timestamp = $.datepicker.formatDate("@", incrementDate);
+
+        $("#trip-global-container > div#trip-activities-container").append(
+          "<div class=\"trip-days day-" + (i + 1) + "\" data-day-timestamp=\"" + timestamp + "\">" +
+          "<div class=\"trip-days-header\">" +
+          "<i class=\"fa fa-calendar-o\" aria-hidden=\"true\"></i>" +
+          "<p style=\"text-transform: capitalize;\">" + dayName + " " + incrementDate.toLocaleDateString() + "</p>" +
+          "</div>" +
+          "<div class=\"trip-days-body\">" +
+          "<div class=\"trip-activities\">" +
+          "<p>Aucune activité choisie</p>" +
+          "</div>" +
+          "<div class=\"trip-accommodation\">" +
+          "<p>Aucun hébergement</p>" +
+          "<button type=\"button\" class=\"filter-70\">VOIR HEBERGEMENTS</button>" +
+          "</div>" +
+          "</div>" +
+          "</div>"
+        );
+
+        // Delete accommodation for the last day
+        if(i === totalNumberOfDays){
+          $("div.trip-days.day-" + (i + 1)).find(".trip-accommodation").remove();
+        }
+
+        // Add deleting day button when there are more than 1 day
+        if(totalNumberOfDays > 0){
+          $("#trip-global-container div.trip-days.day-" + (i + 1) + " .trip-days-header").append("<i class=\"fa fa-times trip-delete-day\" aria-hidden=\"true\"></i>");
+        }
+
+        // Set localStorage timestamp structure
+        if(!((i + 1) in settings.memory_cart_advanced_form.activities)){ // If key index does not exist
+          settings.memory_cart_advanced_form.activities[(i + 1)] = [];
+          Drupal.behaviors.memory_cart_advanced_form.setLocalStorage(settings);
+        }
+      }
+
+      // Add transfer for the first and last day
+      var transferStructureHTML =
+        "<div class=\"trip-transfer\">" +
+        "<p>Aucun transfert</p>" +
+        "<button type=\"button\" class=\"filter-68\">VOIR TRANSFERTS</button>" +
+        "</div>"
+      ;
+
+      $("#trip-global-container")
+        .prepend(transferStructureHTML)
+        .append(transferStructureHTML);
     }
   };
 }(jQuery));

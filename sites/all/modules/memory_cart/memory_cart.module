@@ -28,8 +28,6 @@ function ajax_cart_send_quotation_by_email(){
   if(empty($destination_email)){
     $array_result_callback["message"] = "La demande de devis n'a pas abouti. Veuillez réessayer ultérieurement.";
   }else{
-    $array_result_callback["destinationEmail"] = $destination_email;
-    $array_result_callback["message"] = "Votre demande de devis a été transmise à l'équipe Memory. Nous vous recontacterons dans les plus brefs délais.";
 
     $cart_global = json_decode($_POST['cartGlobalData']);
     $cart_activities = json_decode($_POST['cartActivitiesData']);
@@ -60,6 +58,9 @@ function ajax_cart_send_quotation_by_email(){
       );
 
       drupal_mail('memory_cart', '10', $to, "fr", $params, $from);
+
+      $array_result_callback["destinationEmail"] = $destination_email;
+      $array_result_callback["message"] = "Votre demande de devis expresse a été transmise à l'équipe Memory. Nous vous recontacterons dans les plus brefs délais.";
     }else{
 
       $subject = "#DEMANDE DE DEVIS : " . $cart_global->lastname . " " . $cart_global->firstname; // Subject of the mail
@@ -112,6 +113,9 @@ function ajax_cart_send_quotation_by_email(){
 
       drupal_mail('memory_cart', '10', $to, "fr", $params_memory, $from);
       drupal_mail('memory_cart', '10', $to, "fr", $params_providers, $from);
+
+      $array_result_callback["destinationEmail"] = $destination_email;
+      $array_result_callback["message"] = "Votre demande de devis a été transmise à l'équipe Memory. Nous vous recontacterons dans les plus brefs délais.";
     }
   }
 
@@ -418,6 +422,10 @@ function memory_cart_block_view($delta = '') {
             );
             $block['content']['#attached']['js'][] = array(
                 'data' => drupal_get_path('module', 'memory_cart').'/js/memory_cart_advanced_form.js',
+                'type' => 'file'
+            );
+            $block['content']['#attached']['js'][] = array(
+                'data' => drupal_get_path('module', 'memory_cart').'/js/memory_cart_move_activities.js',
                 'type' => 'file'
             );
             $block['content']['#attached']['js'][] = array(
