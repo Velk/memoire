@@ -718,47 +718,39 @@ function memory_blocks_block_view($delta = '') {
             $description = variable_get("top_destinations_description");
             $data['description'] = $description['value'];
 
-            /* Initialize Top destination variables */
-            $top_destinations_1 = variable_get('top_destinations_1', array());
-            $top_destinations_2 = variable_get('top_destinations_2', array());
-            $top_destinations_3 = variable_get('top_destinations_3', array());
-            $top_destinations_4 = variable_get('top_destinations_4', array());
-            $top_destinations_5 = variable_get('top_destinations_5', array());
-            $top_destinations_6 = variable_get('top_destinations_6', array());
-            $top_destinations_7 = variable_get('top_destinations_7', array());
-            $top_destinations_8 = variable_get('top_destinations_8', array());
-            $top_destinations_9 = variable_get('top_destinations_9', array());
+            $arrayAllDestinations = array();
 
-            $arrayAll = array();
+            for ($i = 1; $i <= variable_get('top_destinations_nb'); $i++) {
 
-            for ($i = 1; $i <= 9; $i++) {
+              $arrayTopDestinations = variable_get('top_destinations_' . $i, array());
 
-                $stringArrayName = "top_destinations_" . $i;
+              if($arrayTopDestinations["display"] == 0){ // Display = published
 
-                // Check if the array is set
-                if (isset($$stringArrayName)) {
+                if (
+                  !empty($arrayTopDestinations['name']) &&
+                  !empty($arrayTopDestinations['image']) &&
+                  !empty($arrayTopDestinations['url'])
+                ){
+                  /*
+                   * $arrayName['image'] correspond to the fid
+                   * Load the file by its fid.
+                   * Create the URL file by using the file URI
+                   */
+                  $file = file_load($arrayTopDestinations['image']);
+                  $url = file_create_url($file->uri);
+                  $arrayTopDestinations['image'] = $url;
 
-                    // If the array is set, copy the variable to use its values
-                    $arrayName = $$stringArrayName;
-
-                    // Check if all of its values are filled
-                    if (!empty($arrayName['name']) && !empty($arrayName['image']) && !empty($arrayName['url'])) {
-
-                        /*
-                         * $arrayName['image'] correspond to the fid
-                         * Load the file by its fid.
-                         * Create the URL file by using the file URI
-                         */
-                        $file = file_load($arrayName['image']);
-                        $url = file_create_url($file->uri);
-                        $arrayName['image'] = $url;
-
-                        array_push($arrayAll, $arrayName);
-                    }
+                  array_push($arrayAllDestinations, $arrayTopDestinations);
                 }
+              }
             }
 
-            $data['arrayAllDatas'] = $arrayAll;
+            // Order array by weight
+            usort($arrayAllDestinations, function($a, $b) {
+              return $b['weight'] <=> $a['weight'];
+            });
+
+            $data['arrayAllDestinations'] = $arrayAllDestinations;
 
             // Link the template
             $block['content']['#markup'] = theme('tpl_memory_top_destinations', $data);
@@ -776,50 +768,39 @@ function memory_blocks_block_view($delta = '') {
             $description = variable_get("top_activities_description");
             $data['description'] = $description['value'];
 
-            /* Initialize Top activities variables */
-            $top_activities_1 = variable_get('top_activities_1', array());
-            $top_activities_2 = variable_get('top_activities_2', array());
-            $top_activities_3 = variable_get('top_activities_3', array());
-            $top_activities_4 = variable_get('top_activities_4', array());
-            $top_activities_5 = variable_get('top_activities_5', array());
-            $top_activities_6 = variable_get('top_activities_6', array());
-            $top_activities_7 = variable_get('top_activities_7', array());
-            $top_activities_8 = variable_get('top_activities_8', array());
-            $top_activities_9 = variable_get('top_activities_9', array());
-            $top_activities_10 = variable_get('top_activities_10', array());
-            $top_activities_11 = variable_get('top_activities_11', array());
-            $top_activities_12 = variable_get('top_activities_12', array());
+            $arrayAllActivities = array();
 
-            $arrayAll = array();
+            for ($i = 1; $i <= variable_get('top_activities_nb'); $i++) {
 
-            for ($i = 1; $i <= 12; $i++) {
+              $arrayTopActivities = variable_get('top_activities_' . $i, array());
 
-                $stringArrayName = "top_activities_" . $i;
+              if($arrayTopActivities["display"] == 0){ // Display = published
 
-                // Check if the array is set
-                if (isset($$stringArrayName)) {
+                if (
+                  !empty($arrayTopActivities['name']) &&
+                  !empty($arrayTopActivities['image']) &&
+                  !empty($arrayTopActivities['url'])
+                ){
+                  /*
+                   * $arrayName['image'] correspond to the fid
+                   * Load the file by its fid.
+                   * Create the URL file by using the file URI
+                   */
+                  $file = file_load($arrayTopActivities['image']);
+                  $url = file_create_url($file->uri);
+                  $arrayTopActivities['image'] = $url;
 
-                    // If the array is set, copy the variable to use its values
-                    $arrayName = $$stringArrayName;
-
-                    // Check if all of its values are filled
-                    if (!empty($arrayName['name']) && !empty($arrayName['image']) && !empty($arrayName['url'])) {
-
-                        /*
-                         * $arrayName['image'] correspond to the fid
-                         * Load the file by its fid.
-                         * Create the URL file by using the file URI
-                         */
-                        $file = file_load($arrayName['image']);
-                        $url = file_create_url($file->uri);
-                        $arrayName['image'] = $url;
-
-                        array_push($arrayAll, $arrayName);
-                    }
+                  array_push($arrayAllActivities, $arrayTopActivities);
                 }
+              }
             }
 
-            $data['arrayAllDatas'] = $arrayAll;
+            // Order array by weight
+            usort($arrayAllActivities, function($a, $b) {
+              return $b['weight'] <=> $a['weight'];
+            });
+
+            $data['arrayAllActivities'] = $arrayAllActivities;
 
             // Link the template
             $block['content']['#markup'] = theme('tpl_memory_top_activities', $data);
@@ -1291,11 +1272,24 @@ function memory_blocks_top_destinations_admin_form($form, &$form_state) {
 
     global $base_url;
 
+    $form['top_destinations_nb'] = array(
+      '#type' => 'textfield',
+      '#attributes' => array(
+        ' type' => 'number', // insert space before attribute name
+        ' min' => '0',
+      ),
+      '#default_value' => variable_get('top_destinations_nb', 9),
+      '#title' => t('Number of Top Destinations'),
+      '#description' => t('By default the number of Top Destinations equals to 9 but if you can change this number filling this field then save the configuration.'),
+      '#required' => TRUE,
+      '#weight' => 1,
+    );
+
     $form['top_destinations_title'] = array(
         '#type' => 'textfield',
         '#default_value' => variable_get('top_destinations_title', 'Top destinations'),
         '#title' => t('Titre'),
-        '#weight' => 1,
+        '#weight' => 3,
         '#required' => TRUE,
     );
 
@@ -1306,22 +1300,29 @@ function memory_blocks_top_destinations_admin_form($form, &$form_state) {
         '#format' => 'wysiwyg',
         '#default_value' => $description['value'],
         '#title' => t('Description'),
-        '#weight' => 2,
+        '#weight' => 4,
     );
 
     /* Top destination */
-    for( $i = 1 ; $i < 10 ; $i++ ){
+    for( $i = 1 ; $i <= variable_get('top_destinations_nb') ; $i++ ){
+
+        $top_destinations_nbr = variable_get('top_destinations_' . $i, array());
 
         $form['top_destinations_' . $i] = array(
             '#type' => 'fieldset',
-            '#title' => t('Destination n°' . $i),
-            '#weight' => 2 + $i,
+            '#title' => (!empty($top_destinations_nbr['name'])) ? t('Destination - ' . $top_destinations_nbr['name']) : t('Destination'),
+            '#weight' => 4 + $i,
             '#collapsible' => TRUE,
-            '#collapsed' => FALSE,
-            '#tree' => TRUE
+            '#collapsed' => TRUE,
+            '#tree' => TRUE,
+            '#prefix' =>
+              '<div style="position:relative;">' .
+                '<p style="position: absolute;top: 7px;right: 10px;height: auto;margin: 0;display: flex;flex-direction: row;align-items: center;">' .
+                  $top_destinations_nbr['weight'] .
+                  '&nbsp<span style="display: block;width: 15px;height: 15px;border-radius: 50px;background-color:' . (($top_destinations_nbr['display'] == 0) ? '#46D00E' : '#ECAD1D') . '"></span>' .
+                '</p>',
+            '#suffix' => '</div>',
         );
-
-        $top_destinations_nbr = variable_get('top_destinations_' . $i, array());
 
         $form['top_destinations_' . $i]['name'] = array(
             '#type' => 'textfield',
@@ -1333,7 +1334,6 @@ function memory_blocks_top_destinations_admin_form($form, &$form_state) {
             '#title'         => 'Image',
             '#theme'         => 'media_widget', // Without that, you only get text input
             '#default_value' => $top_destinations_nbr['image'], //The fid
-//        '#default_value' => variable_get('image_saved', NULL), //The fid
             '#media_options' => array(
                 'global' => array(
                     'file_directory'  => 'image_folder',
@@ -1358,6 +1358,21 @@ function memory_blocks_top_destinations_admin_form($form, &$form_state) {
             '#default_value' => $top_destinations_nbr['url'],
             '#maxlength' => 512,
         );
+
+        $form['top_destinations_' . $i]['display'] = array(
+          '#type' => 'radios',
+          '#title' => t('Affichage'),
+          '#default_value' => (isset($top_destinations_nbr['display'])) ? $top_destinations_nbr['display'] : 1,
+          '#options' => array(0 => "Publié", 1 => "Non publié"),
+        );
+
+        $form['top_destinations_' . $i]['weight'] = array(
+          '#type' => 'weight',
+          '#title' => t('Weight'),
+          '#default_value' => $top_destinations_nbr['weight'],
+          '#delta' => 50,
+          '#description' => 'Destination with the higher weight will be display in first.',
+        );
     }
 
     return system_settings_form($form);
@@ -1372,11 +1387,24 @@ function memory_blocks_top_activities_admin_form($form, &$form_state) {
 
     global $base_url;
 
+    $form['top_activities_nb'] = array(
+      '#type' => 'textfield',
+      '#attributes' => array(
+        ' type' => 'number', // insert space before attribute name
+        ' min' => '0',
+      ),
+      '#default_value' => variable_get('top_activities_nb', 9),
+      '#title' => t('Number of Top Activities'),
+      '#description' => t('By default the number of Top Activities equals to 9 but if you can change this number filling this field then save the configuration.'),
+      '#required' => TRUE,
+      '#weight' => 1,
+    );
+
     $form['top_activities_title'] = array(
         '#type' => 'textfield',
         '#default_value' => variable_get('top_activities_title', 'Top activités'),
         '#title' => t('Titre'),
-        '#weight' => 1,
+        '#weight' => 2,
         '#required' => TRUE,
     );
 
@@ -1387,23 +1415,29 @@ function memory_blocks_top_activities_admin_form($form, &$form_state) {
         '#format' => 'wysiwyg',
         '#default_value' => $description['value'],
         '#title' => t('Description'),
-        '#weight' => 2,
+        '#weight' => 3,
     );
 
-
     /* Top activity */
-    for( $i = 1 ; $i < 13 ; $i++ ){
+    for( $i = 1 ; $i <= variable_get('top_activities_nb') ; $i++ ){
+
+        $top_activities_nbr = variable_get('top_activities_' . $i, array());
 
         $form['top_activities_' . $i] = array(
             '#type' => 'fieldset',
-            '#title' => t('Activity n°' . $i),
-            '#weight' => 2 + $i,
+            '#title' => (!empty($top_activities_nbr['name'])) ? t('Activity - ' . $top_activities_nbr['name']) : t('Activity'),
+            '#weight' => 3 + $i,
             '#collapsible' => TRUE,
-            '#collapsed' => FALSE,
-            '#tree' => TRUE
+            '#collapsed' => TRUE,
+            '#tree' => TRUE,
+            '#prefix' =>
+              '<div style="position:relative;">' .
+              '<p style="position: absolute;top: 7px;right: 10px;height: auto;margin: 0;display: flex;flex-direction: row;align-items: center;">' .
+              $top_activities_nbr['weight'] .
+              '&nbsp<span style="display: block;width: 15px;height: 15px;border-radius: 50px;background-color:' . (($top_activities_nbr['display'] == 0) ? '#46D00E' : '#ECAD1D') . '"></span>' .
+              '</p>',
+            '#suffix' => '</div>',
         );
-
-        $top_activities_nbr = variable_get('top_activities_' . $i, array());
 
         $form['top_activities_' . $i]['name'] = array(
             '#type' => 'textfield',
@@ -1416,14 +1450,9 @@ function memory_blocks_top_activities_admin_form($form, &$form_state) {
             '#title'         => 'Image',
             '#theme'         => 'media_widget', // Without that, you only get text input
             '#default_value' => $top_activities_nbr['image'], //The fid
-    //        '#default_value' => variable_get('image_saved', NULL), //The fid
             '#media_options' => array(
                 'global' => array(
                     'file_directory'  => 'image_folder',
-    //                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-    //                    'upload',
-    //                    'media_default--media_browser_my_files'
-    //                ),
                     'file_extensions' => 'png gif jpg jpeg',
                     'max_filesize'    => '2 MB',
                     'uri_scheme'      => 'public',
@@ -1440,6 +1469,21 @@ function memory_blocks_top_activities_admin_form($form, &$form_state) {
             '#title' => t('URL'),
             '#default_value' => $top_activities_nbr['url'],
             '#maxlength' => 512,
+        );
+
+        $form['top_activities_' . $i]['display'] = array(
+          '#type' => 'radios',
+          '#title' => t('Affichage'),
+          '#default_value' => (isset($top_activities_nbr['display'])) ? $top_activities_nbr['display'] : 1,
+          '#options' => array(0 => "Publié", 1 => "Non publié"),
+        );
+
+        $form['top_activities_' . $i]['weight'] = array(
+          '#type' => 'weight',
+          '#title' => t('Weight'),
+          '#default_value' => $top_activities_nbr['weight'],
+          '#delta' => 50,
+          '#description' => 'Activity with the higher weight will be display in first.',
         );
     }
 

@@ -635,17 +635,6 @@ td.ui-datepicker-current-day > a {
 }
 /* End - Datepicker */
 
-/*form#devis > div:nth-child(3) {*/
-/*  display: flex;*/
-/*  flex-direction: column;*/
-/*}*/
-/*form#devis > div:nth-child(3) label {*/
-/*  margin-bottom: 10px;*/
-/*}*/
-/*form#devis > div:nth-child(3) div#budget {*/
-/*  margin-bottom: 15px;*/
-/*}*/
-
 form#devis input {
   width: 100%;
   border: none;
@@ -656,6 +645,9 @@ form#devis input {
   font-size: 14px;
   cursor: pointer;
   color: #000;
+}
+form#devis input:required {
+  box-shadow: 1px 1px 1px transparent;
 }
 form#devis select {
   border: 1px solid #21acbe;
