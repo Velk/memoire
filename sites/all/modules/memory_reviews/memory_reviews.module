@@ -131,17 +131,23 @@ function memory_reviews_admin_reviews_manager($form, &$form_state) {
   /* Review */
   for( $i = 1 ; $i <= variable_get('reviews_nb_reviews') ; $i++ ){
 
+    $review_nbr = variable_get('review_' . $i, array());
+
     // Fieldset
     $form['review_' . $i] = array(
       '#type' => 'fieldset',
-      '#title' => t('Review n°' . $i),
+      '#title' => (!empty($review_nbr['person'])) ? t('Review - ' . $review_nbr['person']) : t('Review'),
       '#weight' => 7 + $i,
       '#collapsible' => TRUE,
       '#collapsed' => TRUE,
-      '#tree' => TRUE
+      '#tree' => TRUE,
+      '#prefix' =>
+        '<div style="position:relative;">' .
+          '<p style="position: absolute;top: 7px;right: 10px;height: auto;margin: 0;">' .
+          $review_nbr['weight'] .
+          '</p>',
+      '#suffix' => '</div>',
     );
-
-    $review_nbr = variable_get('review_' . $i, array());
 
     // Person name
     $form['review_' . $i]['person'] = array(
@@ -195,6 +201,15 @@ function memory_reviews_admin_reviews_manager($form, &$form_state) {
       '#title' => t('Date'),
       '#required' => FALSE,
       '#weight' => 5,
+    );
+
+    $form['review_' . $i]['weight'] = array(
+      '#type' => 'weight',
+      '#title' => t('Weight'),
+      '#default_value' => $review_nbr['weight'],
+      '#delta' => 50,
+      '#description' => 'Review with the higher weight will be display in first.',
+      '#weight' => 6,
     );
   }
 
@@ -275,6 +290,11 @@ function memory_reviews_block_view($delta = '') {
           array_push($arrayReviews, $arrayReview);
         }
       }
+
+      // Order array by weight
+      usort($arrayReviews, function($a, $b) {
+        return $b['weight'] <=> $a['weight'];
+      });
 
       $data['arrayReviews'] = $arrayReviews;
 
