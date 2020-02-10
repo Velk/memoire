@@ -19,7 +19,7 @@
     ){
         print '<div id="mcb-blocks-container">';
 
-
+        $max_pictogram_height = max($mcb_column_1_height, $mcb_column_2_height, $mcb_column_3_height);
 
         for ( $i = 1 ; $i < 4 ; $i++ ){
 
@@ -32,7 +32,7 @@
 
                 if( isset($$mcb_picto) ){
                     print
-                      '<div class="mcb-img-container" style="height:' . max($mcb_column_1_height, $mcb_column_2_height, $mcb_column_3_height) . 'px;">' .
+                      '<div class="mcb-img-container" style="height:' . (empty($max_pictogram_height) ? 175 : $max_pictogram_height) . 'px;">' .
                         '<img src="' . $$mcb_picto . '" height="' . ((empty($$mcb_height)) ? 175 : $$mcb_height) . '"/>' .
                       '</div>'
                     ;
