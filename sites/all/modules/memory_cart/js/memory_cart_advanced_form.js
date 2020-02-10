@@ -226,6 +226,9 @@
           }
 
           settings.memory_cart_advanced_form.city = currentCityName;
+
+          _advancedFormConfig.setCityName(settings);
+
           _advancedFormConfig.setLocalStorage(settings);
         }else{
           alert("Si vous souhaitez effectuer un séjour sur plusieurs destinations, contactez-nous directement par e-mail.");
@@ -432,6 +435,8 @@
           }
         }
       }
+
+      _advancedFormConfig.setCityName(settings);
     },
 
     // Construct the HTML structure of a day
@@ -744,7 +749,24 @@
 
       if(!isAnyActivities && !isAnyAccommodations && !isAnyTransfers){
         settings.memory_cart_advanced_form.city = null;
+
+        $("#trip-global-container > h3#city-name").remove();
+
         _advancedFormConfig.setLocalStorage(settings);
+      }
+    },
+
+    setCityName : function(settings){
+
+      if(settings.memory_cart_advanced_form.city !== null){
+
+        var cityNameToDisplay = settings.memory_cart_advanced_form.city.replace("-", " ").toUpperCase();
+
+        if($("#trip-global-container > h3#city-name").length !== 0){
+          $("#trip-global-container > h3#city-name").remove();
+        }
+
+        $("#trip-global-container").prepend("<h3 id=\"city-name\">" + cityNameToDisplay + "</h3>");
       }
     }
   };

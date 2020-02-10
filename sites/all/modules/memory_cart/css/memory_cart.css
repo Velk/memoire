@@ -117,9 +117,9 @@ div.trip {
 }
 .trip-accommodation > button:hover,
 .trip-transfer > button:hover {
-    background-color: #fdfdfd;
+  background-color: transparent !important;
     color: #21acbe;
-  border: 1px solid #21acbe;
+    border: 1px solid #21acbe;
 }
 .trip-transfer {
   margin: 0 0 25px 0;
@@ -633,6 +633,21 @@ td.ui-datepicker-current-day > a {
   border-radius: 50px;
   text-align: center;
 }
+
+.ui-datepicker-calendar td.ui-datepicker-unselectable.ui-state-disabled  {
+  text-align: center;
+  background-color: #a5a5a5;
+  color: #fff;
+}
+.ui-datepicker-calendar td:not(.ui-datepicker-unselectable):not(.ui-state-disabled):not(.ui-datepicker-current-day) > a {
+  color: #000 !important;
+}
+.ui-datepicker-calendar td.ui-datepicker-current-day > a {
+  padding: 5px;
+  background-color: #ff8f00;
+  border-radius: 50px;
+  color: #fff !important;
+}
 /* End - Datepicker */
 
 form#devis input {
@@ -709,10 +724,9 @@ form#devis button#empty-cart {
 }
 form#devis button#empty-cart:hover {
   border: 1px solid #21acbe;
-  background-color: #fff;
+  background-color: transparent;
   color: #21acbe;
 }
-
 
 form#devis button#validate-cart {
   box-sizing: border-box;
@@ -736,4 +750,11 @@ form#devis #trip-global-container #trip-disclaimer {
   font-style: italic;
   color: #e40e0e;
   font-size: 14px;
+}
+
+h3#city-name {
+  text-align: center;
+  margin: 0 0 25px 0;
+  font-size: 20px;
+  color: #000;
 }

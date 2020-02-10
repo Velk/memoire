@@ -444,6 +444,7 @@
           setLocalStorage();
 
           $("#trip-global-container > div#trip-activities-container").empty();
+          $("#trip-global-container > h3#city-name").remove();
           $(".trip-transfer").remove();
           $("#trip-disclaimer").show();
           $("#departure-date i.clear-input").css("display", "none");
