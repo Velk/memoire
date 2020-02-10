@@ -962,6 +962,7 @@ function memory_blocks_block_view($delta = '') {
             $url = file_create_url($file->uri);
             $data['mcb_column_1_picto'] = $url;
 
+            $data['mcb_column_1_height'] = $mcb_column_1['mcb_height'];
             $data['mcb_column_1_text'] = $mcb_column_1['mcb_text']['value'];
 
             // Bloc 2
@@ -975,6 +976,7 @@ function memory_blocks_block_view($delta = '') {
             $url = file_create_url($file->uri);
             $data['mcb_column_2_picto'] = $url;
 
+            $data['mcb_column_2_height'] = $mcb_column_2['mcb_height'];
             $data['mcb_column_2_text'] = $mcb_column_2['mcb_text']['value'];
 
             // Bloc 3
@@ -988,6 +990,7 @@ function memory_blocks_block_view($delta = '') {
             $url = file_create_url($file->uri);
             $data['mcb_column_3_picto'] = $url;
 
+            $data['mcb_column_3_height'] = $mcb_column_3['mcb_height'];
             $data['mcb_column_3_text'] = $mcb_column_3['mcb_text']['value'];
 
             $mcb_text_2 = variable_get('mcb_text_2', array());
@@ -1159,12 +1162,23 @@ function memory_blocks_3_columns_block_admin_form($form, &$form_state){
         '#weight' => 1,
     );
 
+    $form['mcb_column_1']['mcb_height'] = array(
+      '#type' => 'textfield',
+      '#attributes' => array(
+        ' type' => 'number', // insert space before attribute name
+        ' min' => '0',
+      ),
+      '#default_value' => $mcb_column_1['mcb_height'],
+      '#title' => t('Height of the pictogram'),
+      '#weight' => 2,
+    );
+
     $form['mcb_column_1']['mcb_text'] = array(
         '#type' => 'text_format',
         '#format' => 'wysiwyg',
         '#default_value' => $mcb_column_1['mcb_text']['value'],
         '#title' => t('Bloc 1 - Texte'),
-        '#weight' => 2,
+        '#weight' => 3,
     );
 
     /* Column 2 */
@@ -1203,12 +1217,23 @@ function memory_blocks_3_columns_block_admin_form($form, &$form_state){
         '#weight' => 1,
     );
 
+    $form['mcb_column_2']['mcb_height'] = array(
+      '#type' => 'textfield',
+      '#attributes' => array(
+        ' type' => 'number', // insert space before attribute name
+        ' min' => '0',
+      ),
+      '#default_value' => $mcb_column_2['mcb_height'],
+      '#title' => t('Height of the pictogram'),
+      '#weight' => 2,
+    );
+
     $form['mcb_column_2']['mcb_text'] = array(
         '#type' => 'text_format',
         '#format' => 'wysiwyg',
         '#default_value' => $mcb_column_2['mcb_text']['value'],
         '#title' => t('Bloc 2 - Texte'),
-        '#weight' => 2,
+        '#weight' => 3,
     );
 
     /* Column 3 */
@@ -1247,12 +1272,23 @@ function memory_blocks_3_columns_block_admin_form($form, &$form_state){
         '#weight' => 1,
     );
 
+    $form['mcb_column_3']['mcb_height'] = array(
+      '#type' => 'textfield',
+      '#attributes' => array(
+        ' type' => 'number', // insert space before attribute name
+        ' min' => '0',
+      ),
+      '#default_value' => $mcb_column_3['mcb_height'],
+      '#title' => t('Height of the pictogram'),
+      '#weight' => 2,
+    );
+
     $form['mcb_column_3']['mcb_text'] = array(
         '#type' => 'text_format',
         '#format' => 'wysiwyg',
         '#default_value' => $mcb_column_3['mcb_text']['value'],
         '#title' => t('Bloc 3 - Texte'),
-        '#weight' => 2,
+        '#weight' => 3,
     );
 
     $mcb_text_2 = variable_get('mcb_text_2', array());
