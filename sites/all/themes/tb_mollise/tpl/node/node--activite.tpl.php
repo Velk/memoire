@@ -6,6 +6,14 @@ $url_activity_nid = explode("node/", current_path())[1];
 
 $node = node_load($url_activity_nid);
 
+$destination_id = field_get_items("node", $node, "field_acti_content_desti")[0]["tid"];
+$destination = taxonomy_term_load($destination_id);
+$destination_name = $destination->name;
+
+$destination_parent = taxonomy_get_parents($destination_id);
+reset($destination_parent);
+$destination_parent_name = $destination_parent[key($destination_parent)]->name;
+
 /* ---------- FIELD - ACTIVITY BASIC INFORMATIONS ---------- */
 
 // Retrieve the activity title
@@ -647,6 +655,10 @@ foreach ($activity_family_field as $activity_family_iteration){
           $base_url . '/' . drupal_get_path_alias("taxonomy/term/" . $activity_destination) .
           '">'
         ;
+    }
+
+    if( isset($destination_parent_name) && isset($destination_parent) ){
+        echo '<input type="hidden" class="destination-name" value="' . $destination_parent_name . "⫼" . $destination_name . '">';
     }
     ?>
 </div>
