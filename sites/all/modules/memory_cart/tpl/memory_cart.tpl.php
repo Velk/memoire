@@ -83,10 +83,10 @@ else if($isActivityPage) {
           </div>
           <div id="participants">
             <i class="fa fa-user" aria-hidden="true"></i>
-            <input type="number" name="participants"  placeholder="Nombre de participants" min="1">
+            <input type="text" name="participants"  placeholder="Nombre de participants">
           </div>
         </div>
-        <div>
+        <div id="date-fields-container">
           <div id="departure-date">
             <i class="fa fa-calendar-o" aria-hidden="true"></i>
             <input type="text" id="departure-datepicker" placeholder="Date de départ" readonly>
@@ -125,7 +125,10 @@ else if($isActivityPage) {
       <div id="quotation-activities">
         <div>
           <h3>Construisez votre planning</h3>
-          <button type="button" id="empty-cart"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+          <button type="button" id="empty-cart">
+            <i class="fa fa-trash-o" aria-hidden="true"></i>
+            <span>Vider le panier</span>
+          </button>
         </div>
         <div id="trip-global-container">
           <p id="trip-disclaimer">Pour planifier votre devis, veuillez selectionner une date de départ et une date de retour</p>
@@ -140,13 +143,13 @@ else if($isActivityPage) {
     </form>
   </div>
   <?php
-  if(!drupal_is_front_page()){
+//  if(!drupal_is_front_page()){
   echo
   "<button type=\"button\" class=\"toggle-user-cart\">" .
     "<i class=\"fa fa-plus\" id=\"icon-plus\"></i>" .
     "<i class=\"fa fa-minus\" id=\"icon-minus\"></i>" .
   "</button>"
   ;
-  }
+//  }
   ?>
 </div>

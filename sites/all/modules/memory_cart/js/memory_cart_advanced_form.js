@@ -101,8 +101,9 @@
       $(".cont-add-cart").click(function(){
 
         var cityName = settings.memory_cart_advanced_form.city;
-        var currentCityName = activityDestinationPath.split("/");
-        currentCityName = currentCityName[currentCityName.length - 1];
+        var currentCityName = $(".destination-name").val();
+        // var currentCityName = activityDestinationPath.split("/");
+        // currentCityName = currentCityName[currentCityName.length - 1];
 
         if(cityName === null || cityName === currentCityName){ // If city name is not set or activities are located in the city choosed
 
@@ -750,7 +751,7 @@
       if(!isAnyActivities && !isAnyAccommodations && !isAnyTransfers){
         settings.memory_cart_advanced_form.city = null;
 
-        $("#trip-global-container > h3#city-name").remove();
+        $("#trip-global-container > #city-name").remove();
 
         _advancedFormConfig.setLocalStorage(settings);
       }
@@ -760,13 +761,21 @@
 
       if(settings.memory_cart_advanced_form.city !== null){
 
-        var cityNameToDisplay = settings.memory_cart_advanced_form.city.replace("-", " ").toUpperCase();
+        var cityNameToDisplay = settings.memory_cart_advanced_form.city.split("⫼");
 
-        if($("#trip-global-container > h3#city-name").length !== 0){
-          $("#trip-global-container > h3#city-name").remove();
+        if($("#trip-global-container > #city-name").length !== 0){
+          $("#trip-global-container > #city-name").remove();
         }
 
-        $("#trip-global-container").prepend("<h3 id=\"city-name\">" + cityNameToDisplay + "</h3>");
+        $("#trip-global-container").prepend("" +
+          "<div id=\"city-name\">" +
+            "<i class=\"fa fa-globe\" aria-hidden=\"true\"></i>" +
+            "<div>" +
+              "<p>" + cityNameToDisplay[0] + "</p>" +
+              "<p>" + cityNameToDisplay[1] + "</p>" +
+            "</div>" +
+          "</div>"
+        );
       }
     }
   };

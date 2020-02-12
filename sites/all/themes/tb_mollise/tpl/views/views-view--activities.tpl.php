@@ -113,6 +113,8 @@ for($i = 0 ; $i < count($nids) ; $i++){
     // Clean the title of the node (activity) to use as a part of the URL
     $clean_string_to_url = pathauto_cleanstring($node->field_activity_title['und'][0]['value']);
 
+//    drupal_set_message("<pre>" . print_r($node, true) . "</pre>");
+
     $activities_content[$node->vid] = array(
         'title' => $node->field_activity_title['und'][0]['value'],
         'img_alt_text' => $node->field_img_activite['und'][0]['field_file_image_alt_text']['und'][0]['value'],

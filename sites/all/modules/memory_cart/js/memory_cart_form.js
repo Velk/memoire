@@ -55,6 +55,8 @@
         }
 
         $( "#ui-datepicker-div" ).css("display", "none");
+
+        $( "#ui-datepicker-div" ).appendTo($("#date-fields-container"));
       }
       initDatePicker();
 
@@ -105,10 +107,30 @@
       });
 
       // Update field : Participants
-      $("#participants input").keypress(function (e) {
-        e.preventDefault();
-      });
-      $("#participants input").change(function() {
+      function setInputFilter(textbox, inputFilter) {
+        ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
+          textbox.addEventListener(event, function() {
+            if (inputFilter(this.value)) {
+              this.oldValue = this.value;
+              this.oldSelectionStart = this.selectionStart;
+              this.oldSelectionEnd = this.selectionEnd;
+            } else if (this.hasOwnProperty("oldValue")) {
+              this.value = this.oldValue;
+              this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+            } else {
+              this.value = "";
+            }
+          });
+        });
+      }
+
+      $("#participants input").keyup(function () {
+
+        // Allow only digit >= 0
+        setInputFilter(this, function(value){
+          return /^[0-9]*$/.test(value);
+        });
+
         var participants = $(this).val();
 
         settings.memory_cart_form.participants = (participants === "") ? null : participants;
@@ -444,7 +466,7 @@
           setLocalStorage();
 
           $("#trip-global-container > div#trip-activities-container").empty();
-          $("#trip-global-container > h3#city-name").remove();
+          $("#trip-global-container > #city-name").remove();
           $(".trip-transfer").remove();
           $("#trip-disclaimer").show();
           $("#departure-date i.clear-input").css("display", "none");

@@ -561,6 +561,9 @@ form#devis div#quotation-data #return-date {
 form#devis #budget {
   margin-bottom: 15px;
 }
+div#budget > label, div#transport > label {
+  margin-bottom: 7px;
+}
 
 form#devis .clear-input {
   display: none;
@@ -577,11 +580,20 @@ form#devis .clear-input:hover {
 }
 
 /* Start - Datepicker */
+#date-fields-container {
+  position: relative;
+}
+
 div.ui-datepicker {
+  position: absolute !important;
   background-color: #fff;
   border: 1px solid #bbb;
   border-radius: 3px;
   box-shadow: 1px 1px 5px #bbb;
+  top: 40px !important;
+  right: auto !important;
+  left: auto !important;
+  width: 100%;
 }
 
 .ui-datepicker-header {
@@ -636,8 +648,11 @@ td.ui-datepicker-current-day > a {
 
 .ui-datepicker-calendar td.ui-datepicker-unselectable.ui-state-disabled  {
   text-align: center;
-  background-color: #a5a5a5;
+  background-color: transparent;
   color: #fff;
+}
+.ui-datepicker-calendar td.ui-datepicker-unselectable.ui-state-disabled > span {
+  color: #cbcbcb;
 }
 .ui-datepicker-calendar td:not(.ui-datepicker-unselectable):not(.ui-state-disabled):not(.ui-datepicker-current-day) > a {
   color: #000 !important;
@@ -647,6 +662,14 @@ td.ui-datepicker-current-day > a {
   background-color: #ff8f00;
   border-radius: 50px;
   color: #fff !important;
+}
+.ui-datepicker-calendar thead th {
+  background: #16889b;
+  color: #fff;
+  border: none;
+  border-bottom: 1px solid #fff;
+  padding: .75em 1em;
+  text-align: center;
 }
 /* End - Datepicker */
 
@@ -658,8 +681,13 @@ form#devis input {
   padding: 8px 0px;
   background-color: transparent;
   font-size: 14px;
-  cursor: pointer;
   color: #000;
+}
+form#devis input:hover {
+  cursor: pointer;
+}
+form#devis input:focus {
+  cursor: none;
 }
 form#devis input:required {
   box-shadow: 1px 1px 1px transparent;
@@ -713,6 +741,7 @@ form#devis div#quotation-activities > div:first-of-type {
   margin: 0 0 30px 0;
 }
 form#devis button#empty-cart {
+  position: relative;
   border: 1px solid #21acbe;
   background-color: #21acbe;
   color: #fff;
@@ -726,6 +755,23 @@ form#devis button#empty-cart:hover {
   border: 1px solid #21acbe;
   background-color: transparent;
   color: #21acbe;
+}
+form#devis button#empty-cart span {
+  display: none;
+}
+form#devis button#empty-cart:hover span {
+  display: block;
+  position: absolute;
+  color: #bbb;
+  font-size: 12px;
+  width: 125px;
+  right: 0;
+  border: 1px solid #bbb;
+  padding: 5px 10px;
+  box-sizing: border-box;
+  bottom: 30px;
+  background-color: #fff;
+  box-shadow: 1px 1px 5px #bbb;
 }
 
 form#devis button#validate-cart {
@@ -752,9 +798,40 @@ form#devis #trip-global-container #trip-disclaimer {
   font-size: 14px;
 }
 
-h3#city-name {
-  text-align: center;
+form#devis div#city-name {
+  display: flex;
+  flex-direction: row;
+  background-color: #fff;
+  border: 1px solid #ededed;
+  padding: 7px 15px;
   margin: 0 0 25px 0;
-  font-size: 20px;
-  color: #000;
+  align-items: center;
+  justify-content: center;
+}
+
+form#devis div#city-name > i.fa {
+  font-size: 50px;
+  width:50px;
+  height: 50px;
+  margin-right: 0px;
+  color: #ebebeb;
+}
+
+form#devis div#city-name > div {
+  display: flex;
+  flex-direction: column;
+  text-align:center;
+}
+
+form#devis div#city-name > div p {
+  margin: 0;
+}
+
+form#devis div#city-name > div p:first-of-type {
+  font-size:12px;
+}
+form#devis div#city-name > div p:last-of-type {
+  font-size:18px;
+  font-weight: bold;
+  text-transform : uppercase;
 }
