@@ -89,7 +89,11 @@ function ajax_cart_send_quotation_by_email(){
       $body .= "------------------------------------------------------------------------";
       $body .= "\n\n";
       $body .= "Détails des activités : " . "\n\n";
-      $body .= "Destination : " . ucwords(str_replace('-', ' ', $cart_activities->city)) . "\n\n";
+
+      $destination_name = explode("⫼", $cart_activities->city);
+      $body .= "Destination : " . "\n";
+      $body .= "\t- Pays : " . $destination_name[0] . "\n";
+      $body .= "\t- Ville : " . $destination_name[1] . "\n\n";
 
       $body_memory =
         $body .
@@ -124,7 +128,7 @@ function ajax_cart_send_quotation_by_email(){
 
 function formatActivitiesToEmailText($cart_activities, $cart_global, $is_for_providers){
 
-  $body = "------------------------------ Transferts ------------------------------" . "\n\n";
+  $body = "------------------------------ Transfers ------------------------------" . "\n\n";
 
   foreach ($cart_activities->transfers as $key => $value){ // Add transfer activities
 
@@ -139,7 +143,7 @@ function formatActivitiesToEmailText($cart_activities, $cart_global, $is_for_pro
   }
   $body .= "\n";
 
-  $body .= "------------------------------ Activités ------------------------------" . "\n\n";
+  $body .= "------------------------------ Activities ------------------------------" . "\n\n";
 
   $departure_date_timestamp = $cart_global->departureDate/1000;
   $max_days_number = 1;
@@ -170,9 +174,9 @@ function formatActivitiesToEmailText($cart_activities, $cart_global, $is_for_pro
 
     if($max_days_number !== $key){ // No hosting for the last day
 
-      if(!empty($cart_activities->accommodations[$key - 1])){
+      if(!empty($cart_activities->accommodations[0])){
         $body_activities .= "\t- Hébergement : " . "\n";
-        $body_activities .= getActivityDetails($cart_activities->accommodations[$key - 1], $is_for_providers) . "\n";
+        $body_activities .= getActivityDetails($cart_activities->accommodations[0], $is_for_providers) . "\n";
       }else{
         $body_activities .= "\t- Hébergement :  Non défini" . "\n\n";
       }
