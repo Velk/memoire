@@ -184,11 +184,6 @@
           dayRange =  Drupal.behaviors.memory_cart_form.getTripDuration(thisDate, settings.memory_cart_form.departureDate) + 1;
         }
 
-        // Delete accommodations outside the days range
-        for(var i = (settings.memory_cart_advanced_form.accommodations.length - 1); i >= (dayRange - 1); i--){
-          settings.memory_cart_advanced_form.accommodations.splice(i,1);
-        }
-
         // Delete activities outside the days range
         for(var[key, value] of Object.entries(settings.memory_cart_advanced_form.activities)){
           if(key > dayRange){
@@ -342,19 +337,9 @@
           var activitiesContainerToDelete = $(this).parent().parent();
           var dayIndexToDelete = activitiesContainerToDelete.index() + 1; // Day starts at 1 not 0
 
-          // Update localStorage for accommodations
-          settings.memory_cart_advanced_form.accommodations.splice((activitiesContainerToDelete.index() - 1),1);
-
-          // Update accommodation localStorage if an accommodation is set in the N-1 day
-          var currentDayIndex = $(this).parent().parent().index();
-          if(currentDayIndex === $("#trip-activities-container .trip-days").length - 1){ // Check if the removing day is the last one
-
-            var accommodationIndexToRemove = (currentDayIndex === 0) ? 0 : (currentDayIndex - 1);
-
-            if($("#trip-activities-container div.trip-days.day-" + accommodationIndexToRemove + " .accommodation").length !== 0){
-              // Remove the last accommodation : Update localStorage for accommodations
-              settings.memory_cart_advanced_form.accommodations.splice(accommodationIndexToRemove,1);
-            }
+          // Remove accommodation if there is only 1 day. Because there is no accommodation when a trip last 1 day
+          if(Drupal.behaviors.memory_cart_form.getTripDuration(settings.memory_cart_form.returnDate, settings.memory_cart_form.departureDate) === 0){
+            settings.memory_cart_advanced_form.accommodations = [];
           }
 
           // Remove activities : Update localStorage for activities

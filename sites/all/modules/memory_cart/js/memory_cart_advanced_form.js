@@ -65,9 +65,6 @@
             }
           });
 
-          // Remove an accommodation : Update localStorage for accommodations
-          settings.memory_cart_advanced_form.accommodations.splice((dayIndexToDelete - 2),1);
-
           // Remove activities : Update localStorage for activities
           delete(settings.memory_cart_advanced_form.activities[dayIndexToDelete]);
 
@@ -84,13 +81,14 @@
 
           if($(".trip-days").length === 1){ // Remove the delete day button
             $(".trip-days.day-1 .trip-delete-default-day").remove();
+
+            // Remove accommodation because can't have accommodation for 1 day
+            settings.memory_cart_advanced_form.accommodations = [];
           }
 
           // Remove the accommodation section for the last day
           $(".trip-days.day-" + $(".trip-days").length).find(".trip-accommodation").remove();
 
-          // Remove the last accommodation : Update localStorage for accommodations
-          settings.memory_cart_advanced_form.accommodations.splice(($(".trip-days").length - 1),1);
           _advancedFormConfig.setLocalStorage(settings);
 
           _advancedFormConfig.anyActivitiesSet(settings);
@@ -102,8 +100,6 @@
 
         var cityName = settings.memory_cart_advanced_form.city;
         var currentCityName = $(".destination-name").val();
-        // var currentCityName = activityDestinationPath.split("/");
-        // currentCityName = currentCityName[currentCityName.length - 1];
 
         if(cityName === null || cityName === currentCityName){ // If city name is not set or activities are located in the city choosed
 
@@ -144,18 +140,8 @@
 
               if(isAccommodationField){
 
-                var accommodationIndex = null;
-
-                $(".trip-accommodation").each(function(elIndex){
-
-                  if($(this).find(".accommodation").length === 0){
-                    accommodationIndex = elIndex;
-                    return false;
-                  }
-                });
-
-                if(accommodationIndex !== null){
-                  _advancedFormConfig.addAccommodationToCart(settings, accommodationIndex, true);
+                if(settings.memory_cart_advanced_form.accommodations.length === 0){
+                  _advancedFormConfig.addAccommodationToCart(settings, true);
                 }
               }
 
@@ -268,17 +254,14 @@
       // Remove an accommodation
       $("#trip-global-container").on("click", ".btn-remove-accommodation", function(){
 
-        var accommodationContainer = $(this).parent().parent();
-        var accommodationIndex = accommodationContainer.parent().parent().index();
-
         // Update Accommodations localStorage
-        settings.memory_cart_advanced_form.accommodations[accommodationIndex] = null;
+        settings.memory_cart_advanced_form.accommodations = [];
         _advancedFormConfig.setLocalStorage(settings);
 
         // Update HTML accommodation container
-        accommodationContainer.children("p").show();
-        accommodationContainer.children("button").show();
-        accommodationContainer.children("div.accommodation").remove();
+        $(".trip-accommodation > p").show();
+        $(".trip-accommodation > button").show();
+        $(".trip-accommodation > div.accommodation").remove();
 
         _advancedFormConfig.anyActivitiesSet(settings);
       });
@@ -423,10 +406,8 @@
         }
 
         // Init accommodation localStorage
-        for(var i = 0; i < settings.memory_cart_advanced_form.accommodations.length; i++){
-          if(settings.memory_cart_advanced_form.accommodations[i] !== null){
-            _advancedFormConfig.addAccommodationToCart(settings, i, false);
-          }
+        if( settings.memory_cart_advanced_form.accommodations.length !== 0 ){
+          _advancedFormConfig.addAccommodationToCart(settings, false);
         }
 
         // Init activities localStorage
@@ -537,7 +518,8 @@
       }
     },
 
-    addAccommodationToCart : function(settings, accommodationIndex, isAccommodationAdd){
+    // addAccommodationToCart : function(settings, accommodationIndex, isAccommodationAdd){
+    addAccommodationToCart : function(settings, isAccommodationAdd){
 
       if(isAccommodationAdd){ // Check if it's an accommodation in order to avoid the reset of settings...accommodations fields.
 
@@ -551,28 +533,15 @@
           "optionPrice" : optionPrice
         };
 
-        var accommodationIndexArray = settings.memory_cart_advanced_form.accommodations.indexOf(accommodationObject);
-
-        if(accommodationIndexArray !== -1){ // Init the accommodation localStorage
-          settings.memory_cart_advanced_form.accommodations[accommodationIndex] = accommodationObject;
-        }else{
-
-          var isNullIndex = settings.memory_cart_advanced_form.accommodations.indexOf(null);
-
-          if(isNullIndex !== -1){
-            settings.memory_cart_advanced_form.accommodations[isNullIndex] = accommodationObject;
-          }else{
-            settings.memory_cart_advanced_form.accommodations.push(accommodationObject);
-          }
-        }
+        settings.memory_cart_advanced_form.accommodations.push(accommodationObject);
 
         _advancedFormConfig.setLocalStorage(settings);
       }
 
-      $(".trip-accommodation:eq(" + accommodationIndex + ") > p").hide();
-      $(".trip-accommodation:eq(" + accommodationIndex + ") > button").hide();
+      $(".trip-accommodation > p").hide();
+      $(".trip-accommodation > button").hide();
 
-      $(".trip-accommodation:eq(" + accommodationIndex + ")").append(
+      $(".trip-accommodation").append(
         "<div class=\"accommodation\">" +
           "<div class=\"positioning-btn\">" +
             "<button type=\"button\" class=\"btn-go-up\">" +
@@ -582,17 +551,17 @@
               "<i class=\"fa fa-chevron-down\" aria-hidden=\"true\"></i>" +
             "</button>" +
           "</div>" +
-          "<input class=\"input-hidden-nid\" type=\"hidden\" value=\"" + settings.memory_cart_advanced_form.accommodations[accommodationIndex].activityNid + "\">" +
-          "<input class=\"input-hidden-destination\" type=\"hidden\" value=\"" + settings.memory_cart_advanced_form.accommodations[accommodationIndex].activityDestinationPath + "\">" +
+          "<input class=\"input-hidden-nid\" type=\"hidden\" value=\"" + settings.memory_cart_advanced_form.accommodations[0].activityNid + "\">" +
+          "<input class=\"input-hidden-destination\" type=\"hidden\" value=\"" + settings.memory_cart_advanced_form.accommodations[0].activityDestinationPath + "\">" +
           "<div class=\"activities-img-container\">" +
-            "<img src=\"" + settings.memory_cart_advanced_form.accommodations[accommodationIndex].optionImage + "\">" +
+            "<img src=\"" + settings.memory_cart_advanced_form.accommodations[0].optionImage + "\">" +
           "</div>" +
           "<div class=\"activities-titles-container\">" +
-            "<p>" + settings.memory_cart_advanced_form.accommodations[accommodationIndex].activityTitle + "</p>" +
-            "<p class='activities-pack-title'>" + settings.memory_cart_advanced_form.accommodations[accommodationIndex].optionTitle + "</p>" +
+            "<p>" + settings.memory_cart_advanced_form.accommodations[0].activityTitle + "</p>" +
+            "<p class='activities-pack-title'>" + settings.memory_cart_advanced_form.accommodations[0].optionTitle + "</p>" +
           "</div>" +
           "<div class=\"activities-price-container\">" +
-            "<p>" + settings.memory_cart_advanced_form.accommodations[accommodationIndex].optionPrice + "</p>" +
+            "<p>" + settings.memory_cart_advanced_form.accommodations[0].optionPrice + "</p>" +
           "</div>" +
           "<button type=\"button\" class=\"btn-remove-accommodation\">" +
             "<i class=\"fa fa-times\" aria-hidden=\"true\"></i>" +
@@ -735,10 +704,8 @@
       }
 
       // Check if any accommodation is set
-      for(var i = 0; i < settings.memory_cart_advanced_form.accommodations.length; i++){
-        if(settings.memory_cart_advanced_form.accommodations[i] !== null){
-          isAnyAccommodations = true;
-        }
+      if(settings.memory_cart_advanced_form.accommodations.length !== 0){
+        isAnyAccommodations = true;
       }
 
       // Check if any transfer is set
