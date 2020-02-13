@@ -856,7 +856,6 @@ function memory_blocks_block_view($delta = '') {
                 $data['video_autoplay'] = $video['autoplay'];
                 $data['video_controls'] = $video['controls'];
                 $data['video_loop'] = $video['loop'];
-                $data['video_muted'] = $video['muted'];
                 $data['video_poster'] = $video['poster'];
                 $data['video_redirection_link'] = $video['redirection_link'];
 
@@ -1675,14 +1674,6 @@ function memory_blocks_slider_admin_form($form, &$form_state){
         '#weight' => 1,
     );
 
-//    $form['video']['url_intern'] = array(
-//        '#type' => 'textfield',
-//        '#title' => t('URL Interne'),
-//        '#default_value' => $video['url_intern'],
-//        '#description' => t("Exemple d'URL interne : http://localhost/memory_website/memoire/sites/default/files/videos/<b>[nom_video].[extension]</b>"),
-//        '#weight' => 2,
-//    );
-
     $form['video']['autoplay'] = array(
         '#type' => 'radios',
         '#title' => t('Autoplay'),
@@ -1691,7 +1682,7 @@ function memory_blocks_slider_admin_form($form, &$form_state){
             0 => t('Désactiver'),
             1 => t('Activer'),
         ),
-        '#description' => t("L'autoplay permet de jouer automatiquement la vidéo lorsque l'utilisateur visite la page sur laquelle elle se trouve."),
+        '#description' => t("L'autoplay permet de jouer automatiquement la vidéo lorsque l'utilisateur visite la page sur laquelle elle se trouve.<br>A noter que les navigateurs tels que Safari et Chrome, ne permettent plus de lancer automatiquement une vidéo avec du son."),
         '#weight' => 3,
     );
 
@@ -1717,18 +1708,6 @@ function memory_blocks_slider_admin_form($form, &$form_state){
         ),
         '#description' => t("Loop permet de jouer la vidéo à l'infini."),
         '#weight' => 5,
-    );
-
-    $form['video']['muted'] = array(
-        '#type' => 'radios',
-        '#title' => t('Muted'),
-        '#default_value' => $video['muted'],
-        '#options' => array(
-            0 => t('Désactiver'),
-            1 => t('Activer'),
-        ),
-        '#description' => t("L'audio de la vidéo est mutée."),
-        '#weight' => 6,
     );
 
     $form['video']['poster'] = array(

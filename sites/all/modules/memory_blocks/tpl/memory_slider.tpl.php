@@ -40,18 +40,18 @@
             <video
                 width="100%"
                 height="auto"
+                autoplay muted
                 <?php echo ($video_autoplay == 1) ? "autoplay" : ""; ?>
                 <?php echo ($video_controls == 1) ? "controls" : ""; ?>
                 <?php echo ($video_loop == 1) ? "loop" : ""; ?>
-                <?php echo ($video_muted == 1) ? "muted" : ""; ?>
                 <?php echo ($video_poster == 1 && !empty($video_poster_image) ) ? "poster=".$video_poster_image : ""; ?>
                 <?php echo ( !empty($video_redirection_link) ) ? "data-href=\"" . $video_redirection_link . "\"" : ""; ?>
             >
                 <source src="<?php echo $video_video; ?>" type="video/mp4">
             </video>
-            <div id="set-sound">
+            <button id="set-sound">
                 <i class="fa fa-volume-off" aria-hidden="true"></i>
-            </div>
+            </button>
         <?php
         }
         ?>

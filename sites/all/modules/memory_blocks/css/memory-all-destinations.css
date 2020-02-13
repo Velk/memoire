@@ -76,7 +76,7 @@ ul.country-container:first-of-type > li {
     margin: 0;
 }
 ul.country-container > ul.city {
-    display: none;
+    /*display: none;*/
     list-style-type: none;
     margin: 10px 0 0 10px;
     text-align: left;
