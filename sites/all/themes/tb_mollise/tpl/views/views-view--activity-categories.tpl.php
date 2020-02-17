@@ -1,5 +1,8 @@
 <?php
   global $base_url;
+  module_load_include('inc', 'pathauto', 'pathauto'); // Include pathauto to clean a string for use in URLs
+
+//  drupal_set_message("\"Toutes nos activités\" page");
 
   /* ---------------- All activities page - Admin settings ---------------- */
 
@@ -16,12 +19,7 @@
   $all_act_description_array = variable_get('all_act_description', array());
   $all_act_description = $all_act_description_array['value'];
 
-//  $all_act_nb_thumbnails = variable_get('all_act_nb_thumbnails');
-
   /* ---------------- All activities page - Activities ---------------- */
-
-  // Include pathauto to clean a string for use in URLs
-  module_load_include('inc', 'pathauto', 'pathauto');
 
   /* Load taxonomy to get the destination of the activity */
   $vocabulary = taxonomy_vocabulary_machine_name_load('continent');
@@ -59,36 +57,18 @@
 
   for($i = 0 ; $i < count($nids) ; $i++){
 
-      // Retrieve all content of the node belonging to the activity category
-      $node = node_load($nids[$i]);
+    // Retrieve all content of the node belonging to the activity category
+    $node = node_load($nids[$i]);
 
-      // Retrieve the fid (image ID) of the activity
-      $fid_activity = $node->field_img_activite['und'][0]['fid'];
+    $activity_image = field_get_items('node', $node, 'field_img_activite');
 
-      if( isset($fid_activity) ){
-
-          // Load image by its fid
-          $file = file_load($fid_activity);
-          $img_url_activity = file_create_url($file->uri);
-      }
-
-      // Clean the title of the node (activity) to use as a part of the URL
-      $clean_string_to_url = pathauto_cleanstring($node->field_activity_title['und'][0]['value']);
-
-      $activities_count[$node->field_activity_title['und'][0]['value']]["title"] = $node->field_activity_title['und'][0]['value'];
-      $activities_count[$node->field_activity_title['und'][0]['value']]["count"] += 1;
-      $activities_count[$node->field_activity_title['und'][0]['value']]["img_alt_text"] = $node->field_img_activite['und'][0]['field_file_image_alt_text']['und'][0]['value'];
-      $activities_count[$node->field_activity_title['und'][0]['value']]["img_uri"] = $img_url_activity;
-      $activities_count[$node->field_activity_title['und'][0]['value']]["price"] = $node->field_price_prestation['und'][0]['value'];
-      $activities_count[$node->field_activity_title['und'][0]['value']]["vid"] = $node->vid;
-      $activities_count[$node->field_activity_title['und'][0]['value']]["path"] = $base_url."/".drupal_get_path_alias('node/'.$node->vid);
-      $activities_count[$node->field_activity_title['und'][0]['value']]["destination"] = $array_taxonomy_tree[$node->field_acti_content_desti['und'][0]['tid']]["name"];
-      $activities_count[$node->field_activity_title['und'][0]['value']]["destination_path"] = $array_taxonomy_tree[$node->field_acti_content_desti['und'][0]['tid']]["path_alias"];
-      $activities_count[$node->field_activity_title['und'][0]['value']]["intermediate_path"] = $clean_string_to_url;
+    $activities[strtolower($node->title)] = array(
+      'title' => $node->title,
+      'img_uri' => file_create_url($activity_image[0]["uri"]),
+      'img_name' => $activity_image[0]['filename'],
+      'intermediate_path' => $base_url . "/activites/" . drupal_encode_path($node->title),
+    );
   }
-
-//  $maxThumbnailsToDisplay = (!empty($all_act_nb_thumbnails)) ? $all_act_nb_thumbnails : 20;
-//  $maxThumbnailsCounter = 0;
 ?>
 
 <div id="container">
@@ -119,26 +99,20 @@
     <div id="all-activities-main">
         <div class="all-activities-container">
             <?php
-            foreach ($activities_count as $activity_count){
-
-//                if( $maxThumbnailsCounter == $maxThumbnailsToDisplay){
-//                    break;
-//                }else {
+            foreach ($activities as $activity){
             ?>
                     <div class="all-act-scop">
-                        <img src="<?php print $activity_count['img_uri'] ?>"
-                             alt="<?php print $activity_count['img_alt_text'] ?>"
+                        <img src="<?php print $activity['img_uri'] ?>"
+                             alt="<?php print $activity['img_name'] ?>"
                              class="all-act-vign-img"
                         />
                         <div class="all-act-datas-container">
-                            <h3 class="all-act-stick-title"><?php print $activity_count['title'] ?></h3>
-                            <a href="<?php print $base_url . "/activites/" . $activity_count['intermediate_path'] ?>"
+                            <h3 class="all-act-stick-title"><?php print $activity['title'] ?></h3>
+                            <a href="<?php print $activity['intermediate_path'] ?>"
                                class="all-act-readmore"></a>
                         </div>
                     </div>
             <?php
-//                }
-//                $maxThumbnailsCounter++;
             }
             ?>
         </div>

@@ -84,6 +84,7 @@
 
           var isTimeOut = false;
           var urlHashDecode = decodeURIComponent(window.location.hash);
+          console.log(urlHashDecode);
           var activityOffsetTop = $(urlHashDecode).offset().top;
           var menuHeight = $("#header-wrapper").height();
 

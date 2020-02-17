@@ -1145,10 +1145,6 @@ function memory_blocks_3_columns_block_admin_form($form, &$form_state){
         '#media_options' => array(
             'global' => array(
                 'file_directory'  => 'icons_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
                 'file_extensions' => 'png gif jpg jpeg',
                 'max_filesize'    => '2 MB',
                 'uri_scheme'      => 'public',
@@ -1200,10 +1196,6 @@ function memory_blocks_3_columns_block_admin_form($form, &$form_state){
         '#media_options' => array(
             'global' => array(
                 'file_directory'  => 'icons_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
                 'file_extensions' => 'png gif jpg jpeg',
                 'max_filesize'    => '2 MB',
                 'uri_scheme'      => 'public',
@@ -1255,10 +1247,6 @@ function memory_blocks_3_columns_block_admin_form($form, &$form_state){
         '#media_options' => array(
             'global' => array(
                 'file_directory'  => 'icons_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
                 'file_extensions' => 'png gif jpg jpeg',
                 'max_filesize'    => '2 MB',
                 'uri_scheme'      => 'public',
@@ -1372,10 +1360,6 @@ function memory_blocks_top_destinations_admin_form($form, &$form_state) {
             '#media_options' => array(
                 'global' => array(
                     'file_directory'  => 'image_folder',
-                    'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                        'upload',
-                        'media_default--media_browser_my_files'
-                    ),
                     'file_extensions' => 'png gif jpg jpeg',
                     'max_filesize'    => '2 MB',
                     'uri_scheme'      => 'public',
@@ -1606,10 +1590,6 @@ function memory_blocks_slider_admin_form($form, &$form_state){
             '#media_options' => array(
                 'global' => array(
                     'file_directory'  => 'image_folder',
-                    'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                        'upload',
-                        'media_default--media_browser_my_files'
-                    ),
                     'file_extensions' => 'png gif jpg jpeg',
                     'max_filesize'    => '2 MB',
                     'uri_scheme'      => 'public',
@@ -1651,10 +1631,6 @@ function memory_blocks_slider_admin_form($form, &$form_state){
         '#media_options' => array(
             'global' => array(
                 'file_directory'  => 'videos',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
                 'file_extensions' => 'mov mp4',
                 'max_filesize'    => '200 MB',
                 'uri_scheme'      => 'public',
@@ -1730,10 +1706,6 @@ function memory_blocks_slider_admin_form($form, &$form_state){
         '#media_options' => array(
             'global' => array(
                 'file_directory'  => 'image_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
                 'file_extensions' => 'png gif jpg jpeg',
                 'max_filesize'    => '2 MB',
                 'uri_scheme'      => 'public',
@@ -1781,10 +1753,6 @@ function memory_blocks_slider_admin_form($form, &$form_state){
         '#media_options' => array(
             'global' => array(
                 'file_directory'  => 'image_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
                 'file_extensions' => 'png gif jpg jpeg',
                 'max_filesize'    => '2 MB',
                 'uri_scheme'      => 'public',
@@ -1823,6 +1791,7 @@ function memory_blocks_activity_families_admin_form($form, &$form_state){
             '<table>' .
                 '<tr>' .
                     '<th>Titre</th>' .
+                    '<th>Ville</th>' .
                     '<th>Famille</th>' .
                 '</tr>'
         ,
@@ -1830,49 +1799,66 @@ function memory_blocks_activity_families_admin_form($form, &$form_state){
 
     foreach( $results as $result ){
 
-        $form["markup_top_" . $result->nid] = array(
-            '#type' => 'markup',
-            '#markup' => '<tr>',
-        );
+      $node = node_load($result->nid);
 
-        $form["title_" . $result->nid] = array(
-            '#type' => 'markup',
-            '#markup' => '<td>' . $result->title . '</td>',
-        );
+//      drupal_set_message("<pre>" . print_r($node, true) . "</pre>");
 
-        $form["category_markup_top" . $result->nid] = array(
-            '#type' => 'markup',
-            '#markup' => '<td>',
-        );
+      $activity_custom_title_field = field_get_items("node", $node, "field_activity_title");
+      $activity_custom_title = $activity_custom_title_field[0]["value"];
 
-        $form["category_" . $result->nid] = array(
-            '#type' => 'select',
-            '#options' => array(
-                0 => t('Aucune'),
-                1 => t('Volcan'),
-                2 => t('Aventure'),
-                3 => t('Survie'),
-                4 => t('Nature'),
-                5 => t('EVG'),
-                6 => t('EVJF'),
-                7 => t('Team Building'),
-                8 => t('Anniversaire'),
-                9 => t('Vie étudiante'),
-                10 => t('Mariage'),
-                11 => t('Demande en mariage'),
-            ),
-            '#default_value' => variable_get("category_" . $result->nid),
-        );
+      $activity_destination_field = field_get_items("node", $node, "field_acti_content_desti");
+      $activity_destination = $activity_destination_field[0]["tid"];
 
-        $form["category_markup_bottom" . $result->nid] = array(
-            '#type' => 'markup',
-            '#markup' => '</td>',
-        );
+      $taxonomy = taxonomy_term_load($activity_destination);
 
-        $form["markup_bottom_" . $result->nid] = array(
-            '#type' => 'markup',
-            '#markup' => '</tr>',
-        );
+      $form["markup_top_" . $result->nid] = array(
+          '#type' => 'markup',
+          '#markup' => '<tr>',
+      );
+
+      $form["title_" . $result->nid] = array(
+          '#type' => 'markup',
+          '#markup' => '<td>' . $activity_custom_title . '</td>',
+      );
+
+      $form["city_" . $result->nid] = array(
+        '#type' => 'markup',
+        '#markup' => '<td>' . $taxonomy->name . '</td>',
+      );
+
+      $form["category_markup_top" . $result->nid] = array(
+          '#type' => 'markup',
+          '#markup' => '<td>',
+      );
+
+      $form["category_" . $result->nid] = array(
+          '#type' => 'select',
+          '#options' => array(
+              0 => t('Aucune'),
+              1 => t('Volcan'),
+              2 => t('Aventure'),
+              3 => t('Survie'),
+              4 => t('Nature'),
+              5 => t('EVG'),
+              6 => t('EVJF'),
+              7 => t('Team Building'),
+              8 => t('Anniversaire'),
+              9 => t('Vie étudiante'),
+              10 => t('Mariage'),
+              11 => t('Demande en mariage'),
+          ),
+          '#default_value' => variable_get("category_" . $result->nid),
+      );
+
+      $form["category_markup_bottom" . $result->nid] = array(
+          '#type' => 'markup',
+          '#markup' => '</td>',
+      );
+
+      $form["markup_bottom_" . $result->nid] = array(
+          '#type' => 'markup',
+          '#markup' => '</tr>',
+      );
     }
 
     $form["markup_table_bottom"] = array(
@@ -1893,10 +1879,6 @@ function memory_blocks_all_destinations_page_admin_form($form, &$form_state){
         '#media_options' => array(
             'global' => array(
                 'file_directory'  => 'image_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
                 'file_extensions' => 'png gif jpg jpeg',
                 'max_filesize'    => '2 MB',
                 'uri_scheme'      => 'public',
@@ -1941,10 +1923,6 @@ function memory_blocks_all_activities_page_admin_form($form, &$form_state){
         '#media_options' => array(
             'global' => array(
                 'file_directory'  => 'image_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
                 'file_extensions' => 'png gif jpg jpeg',
                 'max_filesize'    => '2 MB',
                 'uri_scheme'      => 'public',
@@ -1974,17 +1952,6 @@ function memory_blocks_all_activities_page_admin_form($form, &$form_state){
         '#default_value' => $all_act_description['value'],
         '#weight' => 3,
     );
-
-//    $form['all_act_nb_thumbnails'] = array(
-//        '#type' => 'textfield',
-//        '#attributes' => array(
-//            ' type' => 'number',
-//        ),
-//        '#title' => 'Nombre de vignettes à afficher',
-//        '#required' => true,
-//        '#default_value' => variable_get("all_act_nb_thumbnails"),
-//        '#weight' => 4,
-//    );
 
     return system_settings_form($form);
 }
@@ -2024,10 +1991,6 @@ function memory_blocks_intermediate_page_admin_form($form, &$form_state){
             '#media_options' => array(
                 'global' => array(
                     'file_directory'  => 'image_folder',
-                    'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                        'upload',
-                        'media_default--media_browser_my_files'
-                    ),
                     'file_extensions' => 'png gif jpg jpeg',
                     'max_filesize'    => '2 MB',
                     'uri_scheme'      => 'public',
