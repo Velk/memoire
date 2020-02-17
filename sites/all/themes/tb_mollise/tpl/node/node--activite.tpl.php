@@ -1,6 +1,8 @@
 <?php
 global $base_url;
 
+//drupal_set_message("Activity page");
+
 // Retrieve the part of the URL corresponding to the nid of the activity cleaned
 $url_activity_nid = explode("node/", current_path())[1];
 
@@ -26,7 +28,9 @@ $image = file_create_url($image_uri[0]["uri"]);
 
 // Retrieve the activity description
 $description_field = field_get_items('node', $node, 'body');
-$description = $description_field[0]["value"];
+$description = $description_field[0]["safe_value"];
+
+drupal_set_message("<pre>" . print_r($node, true) . "</pre>");
 
 /* ---------- FIELD - ACTIVITY CATEGORY ---------- */
 
