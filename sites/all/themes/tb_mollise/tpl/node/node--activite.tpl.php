@@ -336,7 +336,7 @@ foreach ($activity_family_field as $activity_family_iteration){
           $prestation_base_description = "";
           $prestation_base_details = "";
 
-          if( $prestation_base_display_type )
+          if( $activity_basic_prest_display_type == 1 )
             $prestation_base_button_display_type = "<button class=\"option-more\"><i class=\"fa fa-caret-down\" aria-hidden=\"true\"></i>Voir plus</button>";
           else
             $prestation_base_button_display_type = "<button class=\"option-less\"><i class=\"fa fa-caret-up\" aria-hidden=\"true\"></i>Voir moins</button>";
