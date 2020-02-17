@@ -30,8 +30,6 @@ $image = file_create_url($image_uri[0]["uri"]);
 $description_field = field_get_items('node', $node, 'body');
 $description = $description_field[0]["safe_value"];
 
-drupal_set_message("<pre>" . print_r($node, true) . "</pre>");
-
 /* ---------- FIELD - ACTIVITY CATEGORY ---------- */
 
 // Retrieve the activity category id
