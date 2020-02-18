@@ -44,7 +44,7 @@ foreach ($results as $result) {
 
   $destination_image_field = field_get_items('taxonomy_term', $taxonomy, 'field_dst_image');
   $destination_image_field_ip_img = file_load($destination_image_field[0]["fid"]);
-  $destination_image = file_create_url($destination_image_field_ip_img->uri);
+  $destination_image = image_style_url("large", $destination_image_field_ip_img->uri);
 
   $array_destination[$node->nid]["nid"] = $node->nid;
   $array_destination[$node->nid]["destination_image"] = $destination_image;
@@ -81,10 +81,7 @@ foreach ($results as $result) {
     <div id="act-dest-main">
         <div class="act-dest-container">
             <?php foreach ($array_destination as $activity_content){ ?>
-                <div class="act-dest-scop">
-                    <img src="<?php print $activity_content['destination_image']?>"
-                         class="act-dest-vign-img"
-                    />
+                <div class="act-dest-scop" style="background-image:url('<?php print $activity_content['destination_image'] ?>'); background-size:cover;">
                     <div class="act-dest-datas-container">
                         <h3 class="act-dest-stick-title"><?php print $activity_content['destination_name'] ?></h3>
                         <a href="<?php print $base_url . "/" . $activity_content['destination_path'] . "#" . $activity_content["nid"]; ?>" class="act-dest-readmore"></a>

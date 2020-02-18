@@ -90,13 +90,6 @@ h3.all-act-stick-title {
     z-index: 2;
     color: #fff;
 }
-.all-act-vign-img {
-    position: absolute;
-    left: 50%;
-    width: auto;
-    height: 100%;
-    transform: translateX(-50%);
-}
 p.all-act-price {
     position: absolute;
     bottom: 0;

@@ -63,8 +63,7 @@ foreach ($nids as $nid) {
 
   $cnt[$activity_tid][$node->title] = array(
     'title' => $node->title,
-    'img_uri' => file_create_url($activity_image[0]["uri"]),
-    'img_name' => $activity_image[0]['filename'],
+    'img_uri' => image_style_url("large", $activity_image[0]["uri"]),
     'price' => $activity_price,
     'path' => $base_url . "/" . drupal_get_path_alias('node/' . $node->vid),
     'intermediate_path' => $base_url . "/activites/" . drupal_encode_path($node->title),
@@ -119,11 +118,7 @@ ksort($ordered_activity_categories);
 
             foreach ($cnt[$activity_category] as $cnt_act_sorted){
             ?>
-                <div class="act-cat-scop act-cat-scop-<?php print $activity_category ?>">
-                  <img src="<?php print $cnt_act_sorted['img_uri']?>"
-                       alt="<?php print $cnt_act_sorted['img_name']?>"
-                       class="act-cat-vign-img"
-                  />
+                <div class="act-cat-scop act-cat-scop-<?php print $activity_category ?>" style="background-image:url('<?php print $cnt_act_sorted['img_uri'] ?>'); background-size:cover;">
                   <div class="act-cat-datas-container">
                     <h3 class="act-cat-stick-title"><?php print $cnt_act_sorted['title'] ?></h3>
                     <p class="act-cat-price"><?php print $cnt_act_sorted['price']?> <?php isset($cnt_act_sorted['price']) ? print "€" : ""; ?></p>
@@ -151,11 +146,7 @@ ksort($ordered_activity_categories);
           foreach ($act_weight_sorted as $act_sorted) {
 
             ?>
-            <div class="act-cat-scop">
-              <img src="<?php print $act_sorted['img_uri']?>"
-                   alt="<?php print $act_sorted['img_alt_text']?>"
-                   class="act-cat-vign-img"
-              />
+            <div class="act-cat-scop" style="background-image:url('<?php print $act_sorted['img_uri'] ?>'); background-size:cover;">
               <div class="act-cat-datas-container">
                 <h3 class="act-cat-stick-title"><?php print $act_sorted['title'] ?></h3>
                 <p class="act-cat-price"><?php print $act_sorted['price']?> <?php isset($act_sorted['price']) ? print "€" : ""; ?></p>
