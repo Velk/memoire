@@ -737,7 +737,7 @@ function memory_blocks_block_view($delta = '') {
                    * Create the URL file by using the file URI
                    */
                   $file = file_load($arrayTopDestinations['image']);
-                  $url = file_create_url($file->uri);
+                  $url = image_style_url("large", $file->uri);
                   $arrayTopDestinations['image'] = $url;
 
                   array_push($arrayAllDestinations, $arrayTopDestinations);
@@ -787,7 +787,7 @@ function memory_blocks_block_view($delta = '') {
                    * Create the URL file by using the file URI
                    */
                   $file = file_load($arrayTopActivities['image']);
-                  $url = file_create_url($file->uri);
+                  $url = image_style_url("large", $file->uri);
                   $arrayTopActivities['image'] = $url;
 
                   array_push($arrayAllActivities, $arrayTopActivities);

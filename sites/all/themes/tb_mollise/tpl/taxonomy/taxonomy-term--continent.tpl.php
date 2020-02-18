@@ -32,6 +32,8 @@
     foreach ($nids as $nid) {
       $node = node_load($nid);
 
+//      drupal_set_message("<pre>" . print_r($node, true) . "</pre>");
+
       $activity_tid_field = field_get_items('node', $node, 'field_acti_cont_cat');
       $activity_tid = $activity_tid_field[0]["tid"];
 
@@ -52,7 +54,7 @@
         'price' => $activity_price[0]["value"],
         'weight' => $activity_weight,
         'group_act_cat' => $activity_tid,
-        'img_uri' => file_create_url($activity_image[0]["uri"]),
+        'img_uri' => image_style_url("large", $activity_image[0]["uri"]),
         'img_name' => $activity_image[0]['filename'],
         'activity_family' => getActivityFamily($node->nid),
       );
@@ -141,13 +143,9 @@
                         ksort($cnt_weight_sorted);
 
                         foreach ($cnt_weight_sorted as $cnt_act_sorted) {
-
                     ?>
-                            <div class="cont-scop cont-scop-<?php print $activity->tid ?>">
-                                <img src="<?php print $cnt_act_sorted['img_uri'] ?>"
-                                     alt="<?php print $cnt_act_sorted['img_name'] ?>"
-                                     class="cont-vign-img"
-                                />
+                            <div class="cont-scop cont-scop-<?php print $activity->tid ?>" style="background-image:url('<?php print $cnt_act_sorted['img_uri'] ?>'); background-size:cover;">
+
                                 <div class="cont-datas-container" id="<?php print $cnt_act_sorted['node_nid'] ?>">
                                     <input type="hidden" class="cont-act-nid" value="<?php print $cnt_act_sorted['node_vid'] ?>">
                                     <input type="hidden" class="cont-act-cat" value="<?php print $cnt_act_sorted['group_act_cat'] ?>">

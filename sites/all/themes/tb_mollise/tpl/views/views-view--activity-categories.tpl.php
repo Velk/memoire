@@ -64,8 +64,7 @@
 
     $activities[strtolower($node->title)] = array(
       'title' => $node->title,
-      'img_uri' => file_create_url($activity_image[0]["uri"]),
-      'img_name' => $activity_image[0]['filename'],
+      'img_uri' => image_style_url("large", $activity_image[0]["uri"]),
       'intermediate_path' => $base_url . "/activites/" . drupal_encode_path($node->title),
     );
   }
@@ -101,11 +100,7 @@
             <?php
             foreach ($activities as $activity){
             ?>
-                    <div class="all-act-scop">
-                        <img src="<?php print $activity['img_uri'] ?>"
-                             alt="<?php print $activity['img_name'] ?>"
-                             class="all-act-vign-img"
-                        />
+                    <div class="all-act-scop" style="background-image:url('<?php print $activity['img_uri'] ?>'); background-size:cover;">
                         <div class="all-act-datas-container">
                             <h3 class="all-act-stick-title"><?php print $activity['title'] ?></h3>
                             <a href="<?php print $activity['intermediate_path'] ?>"
