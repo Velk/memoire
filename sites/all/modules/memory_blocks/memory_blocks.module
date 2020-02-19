@@ -277,15 +277,12 @@ function memory_blocks_init() {
 
     // If user click on activities tab, link css and js file
     if(preg_match("/^.*\/activity-categories/", $_SERVER['REQUEST_URI'])){
-
         drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/memory-all-activities.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
-        drupal_add_js(drupal_get_path('module', 'memory_blocks') . '/js/memory-all-activities.js', array('group' => JS_DEFAULT, 'every_page' => TRUE));
     }
 
     // If user is on activities intermediate page, link css and js file
     if(preg_match("/^.*\/activites\/.*$/", $_SERVER['REQUEST_URI'])){
         drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/memory-act-dest.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
-        drupal_add_js(drupal_get_path('module', 'memory_blocks') . '/js/memory-act-dest.js', array('group' => JS_DEFAULT, 'every_page' => TRUE));
     }
 
     // Add style and javascript for destinations page containing activities thumbnails
@@ -294,10 +291,12 @@ function memory_blocks_init() {
 
     // Add style and javascript for activities page containing activities thumbnails
     drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/memory_activities.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
-    drupal_add_js(drupal_get_path('module', 'memory_blocks') . '/js/memory_activities.js', array('group' => JS_DEFAULT, 'every_page' => TRUE));
 
     drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/memory_responsive.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
     drupal_add_js(drupal_get_path('module', 'memory_blocks') . '/js/memory_responsive.js', array('group' => JS_DEFAULT, 'every_page' => TRUE));
+
+    // Add JS file to manage activity filters (Pack, Activité de jour, de nuit, transfert et hébergement)
+    drupal_add_js(drupal_get_path('module', 'memory_blocks') . '/js/memory_activity_filters.js', array('group' => JS_DEFAULT, 'every_page' => TRUE));
 }
 
 /**
