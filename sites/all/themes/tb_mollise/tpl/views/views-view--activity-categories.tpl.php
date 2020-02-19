@@ -43,6 +43,7 @@
 
   // Array intended to contain every node ID
   $nids = [];
+  $array_activity_types = array();
 
   foreach ($entities as $entity) {
 
@@ -60,14 +61,37 @@
     // Retrieve all content of the node belonging to the activity category
     $node = node_load($nids[$i]);
 
+    // Add TID in order to display Filters
+    $activity_type_field = field_get_items('node', $node, 'field_acti_cont_cat');
+    $activity_type = $activity_type_field[0]["tid"];
+
+    if(!in_array($activity_type, $array_activity_types) && !empty($activity_type)){
+      array_push($array_activity_types, $activity_type);
+    }
+
+    $activity_tid_field = field_get_items('node', $node, 'field_acti_cont_cat');
+    $activity_tid = $activity_tid_field[0]["tid"];
+
     $activity_image = field_get_items('node', $node, 'field_img_activite');
 
-    $activities[strtolower($node->title)] = array(
+    $activities[$activity_tid][strtolower($node->title)] = array(
       'title' => $node->title,
       'img_uri' => image_style_url("large", $activity_image[0]["uri"]),
       'intermediate_path' => $base_url . "/activites/" . drupal_encode_path($node->title),
     );
   }
+
+  // Order filters
+  $ordered_activity_categories = array();
+
+  foreach ($array_activity_types as $activity_type){
+
+    $taxonomy = taxonomy_term_load($activity_type);
+
+    $ordered_activity_categories[$taxonomy->weight] = $activity_type;
+  }
+
+  ksort($ordered_activity_categories);
 ?>
 
 <div id="container">
@@ -95,21 +119,122 @@
         ;
     }
     ?>
+
+    <?php if(sizeof($array_activity_types) != 0){ echo getSpecialFiltersHTML($ordered_activity_categories); } ?>
+
     <div id="all-activities-main">
-        <div class="all-activities-container">
-            <?php
-            foreach ($activities as $activity){
-            ?>
-                    <div class="all-act-scop" style="background-image:url('<?php print $activity['img_uri'] ?>'); background-size:cover;">
-                        <div class="all-act-datas-container">
-                            <h3 class="all-act-stick-title"><?php print $activity['title'] ?></h3>
-                            <a href="<?php print $activity['intermediate_path'] ?>"
-                               class="all-act-readmore"></a>
+
+        <?php foreach($ordered_activity_categories as $activity_category): ?>
+        <?php if( isset( $activities[$activity_category] ) ){ ?>
+        <div id="act-cat-<?php print $activity_category ?>" class="act-cat-container">
+
+          <?= getCategoriesHTML($activity_category); ?>
+
+            <div class="all-activities-container">
+                <?php
+                // Sort array by activity name
+                ksort($activities[$activity_category]);
+
+                foreach ($activities[$activity_category] as $activity){
+                ?>
+                        <div class="all-act-scop" style="background-image:url('<?php print $activity['img_uri'] ?>'); background-size:cover;">
+                            <div class="all-act-datas-container">
+                                <h3 class="all-act-stick-title"><?php print $activity['title'] ?></h3>
+                                <a href="<?php print $activity['intermediate_path'] ?>"
+                                   class="all-act-readmore"></a>
+                            </div>
                         </div>
-                    </div>
-            <?php
-            }
-            ?>
+                <?php
+                }
+                ?>
+            </div>
         </div>
+        <?php }
+        endforeach;?>
     </div>
 </div>
+
+<?php
+// Get category
+function getCategoriesHTML($activity_category){
+
+  $taxonomy = taxonomy_term_load($activity_category);
+
+  switch ($taxonomy->name){
+    case "Activités de jour" :
+      $icon = "fa-sun-o";
+      break;
+    case "Activités de nuit" :
+      $icon = "fa-moon-o";
+      break;
+    case "Transferts" :
+      $icon = "fa-bus";
+      break;
+    case "Hébergements" :
+      $icon = "fa-home";
+      break;
+    case "Nos packs" :
+      $icon = "fa-globe";
+      break;
+  }
+
+  $category_structure =
+    "<h2>" .
+    "<i class=\"fa " . $icon . "\" aria-hidden=\"true\"></i>" .
+    $taxonomy->name .
+    "</h2>"
+  ;
+
+  return $category_structure;
+}
+
+// Get the HTML structure for special filters
+function getSpecialFiltersHTML($ordered_activity_categories){
+
+  // HTML Structure of filters
+  $filter_structure =
+    "<div id=\"act-cat-filters\">" .
+    "<div class=\"act-cat-filter\">" .
+    "<p><i class=\"fa fa-th\" aria-hidden=\"true\"></i>Toutes nos Activités</p>" .
+    "</div>"
+  ;
+
+  foreach ($ordered_activity_categories as $filter){
+
+    $taxonomy = taxonomy_term_load($filter);
+
+    switch ($taxonomy->name){
+      case "Activités de jour" :
+        $icon = "fa-sun-o";
+        break;
+      case "Activités de nuit" :
+        $icon = "fa-moon-o";
+        break;
+      case "Transferts" :
+        $icon = "fa-bus";
+        break;
+      case "Hébergements" :
+        $icon = "fa-home";
+        break;
+      case "Nos packs" :
+        $icon = "fa-globe";
+        break;
+    }
+
+    $filter_structure .=
+      "<div class=\"act-cat-filter\">" .
+      "<p>" .
+      "<i class=\"fa " . $icon . "\" aria-hidden=\"true\"></i>" .
+      $taxonomy->name .
+      "</p>" .
+      "</div>"
+    ;
+  }
+
+  $filter_structure .=
+    "</div>"
+  ;
+
+  return $filter_structure;
+}
+?>

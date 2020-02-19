@@ -45,7 +45,7 @@ foreach ($nids as $nid) {
     $activity_type_field = field_get_items('node', $node, 'field_acti_cont_cat');
     $activity_type = $activity_type_field[0]["tid"];
 
-    if(!in_array($activity_type, $array_activity_types)){
+    if(!in_array($activity_type, $array_activity_types) && !empty($activity_type)){
       array_push($array_activity_types, $activity_type);
     }
   }
