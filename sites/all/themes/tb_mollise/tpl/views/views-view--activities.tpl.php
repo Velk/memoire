@@ -57,10 +57,14 @@ foreach ($results as $result) {
     <?php
     if( isset($ip_image) || isset($ip_title) ){
 
-        echo '<div id="img-container">';
+        $image_style = "";
+        if(isset($ip_image)){
+          $image_style = "style=\"background-image:url(" . $ip_image . "); background-size:cover;background-position:center;\"";
+        }
+
+        echo '<div id="img-container" ' . $image_style .'>';
 
         if( isset($ip_image) ){
-            echo '<img src="' . $ip_image . '">';
             echo '<div id="memory-img-filter"></div>';
         }
         if( isset($ip_title) ){

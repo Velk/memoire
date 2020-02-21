@@ -799,6 +799,7 @@ form#devis #trip-global-container #trip-disclaimer {
 }
 
 form#devis div#city-name {
+  position: relative;
   display: flex;
   flex-direction: row;
   background-color: #fff;
@@ -810,11 +811,13 @@ form#devis div#city-name {
 }
 
 form#devis div#city-name > i.fa {
+  position: absolute;
   font-size: 50px;
-  width:50px;
+  width: 50px;
   height: 50px;
   margin-right: 0px;
-  color: #ebebeb;
+  color: #000000;
+  left: 10px;
 }
 
 form#devis div#city-name > div {

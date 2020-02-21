@@ -64,19 +64,34 @@
 ?>
 <div id="continent">
     <div class="cont-head">
-        <div id="cont-head-img-container">
-            <h2 class="cont-head-title"><?php print $content['field_destination_title']['#items'][0]['value']; ?></h2>
-            <?php if(!empty($content['field_dst_image'])): ?>
-                <img src="<?php print $img_head_url;?>"
-                     alt="<?php print $content['field_dst_image']['#items'][0]['filename']?>"
-                     class="cont-head-img"
-                     style="width:100%;"
-                />
-            <?php endif; ?>
-        </div>
-        <div id="cont-head-desc">
-            <?php print $content['description']['#markup']; ?>
-        </div>
+      <?php
+      if( isset($img_head_url) || isset($content['field_destination_title']['#items'][0]['value']) ){
+
+        $image_style = "";
+        if(isset($img_head_url)){
+          $image_style = "style=\"background-image:url(" . $img_head_url . "); background-size:cover;background-position:center;\"";
+        }
+
+        echo '<div id="cont-head-img-container" ' . $image_style .'>';
+
+        if( isset($img_head_url) ){
+          echo '<div id="memory-img-filter"></div>';
+        }
+        if( isset($content['field_destination_title']['#items'][0]['value']) ){
+          echo '<h2 class="cont-head-title">' . $content['field_destination_title']['#items'][0]['value'] . '</h2>';
+        }
+
+        echo '</div>';
+      }
+
+      if( isset($content['description']['#markup']) ){
+        echo
+          '<div id="cont-head-desc">' .
+          $content['description']['#markup'] .
+          '</div>'
+        ;
+      }
+      ?>
     </div>
     <div id="cont-filters">
         <div class="cont-filter">
