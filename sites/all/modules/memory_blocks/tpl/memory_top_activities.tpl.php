@@ -6,7 +6,7 @@
         <?php
         for( $i = 0 ; $i < sizeof($arrayAllActivities) ; $i++ ){
             ?>
-            <div style="background-image:url('<?php print $arrayAllActivities[$i]["image"] ?>'); background-size:cover;">
+            <div style="background-image:url('<?php print $arrayAllActivities[$i]["image"] ?>'); background-size:cover;background-position:center;">
                 <a href="<?php echo $base_url . $arrayAllActivities[$i]["url"]; ?>">
                     <p class="ta-name"><?php echo $arrayAllActivities[$i]["name"]; ?></p>
                 </a>

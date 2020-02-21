@@ -75,7 +75,7 @@ $activity_basic_prest_quote = $activity_basic_prest_quote_field[0]["value"];
 
 // Retrieve the activity basic prestation image
 $activity_basic_prest_image_field = field_get_items('node', $node, 'field_image_prestation_base');
-$activity_basic_prest_image = (!empty($activity_basic_prest_image_field)) ? file_create_url($activity_basic_prest_image_field[0]["uri"]) : null;
+$activity_basic_prest_image = (!empty($activity_basic_prest_image_field)) ? image_style_url("large", $activity_basic_prest_image_field[0]["uri"]) : null;
 
 // Retrieve the activity basic prestation text
 $activity_basic_prest_text_field = field_get_items('node', $node, 'field_text_prestation_base');
@@ -160,7 +160,7 @@ for($i = 0 ; $i < sizeof($activity_options_field) ; $i++){
   $results_option_image = $query_option_image->execute();
 
   foreach ($results_option_image as $result_option_image){
-    $activity_options[$i]["image"] = file_create_url(file_load($result_option_image->field_image_option_fid)->uri);
+    $activity_options[$i]["image"] = image_style_url("large", file_load($result_option_image->field_image_option_fid)->uri);
   }
 
   // Option text
@@ -299,10 +299,14 @@ foreach ($activity_family_field as $activity_family_iteration){
     <?php
     if( isset($image) || isset($title) ){
 
-      echo '<div id="activity-header-container">';
+      $image_style = "";
+      if(isset($image)){
+        $image_style = "style=\"background-image:url(" . $image . "); background-size:cover;background-position:center;\"";
+      }
+
+      echo '<div id="activity-header-container" ' . $image_style .'>';
 
       if( isset($image) ){
-        echo '<img src="' . $image . '">';
         echo '<div id="memory-img-filter"></div>';
       }
       if( isset($title) ){
@@ -439,7 +443,7 @@ foreach ($activity_family_field as $activity_family_iteration){
                 $prestation_base_price .
               "</div>" .
               "<div class=\"prestation-main " . $prestation_base_display_type . "\">" .
-                "<hr>" .
+                "<hr/>" .
                 "<div>" .
                   $prestation_base_image .
                   $prestation_base_description .
@@ -574,7 +578,7 @@ foreach ($activity_family_field as $activity_family_iteration){
                         $prestation_price .
                       "</div>" .
                       "<div class=\"prestation-main " . $prestation_display_type . "\">" .
-                        "<hr>" .
+                        "<hr/>" .
                         "<div>" .
                           $prestation_image .
                           $prestation_description .

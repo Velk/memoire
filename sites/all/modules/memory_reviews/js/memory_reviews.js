@@ -12,6 +12,12 @@
         var reviewSlidingTime = Drupal.settings.memory_reviews.review_sliding_time;
         var reviewSlidingSpeed = Drupal.settings.memory_reviews.review_sliding_speed;
 
+        function stopInfiniteSlider(){
+
+          // Stop the infinite slider
+          clearInterval(refreshIntervalId);
+        }
+
         function changeAutomaticallyDotsSliderManager(){
 
           var nbReviewsDot = $("#reviews-touchable-manager > i").length;
@@ -28,11 +34,93 @@
           }
         }
 
-        function infiniteSlider(){
-          if(nbReviews > 3){ // Because a group of reviews is composed of 3 reviews
+        (function responsiveChangeStructure(){
 
-            // Infinite reviews carousel
-            // $(function(){
+          if(screen.width <= 640){ // Small device
+
+            // Create new Reviews structure
+            var reviewSmallStructure = "";
+
+            $(".memory-review").each(function(index, el){
+              reviewSmallStructure +=
+                "<div class=\"memory-group-reviews group-nb-" + index + "\">" +
+                  el.outerHTML +
+                "</div>"
+              ;
+            });
+
+            $("#reviews-slider").empty(); // Empty the old Reviews structure
+
+            $("#reviews-slider").append(reviewSmallStructure); // Add the new Reviews structure
+
+            // Modify review switch manager
+            var newSwitchManager =
+              "<button type=\"button\" id=\"previous-review\">" +
+                "<i class=\"fa fa-long-arrow-left\" aria-hidden=\"true\"></i>" +
+              "</button>" +
+              "<button type=\"button\" id=\"next-review\">" +
+                "<i class=\"fa fa-long-arrow-right\" aria-hidden=\"true\"></i>" +
+              "</button>"
+            ;
+
+            $("#reviews-touchable-manager").empty();
+            $("#reviews-touchable-manager").append(newSwitchManager);
+
+            $("#previous-review").click(function(){
+
+              stopInfiniteSlider();
+
+              var firstReview = $("#reviews-slider .memory-group-reviews:first");
+              var lastReview = $("#reviews-slider .memory-group-reviews:last");
+
+              firstReview.before(lastReview);
+
+              // Re-run the infinite slider
+              infiniteSlider();
+            });
+            $("#next-review").click(function(){
+
+              stopInfiniteSlider();
+
+              var firstReview = $("#reviews-slider .memory-group-reviews:first");
+              var lastReview = $("#reviews-slider .memory-group-reviews:last");
+
+              lastReview.after(firstReview);
+
+              // Re-run the infinite slider
+              infiniteSlider();
+            });
+          }
+        }());
+
+        function infiniteSlider(){
+
+          if(screen.width <= 640){ // Small devices
+
+            if(nbReviews > 1){ // Because on small device, reviews are displayed one by one.
+
+              // Infinite reviews carousel
+              refreshIntervalId = setInterval(function(){
+
+                // Slide reviews and fade the sliding review
+                $("#memory-reviews-container > div#reviews-slider > .memory-group-reviews:first").animate(
+                  {marginLeft:-reviewsContainerWidth},
+                  0,
+                  function(){
+                    $(".memory-group-reviews:last").after($(this));
+
+                    $("#memory-reviews-container > div#reviews-slider > .memory-group-reviews").css({
+                      marginLeft:0
+                    });
+                  }
+                );
+              }, reviewSlidingTime);
+            }
+          }else{
+
+            if(nbReviews > 3){ // Because a group of reviews is composed of 3 reviews
+
+              // Infinite reviews carousel
               refreshIntervalId = setInterval(function(){
 
                 // Slide reviews and fade the sliding review
@@ -41,16 +129,17 @@
                   reviewSlidingSpeed,
                   function(){
                     $(".memory-group-reviews:last").after($(this));
-                    $(this).css({
+
+                    $("#memory-reviews-container > div#reviews-slider > .memory-group-reviews").css({
                       marginLeft:0,
-                      "opacity": 1
+                      opacity: 1,
                     });
 
                     changeAutomaticallyDotsSliderManager();
                   }
                 );
               }, reviewSlidingTime);
-            // });
+            }
           }
         }
 
@@ -62,8 +151,7 @@
 
           if($(this).hasClass("fa-circle-thin")){
 
-            // Stop the infinite slider
-            clearInterval(refreshIntervalId);
+            stopInfiniteSlider();
 
             var selectedDotIndex = $(this).index();
             var groupReviewsIndex = $(".group-nb-" + selectedDotIndex).index();

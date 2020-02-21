@@ -72,7 +72,7 @@ else if($isActivityPage) {
             <button type="button" id="express-validate-cart">Rappelez-moi</button>
           </div>
         </div>
-        <hr>
+        <hr/>
       </div>
       <div id="quotation-data">
         <h3>Demander un devis</h3>
@@ -134,7 +134,7 @@ else if($isActivityPage) {
           <p id="trip-disclaimer">Pour planifier votre devis, veuillez selectionner une date de départ et une date de retour</p>
           <div id="trip-activities-container"></div>
         </div>
-        <hr>
+        <hr/>
       </div>
       <div id="wish">
           <textarea name="wish" placeholder="Nos agents sont là pour vous : une envie particulière, besoin d’un conseil, faites-le nous savoir… "></textarea>

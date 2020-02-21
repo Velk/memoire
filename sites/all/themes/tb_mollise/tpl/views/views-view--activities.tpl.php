@@ -81,7 +81,7 @@ foreach ($results as $result) {
     <div id="act-dest-main">
         <div class="act-dest-container">
             <?php foreach ($array_destination as $activity_content){ ?>
-                <div class="act-dest-scop" style="background-image:url('<?php print $activity_content['destination_image'] ?>'); background-size:cover;">
+                <div class="act-dest-scop" style="background-image:url('<?php print $activity_content['destination_image'] ?>'); background-size:cover;background-position:center;">
                     <div class="act-dest-datas-container">
                         <h3 class="act-dest-stick-title"><?php print $activity_content['destination_name'] ?></h3>
                         <a href="<?php print $base_url . "/" . $activity_content['destination_path'] . "#" . $activity_content["nid"]; ?>" class="act-dest-readmore"></a>

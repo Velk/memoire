@@ -88,7 +88,7 @@ h3.all-act-stick-title {
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     z-index: 2;
-    color: #fff;
+    color: #fff !important;
 }
 p.all-act-price {
     position: absolute;

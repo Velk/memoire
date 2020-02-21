@@ -46,10 +46,6 @@ function memory_reviews_admin_reviews_manager($form, &$form_state) {
     '#media_options' => array(
       'global' => array(
         'file_directory'  => 'icons_folder',
-        'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-          'upload',
-          'media_default--media_browser_my_files'
-        ),
         'file_extensions' => 'png gif jpg jpeg',
         'max_filesize'    => '2 MB',
         'uri_scheme'      => 'public',

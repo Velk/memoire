@@ -238,4 +238,13 @@ div#footer-container div#header-partners > hr {
     width: 40px !important;
     height: 40px !important;
   }
+  .memory-partner {
+    width: 100%;
+  }
+  #partners-container > div#partners-slider > div.memory-group-partners {
+    justify-content: unset;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    height: 100%;
+  }
 }

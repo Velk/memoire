@@ -19,14 +19,7 @@ div#activity-header-container > h2 {
   background-color: #00000075;
   padding: 3px 20px;
   box-sizing: border-box;
-}
-div#activity-header-container > img {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translateY(-50%) translateX(-50%);
-  z-index: 10;
-  width: 100vw;
+  min-width: 250px;
 }
 div#memory-img-filter{
   position: absolute;
