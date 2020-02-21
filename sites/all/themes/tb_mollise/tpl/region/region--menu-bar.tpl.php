@@ -153,7 +153,7 @@ foreach ($array_countries as $country){
                                 <a href="<?php print $base_url; ?>/destinations">Toutes nos destinations</a>
                             </div>
                         </div>
-                        <hr>
+                        <hr/>
                         <div id="destination-menu-container">
                           <?php foreach($tab_continent as $cont): ?>
                           <div class="continent-menu">
@@ -218,7 +218,7 @@ foreach ($array_countries as $country){
                                     <a href="<?php print $base_url; ?>/activity-categories">Toutes nos activités</a>
                                 </div>
                             </div>
-                            <hr>
+                            <hr/>
                             <div id="activity-menu-container">
                                 <?php
                                 foreach($tab_global_categories as $global_category){

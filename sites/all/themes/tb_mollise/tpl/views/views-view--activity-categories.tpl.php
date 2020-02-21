@@ -137,7 +137,7 @@
 
                 foreach ($activities[$activity_category] as $activity){
                 ?>
-                        <div class="all-act-scop" style="background-image:url('<?php print $activity['img_uri'] ?>'); background-size:cover;">
+                        <div class="all-act-scop" style="background-image:url('<?php print $activity['img_uri'] ?>'); background-size:cover;background-position:center;">
                             <div class="all-act-datas-container">
                                 <h3 class="all-act-stick-title"><?php print $activity['title'] ?></h3>
                                 <a href="<?php print $activity['intermediate_path'] ?>"

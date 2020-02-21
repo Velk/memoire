@@ -118,7 +118,7 @@ ksort($ordered_activity_categories);
 
             foreach ($cnt[$activity_category] as $cnt_act_sorted){
             ?>
-                <div class="act-cat-scop act-cat-scop-<?php print $activity_category ?>" style="background-image:url('<?php print $cnt_act_sorted['img_uri'] ?>'); background-size:cover;">
+                <div class="act-cat-scop act-cat-scop-<?php print $activity_category ?>" style="background-image:url('<?php print $cnt_act_sorted['img_uri'] ?>'); background-size:cover;background-position:center;">
                   <div class="act-cat-datas-container">
                     <h3 class="act-cat-stick-title"><?php print $cnt_act_sorted['title'] ?></h3>
                     <p class="act-cat-price"><?php print $cnt_act_sorted['price']?> <?php isset($cnt_act_sorted['price']) ? print "€" : ""; ?></p>
@@ -146,7 +146,7 @@ ksort($ordered_activity_categories);
           foreach ($act_weight_sorted as $act_sorted) {
 
             ?>
-            <div class="act-cat-scop" style="background-image:url('<?php print $act_sorted['img_uri'] ?>'); background-size:cover;">
+            <div class="act-cat-scop" style="background-image:url('<?php print $act_sorted['img_uri'] ?>'); background-size:cover;background-position:center;">
               <div class="act-cat-datas-container">
                 <h3 class="act-cat-stick-title"><?php print $act_sorted['title'] ?></h3>
                 <p class="act-cat-price"><?php print $act_sorted['price']?> <?php isset($act_sorted['price']) ? print "€" : ""; ?></p>

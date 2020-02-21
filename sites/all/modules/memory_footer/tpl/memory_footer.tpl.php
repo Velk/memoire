@@ -39,7 +39,7 @@
       </div>
       <div id="social-media-links">
         <div id="header-social-media-links">
-          <hr><p id="follow-us">Suivez-nous</p><hr>
+          <hr/><p id="follow-us">Suivez-nous</p><hr/>
         </div>
         <div id="social-media-links-container">
           <?php
@@ -64,7 +64,7 @@
       <?php if( sizeof($arrayPartners) > 0 ){ ?>
       <div id="partners-container">
         <div id="header-partners">
-          <hr><p>Nos partenaires</p><hr>
+          <hr/><p>Nos partenaires</p><hr/>
         </div>
         <div id="partners-slider">
           <?php for($k = 0; $k < sizeof($arrayPartners); $k = $k + 7){ ?>

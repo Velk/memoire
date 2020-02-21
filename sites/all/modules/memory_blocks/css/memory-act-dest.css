@@ -89,7 +89,7 @@ h3.act-dest-stick-title {
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     z-index: 2;
-    color: #fff;
+    color: #fff !important;
 }
 .act-dest-vign-img {
     position: absolute;

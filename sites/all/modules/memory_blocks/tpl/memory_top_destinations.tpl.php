@@ -6,7 +6,7 @@
         <?php
         for( $i = 0 ; $i < sizeof($arrayAllDestinations) ; $i++ ){
         ?>
-            <div style="background-image:url('<?php print $arrayAllDestinations[$i]["image"] ?>'); background-size:cover;">
+            <div style="background-image:url('<?php print $arrayAllDestinations[$i]["image"] ?>'); background-size:cover;background-position:center;">
                 <a href="<?php echo $base_url . $arrayAllDestinations[$i]["url"]; ?>">
                     <p class="td-name"><?php echo $arrayAllDestinations[$i]["name"]; ?></p>
                 </a>
