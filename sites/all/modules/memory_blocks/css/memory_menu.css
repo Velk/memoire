@@ -220,6 +220,13 @@ ul.country-menu > li {
   font-weight: normal;
     color: #000;
 }
+.continent-menu ul a > i.fa {
+  font-size: 6px;
+  margin-right: 10px;
+}
+.continent-menu ul a > span {
+  font-size: 12px;
+}
 ul.city-menu {
     list-style-type: none;
     margin: 10px 0 0 0;
