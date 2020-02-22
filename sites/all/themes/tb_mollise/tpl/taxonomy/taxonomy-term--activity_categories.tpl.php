@@ -28,7 +28,7 @@ if (!empty($content['field_category_activities_img'])) {
 }
 
 // Retrieve the taxonomy ID
-$tid = key(taxonomy_get_term_by_name($term_name));
+$tid = key(taxonomy_get_term_by_name($term_name, "activity_categories"));
 
 // Retrieve an array containing nodes ID belonging to the activity category
 $nids = taxonomy_select_nodes($tid, FALSE);
