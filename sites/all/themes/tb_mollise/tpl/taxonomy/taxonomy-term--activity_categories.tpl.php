@@ -66,7 +66,7 @@ foreach ($nids as $nid) {
     'img_uri' => image_style_url("large", $activity_image[0]["uri"]),
     'price' => $activity_price,
     'path' => $base_url . "/" . drupal_get_path_alias('node/' . $node->vid),
-    'intermediate_path' => $base_url . "/activites/" . drupal_encode_path($node->title),
+    'intermediate_path' => $base_url . "/activites/" . drupal_encode_path($node->title) . "?category=" . $tid,
   );
 }
 

@@ -4,6 +4,10 @@
 
 //    drupal_set_message("Destinations page");
 
+    if(isset($_GET["category"]) && !empty($_GET["category"])){ // Get category TID (EVG, EVJF...) coming from intermediate page
+      $is_category_target = true;
+    }
+
     if (!empty($content['field_dst_image'])) {
         $img_head_url = file_create_url($content['field_dst_image']['#items'][0]['uri']);
     }
@@ -32,32 +36,48 @@
     foreach ($nids as $nid) {
       $node = node_load($nid);
 
-//      drupal_set_message("<pre>" . print_r($node, true) . "</pre>");
+      $activity_category_field = field_get_items("node", $node, "field_activity_category");
+      $is_node_to_display = false;
 
-      $activity_tid_field = field_get_items('node', $node, 'field_acti_cont_cat');
-      $activity_tid = $activity_tid_field[0]["tid"];
+      if($is_category_target){ // Mean we need to filter by the activity category targeted (EVG, EVJF...)
 
-      $activity_weight_field = field_get_items('node', $node, 'field_weight');
-      $activity_weight = ( empty($activity_weight_field[0]["value"]) ) ? 0 : $activity_weight_field[0]["value"];
+        foreach ($activity_category_field as $activity_category){
 
-      $activity_custom_title_field = field_get_items('node', $node, 'field_activity_title');
-      $activity_custom_title = $activity_custom_title_field[0]["value"];
+          if($activity_category["tid"] == $_GET["category"]){
+            $is_node_to_display = true;
+          }
+        }
+      }else{
+        $is_node_to_display = true;
+      }
 
-      $activity_image = field_get_items('node', $node, 'field_img_activite');
-      $activity_price = field_get_items('node', $node, 'field_price_prestation');
+      if($is_node_to_display){
 
-      $cnt[$activity_tid][$activity_weight][$node->nid] = array(
-        'node_vid' => $node->vid,
-        'node_nid' => $node->nid,
-        'path' => $base_url."/".drupal_get_path_alias('node/'.$node->vid),
-        'custom_title' => $activity_custom_title,
-        'price' => $activity_price[0]["value"],
-        'weight' => $activity_weight,
-        'group_act_cat' => $activity_tid,
-        'img_uri' => image_style_url("large", $activity_image[0]["uri"]),
-        'img_name' => $activity_image[0]['filename'],
-        'activity_family' => getActivityFamily($node->nid),
-      );
+        $activity_tid_field = field_get_items('node', $node, 'field_acti_cont_cat');
+        $activity_tid = $activity_tid_field[0]["tid"];
+
+        $activity_weight_field = field_get_items('node', $node, 'field_weight');
+        $activity_weight = ( empty($activity_weight_field[0]["value"]) ) ? 0 : $activity_weight_field[0]["value"];
+
+        $activity_custom_title_field = field_get_items('node', $node, 'field_activity_title');
+        $activity_custom_title = $activity_custom_title_field[0]["value"];
+
+        $activity_image = field_get_items('node', $node, 'field_img_activite');
+        $activity_price = field_get_items('node', $node, 'field_price_prestation');
+
+        $cnt[$activity_tid][$activity_weight][$node->nid] = array(
+          'node_vid' => $node->vid,
+          'node_nid' => $node->nid,
+          'path' => $base_url."/".drupal_get_path_alias('node/'.$node->vid),
+          'custom_title' => $activity_custom_title,
+          'price' => $activity_price[0]["value"],
+          'weight' => $activity_weight,
+          'group_act_cat' => $activity_tid,
+          'img_uri' => image_style_url("large", $activity_image[0]["uri"]),
+          'img_name' => $activity_image[0]['filename'],
+          'activity_family' => getActivityFamily($node->nid),
+        );
+      }
     }
 
 //drupal_set_message("<pre>" . print_r($cnt, true) . "</pre>");
