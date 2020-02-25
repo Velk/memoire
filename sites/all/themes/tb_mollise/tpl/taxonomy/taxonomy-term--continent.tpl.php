@@ -2,7 +2,7 @@
     global $base_url;
     module_load_include('inc', 'pathauto', 'pathauto'); // Include pathauto to clean a string for use in URLs in order to compare with the current URL
 
-//    drupal_set_message("Destinations page");
+    drupal_set_message("Destinations page");
 
     if(isset($_GET["category"]) && !empty($_GET["category"])){ // Get category TID (EVG, EVJF...) coming from intermediate page
       $is_category_target = true;
@@ -67,11 +67,10 @@
 
         $cnt[$activity_tid][$activity_weight][$node->nid] = array(
           'node_vid' => $node->vid,
-          'node_nid' => $node->nid,
           'path' => $base_url."/".drupal_get_path_alias('node/'.$node->vid),
           'custom_title' => $activity_custom_title,
           'price' => $activity_price[0]["value"],
-          'weight' => $activity_weight,
+//          'weight' => $activity_weight,
           'group_act_cat' => $activity_tid,
           'img_uri' => image_style_url("large", $activity_image[0]["uri"]),
           'img_name' => $activity_image[0]['filename'],
@@ -168,9 +167,8 @@
                 ?>
                 <div class="cont-activities-container">
                     <?php
-
                     // Sort array by activity weight
-                    ksort($cnt[$activity->tid]);
+                    krsort($cnt[$activity->tid], 6);
 
                     foreach ($cnt[$activity->tid] as $cnt_weight_sorted){
 
