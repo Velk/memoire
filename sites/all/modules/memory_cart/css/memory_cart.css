@@ -799,6 +799,7 @@ form#devis #trip-global-container #trip-disclaimer {
 }
 
 form#devis div#city-name {
+  position: relative;
   display: flex;
   flex-direction: row;
   background-color: #fff;
@@ -810,11 +811,13 @@ form#devis div#city-name {
 }
 
 form#devis div#city-name > i.fa {
+  position: absolute;
   font-size: 50px;
-  width:50px;
+  width: 50px;
   height: 50px;
   margin-right: 0px;
-  color: #ebebeb;
+  color: #000000;
+  left: 10px;
 }
 
 form#devis div#city-name > div {
@@ -834,4 +837,31 @@ form#devis div#city-name > div p:last-of-type {
   font-size:18px;
   font-weight: bold;
   text-transform : uppercase;
+}
+
+/* RESPONSIVE */
+@media screen and (max-width: 1024px) {
+
+  div#cart-container > div {
+    height: 100% !important;
+    padding: 25px 0 !important;
+    box-sizing: border-box;
+  }
+}
+
+@media screen and (max-width: 640px) {
+
+  #block-memory-cart-memory-cart .block-inner {
+    padding: 0 !important;
+  }
+
+  div#cart-container > div {
+    width: 100vw;
+    min-width: unset;
+    max-width: unset;
+  }
+
+  #cart-container .toggle-user-cart {
+    display: none;
+  }
 }

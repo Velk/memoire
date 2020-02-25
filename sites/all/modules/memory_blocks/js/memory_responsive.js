@@ -9,7 +9,7 @@
         // Add "Nous contacter" menu
         $("div#memory-menu > div:not(#activities-menu)").append(
           "<div class=\"memory-menu-tabs\">" +
-              "<li id=\"menu-responsive-your-cart\">" +
+              "<li class=\"toggle-user-cart\" id=\"menu-responsive-your-cart\">" +
                   "<i class=\"fa fa-shopping-cart\" aria-hidden=\"true\"></i><p>Votre panier</p>" +
               "</li>" +
           "</div>"
@@ -55,7 +55,6 @@
 
           $("#destinations-menu").hide();
           $("#activities-menu").hide();
-          $("#responsive-user-cart-btn").hide();
         });
 
         // Hide menu when click out the memory menu
@@ -63,7 +62,8 @@
 
           if($("div#memory-menu").is(":visible")){
 
-            if(evt.target.id === "memory-menu"){return;}
+            if($(evt.target).closest("#memory-menu").length){return;}
+            if($(evt.target).closest("#memory-menu > div").length){return;}
             if($(evt.target).closest("#memory-menu-responsive").length){return;}
 
             //Do processing of click event here for every element except with id menu_content
@@ -103,8 +103,9 @@
             "<div id=\"memory-responsive-contact-page\">" +
               "<i class=\"fa fa-times\" aria-hidden=\"true\"></i>" +
               "<h2>Pour nous contacter</h2>" +
-              $(".menu-contact-link").html() +
               "<div id=\"responsive-contact-us\"><p>Nous contacter par e-mail</p></div>" +
+              "<p>Ou par téléphone</p>" +
+              $("#phone-datas-container").get(0).outerHTML +
             "</div>"
           );
         });
@@ -118,35 +119,6 @@
         $("body").on("click", "#menu-responsive-home-page", function() {
           window.location = $("#logo").attr("href");
         });
-
-        // $("#header").on( "click", "#memory-remove-responsive-menu", function() {
-        //
-        //   $("div#memory-menu").hide();
-        //   $("#responsive-user-cart-btn").show();
-        //
-        //   $("body").css("overflow-y", "scroll");
-        //
-        //   $(this).remove();
-        // });
-
-        /* SubMenu - Destinations */
-        //$("#destinations-menu").appendTo("#memory-menu");
-
-        // $("#memory-menu-tab-destination > a").click(function(e){
-        //   e.preventDefault();
-        //
-        //   $("#memory-remove-responsive-menu").hide();
-        //   $("#memory-dest-tab-menu").append(
-        //     "<i class=\"fa fa-times\" aria-hidden=\"true\" id=\"remove-responsive-submenu-destinations\"></i>"
-        //   );
-        //   $("#destinations-menu").show();
-        // });
-
-        // $("#header").on("click", "#remove-responsive-submenu-destinations", function(){
-        //   $("#memory-remove-responsive-menu").show();
-        //   $("#destinations-menu").hide();
-        //   $(this).remove();
-        // });
 
         /* SubMenu - Activities */
         // $("#activities-menu").appendTo("#memory-menu");
@@ -229,56 +201,6 @@
             $(this).addClass(imgClass);
           });
         });
-
-        /* User cart */
-        if($("#cart-container").length > 0){
-
-          if($("#responsive-user-cart-btn").length === 0){
-            $("body").append(
-              "<div id=\"responsive-user-cart-btn\"><i class=\"fa fa-shopping-cart\" aria-hidden=\"true\"></i></div>"
-            );
-          }
-        }
-
-        $("body").on("click", "#responsive-user-cart-btn", function(){
-
-          if($("div#block-memory-cart-memory-cart").is(":visible")){
-            $("div#block-memory-cart-memory-cart").hide();
-
-            // Remove scroll page when user cart is displayed
-            $("body").css("overflow-y", "scroll");
-          }else{
-            $("div#block-memory-cart-memory-cart").show();
-
-            // Remove scroll page when user cart is displayed
-            $("body").css("overflow", "hidden");
-          }
-        });1
-
-        $("body").on("click", "#menu-responsive-your-cart", function(){
-
-          if($("div#block-memory-cart-memory-cart").is(":visible")){
-            $("div#block-memory-cart-memory-cart").hide();
-
-            // Set scroll page when user cart is not displayed
-            $("body").css("overflow-y", "scroll");
-          }else{
-            $("div#block-memory-cart-memory-cart").show();
-            $("div#responsive-user-cart-btn").show();
-
-            // Remove scroll page when user cart is displayed
-            $("body").css("overflow", "hidden");
-          }
-        });
-
-        // $("body").on("click", "#user-cart-display-through-menu", function(){
-        //   $("div#block-memory-cart-memory-cart").hide();
-        //   $("#user-cart-display-through-menu").remove();
-        //   $("#responsive-user-cart-btn").show();
-        //
-        //   // Set scroll page when user cart is not displayed
-        //   $("body").css("overflow-y", "scroll");
-        // });
       }
 
       if($(window).width() <= 640){

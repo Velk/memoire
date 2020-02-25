@@ -107,10 +107,9 @@
 
           optionImage = activityContainer.children("div.prestation-main").find("div.prestation-image").css("background-image");
           if(typeof optionImage === typeof undefined || optionImage === false){ // If option has not image, set the activity image by default
-            optionImage = $("#activity-header-container > img").attr("src");
-          }else{
-            optionImage = optionImage.split("url(\"")[1].split("\")")[0];
+            optionImage = $("#activity-header-container").css("background-image");
           }
+          optionImage = optionImage.split("url(\"")[1].split("\")")[0];
 
           optionTitle = activityContainer.children("div.prestation-header").find("h2").text();
           optionPrice = activityContainer.children("div.prestation-header").find("p.prestation-price").text();

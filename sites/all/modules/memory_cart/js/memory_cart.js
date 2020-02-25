@@ -59,6 +59,8 @@
 
       // Toggle display the user cart
       $(".toggle-user-cart").click(function () {
+        console.log("test");
+        console.log(cartForm);
         cartForm.toggle();
         shiftMainContainer(cartForm.is(":visible"));
       });

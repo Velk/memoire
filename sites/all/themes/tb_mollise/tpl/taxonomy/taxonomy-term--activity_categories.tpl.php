@@ -28,7 +28,7 @@ if (!empty($content['field_category_activities_img'])) {
 }
 
 // Retrieve the taxonomy ID
-$tid = key(taxonomy_get_term_by_name($term_name));
+$tid = key(taxonomy_get_term_by_name($term_name, "activity_categories"));
 
 // Retrieve an array containing nodes ID belonging to the activity category
 $nids = taxonomy_select_nodes($tid, FALSE);
@@ -66,7 +66,7 @@ foreach ($nids as $nid) {
     'img_uri' => image_style_url("large", $activity_image[0]["uri"]),
     'price' => $activity_price,
     'path' => $base_url . "/" . drupal_get_path_alias('node/' . $node->vid),
-    'intermediate_path' => $base_url . "/activites/" . drupal_encode_path($node->title),
+    'intermediate_path' => $base_url . "/activites/" . drupal_encode_path($node->title) . "?category=" . $tid,
   );
 }
 
@@ -85,19 +85,34 @@ ksort($ordered_activity_categories);
 
 <div id="act-cat">
   <div class="act-cat-head">
-    <div id="act-cat-head-img-container">
-      <h2 class="act-cat-head-title"><?php print $content['field_category_activities_title']['#items'][0]['value']; ?></h2>
-      <?php if(!empty($content['field_category_activities_img'])): ?>
-        <img src="<?php print $img_head_url;?>"
-             alt="<?php print $content['field_category_activities_img']['#items'][0]['filename']?>"
-             class="act-cat-head-img"
-             style="width:100%;"
-        />
-      <?php endif; ?>
-    </div>
-    <div id="act-cat-head-desc">
-      <?php print $content['description']['#markup']; ?>
-    </div>
+    <?php
+    if( isset($img_head_url) || isset($content['field_category_activities_title']['#items'][0]['value']) ){
+
+      $image_style = "";
+      if(isset($img_head_url)){
+        $image_style = "style=\"background-image:url(" . $img_head_url . "); background-size:cover;background-position:center;\"";
+      }
+
+      echo '<div id="act-cat-head-img-container" ' . $image_style .'>';
+
+      if( isset($img_head_url) ){
+        echo '<div id="memory-img-filter"></div>';
+      }
+      if( isset($content['field_category_activities_title']['#items'][0]['value']) ){
+        echo '<h2 class="act-cat-head-title">' . $content['field_category_activities_title']['#items'][0]['value'] . '</h2>';
+      }
+
+      echo '</div>';
+    }
+
+    if( isset($content['description']['#markup']) ){
+      echo
+        '<div id="act-cat-head-desc">' .
+        $content['description']['#markup'] .
+        '</div>'
+      ;
+    }
+    ?>
   </div>
 
   <?php if(sizeof($array_activity_types) != 0){ echo getSpecialFiltersHTML($ordered_activity_categories); } ?>

@@ -1960,27 +1960,44 @@ function memory_blocks_intermediate_page_admin_form($form, &$form_state){
     // Include pathauto to clean a string for use in URLs in order to compare with the current URL
     module_load_include('inc', 'pathauto', 'pathauto');
 
-    $query = db_select('node', 'n');
-    $query->fields('n', array('nid', 'title'));
-    $query->condition('n.type', 'activite', '=');
-    $query->orderBy('n.title', 'asc');
-    $query->distinct();
-    $results = $query->execute();
+    $limit = 20;
+
+    $query = db_select('node', 'n')->extend('PagerDefault');
+    $query->fields('n', array('nid', 'title'))
+      ->limit($limit)
+      ->condition('n.type', 'activite', '=')
+      ->orderBy('n.title', 'asc')
+      ->distinct();
+    $results = $query->execute()->fetchAllKeyed(0, 1);
+
+    $pager = theme('pager', array("quantity" => 5));
+//    $output = theme('item_list', array('items' => $results));
 
     foreach( $results as $result ) {
 
-        $cleaned_title = pathauto_cleanstring($result->title);
+        $nid = array_search($result, $results);
+        $node = node_load($nid);
+
+        $activity_img_field = field_get_items("node", $node, "field_img_activite");
+        $activity_img_fid = $activity_img_field[0]["fid"];
+
+        $cleaned_title = pathauto_cleanstring($result);
 
         /* Video */
         $form["fieldset_" . $cleaned_title] = array(
             '#type' => 'fieldset',
-            '#title' => $result->title,
+            '#title' => $result,
             '#collapsible' => TRUE,
             '#collapsed' => TRUE,
             '#tree' => TRUE
         );
 
         $intermediate_page = variable_get("fieldset_" . $cleaned_title, array());
+
+        // Define default image if it is not set
+        if(empty($intermediate_page['ip_image'])){
+          $intermediate_page['ip_image'] = $activity_img_fid;
+        }
 
         $form["fieldset_" . $cleaned_title]["ip_image"] = array(
             '#type'          => 'media',
@@ -2008,6 +2025,10 @@ function memory_blocks_intermediate_page_admin_form($form, &$form_state){
             '#default_value' => $intermediate_page['ip_description']['value'],
         );
     }
+
+    $form['pager'] = array(
+      '#markup' => $pager,
+    );
 
     return system_settings_form($form);
 }

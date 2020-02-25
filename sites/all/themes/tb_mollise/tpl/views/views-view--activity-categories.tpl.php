@@ -98,10 +98,14 @@
     <?php
     if( isset($all_act_image) || isset($all_act_title) ){
 
-        echo '<div id="img-container">';
+        $image_style = "";
+        if(isset($all_act_image)){
+          $image_style = "style=\"background-image:url(" . $all_act_image . "); background-size:cover;background-position:center;\"";
+        }
+
+        echo '<div id="img-container" ' . $image_style .'>';
 
         if( isset($all_act_image) ){
-            echo '<img src="' . $all_act_image . '">';
             echo '<div id="memory-img-filter"></div>';
         }
         if( isset($all_act_title) ){

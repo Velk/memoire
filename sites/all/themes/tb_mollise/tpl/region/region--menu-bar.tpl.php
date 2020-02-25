@@ -170,7 +170,7 @@ foreach ($array_countries as $country){
 
                                                       print
                                                           "<a href=" . strtolower($base_url."/".$destination_path_alias) . ">" .
-                                                          $cntry[0] . " - " . $onlyOneCity[0] .
+                                                          $cntry[0] . "<span>" . $onlyOneCity[0] . "</span>" .
                                                           "</a>"
                                                       ;
                                                   }
@@ -188,7 +188,8 @@ foreach ($array_countries as $country){
                                                       print
                                                           "<li>" .
                                                               "<a href=" . strtolower($base_url."/".$destination_path_alias) . ">" .
-                                                              "- " . $place[0] .
+                                                                "<i class=\"fa fa-circle\" aria-hidden=\"true\"></i>" .
+                                                                "<span>" . $place[0] . "</span>" .
                                                               "</a>" .
                                                           "</li>"
                                                       ;
