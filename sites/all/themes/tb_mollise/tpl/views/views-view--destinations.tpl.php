@@ -52,15 +52,20 @@
     <?php
     if( isset($all_dest_image) || isset($all_dest_title) ){
 
-        echo '<div id="img-container">';
+        $image_style = "";
+        if(isset($all_dest_image)){
+          $image_style = "style=\"background-image:url(" . $all_dest_image . "); background-size:cover;background-position:center;\"";
+        }
 
-            if( isset($all_dest_image) ){
-                echo '<img src="' . $all_dest_image . '">';
-                echo '<div id="memory-img-filter"></div>';
-            }
-            if( isset($all_dest_title) ){
-                echo '<h2>' . $all_dest_title . '</h2>';
-            }
+        echo '<div id="img-container" ' . $image_style .'>';
+
+        if( isset($all_dest_image) ){
+          echo '<div id="memory-img-filter"></div>';
+        }
+
+        if( isset($all_dest_title) ){
+            echo '<h2>' . $all_dest_title . '</h2>';
+        }
 
         echo '</div>';
     }
@@ -73,7 +78,7 @@
         ;
     }
     ?>
-    <div>
+    <div id="destinations-main-container">
         <div id="destinations-container">
             <?php foreach($tab_continent as $cont): ?>
                 <div class="continent-container">

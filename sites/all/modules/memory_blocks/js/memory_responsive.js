@@ -69,9 +69,9 @@
             //Do processing of click event here for every element except with id menu_content
             $("div#memory-menu").hide();
 
-            if(!$("#activities-menu").is(":visible")){
-              $("body").css("overflow-y", "scroll");
-            }
+            // if(!$("#activities-menu").is(":visible")){
+            //   $("body").css("overflow-y", "scroll");
+            // }
           }
         });
 
@@ -102,18 +102,23 @@
           $("#page").append(
             "<div id=\"memory-responsive-contact-page\">" +
               "<i class=\"fa fa-times\" aria-hidden=\"true\"></i>" +
-              "<h2>Pour nous contacter</h2>" +
-              "<div id=\"responsive-contact-us\"><p>Nous contacter par e-mail</p></div>" +
-              "<p>Ou par téléphone</p>" +
-              $("#phone-datas-container").get(0).outerHTML +
+              "<h2>Nous contacter</h2>" +
+              "<div>" +
+                "<p>Par e-mail</p>" +
+                "<button type=\"button\" id=\"responsive-contact-us\"><i class=\"fa fa-envelope\" aria-hidden=\"true\"></i>Envoyer un e-mail</button>" +
+              "</div>" +
+              "<div>" +
+                "<p>Par téléphone</p>" +
+                $("#phone-datas-container").get(0).outerHTML +
+              "</div>" +
             "</div>"
           );
         });
 
-        $("body").on("click", "#memory-responsive-contact-page > i", function() {
+        $("#page").on("click", "#memory-responsive-contact-page > i", function() {
           $("#memory-responsive-contact-page").remove();
         });
-        $("body").on("click", "#responsive-contact-us", function() {
+        $("#page").on("click", "#responsive-contact-us", function() {
           window.location = $("#memory-contact-link").attr("href");
         });
         $("body").on("click", "#menu-responsive-home-page", function() {
@@ -128,78 +133,16 @@
 
           e.preventDefault();
 
-          // $("#memory-remove-responsive-menu").hide();
           $("#activities-menu").show();
           $("#memory-act-tab-menu").append(
             "<i class=\"fa fa-times\" aria-hidden=\"true\" id=\"remove-responsive-submenu-activities\"></i>"
           );
-
-          $("body").css("overflow-y", "hidden");
         });
 
-        $("body").on("click", "#remove-responsive-submenu-activities", function(){
-          // $("#memory-remove-responsive-menu").show();
+        $("#activities-menu").on("click", "#remove-responsive-submenu-activities", function(){
+
           $("#activities-menu").hide();
           $(this).remove();
-
-          $("body").css("overflow-y", "scroll");
-        });
-
-        /* Set images at their right position and size */
-        $(window).load(function() {
-
-          /* Top destinations and Top activities */
-          var taImgContainerWidth = $("#top-activities-grid > div").width();
-          var taImgContainerHeight = $("#top-activities-grid > div").height();
-
-          $("#top-activities-container").find("img.ta-img").each(function () {
-            var imgClass = (this.width / this.height > (taImgContainerWidth/taImgContainerHeight)) ? "img-cover-tall" : "img-cover-wide";
-            $(this).addClass(imgClass);
-          });
-
-          var tdImgContainerWidth = $("#top-destinations-grid > div").width();
-          var tdImgContainerHeight = $("#top-destinations-grid > div").height();
-
-          $("#top-destinations-container").find("img.td-img").each(function () {
-            var imgClass = (this.width / this.height > (tdImgContainerWidth/tdImgContainerHeight)) ? "img-cover-tall" : "img-cover-wide";
-            $(this).addClass(imgClass);
-          });
-
-          /* Page - Destinations */
-          var destImgContainerWidth = $("#cont-head-img-container").width();
-          var destImgContainerHeight = $("#cont-head-img-container").height();
-
-          $("#cont-head-img-container").find("img.cont-head-img").each(function () {
-            var imgClass = (this.width / this.height > (destImgContainerWidth/destImgContainerHeight)) ? "img-cover-tall" : "img-cover-wide";
-            $(this).addClass(imgClass);
-          });
-
-          /* Page - Activity categories */
-          var acImgContainerWidth = $("#act-cat-head-img-container").width();
-          var acImgContainerHeight = $("#act-cat-head-img-container").height();
-
-          $("#act-cat-head-img-container").find("img.act-cat-head-img").each(function () {
-            var imgClass = (this.width / this.height > (acImgContainerWidth/acImgContainerHeight)) ? "img-cover-tall" : "img-cover-wide";
-            $(this).addClass(imgClass);
-          });
-
-          /* Page - Intermediate page */
-          var ipImgContainerWidth = $("#img-container").width();
-          var ipImgContainerHeight = $("#img-container").height();
-
-          $("#img-container").find("img").each(function () {
-            var imgClass = (this.width / this.height > (ipImgContainerWidth/ipImgContainerHeight)) ? "img-cover-tall" : "img-cover-wide";
-            $(this).addClass(imgClass);
-          });
-
-          /* Page - Activity page */
-          var apImgContainerWidth = $("#activity-page-container #header-container").width();
-          var apImgContainerHeight = $("#activity-page-container #header-container").height();
-
-          $("#activity-page-container #header-container").find("img").each(function () {
-            var imgClass = (this.width / this.height > (apImgContainerWidth/apImgContainerHeight)) ? "img-cover-tall" : "img-cover-wide";
-            $(this).addClass(imgClass);
-          });
         });
       }
 
