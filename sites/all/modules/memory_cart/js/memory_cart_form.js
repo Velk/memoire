@@ -67,7 +67,7 @@
       setLocalStorage();
 
       // Update field : Firstname
-      $("#firstname input").keyup(function() {
+      $("#firstname input").on("keyup input", function() {
         var firstname = $(this).val();
 
         settings.memory_cart_form.firstname = (firstname === "") ? null : firstname;
@@ -75,7 +75,7 @@
       });
 
       // Update field : Lastname
-      $("#lastname input").keyup(function() {
+      $("#lastname input").on("keyup input", function() {
         var lastname = $(this).val();
 
         settings.memory_cart_form.lastname = (lastname === "") ? null : lastname;
@@ -83,7 +83,7 @@
       });
 
       // Update field : E-mail
-      $("#email input").keyup(function() {
+      $("#email input").on("keyup input", function() {
         var email = $(this).val();
 
         settings.memory_cart_form.email = (email === "") ? null : email;
@@ -91,7 +91,7 @@
       });
 
       // Update field : Phone
-      $("#phone input").keyup(function() {
+      $("#phone input").on("keyup input", function() {
         var phone = $(this).val();
 
         settings.memory_cart_form.phone = (phone === "") ? null : phone;
@@ -99,7 +99,7 @@
       });
 
       // Update field : Location
-      $("#location input").keyup(function() {
+      $("#location input").on("keyup input", function() {
         var location = $(this).val();
 
         settings.memory_cart_form.location = (location === "") ? null : location;
@@ -124,7 +124,7 @@
         });
       }
 
-      $("#participants input").keyup(function () {
+      $("#participants input").on("keyup input", function () {
 
         // Allow only digit >= 0
         setInputFilter(this, function(value){
@@ -162,7 +162,7 @@
       });
 
       // Update field : Wish
-      $("#wish textarea").keyup(function() {
+      $("#wish textarea").on("keyup input", function() {
         var wish = $(this).val();
 
         settings.memory_cart_form.wish = (wish === "") ? null : wish;

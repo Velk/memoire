@@ -693,9 +693,12 @@
   }
   div#container > div > div#destinations-container {
     grid-template-columns: repeat(3, 1fr);
-    margin: 0 auto;
-    width: 90%;
+    margin: 0;
+    width: 100%;
     grid-gap: 17px;
+    background-color: transparent;
+    box-shadow: none;
+    box-sizing: border-box;
   }
   div#img-container > h2 {
     font-size: 30px;
@@ -705,7 +708,7 @@
     padding: 35px 0;
   }
   div#destinations-container .continent-container {
-    padding: 10px 10px;
+    padding: 10px 20px;
     box-sizing: border-box;
     background-color: #fff;
     border-radius: 2px;

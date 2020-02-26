@@ -1,3 +1,45 @@
+div#block-memory-cart-memory-cart {
+  position: fixed;
+  width: auto;
+  height: 100%;
+  top: 0;
+  right: 0;
+  z-index: 90;
+  background-color: #f7f7f7;
+  padding: 0 !important;
+  margin: 0;
+  box-sizing: border-box;
+}
+div#block-memory-cart-memory-cart > div.block-inner,
+div#block-memory-cart-memory-cart > div.block-inner > div.block-content {
+  margin: 0;
+  padding: 0 !important;
+  position: relative;
+  height: 100%;
+}
+div#cart-container {
+  position: relative;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+div#cart-container > div {
+  width: calc(100vw/3);
+  height: 100%;
+  min-width: 450px;
+  max-width: 750px;
+  overflow-y: scroll;
+  padding: 30px;
+  box-sizing: border-box;
+}
+div#cart-container > div > h2 {
+  margin: 0 0 30px 0;
+  padding: 0 20px;
+  text-align: center;
+  color: #16889b;
+  font-size: 28px;
+}
+
 /* Trip days */
 div.trip {
     position: relative;
@@ -304,6 +346,8 @@ div#send-quotation-loader .lds-dual-ring:after {
   width: 75px;
   height: 75px;
   margin: 1px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
   border-radius: 50%;
   border: 7px solid #fff;
   border-color: #fff transparent #fff transparent;
@@ -333,6 +377,7 @@ div#send-quotation-loader .lds-dual-ring:after {
   top: 50%;
   left: 50%;
   width: 500px;
+  max-width: 90%;
   height: auto;
   background-color: #fff;
   z-index: 9999;
@@ -340,6 +385,8 @@ div#send-quotation-loader .lds-dual-ring:after {
   padding: 25px 65px 25px 35px;
   box-sizing: border-box;
   transform: translate(-50%,-50%);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
   border-radius: 3px;
 }
 #quotation-email-sending-message > div > i {
@@ -354,6 +401,7 @@ div#send-quotation-loader .lds-dual-ring:after {
   color: #000;
   font-size: 14px;
   margin: 0;
+  text-align: left;
 }
 #quotation-email-sending-message > div > i:hover {
   color: #bbb;
@@ -363,6 +411,8 @@ div#send-quotation-loader .lds-dual-ring:after {
 #menu-tab-cart.toggle-user-cart {
   border: 1px solid #21acbe;
   background-color: #21acbe;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
   border-radius: 3px;
   padding: 7px 12px;
   margin-left: 10px;
@@ -384,37 +434,7 @@ button#menu-tab-cart.toggle-user-cart i {
   color: #21acbe;
 }
 
-
 /* Main CSS */
-.cart-hide {
-  display: none;
-}
-.cart-show {
-  display: block;
-}
-div#block-memory-cart-memory-cart {
-  position: fixed;
-  width: auto;
-  height: 100vh;
-  top: 0;
-  right: 0;
-  z-index: 90;
-  background-color: #f7f7f7;
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
-div#block-memory-cart-memory-cart > div.block-inner,
-div#block-memory-cart-memory-cart > div.block-inner > div.block-content {
-  margin: 0;
-  padding: 0;
-}
-div#cart-container {
-  position: relative;
-  height: 100vh;
-  top: 0;
-  right: 0;
-}
 
 #cart-container .toggle-user-cart {
 position: absolute;
@@ -444,29 +464,6 @@ color: #ff8f00;
 display: none;
 }
 
-div#cart-container > div {
-  width: calc(100vw/3);
-  min-width: 450px;
-  max-width: 750px;
-overflow: scroll;
-box-shadow: 1px 1px 5px #bbb;
-}
-
-div#cart-container > div > h2 {
-margin: 25px 0 30px 0;
-padding: 0 20px;
-text-align: center;
-color: #16889b;
-font-size: 28px;
-}
-
-/* Form : Basic */
-form#devis {
-  position: relative;
-  width: 100%;
-  padding: 0 35px;
-  box-sizing: border-box;
-}
 
 /* Form : Personnal data */
 form#devis div#personnal-data {
@@ -511,6 +508,8 @@ form#devis #express-validate-cart {
   color: #fff;
   font-size: 14px;
   cursor: pointer;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
   border-radius: 3px;
 }
 form#devis #express-validate-cart:hover {
@@ -521,13 +520,6 @@ form#devis #express-validate-cart:hover {
 form#devis div#personnal-data hr {
   margin: 30px 0;
 }
-
-/*form#devis > div:nth-child(1),*/
-/*form#devis > div:nth-child(2) {*/
-/*  display: flex;*/
-/*  flex-direction: row;*/
-/*  margin-bottom: 15px;*/
-/*}*/
 
 /* Form : Quotation data */
 form#devis div#quotation-data {
@@ -588,6 +580,8 @@ div.ui-datepicker {
   position: absolute !important;
   background-color: #fff;
   border: 1px solid #bbb;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
   border-radius: 3px;
   box-shadow: 1px 1px 5px #bbb;
   top: 40px !important;
@@ -642,6 +636,8 @@ td.ui-datepicker-current-day > a {
   color: #fff;
   background-color: #ff8f10;
   padding: 7px;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
   border-radius: 50px;
   text-align: center;
 }
@@ -660,6 +656,8 @@ td.ui-datepicker-current-day > a {
 .ui-datepicker-calendar td.ui-datepicker-current-day > a {
   padding: 5px;
   background-color: #ff8f00;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
   border-radius: 50px;
   color: #fff !important;
 }
@@ -745,6 +743,8 @@ form#devis button#empty-cart {
   border: 1px solid #21acbe;
   background-color: #21acbe;
   color: #fff;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
   border-radius: 3px;
   padding: 7px;
   margin-left: 10px;
@@ -782,8 +782,10 @@ form#devis button#validate-cart {
   color: #fff;
   font-size: 14px;
   cursor: pointer;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
   border-radius: 3px;
-  margin: 25px auto 25px 50%;
+  margin: 25px auto 0 50%;
   transform: translateX(-50%);
 }
 form#devis button#validate-cart:hover {
@@ -842,26 +844,27 @@ form#devis div#city-name > div p:last-of-type {
 /* RESPONSIVE */
 @media screen and (max-width: 1024px) {
 
-  div#cart-container > div {
-    height: 100% !important;
-    padding: 25px 0 !important;
-    box-sizing: border-box;
-  }
 }
 
 @media screen and (max-width: 640px) {
 
-  #block-memory-cart-memory-cart .block-inner {
-    padding: 0 !important;
-  }
-
   div#cart-container > div {
-    width: 100vw;
+    width: 100%;
     min-width: unset;
     max-width: unset;
+    padding: 30px 15px;
+  }
+
+  div#cart-container > div > h2 {
+    font-size: 25px;
   }
 
   #cart-container .toggle-user-cart {
     display: none;
   }
+}
+
+.noscroll {
+  position: fixed !important; /* Need this statement to avoid scrolling on Safari */
+  overflow: hidden !important;
 }

@@ -242,7 +242,7 @@ ul.city-menu {
   list-style-type: none;
   margin: 0;
 }
-.continent-menu a:hover span {
+.continent-menu a:hover > * {
     color: #ff8f00;
 }
 ul.city-menu a {

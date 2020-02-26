@@ -2,7 +2,7 @@
     global $base_url;
     module_load_include('inc', 'pathauto', 'pathauto'); // Include pathauto to clean a string for use in URLs in order to compare with the current URL
 
-    drupal_set_message("Destinations page");
+//    drupal_set_message("Destinations page");
 
     if(isset($_GET["category"]) && !empty($_GET["category"])){ // Get category TID (EVG, EVJF...) coming from intermediate page
       $is_category_target = true;
