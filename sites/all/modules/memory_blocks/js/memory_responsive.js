@@ -65,6 +65,7 @@
         $("#page").on("click", "#menu-responsive-your-cart", function(){
 
           $("div#memory-menu").hide();
+          $("div#cart-container > div").show();
 
           // if($("#cart-container > div").is(":visible")){
           //   $("body").addClass("noscroll");
@@ -91,7 +92,7 @@
           // Construct HTML for other phones
           var othersPhoneHTML =
             "<div id=\"responsive-others-phone\">" +
-            "<p>Voir les autres numéros</p>" +
+            "<p>(Autres pays : Voir les numéros)</p>" +
             "<div>"
           ;
           $("#other-countries > div").each(function(index, el){
@@ -151,6 +152,11 @@
 
           e.preventDefault();
 
+          // Remove user cart if visible
+          if($("#cart-container > div").is(":visible")){
+            $("div#cart-container .toggle-user-cart").click();
+          }
+
           $("#activities-menu").show();
 
           if($("#activities-menu").is(":visible")){ $("body").addClass("noscroll"); }
@@ -174,6 +180,21 @@
 
 
         $("#page").on("click", "#menu-responsive-your-cart", function(){
+
+          if($("#responsive-remove-user-cart").length === 0){
+            $("div#cart-container > div").append("<i class=\"fa fa-times\" aria-hidden=\"true\" id=\"responsive-remove-user-cart\"></i>");
+
+            $("#responsive-remove-user-cart").click(function(){
+
+              $("div#cart-container .toggle-user-cart").click();
+
+              if($("#cart-container > div").is(":visible")){
+                $("body").addClass("noscroll");
+              }else{
+                $("body").removeClass("noscroll");
+              }
+            });
+          }
 
           if($("#cart-container > div").is(":visible")){
             $("body").addClass("noscroll");

@@ -137,6 +137,9 @@ div#reviews-touchable-manager > i {
   }
   div#reviews-touchable-manager {
     margin: 25px 0 0 0 !important;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
   }
   button#previous-review {
     background-color: #21acbe;
@@ -147,7 +150,7 @@ div#reviews-touchable-manager > i {
     box-sizing: border-box;
     color: #fff;
     padding: 2px 25px;
-    border-right: 1px solid #fff;
+    margin-right: 20px;
   }
   button#next-review {
     background-color: #21acbe;
@@ -158,6 +161,5 @@ div#reviews-touchable-manager > i {
     box-sizing: border-box;
     color: #fff;
     padding: 2px 25px;
-    border-left: 1px solid #fff;
   }
 }

@@ -62,7 +62,7 @@ div#world-map-container > div {
   display: flex;
   width: 100%;
   max-width: 1000px;
-  height: 70vh;
+  height: auto;
   margin: auto;
   overflow: hidden;
   box-shadow: inset 0px 0px 5px #d8d8d8;
@@ -92,7 +92,8 @@ h2#memory-map-title {
 svg#svg-container {
   position: relative;
   width: 100%;
-  height: auto;
+  height: 100%;
+  /*height: auto;*/
   margin: auto;
   display: block;
   cursor: move;
