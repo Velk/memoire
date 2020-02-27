@@ -66,14 +66,14 @@
 
           $("div#memory-menu").hide();
 
-          if($("#cart-container > div").is(":visible")){
-            $("body").addClass("noscroll");
-          }else{
-            $("body").removeClass("noscroll");
-          }
+          // if($("#cart-container > div").is(":visible")){
+          //   $("body").addClass("noscroll");
+          // }else{
+          //   $("body").removeClass("noscroll");
+          // }
         });
 
-        $("body").on("click", "#memory-menu-responsive-contact", function(){
+        $("#page").on("click", "#memory-menu-responsive-contact", function(){
 
           // Construct HTML for default phone
           var defaultPhoneText = $("div#default-country > p").text();
@@ -171,6 +171,16 @@
       }
 
       if($(window).width() <= 640){
+
+
+        $("#page").on("click", "#menu-responsive-your-cart", function(){
+
+          if($("#cart-container > div").is(":visible")){
+            $("body").addClass("noscroll");
+          }else{
+            $("body").removeClass("noscroll");
+          }
+        });
 
         /* Go to top page */
         $(document).scroll(function() {

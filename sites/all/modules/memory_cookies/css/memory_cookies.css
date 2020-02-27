@@ -16,8 +16,8 @@ div#block-memory-cookies-memory-cookies .block-inner {
 
 div#memory-cookies-container {
     display: flex;
-    width: 70%;
-    max-width: 1100px;
+    width: auto;
+    max-width: 900px;
     margin: auto;
     color: #fff;
     min-height: 65px;

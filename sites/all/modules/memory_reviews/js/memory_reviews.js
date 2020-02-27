@@ -36,7 +36,8 @@
 
         (function responsiveChangeStructure(){
 
-          if(screen.width <= 640){ // Small device
+          // if(screen.width <= 640){ // Small device
+          if(screen.width <= 1024){ // Small devices
 
             // Create new Reviews structure
             var reviewSmallStructure = "";
@@ -95,7 +96,8 @@
 
         function infiniteSlider(){
 
-          if(screen.width <= 640){ // Small devices
+          // if(screen.width <= 640){ // Small devices
+          if(screen.width <= 1024){ // Small devices
 
             if(nbReviews > 1){ // Because on small device, reviews are displayed one by one.
 
