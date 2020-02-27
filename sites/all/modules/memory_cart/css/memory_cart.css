@@ -849,6 +849,7 @@ form#devis div#city-name > div p:last-of-type {
 @media screen and (max-width: 640px) {
 
   div#cart-container > div {
+    position: relative;
     width: 100%;
     min-width: unset;
     max-width: unset;
@@ -861,6 +862,21 @@ form#devis div#city-name > div p:last-of-type {
 
   #cart-container .toggle-user-cart {
     display: none;
+  }
+
+  #cart-container i#responsive-remove-user-cart {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    font-size: 14px;
+    padding: 2px 4px;
+    box-sizing: border-box;
+    /*background-color: #fff;*/
+    border: 1px solid #424242;
+  }
+
+  form#devis input {
+    font-size: 12px;
   }
 }
 
