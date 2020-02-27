@@ -40,17 +40,8 @@
 
           if($("div#memory-menu").is(":visible")){
             $("div#memory-menu").hide();
-            
-            // $("body").css({
-            //   "overflow-y": "scroll",
-            // });
           }else{
             $("div#memory-menu").show();
-
-            $("body").css({
-              "position": "relative",
-              // "overflow-y": "hidden",
-            });
           }
 
           $("#destinations-menu").hide();
@@ -68,10 +59,6 @@
 
             //Do processing of click event here for every element except with id menu_content
             $("div#memory-menu").hide();
-
-            // if(!$("#activities-menu").is(":visible")){
-            //   $("body").css("overflow-y", "scroll");
-            // }
           }
         });
 
@@ -88,27 +75,39 @@
 
         $("body").on("click", "#memory-menu-responsive-contact", function(){
 
-          // Clickable phone text
-          var phoneText = $("div#other-countries > div > p").text();
-          var phoneTextWithoutSpace = phoneText.replace(/ /g, '');
+          // Construct HTML for default phone
+          var defaultPhoneText = $("div#default-country > p").text();
+          var defaultPhoneTextWithoutSpace = defaultPhoneText.replace(/ /g, '');
+          var defaultPhoneImage = $("div#default-country > img").get(1).outerHTML;
+          var defaultPhoneHTML =
+            "<div id=\"responsive-default-phone\">" +
+              "<a href=\"tel:" + defaultPhoneTextWithoutSpace + "\">" +
+                defaultPhoneImage +
+                defaultPhoneText +
+              "</a>" +
+            "</div>"
+          ;
 
-          $("div#other-countries > div > p").remove();
+          // Construct HTML for other phones
+          var othersPhoneHTML =
+            "<div id=\"responsive-others-phone\">" +
+            "<p>Voir les autres numéros</p>" +
+            "<div>"
+          ;
+          $("#other-countries > div").each(function(index, el){
 
-          $("#other-countries > div").append(
-            "<a href=\"tel:" + phoneTextWithoutSpace + "\">" +
-              phoneText +
-            "</a>"
-          );
-          var frPhoneText = $("div#default-country > p").text();
-          var frPhoneTextWithoutSpace = frPhoneText.replace(/ /g, '');
+            var otherPhoneText = $(el).find("p").text();
+            var otherPhoneTextWithoutSpace = otherPhoneText.replace(/ /g, '');
+            var otherPhoneImage = $(el).find("img").get(0).outerHTML;
 
-          $("div#default-country > p").remove();
-
-          $("#default-country").append(
-            "<a href=\"tel:" + frPhoneTextWithoutSpace + "\">" +
-            frPhoneText +
-            "</a>"
-          );
+            othersPhoneHTML +=
+              "<a href=\"tel:" + otherPhoneTextWithoutSpace + "\">" +
+                otherPhoneImage +
+                otherPhoneText +
+              "</a>"
+            ;
+          });
+          othersPhoneHTML += "</div></div>";
 
           $("#page").append(
             "<div id=\"memory-responsive-contact-page\">" +
@@ -120,14 +119,22 @@
               "</div>" +
               "<div>" +
                 "<p>Par téléphone</p>" +
-                $("#phone-datas-container").get(0).outerHTML +
+                  defaultPhoneHTML +
+                  othersPhoneHTML +
               "</div>" +
             "</div>"
           );
+
+          $("div#responsive-others-phone > p").click(function(){
+            $("div#responsive-others-phone > div").toggle();
+          });
+
+          if($("#memory-responsive-contact-page").is(":visible")){ $("body").addClass("noscroll"); }
         });
 
         $("#page").on("click", "#memory-responsive-contact-page > i", function() {
           $("#memory-responsive-contact-page").remove();
+          if(!$("#memory-responsive-contact-page").is(":visible")){ $("body").removeClass("noscroll"); }
         });
         $("#page").on("click", "#responsive-contact-us", function() {
           window.location = $("#memory-contact-link").attr("href");

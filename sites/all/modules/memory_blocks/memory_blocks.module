@@ -563,11 +563,6 @@ function memory_blocks_theme($existing, $type, $theme, $path) {
             'path' => drupal_get_path('module', 'memory_blocks'),
             'variables' => array('infos' => NULL),
         ),
-        'tpl_memory_bug_report' => array(
-            'template' => 'tpl/memory_bug_report',
-            'path' => drupal_get_path('module', 'memory_blocks'),
-            'variables' => array('infos' => NULL),
-        ),
         'tpl_memory_3_columns_block' => array(
             'template' => 'tpl/memory_3_columns_block',
             'path' => drupal_get_path('module', 'memory_blocks'),
@@ -630,15 +625,6 @@ function memory_blocks_block_info() {
       'status' => 1,
       'region' => 'content',
       'visibility' => BLOCK_VISIBILITY_NOTLISTED,
-    );
-
-    $blocks['memory_bug_report'] = array(
-      'info' => t('Memory Bug Report'),
-      'weight' => 6,
-      'status' => 1,
-      'region' => 'content',
-      'visibility' => BLOCK_VISIBILITY_NOTLISTED,
-      'pages' => 'admin/*\rmedia/*\rnode/*/edit',
     );
 
     $blocks['memory_3_columns_block'] = array(
@@ -898,24 +884,6 @@ function memory_blocks_block_view($delta = '') {
             // Link a js file
             $block['content']['#attached']['js'][] = array(
                 'data' => drupal_get_path('module', 'memory_blocks') . '/js/memory_go_top_page.js',
-                'type' => 'file'
-            );
-
-            break;
-        case 'memory_bug_report':
-
-            // Link the template
-            $block['content']['#markup'] = theme('tpl_memory_bug_report');
-
-            // Link a css file
-            $block['content']['#attached']['css'][] = array(
-                'data' => drupal_get_path('module', 'memory_blocks') . '/css/memory_bug_report.css',
-                'type' => 'file'
-            );
-
-            // Link a js file
-            $block['content']['#attached']['js'][] = array(
-                'data' => drupal_get_path('module', 'memory_blocks') . '/js/memory_bug_report.js',
                 'type' => 'file'
             );
 
