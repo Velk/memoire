@@ -40,17 +40,8 @@
 
           if($("div#memory-menu").is(":visible")){
             $("div#memory-menu").hide();
-            
-            $("body").css({
-              "overflow-y": "scroll",
-            });
           }else{
             $("div#memory-menu").show();
-
-            $("body").css({
-              "position": "relative",
-              "overflow-y": "hidden",
-            });
           }
 
           $("#destinations-menu").hide();
@@ -68,52 +59,84 @@
 
             //Do processing of click event here for every element except with id menu_content
             $("div#memory-menu").hide();
+          }
+        });
 
-            if(!$("#activities-menu").is(":visible")){
-              $("body").css("overflow-y", "scroll");
-            }
+        $("#page").on("click", "#menu-responsive-your-cart", function(){
+
+          $("div#memory-menu").hide();
+
+          if($("#cart-container > div").is(":visible")){
+            $("body").addClass("noscroll");
+          }else{
+            $("body").removeClass("noscroll");
           }
         });
 
         $("body").on("click", "#memory-menu-responsive-contact", function(){
 
-          // Clickable phone text
-          var phoneText = $("div#other-countries > div > p").text();
-          var phoneTextWithoutSpace = phoneText.replace(/ /g, '');
+          // Construct HTML for default phone
+          var defaultPhoneText = $("div#default-country > p").text();
+          var defaultPhoneTextWithoutSpace = defaultPhoneText.replace(/ /g, '');
+          var defaultPhoneImage = $("div#default-country > img").get(1).outerHTML;
+          var defaultPhoneHTML =
+            "<div id=\"responsive-default-phone\">" +
+              "<a href=\"tel:" + defaultPhoneTextWithoutSpace + "\">" +
+                defaultPhoneImage +
+                defaultPhoneText +
+              "</a>" +
+            "</div>"
+          ;
 
-          $("div#other-countries > div > p").remove();
+          // Construct HTML for other phones
+          var othersPhoneHTML =
+            "<div id=\"responsive-others-phone\">" +
+            "<p>Voir les autres numéros</p>" +
+            "<div>"
+          ;
+          $("#other-countries > div").each(function(index, el){
 
-          $("#other-countries > div").append(
-            "<a href=\"tel:" + phoneTextWithoutSpace + "\">" +
-              phoneText +
-            "</a>"
-          );
-          var frPhoneText = $("div#default-country > p").text();
-          var frPhoneTextWithoutSpace = frPhoneText.replace(/ /g, '');
+            var otherPhoneText = $(el).find("p").text();
+            var otherPhoneTextWithoutSpace = otherPhoneText.replace(/ /g, '');
+            var otherPhoneImage = $(el).find("img").get(0).outerHTML;
 
-          $("div#default-country > p").remove();
-
-          $("#default-country").append(
-            "<a href=\"tel:" + frPhoneTextWithoutSpace + "\">" +
-            frPhoneText +
-            "</a>"
-          );
+            othersPhoneHTML +=
+              "<a href=\"tel:" + otherPhoneTextWithoutSpace + "\">" +
+                otherPhoneImage +
+                otherPhoneText +
+              "</a>"
+            ;
+          });
+          othersPhoneHTML += "</div></div>";
 
           $("#page").append(
             "<div id=\"memory-responsive-contact-page\">" +
               "<i class=\"fa fa-times\" aria-hidden=\"true\"></i>" +
-              "<h2>Pour nous contacter</h2>" +
-              "<div id=\"responsive-contact-us\"><p>Nous contacter par e-mail</p></div>" +
-              "<p>Ou par téléphone</p>" +
-              $("#phone-datas-container").get(0).outerHTML +
+              "<h2>Nous contacter</h2>" +
+              "<div>" +
+                "<p>Par e-mail</p>" +
+                "<button type=\"button\" id=\"responsive-contact-us\"><i class=\"fa fa-envelope\" aria-hidden=\"true\"></i>Envoyer un e-mail</button>" +
+              "</div>" +
+              "<div>" +
+                "<p>Par téléphone</p>" +
+                  defaultPhoneHTML +
+                  othersPhoneHTML +
+              "</div>" +
             "</div>"
           );
+
+          $("div#responsive-others-phone > p").click(function(){
+            $("div#responsive-others-phone > div").toggle();
+          });
+
+          if($("#memory-responsive-contact-page").is(":visible")){ $("body").addClass("noscroll"); }
         });
 
-        $("body").on("click", "#memory-responsive-contact-page > i", function() {
+        $("#page").on("click", "#memory-responsive-contact-page > i", function() {
           $("#memory-responsive-contact-page").remove();
+          if(!$("#memory-responsive-contact-page").is(":visible")){ $("body").removeClass("noscroll"); }
         });
-        $("body").on("click", "#responsive-contact-us", function() {
+        $("#page").on("click", "#responsive-contact-us", function() {
           window.location = $("#memory-contact-link").attr("href");
         });
         $("body").on("click", "#menu-responsive-home-page", function() {
@@ -128,78 +151,22 @@
 
           e.preventDefault();
 
-          // $("#memory-remove-responsive-menu").hide();
           $("#activities-menu").show();
+
+          if($("#activities-menu").is(":visible")){ $("body").addClass("noscroll"); }
+
           $("#memory-act-tab-menu").append(
             "<i class=\"fa fa-times\" aria-hidden=\"true\" id=\"remove-responsive-submenu-activities\"></i>"
           );
-
-          $("body").css("overflow-y", "hidden");
         });
 
-        $("body").on("click", "#remove-responsive-submenu-activities", function(){
-          // $("#memory-remove-responsive-menu").show();
+        $("#activities-menu").on("click", "#remove-responsive-submenu-activities", function(){
+
           $("#activities-menu").hide();
+
+          if(!$("#activities-menu").is(":visible")){ $("body").removeClass("noscroll"); }
+
           $(this).remove();
-
-          $("body").css("overflow-y", "scroll");
-        });
-
-        /* Set images at their right position and size */
-        $(window).load(function() {
-
-          /* Top destinations and Top activities */
-          var taImgContainerWidth = $("#top-activities-grid > div").width();
-          var taImgContainerHeight = $("#top-activities-grid > div").height();
-
-          $("#top-activities-container").find("img.ta-img").each(function () {
-            var imgClass = (this.width / this.height > (taImgContainerWidth/taImgContainerHeight)) ? "img-cover-tall" : "img-cover-wide";
-            $(this).addClass(imgClass);
-          });
-
-          var tdImgContainerWidth = $("#top-destinations-grid > div").width();
-          var tdImgContainerHeight = $("#top-destinations-grid > div").height();
-
-          $("#top-destinations-container").find("img.td-img").each(function () {
-            var imgClass = (this.width / this.height > (tdImgContainerWidth/tdImgContainerHeight)) ? "img-cover-tall" : "img-cover-wide";
-            $(this).addClass(imgClass);
-          });
-
-          /* Page - Destinations */
-          var destImgContainerWidth = $("#cont-head-img-container").width();
-          var destImgContainerHeight = $("#cont-head-img-container").height();
-
-          $("#cont-head-img-container").find("img.cont-head-img").each(function () {
-            var imgClass = (this.width / this.height > (destImgContainerWidth/destImgContainerHeight)) ? "img-cover-tall" : "img-cover-wide";
-            $(this).addClass(imgClass);
-          });
-
-          /* Page - Activity categories */
-          var acImgContainerWidth = $("#act-cat-head-img-container").width();
-          var acImgContainerHeight = $("#act-cat-head-img-container").height();
-
-          $("#act-cat-head-img-container").find("img.act-cat-head-img").each(function () {
-            var imgClass = (this.width / this.height > (acImgContainerWidth/acImgContainerHeight)) ? "img-cover-tall" : "img-cover-wide";
-            $(this).addClass(imgClass);
-          });
-
-          /* Page - Intermediate page */
-          var ipImgContainerWidth = $("#img-container").width();
-          var ipImgContainerHeight = $("#img-container").height();
-
-          $("#img-container").find("img").each(function () {
-            var imgClass = (this.width / this.height > (ipImgContainerWidth/ipImgContainerHeight)) ? "img-cover-tall" : "img-cover-wide";
-            $(this).addClass(imgClass);
-          });
-
-          /* Page - Activity page */
-          var apImgContainerWidth = $("#activity-page-container #header-container").width();
-          var apImgContainerHeight = $("#activity-page-container #header-container").height();
-
-          $("#activity-page-container #header-container").find("img").each(function () {
-            var imgClass = (this.width / this.height > (apImgContainerWidth/apImgContainerHeight)) ? "img-cover-tall" : "img-cover-wide";
-            $(this).addClass(imgClass);
-          });
         });
       }
 

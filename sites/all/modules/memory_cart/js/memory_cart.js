@@ -2,6 +2,7 @@
   Drupal.behaviors.memory_cart = {
     attach: function (context, settings) {
 
+      var cartGlobalContainer = $("#block-memory-cart-memory-cart");
       var cartForm = $("#cart-container > div");
       var mainMenuHeight = $("#header-wrapper").outerHeight(true);
 
@@ -20,8 +21,9 @@
 
           mainMenuHeight = $("#header-wrapper").outerHeight(true);
 
-          cartForm.css({
-            "padding-top": mainMenuHeight + "px",
+          // cartForm.css({
+          cartGlobalContainer.css({
+            "margin-top": mainMenuHeight + "px",
             "height": "calc(100% - " + mainMenuHeight + "px)"
           });
         }
@@ -34,15 +36,20 @@
 
         if(isCartFormVisible){
 
-          $("#page > div:not(#header-wrapper)").css( "width", "calc(100% - " + $("#cart-container > div").width() + "px)" );
+          $("#page > div:not(#header-wrapper)").css( "width", "calc(100% - " + $("#cart-container > div").outerWidth() + "px)" );
 
           $("#cart-container .toggle-user-cart i:eq(0)").css("display", "none");
           $("#cart-container .toggle-user-cart i:eq(1)").css("display", "block");
 
           // Set localStorage preference
           cartForm.show();
-          currentUserCartVisibility = true;
-          localStorage.setItem("isCartFormVisible", JSON.stringify(currentUserCartVisibility));
+
+          if(screen.width > 640){
+            currentUserCartVisibility = true;
+            localStorage.setItem("isCartFormVisible", JSON.stringify(currentUserCartVisibility));
+          }else{
+            localStorage.removeItem("isCartFormVisible"); // Avoid user cart auto display on smartphone
+          }
         }else{
 
           $("#page > div:not(#header-wrapper)").css("width", "100%");
@@ -52,15 +59,19 @@
 
           // Set localStorage preference
           cartForm.hide();
-          currentUserCartVisibility = false;
-          localStorage.setItem("isCartFormVisible", JSON.stringify(currentUserCartVisibility));
+
+          if(screen.width > 640){
+            currentUserCartVisibility = false;
+            localStorage.setItem("isCartFormVisible", JSON.stringify(currentUserCartVisibility));
+          }else{
+            localStorage.removeItem("isCartFormVisible"); // Avoid user cart auto display on smartphone
+          }
         }
       }
 
       // Toggle display the user cart
       $(".toggle-user-cart").click(function () {
-        console.log("test");
-        console.log(cartForm);
+
         cartForm.toggle();
         shiftMainContainer(cartForm.is(":visible"));
       });

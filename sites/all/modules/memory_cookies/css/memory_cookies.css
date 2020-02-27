@@ -65,3 +65,20 @@ button#cookies-deny > a {
     display: block;
     color: #fff;
 }
+
+/* RESPONSIVE */
+@media screen and (max-width: 1024px) {
+
+}
+
+@media screen and (max-width: 640px) {
+  div#block-memory-cookies-memory-cookies {
+    padding: 20px 0 !important;
+  }
+  div#block-memory-cookies-memory-cookies .block-inner {
+    padding: 0 !important;
+  }
+  div#memory-cookies-container {
+    width: 90%;
+  }
+}

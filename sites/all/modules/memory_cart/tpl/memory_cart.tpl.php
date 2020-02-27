@@ -27,20 +27,15 @@ foreach ($vocab_activities_tree as $vocab_activity_tree){
 
 // HTML Structure
 $cart_class = "";
-$cart_display = "";
 
-if(drupal_is_front_page())
-  $cart_display = "cart-hide";
-else if($isActivityPage) {
+if($isActivityPage) {
   $cart_class = "activity-page";
-  $cart_display = "cart-show";
 }else if($isDestinationPage) {
   $cart_class = "destination-page";
-  $cart_display = "cart-show";
 }
 ?>
 <div id="cart-container" class="<?=$cart_class?>">
-  <div class="<?=$cart_display?>">
+  <div style="display:none;">
     <h2>Préparez votre aventure</h2>
     <form id="devis">
       <div id="personnal-data">
