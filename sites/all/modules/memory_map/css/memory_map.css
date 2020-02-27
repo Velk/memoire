@@ -30,9 +30,10 @@ div#map-header {
 }
 
 div#world-map-container {
-    background-image: url("../../../../../sites/default/files/image_folder/airport_info_board.jpg");
+    background-image: url("/sites/default/files/image_folder/airport_info_board.jpg");
     background-size: cover;
     background-repeat: no-repeat;
+    background-position: center;
     padding: 35px 0;
     box-sizing: border-box;
 }

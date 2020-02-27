@@ -64,6 +64,7 @@ p.review-person {
   color: #21acbe;
   padding-right: 15px;
   line-height: 1.2;
+  text-align: left;
 }
 p.review-notation {
   grid-area: b;
@@ -113,7 +114,8 @@ div#reviews-touchable-manager > i {
   cursor: pointer;
 }
 
-@media screen and (max-width: 640px) {
+/*@media screen and (max-width: 640px) {*/
+@media screen and (max-width: 1024px) {
 
   /* BLOC - Reviews */
   #memory-reviews-container > div#reviews-slider > div.memory-group-reviews {
