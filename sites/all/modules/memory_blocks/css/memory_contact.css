@@ -14,12 +14,24 @@ form.webform-client-form {
     position: relative;
     width: 100%;
     height: auto;
-    background-image: url(/sites/default/files/free-hd-skydiving-image.png);
-    background-size: cover;
+    /*background-image: url(/sites/default/files/free-hd-skydiving-image.png);*/
+    /*background-size: cover;*/
     background-color: #d7d7d7;
     margin: 0;
     padding: 50px 25px;
     box-sizing: border-box;
+}
+form.webform-client-form::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-image: url(/sites/default/files/free-hd-skydiving-image.png);
+  filter: brightness(0.75);
 }
 
 form.webform-client-form > div {

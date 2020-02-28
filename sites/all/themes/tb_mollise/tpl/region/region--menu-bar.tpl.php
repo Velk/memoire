@@ -106,7 +106,10 @@ $ip_data = @json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip="
 
 if($ip_data && $ip_data->geoplugin_countryName != null){
 
-    $user_location['country'] = strtolower($ip_data->geoplugin_countryCode);
+    // To allow getting phone number by user IP address
+    $user_location['country'] = strtolower($ip_data->geoplugin_countryCode); // Uncomment this line
+//    $user_location['country'] = ""; // Comment this line
+
     $user_location['city'] = $ip_data->geoplugin_city;
 }
 ?>

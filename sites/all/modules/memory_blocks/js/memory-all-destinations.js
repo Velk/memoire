@@ -4,17 +4,20 @@
 
             $("ul.country-container").each(function(){
 
-                if($(this).children("ul.city").length == 0){
+                if($(this).children("ul.city").length === 0){
 
                     $(this).children("li").css("text-decoration", "line-through");
                 }
 
-                if($(this).children("ul.city").length > 0){
+                // if(screen.width > 1024){ // Remove this behavior for tablets and smartphones
+
+                  if($(this).children("ul.city").length > 0){
 
                     $(this).children("li").css({
-                        "cursor": "pointer"
+                      "cursor": "pointer"
                     });
-                }
+                  }
+                // }
             });
 
             $("ul.country-container > li").click(function(){

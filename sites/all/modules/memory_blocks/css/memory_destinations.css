@@ -52,7 +52,7 @@ div#cont-filters {
     margin: 75px auto;
     display: grid;
     grid-template-columns: repeat(6, 16.66%);
-    box-shadow: 1px 1px 5px #e9e9e9;
+    box-shadow: 1px 1px 5px #b6b6b6;
 }
 
 .cont-filter {
