@@ -635,8 +635,9 @@
 
   /* Page - Nos destinations */
   div#description-container {
-    width: 90%;
-    margin: 35px auto;
+    width: 100%;
+    margin: 0;
+    padding: 50px calc(25%/2);
   }
   div#container > #img-container {
     height: 500px;
@@ -673,9 +674,6 @@
   }
 
   /* Page - destinations */
-  div#continent {
-    all: unset;
-  }
   div#cont-head-img-container {
     position: relative;
     width: 100%;
@@ -690,7 +688,6 @@
     color: #fff !important;
   }
   div#cont-filters {
-    all: unset;
     position: relative;
     display: flex;
     flex-direction: row;
@@ -698,9 +695,9 @@
     width: 100vw;
     box-shadow: 1px 1px 5px #b6b6b6;
     justify-content: center;
+    margin: 50px 0;
   }
   .cont-filter {
-    all: unset;
     width: calc(100vw/3);
     text-align: center;
     border-right: 1px solid #e9e9e9;
@@ -721,16 +718,15 @@
     max-width: 750px;
   }
   .cont-activities-container {
-    all: unset;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
   }
   .cont-scop {
-    all: unset;
     position: relative;
     width: calc(100%/3 - (15px*2/3));
     height: 150px;
+    min-height: initial;
     margin-bottom: 25px;
     overflow: hidden;
   }
@@ -754,9 +750,6 @@
   }
 
   /* Page - activities */
-  div#act-cat {
-    all: unset;
-  }
   div#act-cat-head-img-container {
     position: relative;
     width: 100%;
@@ -770,7 +763,6 @@
     color: #fff !important;
   }
   div#act-cat-filters {
-    all: unset;
     position: relative;
     display: flex;
     flex-direction: row;
@@ -778,9 +770,9 @@
     width: 100vw;
     box-shadow: 1px 1px 5px #b6b6b6;
     justify-content: center;
+    margin: 50px 0;
   }
   .act-cat-filter {
-    all: unset;
     width: calc(100vw/3);
     text-align: center;
     border-right: 1px solid #e9e9e9;
@@ -801,17 +793,16 @@
     max-width: 750px;
   }
   .act-cat-activities-container {
-    all: unset;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
   }
 
   .act-cat-scop {
-    all: unset;
     position: relative;
     width: calc(100%/3 - (15px*2/3));
     height: 150px;
+    min-height: initial;
     margin-bottom: 25px;
     overflow: hidden;
   }
@@ -846,13 +837,11 @@
     width: 90%;
   }
   .act-dest-container {
-    all: unset;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
   }
   .act-dest-scop {
-    all: unset;
     position: relative;
     width: calc(50% - 5px);
     height: 100px;
@@ -908,12 +897,10 @@
     margin: 25px 0 0 0;
   }
   div.prestation-information-container {
-    all: unset;
     display: flex;
     flex-direction: row;
   }
   div.prestation-details-container {
-    all: unset;
     display: flex;
     flex-direction: column;
     margin: 25px 0;
@@ -948,7 +935,6 @@
 
   /* Breadcrumb */
   div#breadcrumb-wrapper {
-    all: unset;
     width: 100vw;
   }
   #breadcrumb-wrapper .grid-inner {
@@ -1059,7 +1045,6 @@
     font-size: 25px;
   }
   .cont-scop {
-    all: unset;
     position: relative;
     width: calc(50% - 5px);
     height: 100px;
@@ -1090,7 +1075,6 @@
     font-size: 25px;
   }
   .act-cat-scop {
-    all: unset;
     position: relative;
     width: calc(50% - 5px);
     height: 100px;
@@ -1129,23 +1113,6 @@
     min-height: 200px;
     margin: 0 calc(10%/2);
   }
-  /*div#activity-page-container div#header-container {*/
-  /*  height: 250px;*/
-  /*}*/
-  /*div#activity-page-container div#header-container > h1 {*/
-  /*  font-size: 25px;*/
-  /*}*/
-  /*div.prestation-information-container {*/
-  /*  all: unset;*/
-  /*  display: flex;*/
-  /*  flex-direction: column;*/
-  /*}*/
-  /*div.prestation-description {*/
-  /*  margin-right: 0;*/
-  /*}*/
-  /*div.prestation-price-container {*/
-  /*  margin-left: 0;*/
-  /*}*/
 
   /* Block - Switch activities */
   div.memory-switch-act > a {
