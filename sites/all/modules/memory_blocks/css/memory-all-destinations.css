@@ -38,8 +38,9 @@ div#img-container > h2 {
 }
 
 div#description-container {
-    width: 75%;
-    margin: 50px auto;
+  width: 75%;
+  margin: 50px auto;
+  box-sizing: border-box;
 }
 
 div#destinations-main-container {
