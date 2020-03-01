@@ -69,16 +69,14 @@
         $datas_global_category = taxonomy_term_load($global_category[1]);
 
         // Retrieve the fid (image ID) of the global category
-        $fid_global_category = $datas_global_category->field_category_activities_img['und'][0]['fid'];
+        $activity_image_field = field_get_items('taxonomy_term', $datas_global_category, 'field_category_activities_img');
+        $activity_image_field_ip_img = file_load($activity_image_field[0]["fid"]);
+        $activity_image = image_style_url("large", $activity_image_field_ip_img->uri);
 
-        if( isset($fid_global_category) ){
-
-            // Load image by its fid
-            $file = file_load($fid_global_category);
-            $img_url_global_category = file_create_url($file->uri);
+        if( !empty($activity_image) ){
 
             // Set the url of the image in the array
-            $tab_global_categories[$global_category[1]]['img_url'] = $img_url_global_category;
+            $tab_global_categories[$global_category[1]]['img_url'] = $activity_image;
         }
     }
 
