@@ -66,8 +66,8 @@
         $activity_price = field_get_items('node', $node, 'field_price_prestation');
 
         $cnt[$activity_tid][$activity_weight][$node->nid] = array(
-          'node_vid' => $node->vid,
-          'path' => $base_url."/".drupal_get_path_alias('node/'.$node->vid),
+          'node_nid' => $node->nid,
+          'path' => $base_url."/".drupal_get_path_alias('node/'.$node->nid),
           'custom_title' => $activity_custom_title,
           'price' => $activity_price[0]["value"],
 //          'weight' => $activity_weight,
@@ -180,7 +180,7 @@
                             <div class="cont-scop cont-scop-<?php print $activity->tid ?>" style="background-image:url('<?php print $cnt_act_sorted['img_uri'] ?>'); background-size:cover;background-position:center;">
 
                                 <div class="cont-datas-container" id="<?php print $cnt_act_sorted['node_nid'] ?>">
-                                    <input type="hidden" class="cont-act-nid" value="<?php print $cnt_act_sorted['node_vid'] ?>">
+                                    <input type="hidden" class="cont-act-nid" value="<?php print $cnt_act_sorted['node_nid'] ?>">
                                     <input type="hidden" class="cont-act-cat" value="<?php print $cnt_act_sorted['group_act_cat'] ?>">
                                     <h3 class="cont-stick-title"><?php print $cnt_act_sorted['custom_title'] ?></h3>
                                     <p class="cont-price"><?php print $cnt_act_sorted['price'] ?><?php isset($cnt_act_sorted['price']) ? print "€" : ""; ?></p>
