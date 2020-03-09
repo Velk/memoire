@@ -952,25 +952,30 @@ function memory_blocks_block_view($delta = '') {
         case 'memory_switch_activities':
 
             /* ------------------------------- Retrieve the destination of the activity ------------------------------- */
-            $activity_nid = explode("/", current_path())[1];
+            $activity_nid = explode("node/", current_path())[1];
             $activity_node_load = node_load($activity_nid);
 
             // Get the Destination field value of the activity
             $activity_field_dest = field_get_items("node", $activity_node_load, "field_acti_content_desti");
-
             // Get the destination TID
             $dest_tid = $activity_field_dest[0]["tid"];
 
-            $query = db_select('field_data_field_acti_content_desti', 'acd');
-            $query->fields('acd', array('entity_id'));
-            $query->condition('acd.field_acti_content_desti_tid', $dest_tid, '=');
+            // Get the Category field value of the activity (Activité de jour, Activité de nuit...)
+            $activity_field_act_cat = field_get_items("node", $activity_node_load, "field_acti_cont_cat");
+            $act_cat_tid = $activity_field_act_cat[0]["tid"];
+
+            $query = new EntityFieldQuery();
+            $query->entityCondition('entity_type', 'node')
+              ->entityCondition('bundle', 'activite')
+              ->propertyCondition('status', 1)
+              ->fieldCondition('field_acti_content_desti', 'tid', $dest_tid, '=')
+              ->fieldCondition('field_acti_cont_cat', 'tid', $act_cat_tid, '=');
             $results = $query->execute();
 
             $array_activities = array();
 
-            foreach ($results as $result) {
-
-                array_push($array_activities, $result->entity_id);
+            foreach ($results["node"] as $result) {
+                array_push($array_activities, $result->nid);
             }
 
             // Get the index position of the current activity
