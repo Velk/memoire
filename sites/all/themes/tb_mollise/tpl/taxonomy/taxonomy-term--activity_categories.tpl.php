@@ -12,14 +12,11 @@ $current_path = current_path();
 $taxonomy_tid = explode("taxonomy/term/", $current_path)[1];
 // Load the taxonomy term by its tid
 $taxonomy_term_load = taxonomy_term_load($taxonomy_tid);
+
 // Retrieve the boolean value of special filters
 $bool_is_special_filters = $content['field_is_special_filters']['#items'][0]['value'];
-
 // Retrieve the boolean value of intermediate page
 $bool_is_intermediate_page = $content['field_is_intermediate_page']['#items'][0]['value'];
-
-
-$bool_is_intermediate_page = (!isset($bool_is_intermediate_page)) ? 0 : 1;
 
 /* -------------------------------------------------- CONTENT -------------------------------------------------- */
 
@@ -118,66 +115,97 @@ ksort($ordered_activity_categories);
   <?php if(sizeof($array_activity_types) != 0){ echo getSpecialFiltersHTML($ordered_activity_categories); } ?>
 
   <div id="act-cat-main">
-
     <?php
     if($bool_is_intermediate_page == 1){ // Intermediate page
 
-      foreach($ordered_activity_categories as $activity_category): ?>
-      <?php if( isset( $cnt[$activity_category] ) ){ ?>
-        <div id="act-cat-<?php print $activity_category ?>" class="act-cat-container">
-          <?= getCategoriesHTML($activity_category); ?>
-          <div class="act-cat-activities-container">
-            <?php
-            // Sort array by activity name
-            ksort($cnt[$activity_category]);
+      if($bool_is_special_filters == 1){ // Special filters
+        echo getMainContentWithFilters($ordered_activity_categories, $cnt, $bool_is_intermediate_page);
+      }else{ // Not special filters
+        echo getMainContentWithoutFilters($cnt, $bool_is_intermediate_page);
+      }
+    }else{ //  Not intermediate page
 
-            foreach ($cnt[$activity_category] as $cnt_act_sorted){
-            ?>
-                <div class="act-cat-scop act-cat-scop-<?php print $activity_category ?>" style="background-image:url('<?php print $cnt_act_sorted['img_uri'] ?>'); background-size:cover;background-position:center;">
-                  <div class="act-cat-datas-container">
-                    <h3 class="act-cat-stick-title"><?php print $cnt_act_sorted['title'] ?></h3>
-                    <p class="act-cat-price"><?php print $cnt_act_sorted['price']?> <?php isset($cnt_act_sorted['price']) ? print "€" : ""; ?></p>
-                    <a href="<?php print ($bool_is_intermediate_page == 1) ? $cnt_act_sorted['intermediate_path'] : $cnt_act_sorted['path'] ?>" class="act-cat-readmore"></a>
-                  </div>
-                </div>
-                <?php
-            }
-            ?>
-          </div>
-        </div>
-      <?php }
-      endforeach;
-    }else{ //  Not intermediate page ?>
-      <div class="act-cat-activities-container">
-        <?php
-        // Sort array by activity weight
-        ksort($cnt);
-
-        foreach ($cnt as $act_weight_sorted){
-
-          // Sort array by activity name
-          ksort($act_weight_sorted);
-
-          foreach ($act_weight_sorted as $act_sorted) {
-
-            ?>
-            <div class="act-cat-scop" style="background-image:url('<?php print $act_sorted['img_uri'] ?>'); background-size:cover;background-position:center;">
-              <div class="act-cat-datas-container">
-                <h3 class="act-cat-stick-title"><?php print $act_sorted['title'] ?></h3>
-                <p class="act-cat-price"><?php print $act_sorted['price']?> <?php isset($act_sorted['price']) ? print "€" : ""; ?></p>
-                <a href="<?php print ($bool_is_intermediate_page == 1) ? $act_sorted['intermediate_path'] : $act_sorted['path'] ?>" class="act-cat-readmore"></a>
-              </div>
-            </div>
-            <?php
-          }
-        }
-        ?>
-      </div>
-    <?php } ?>
+      if($bool_is_special_filters == 1){ // Special filters
+        echo getMainContentWithFilters($ordered_activity_categories, $cnt, $bool_is_intermediate_page);
+      }else{ // Not special filters
+        echo getMainContentWithoutFilters($cnt, $bool_is_intermediate_page);
+      }
+    } ?>
   </div>
 </div>
 
 <?php
+// Get the HTML structure of the main content with filter categories
+function getMainContentWithFilters($ordered_activity_categories, $cnt, $bool_is_intermediate_page){
+
+  $main_content = "";
+
+  foreach($ordered_activity_categories as $activity_category):
+
+    if( isset( $cnt[$activity_category] ) ){
+
+      $main_content .=
+        "<div id=\"act-cat-" . $activity_category . "\" class=\"act-cat-container\">" .
+        getCategoriesHTML($activity_category) .
+        "<div class=\"act-cat-activities-container\">";
+
+          // Sort array by activity name
+          ksort($cnt[$activity_category]);
+
+          foreach ($cnt[$activity_category] as $cnt_act_sorted){
+
+            $main_content .=
+              "<div class=\"act-cat-scop act-cat-scop-" . $activity_category . "\" style=\"background-image:url('" . $cnt_act_sorted['img_uri'] . "'); background-size:cover;background-position:center;\">" .
+                "<div class=\"act-cat-datas-container\">" .
+                  "<h3 class=\"act-cat-stick-title\">" . $cnt_act_sorted['title'] . "</h3>" .
+                  "<p class=\"act-cat-price\">" . $cnt_act_sorted['price'] . (isset($cnt_act_sorted['price']) ? ' €' : '') . "</p>" .
+                  "<a href=\"" . (($bool_is_intermediate_page == 1) ? $cnt_act_sorted['intermediate_path'] : $cnt_act_sorted['path']) . "\" class=\"act-cat-readmore\"></a>" .
+                "</div>" .
+              "</div>"
+            ;
+          }
+      $main_content .=
+        "</div>" .
+      "</div>"
+      ;
+    }
+  endforeach;
+
+  return $main_content;
+}
+
+// Get the HTML structure of the main content without filter categories
+function getMainContentWithoutFilters($cnt, $bool_is_intermediate_page){
+
+  // Sort array by activity weight
+  ksort($cnt);
+
+  $main_content = "<div class=\"act-cat-activities-container\">";
+
+  foreach ($cnt as $act_weight_sorted){
+
+    // Sort array by activity name
+    ksort($act_weight_sorted);
+
+    foreach ($act_weight_sorted as $act_sorted) {
+
+      $main_content .=
+        "<div class=\"act-cat-scop\" style=\"background-image:url('" . $act_sorted['img_uri'] . "'); background-size:cover;background-position:center;\">" .
+          "<div class=\"act-cat-datas-container\">" .
+            "<h3 class=\"act-cat-stick-title\">" . $act_sorted['title'] . "</h3>" .
+            "<p class=\"act-cat-price\">" . $act_sorted['price'] . (isset($act_sorted['price']) ? ' €' : '') . "</p>" .
+            "<a href=\"" . (($bool_is_intermediate_page == 1) ? $act_sorted['intermediate_path'] : $act_sorted['path']) . "\" class=\"act-cat-readmore\"></a>" .
+          "</div>" .
+        "</div>"
+      ;
+    }
+  }
+
+  $main_content .= "</div>";
+
+  return $main_content;
+}
+
 // Get category
 function getCategoriesHTML($activity_category){
 
