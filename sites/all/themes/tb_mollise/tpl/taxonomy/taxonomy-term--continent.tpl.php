@@ -12,8 +12,11 @@
         $img_head_url = file_create_url($content['field_dst_image']['#items'][0]['uri']);
     }
 
-    $tid = key(taxonomy_get_term_by_name($term_name));
-    $nids = taxonomy_select_nodes($tid, FALSE);
+    // Get the current path of the page : taxonomy/term/[tid]
+    $current_path = current_path();
+    // Retrieve the tid
+    $taxonomy_tid = explode("taxonomy/term/", $current_path)[1];
+    $nids = taxonomy_select_nodes($taxonomy_tid, FALSE);
     $vocabulary = taxonomy_vocabulary_machine_name_load('activite');
     $v_activities = entity_load('taxonomy_term', FALSE, array('vid' => $vocabulary->vid));
 

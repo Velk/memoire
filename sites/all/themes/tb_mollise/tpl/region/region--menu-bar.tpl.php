@@ -226,7 +226,6 @@ foreach ($array_countries as $country){
                                 foreach($tab_global_categories as $global_category){
                                     // Load taxonomy term by its tid
                                     $tax_global_activity_category = taxonomy_term_load($global_category[1]);
-//                                    drupal_set_message("<pre>" . print_r($tax_global_activity_category,true) . "</pre>");
                                 ?>
                                     <div class="activity-menu">
                                         <?php if(!empty($global_category['img_url'])) :?>
