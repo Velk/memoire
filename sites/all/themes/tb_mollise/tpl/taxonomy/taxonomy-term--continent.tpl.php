@@ -69,9 +69,9 @@
         $activity_price = field_get_items('node', $node, 'field_price_prestation');
 
         $cnt[$activity_tid][$activity_weight][$node->nid] = array(
+          'custom_title' => $activity_custom_title,
           'node_nid' => $node->nid,
           'path' => $base_url."/".drupal_get_path_alias('node/'.$node->nid),
-          'custom_title' => $activity_custom_title,
           'price' => $activity_price[0]["value"],
 //          'weight' => $activity_weight,
           'group_act_cat' => $activity_tid,
@@ -175,30 +175,30 @@
 
                     foreach ($cnt[$activity->tid] as $cnt_weight_sorted){
 
-                        // Sort array by activity name
-                        ksort($cnt_weight_sorted);
+                      // Sort array by activity name
+                      asort($cnt_weight_sorted);
 
-                        foreach ($cnt_weight_sorted as $cnt_act_sorted) {
-                    ?>
-                            <div class="cont-scop cont-scop-<?php print $activity->tid ?>" style="background-image:url('<?php print $cnt_act_sorted['img_uri'] ?>'); background-size:cover;background-position:center;">
+                      foreach ($cnt_weight_sorted as $cnt_act_sorted) {
+                      ?>
+                        <div class="cont-scop cont-scop-<?php print $activity->tid ?>" style="background-image:url('<?php print $cnt_act_sorted['img_uri'] ?>'); background-size:cover;background-position:center;">
 
-                                <div class="cont-datas-container" id="<?php print $cnt_act_sorted['node_nid'] ?>">
-                                    <input type="hidden" class="cont-act-nid" value="<?php print $cnt_act_sorted['node_nid'] ?>">
-                                    <input type="hidden" class="cont-act-cat" value="<?php print $cnt_act_sorted['group_act_cat'] ?>">
-                                    <h3 class="cont-stick-title"><?php print $cnt_act_sorted['custom_title'] ?></h3>
-                                    <p class="cont-price"><?php print $cnt_act_sorted['price'] ?><?php isset($cnt_act_sorted['price']) ? print "€" : ""; ?></p>
-                                    <a href="<?php print $cnt_act_sorted['path'] ?>" class="cont-readmore"></a>
-                                    <?php
-                                    if(sizeof($cnt_act_sorted["activity_family"]) !== 0)
-                                      echo
-                                        "<div class='banner-category' style='background-color:" .
-                                        $cnt_act_sorted["activity_family"]["color"] .
-                                        ";'><p>" . $cnt_act_sorted["activity_family"]["text"] . "</p></div>";
-                                    ?>
-                                </div>
-                            </div>
+                          <div class="cont-datas-container" id="<?php print $cnt_act_sorted['node_nid'] ?>">
+                            <input type="hidden" class="cont-act-nid" value="<?php print $cnt_act_sorted['node_nid'] ?>">
+                            <input type="hidden" class="cont-act-cat" value="<?php print $cnt_act_sorted['group_act_cat'] ?>">
+                            <h3 class="cont-stick-title"><?php print $cnt_act_sorted['custom_title'] ?></h3>
+                            <p class="cont-price"><?php print $cnt_act_sorted['price'] ?><?php isset($cnt_act_sorted['price']) ? print "€" : ""; ?></p>
+                            <a href="<?php print $cnt_act_sorted['path'] ?>" class="cont-readmore"></a>
+                            <?php
+                            if(sizeof($cnt_act_sorted["activity_family"]) !== 0)
+                              echo
+                                "<div class='banner-category' style='background-color:" .
+                                $cnt_act_sorted["activity_family"]["color"] .
+                                ";'><p>" . $cnt_act_sorted["activity_family"]["text"] . "</p></div>";
+                            ?>
+                          </div>
+                        </div>
                     <?php
-                        }
+                      }
                     }
                     ?>
                 </div>
