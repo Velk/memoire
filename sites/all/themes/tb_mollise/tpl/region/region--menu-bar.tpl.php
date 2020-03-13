@@ -43,6 +43,7 @@
         $array_countries[$cities->parents[0]]["cities"][$cities->tid] = array(
           "weight" => $cities->weight,
           "name" => $cities->name,
+          "tid" => $cities->tid,
         );
       }
     }
@@ -182,7 +183,7 @@ foreach ($array_countries_phone as $country){
                                               foreach($country["cities"] as $onlyOneCity){
 
                                                   // Get dynamically the path alias when there is only 1 city
-                                                  $destination_path_alias = drupal_get_path_alias("taxonomy/term/" . $onlyOneCity[1]);
+                                                  $destination_path_alias = drupal_get_path_alias("taxonomy/term/" . $onlyOneCity["tid"]);
 
                                                   print
                                                       "<a href=" . strtolower($base_url."/".$destination_path_alias) . ">" .
@@ -199,7 +200,7 @@ foreach ($array_countries_phone as $country){
                                               <?php foreach($country["cities"] as $place){
 
                                                   // Get dynamically the path alias when there is more than 1 city
-                                                  $destination_path_alias = drupal_get_path_alias("taxonomy/term/" . $place[1]);
+                                                  $destination_path_alias = drupal_get_path_alias("taxonomy/term/" . $place["tid"]);
 
                                                   print
                                                       "<li>" .
