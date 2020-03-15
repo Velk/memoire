@@ -1322,7 +1322,7 @@ function memory_blocks_top_destinations_admin_form($form, &$form_state) {
           '#type' => 'weight',
           '#title' => t('Weight'),
           '#default_value' => $top_destinations_nbr['weight'],
-          '#delta' => 50,
+          '#delta' => 25,
           '#description' => 'Destination with the higher weight will be display in first.',
         );
     }
@@ -1434,7 +1434,7 @@ function memory_blocks_top_activities_admin_form($form, &$form_state) {
           '#type' => 'weight',
           '#title' => t('Weight'),
           '#default_value' => $top_activities_nbr['weight'],
-          '#delta' => 50,
+          '#delta' => 25,
           '#description' => 'Activity with the higher weight will be display in first.',
         );
     }
