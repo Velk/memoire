@@ -6,12 +6,13 @@ module_load_include('inc', 'pathauto', 'pathauto');
 //drupal_set_message("Page activity category (EVG, EVJF...)");
 
 /* ------------------------------------- SPECIAL FILTERS & INTERMEDIATE PAGE ------------------------------------- */
+
 // Get the current path of the page : taxonomy/term/[tid]
 $current_path = current_path();
 // Retrieve the tid
 $taxonomy_tid = explode("taxonomy/term/", $current_path)[1];
-// Load the taxonomy term by its tid
-$taxonomy_term_load = taxonomy_term_load($taxonomy_tid);
+// Retrieve an array containing nodes ID belonging to the activity category
+$nids = taxonomy_select_nodes($taxonomy_tid, FALSE);
 
 // Retrieve the boolean value of special filters
 $bool_is_special_filters = $content['field_is_special_filters']['#items'][0]['value'];
@@ -23,12 +24,6 @@ $bool_is_intermediate_page = $content['field_is_intermediate_page']['#items'][0]
 if (!empty($content['field_category_activities_img'])) {
   $img_head_url = file_create_url($content['field_category_activities_img']['#items'][0]['file']->uri);
 }
-
-// Retrieve the taxonomy ID
-$tid = key(taxonomy_get_term_by_name($term_name, "activity_categories"));
-
-// Retrieve an array containing nodes ID belonging to the activity category
-$nids = taxonomy_select_nodes($tid, FALSE);
 
 $array_activity_types = array();
 $cnt = array();
