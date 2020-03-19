@@ -951,6 +951,27 @@ function memory_blocks_block_view($delta = '') {
             break;
         case 'memory_switch_activities':
 
+            $vocabulary = taxonomy_vocabulary_machine_name_load('activite');
+            $v_activities = entity_load('taxonomy_term', FALSE, array('vid' => $vocabulary->vid));
+
+            // Ascendant sorting of group of activities ("Activités de nuits", "Transfert", "Nos packs"...) depending on their weight
+            $nb_act = count($v_activities);
+            $activities = array();
+            $count = 0;
+            for ($i = 0; $count < $nb_act; $i++) {
+              if (!empty($v_activities[$i])){
+                if ($v_activities[$i]->weight == $count) {
+                  $activities[$i] = $v_activities[$i];
+                  $count++;
+                  $i = 0;
+                }
+              }
+            }
+
+            if(isset($_GET["category"]) && !empty($_GET["category"])){ // Get category TID (EVG, EVJF...) coming from intermediate page
+              $is_category_target = true;
+            }
+
             /* ------------------------------- Retrieve the destination of the activity ------------------------------- */
             $activity_nid = explode("node/", current_path())[1];
             $activity_node_load = node_load($activity_nid);
@@ -961,40 +982,101 @@ function memory_blocks_block_view($delta = '') {
             $dest_tid = $activity_field_dest[0]["tid"];
 
             // Get the Category field value of the activity (Activité de jour, Activité de nuit...)
-            $activity_field_act_cat = field_get_items("node", $activity_node_load, "field_acti_cont_cat");
-            $act_cat_tid = $activity_field_act_cat[0]["tid"];
+//            $activity_field_act_cat = field_get_items("node", $activity_node_load, "field_acti_cont_cat");
+//            $act_cat_tid = $activity_field_act_cat[0]["tid"];
 
             $query = new EntityFieldQuery();
             $query->entityCondition('entity_type', 'node')
               ->entityCondition('bundle', 'activite')
               ->propertyCondition('status', 1)
-              ->fieldCondition('field_acti_content_desti', 'tid', $dest_tid, '=')
-              ->fieldCondition('field_acti_cont_cat', 'tid', $act_cat_tid, '=');
+              ->fieldCondition('field_acti_content_desti', 'tid', $dest_tid, '=');
+//              ->fieldCondition('field_acti_cont_cat', 'tid', $act_cat_tid, '=');
             $results = $query->execute();
 
             $array_activities = array();
 
             foreach ($results["node"] as $result) {
-                array_push($array_activities, $result->nid);
+
+              $node = node_load($result->nid);
+
+              $activity_category_field = field_get_items("node", $node, "field_activity_category");
+              $is_node_to_display = false;
+
+              if($is_category_target){ // Mean we need to filter by the activity category targeted (EVG, EVJF...)
+
+                foreach ($activity_category_field as $activity_category){
+
+                  if($activity_category["tid"] == $_GET["category"]){
+                    $is_node_to_display = true;
+                  }
+                }
+              }else{
+                $is_node_to_display = true;
+              }
+
+              if($is_node_to_display){
+
+                $activity_tid_field = field_get_items('node', $node, 'field_acti_cont_cat');
+                $activity_tid = $activity_tid_field[0]["tid"];
+
+                $activity_weight_field = field_get_items('node', $node, 'field_weight');
+                $activity_weight = ( empty($activity_weight_field[0]["value"]) ) ? 0 : $activity_weight_field[0]["value"];
+
+                $activity_custom_title_field = field_get_items('node', $node, 'field_activity_title');
+                $activity_custom_title = $activity_custom_title_field[0]["value"];
+
+                $array_activities[$activities[$activity_tid]->weight][$activity_weight][$node->nid] = array(
+                  'custom_title' => $activity_custom_title,
+                  'node_nid' => $node->nid,
+                );
+              }
             }
 
+            // Sort array by activity category weight
+            ksort($array_activities);
+
+            foreach ($activities as $activity) {
+
+              // Sort array by activity weight
+              krsort($array_activities[$activity->weight]);
+            }
+
+            // Construct good array
+            $array_activities_refactored = array();
+
+            foreach ($array_activities as $array_activity_weight){
+
+              foreach($array_activity_weight as $array_activity){
+
+                // Sort by activities name alphabetically
+                asort($array_activity);
+
+                foreach($array_activity as $array_activity_nid){
+
+                  array_push($array_activities_refactored, $array_activity_nid["node_nid"]);
+                }
+              }
+            }
+
+//          drupal_set_message("<pre>" . print_r($array_activities_refactored, true) . "</pre>");
+
             // Get the index position of the current activity
-            $current_activity_index = array_search($activity_nid, $array_activities);
+            $current_activity_index = array_search($activity_nid, $array_activities_refactored);
 
             if ($current_activity_index == 0) {
 
-                $previous_activity_nid = $array_activities[sizeof($array_activities) - 1];
-                $next_activity_nid = $array_activities[$current_activity_index + 1];
+                $previous_activity_nid = $array_activities_refactored[sizeof($array_activities_refactored) - 1];
+                $next_activity_nid = $array_activities_refactored[$current_activity_index + 1];
 
-            } elseif ($current_activity_index == (sizeof($array_activities) - 1)){
+            } elseif ($current_activity_index == (sizeof($array_activities_refactored) - 1)){
 
-                $previous_activity_nid = $array_activities[$current_activity_index - 1];
-                $next_activity_nid = $array_activities[0];
+                $previous_activity_nid = $array_activities_refactored[$current_activity_index - 1];
+                $next_activity_nid = $array_activities_refactored[0];
 
             }else{
 
-                $previous_activity_nid = $array_activities[$current_activity_index - 1];
-                $next_activity_nid = $array_activities[$current_activity_index + 1];
+                $previous_activity_nid = $array_activities_refactored[$current_activity_index - 1];
+                $next_activity_nid = $array_activities_refactored[$current_activity_index + 1];
             }
 
             // Set the previous activity PATH

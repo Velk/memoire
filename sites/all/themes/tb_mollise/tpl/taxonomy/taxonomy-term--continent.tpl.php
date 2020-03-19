@@ -68,10 +68,17 @@
         $activity_image = field_get_items('node', $node, 'field_img_activite');
         $activity_price = field_get_items('node', $node, 'field_price_prestation');
 
+        // Set the category if exist in order to retrieve activities from the right category (EVG, EVJF...) in the switch activities button (previous, next)
+        if(isset($_GET["category"]) && !empty($_GET["category"])){
+          $redirection_path = $base_url . "/" . drupal_get_path_alias('node/'.$node->nid) . "?category=" . $_GET["category"];
+        }else{
+          $redirection_path = $base_url . "/" . drupal_get_path_alias('node/'.$node->nid);
+        }
+
         $cnt[$activity_tid][$activity_weight][$node->nid] = array(
           'custom_title' => $activity_custom_title,
           'node_nid' => $node->nid,
-          'path' => $base_url."/".drupal_get_path_alias('node/'.$node->nid),
+          'path' => $redirection_path,
           'price' => $activity_price[0]["value"],
 //          'weight' => $activity_weight,
           'group_act_cat' => $activity_tid,
