@@ -164,6 +164,7 @@ p.prestation-price-precision {
   width: 250px;
   height: 250px;
   background-size: cover;
+  background-position: center;
   margin-right: 25px;
   border-radius: 3px;
 }
