@@ -70,14 +70,15 @@ div#activity-page-main > div:nth-child(even) {
 .prestation-header {
   display: flex;
   flex-direction: row;
-  align-items: baseline;
   justify-content: space-between;
   position: relative;
+  align-items: stretch;
 }
 .prestation-header > div:nth-child(1) {
   display: flex;
   flex-direction: column;
-  min-height: 60px;
+  width: 100%;
+  justify-content: space-between;
 }
 .prestation-header h2 {
   margin: 0;
@@ -91,8 +92,6 @@ div#activity-page-main > div:nth-child(even) {
   font-size: 14px;
   font-style: italic;
   margin: 0;
-  position: absolute;
-  bottom: 0;
 }
 div.prestation-price-container {
   width: 225px;
