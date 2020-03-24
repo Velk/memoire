@@ -2,7 +2,7 @@
     global $base_url;
     module_load_include('inc', 'pathauto', 'pathauto'); // Include pathauto to clean a string for use in URLs in order to compare with the current URL
 
-//    drupal_set_message("Destinations page");
+    drupal_set_message("Destinations page");
 
     if(isset($_GET["category"]) && !empty($_GET["category"])){ // Get category TID (EVG, EVJF...) coming from intermediate page
       $is_category_target = true;
@@ -65,6 +65,20 @@
         $activity_custom_title_field = field_get_items('node', $node, 'field_activity_title');
         $activity_custom_title = $activity_custom_title_field[0]["value"];
 
+        $activity_family_field = field_get_items('node', $node, 'field_activity_family');
+        $activity_family = $activity_family_field[0]["tid"];
+
+        $array_activity_family = array();
+        if(isset($activity_family)){
+          $activity_family_term = taxonomy_term_load($activity_family);
+
+          $activity_family_color_field = field_get_items('taxonomy_term', $activity_family_term, 'field_color');
+          $activity_family_color = $activity_family_color_field[0]["value"];
+
+          $array_activity_family["name"] = $activity_family_term->name;
+          $array_activity_family["color"] = $activity_family_color;
+        }
+
         $activity_image = field_get_items('node', $node, 'field_img_activite');
         $activity_price = field_get_items('node', $node, 'field_price_prestation');
 
@@ -84,7 +98,7 @@
           'group_act_cat' => $activity_tid,
           'img_uri' => image_style_url("large", $activity_image[0]["uri"]),
           'img_name' => $activity_image[0]['filename'],
-          'activity_family' => getActivityFamily($node->nid),
+          'activity_family' => $array_activity_family,
         );
       }
     }
@@ -200,7 +214,7 @@
                               echo
                                 "<div class='banner-category' style='background-color:" .
                                 $cnt_act_sorted["activity_family"]["color"] .
-                                ";'><p>" . $cnt_act_sorted["activity_family"]["text"] . "</p></div>";
+                                ";'><p>" . $cnt_act_sorted["activity_family"]["name"] . "</p></div>";
                             ?>
                           </div>
                         </div>
@@ -215,68 +229,3 @@
     </div>
 </div>
 
-<?php
-// Get category type. Exemple : Survie, Aventure, Team Building, etc.
-function getActivityFamily($node_id){
-
-  $array_results = array();
-  $admin_family = variable_get("category_" . $node_id);
-  $isFamily = true;
-
-  switch ($admin_family) {
-    case "0" :
-      $isFamily = false;
-      break;
-    case "1" :
-      $array_results["color"] = "#F42C1C";
-      $array_results["text"] = "Volcan";
-      break;
-    case "2" :
-      $array_results["color"] = "#F42C1C";
-      $array_results["text"] = "Aventure";
-      break;
-    case "3" :
-      $array_results["color"] = "#046C5C";
-      $array_results["text"] = "Survie";
-      break;
-    case "4" :
-      $array_results["color"] = "#046C5C";
-      $array_results["text"] = "Nature";
-      break;
-    case "5" :
-      $array_results["color"] = "#6C3C5C";
-      $array_results["text"] = "EVG";
-      break;
-    case "6" :
-      $array_results["color"] = "#EF648A";
-      $array_results["text"] = "EVJF";
-      break;
-    case "7" :
-      $array_results["color"] = "#FC6404";
-      $array_results["text"] = "Team<br>Building";
-      break;
-    case "8" :
-      $array_results["color"] = "#FC6404";
-      $array_results["text"] = "Anniversaire";
-      break;
-    case "9" :
-      $array_results["color"] = "#FC6404";
-      $array_results["text"] = "Vie<br>étudiante";
-      break;
-    case "10" :
-      $array_results["color"] = "#8CDCFB";
-      $array_results["text"] = "Mariage";
-      break;
-    case "11" :
-      $array_results["color"] = "#8CDCFB";
-      $array_results["text"] = "Demande<br>en mariage";
-      break;
-  }
-
-  if ($isFamily) {
-    return $array_results;
-  }else{
-    return $array_results;
-  }
-}
-?>

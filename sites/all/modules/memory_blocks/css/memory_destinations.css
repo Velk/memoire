@@ -206,7 +206,7 @@ a.cont-readmore {
 
 .banner-category {
     position: absolute;
-    width: 140px;
+    width: 150px;
     text-align: center;
     padding: 5px;
     box-sizing: border-box;
@@ -216,7 +216,8 @@ a.cont-readmore {
 }
 
 .banner-category > p {
-    color: #fff;
-    margin: 0;
-    font-size: 10px;
+  color: #fff;
+  width: 60px;
+  margin: 0 auto;
+  font-size: 10px;
 }
