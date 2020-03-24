@@ -71,6 +71,15 @@ function memory_blocks_menu() {
         'type' => MENU_NORMAL_ITEM,
     );
 
+    $items['admin/memory/activity-families-manager'] = array(
+      'title' => t('Memory - Families of activity'),
+      'description' => t('Memory - Families of activity'),
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('memory_blocks_activity_families_admin_form'),
+      'access arguments' => array('administer site configuration'),
+      'type' => MENU_NORMAL_ITEM,
+    );
+
     $items['admin/memory/3-columns-block-manager'] = array(
         'title' => t('Memory - 3 Columns block'),
         'description' => t('Memory - 3 Columns block'),
@@ -1780,6 +1789,273 @@ function memory_blocks_slider_admin_form($form, &$form_state){
     );
 
     return system_settings_form($form);
+}
+
+function memory_blocks_activity_families_admin_form($form, &$form_state){
+
+  $vocabulary = taxonomy_vocabulary_machine_name_load("activity_families");
+  $terms = entity_load('taxonomy_term', FALSE, array('vid' => $vocabulary->vid));
+  $array_activity_families = array(
+    "_none" => t('- Aucun(e) -')
+  );
+  foreach ($terms as $term){
+    $array_activity_families[$term->tid] = $term->name;
+  }
+
+  $query = db_select('node', 'n');
+  $query->fields('n', array('nid', 'title'));
+  $query->condition('n.type', 'activite', '=');
+  $query->orderBy('n.title', 'asc');
+  $query->distinct();
+  $results = $query->execute();
+
+  $form["markup_table_top"] = array(
+    '#type' => 'markup',
+    '#markup' =>
+      '<table>' .
+      '<tr>' .
+      '<th>Titre</th>' .
+      '<th>Ville</th>' .
+      '<th>Famille</th>' .
+      '</tr>'
+  ,
+  );
+
+  $previous_values = array();
+
+  foreach( $results as $result ){
+
+    $node = node_load($result->nid);
+
+//      drupal_set_message("<pre>" . print_r($node, true) . "</pre>");
+
+    $activity_custom_title_field = field_get_items("node", $node, "field_activity_title");
+    $activity_custom_title = $activity_custom_title_field[0]["value"];
+
+    $activity_destination_field = field_get_items("node", $node, "field_acti_content_desti");
+    $activity_destination = $activity_destination_field[0]["tid"];
+
+    $activity_family_field = field_get_items('node', $node, 'field_activity_family');
+    $activity_family = $activity_family_field[0]["tid"];
+    $key_activity_family = "_none";
+    if(isset($activity_family)){
+      $activity_family_term = taxonomy_term_load($activity_family);
+      $key_activity_family = array_search($activity_family_term->name, $array_activity_families);
+
+      $previous_values[$node->nid] = $activity_family_term->tid;
+    }
+
+    $taxonomy = taxonomy_term_load($activity_destination);
+
+    $form["markup_top_" . $result->nid] = array(
+      '#type' => 'markup',
+      '#markup' => '<tr>',
+    );
+
+    $form["title_" . $result->nid] = array(
+      '#type' => 'markup',
+      '#markup' => '<td>' . $activity_custom_title . '</td>',
+    );
+
+    $form["city_" . $result->nid] = array(
+      '#type' => 'markup',
+      '#markup' => '<td>' . $taxonomy->name . '</td>',
+    );
+
+    $form["category_markup_top" . $result->nid] = array(
+      '#type' => 'markup',
+      '#markup' => '<td>',
+    );
+
+    $form["category_" . $result->nid] = array(
+      '#type' => 'select',
+      '#options' => $array_activity_families,
+      '#default_value' => $key_activity_family,
+    );
+
+    $form["category_markup_bottom" . $result->nid] = array(
+      '#type' => 'markup',
+      '#markup' => '</td>',
+    );
+
+    $form["markup_bottom_" . $result->nid] = array(
+      '#type' => 'markup',
+      '#markup' => '</tr>',
+    );
+  }
+
+  $form["markup_table_bottom"] = array(
+    '#type' => 'markup',
+    '#markup' => '</table>' ,
+  );
+
+  $form['activity_families']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Enregistrer'),
+    '#weight' => 10,
+  );
+
+  $form['reload_cache']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Vider le cache'),
+    '#description' => t('Reload cache when every changes are OK.'),
+    '#weight' => 11,
+  );
+
+  $form["previous_values"] = array(
+    '#type' => 'value',
+    '#value' => $previous_values,
+  );
+
+  $form['activity_families']['submit']['#submit'][] = 'memory_blocks_activity_families_admin_form_submit';
+  $form['reload_cache']['submit']['#submit'][] = 'memory_blocks_activity_families_admin_form_reload_chache';
+
+  return $form;
+}
+
+function memory_blocks_activity_families_admin_form_reload_chache($form, &$form_state){
+  drupal_flush_all_caches();
+  drupal_set_message(t('Le cache a été vidé.'));
+}
+
+  /**
+ * @param $form
+ * @param $form_state
+ * @throws Exception
+ */
+function memory_blocks_activity_families_admin_form_submit($form, &$form_state){
+
+  $isChangeMade = false;
+
+  foreach ($form_state['values'] as $key => $value){
+
+    if(strpos($key, "category_") !== false){
+
+      $isChangeMade = true;
+      $activity_nid = explode("category_", $key)[1];
+
+      if($value == "_none"){ // Delete field in db
+
+        // Delete Data Field
+        db_delete('field_data_field_activity_family')
+          ->condition('entity_id', intval($activity_nid))
+          ->execute();
+
+        // Delete Revision Field
+        db_delete('field_revision_field_activity_family')
+          ->condition('entity_id', intval($activity_nid))
+          ->execute();
+      }else{ // Update or insert field in db
+
+        // Check if field is to insert or to update
+        $isAlreadySet = false;
+
+        foreach ($form_state["values"]["previous_values"] as $key_previous => $value_previous){
+          if(intval($key_previous) == intval($activity_nid)){
+            $isAlreadySet = true;
+          }
+        }
+
+        if($isAlreadySet){ // Update field in db
+
+          // Update Data Field
+          db_update('field_data_field_activity_family')
+            ->fields(array(
+              'field_activity_family_tid' => intval($value),
+            ))
+            ->condition('entity_id', intval($activity_nid))
+            ->execute();
+
+          // Update Revision Field
+          db_update('field_revision_field_activity_family')
+            ->fields(array(
+              'field_activity_family_tid' => intval($value),
+            ))
+            ->condition('entity_id', intval($activity_nid))
+            ->execute();
+        }else{ // Insert field in db
+
+          // Insert Data Field
+          db_insert('field_data_field_activity_family')
+            ->fields(
+              array(
+                'entity_type' => 'node',
+                'bundle' => 'activite',
+                'deleted' => 0,
+                'entity_id' => intval($activity_nid),
+                'revision_id' => intval($activity_nid),
+                'language' => 'und',
+                'delta' => 0,
+                'field_activity_family_tid' => intval($value),
+              )
+            )
+            ->execute();
+
+          // Insert Data Field
+          db_insert('field_revision_field_activity_family')->fields(
+            array(
+              'entity_type' => 'node',
+              'bundle' => 'activite',
+              'deleted' => 0,
+              'entity_id' => intval($activity_nid),
+              'revision_id' => intval($activity_nid),
+              'language' => 'und',
+              'delta' => 0,
+              'field_activity_family_tid' => intval($value),
+            )
+          )
+            ->execute();
+        }
+      }
+    }
+  }
+
+  if($isChangeMade){
+    drupal_set_message(t('Les données ont été modifiées.'));
+  }
+}
+
+function memory_blocks_all_destinations_page_admin_form($form, &$form_state){
+
+  $form['all_dest_image'] = array(
+    '#type'          => 'media',
+    '#title' => t('Image'),
+    '#theme'         => 'media_widget', // Without that, you only get text input
+    '#default_value' => variable_get('all_dest_image'), // The fid
+    '#media_options' => array(
+      'global' => array(
+        'file_directory'  => 'image_folder',
+        'file_extensions' => 'png gif jpg jpeg',
+        'max_filesize'    => '2 MB',
+        'uri_scheme'      => 'public',
+        'types'           => array('image'),
+        'schemes'         => array(
+          'public' => 'public',
+        ),
+      ),
+    ),
+    '#weight' => 1,
+  );
+
+  $form['all_dest_title'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Title'),
+    '#default_value' => variable_get('all_dest_title'),
+    '#maxlength' => 512,
+    '#weight' => 2,
+  );
+
+  $all_dest_description = variable_get('all_dest_description', array());
+
+  $form['all_dest_description'] = array(
+    '#type' => 'text_format',
+    '#format' => 'wysiwyg',
+    '#title' => t('Description'),
+    '#default_value' => $all_dest_description['value'],
+    '#weight' => 3,
+  );
+
+  return system_settings_form($form);
 }
 
 function memory_blocks_all_activities_page_admin_form($form, &$form_state){
