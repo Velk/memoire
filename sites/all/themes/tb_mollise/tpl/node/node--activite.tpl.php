@@ -46,18 +46,7 @@ $activity_destination = $activity_destination_field[0]["tid"];
 
 // Retrieve the activity memory opinion
 $activity_memory_opinion_field = field_get_items('node', $node, 'field_memory_opinion');
-$activity_memory_opinion_video = null;
-
-// Check if paragraph contains video link
-if(strpos($activity_memory_opinion_field[0]["value"], '[video:')){
-
-  preg_match('/(\[video:)(https?:\/\/[a-zA-Z0-9.\/]+[^\]])(\])/', $activity_memory_opinion_field[0]["value"], $result_video);
-  $activity_memory_opinion_video = $result_video[2];
-
-  $activity_memory_opinion_field[0]["value"] = preg_replace('/(\[video:)(https?:\/\/[a-zA-Z0-9.\/]+[^\]])(\])/', '', $activity_memory_opinion_field[0]["value"]);
-}
-
-$activity_memory_opinion = $activity_memory_opinion_field[0]["value"];
+$activity_memory_opinion = $activity_memory_opinion_field[0]["safe_value"];
 
 /* ---------- FIELD - ACTIVITY BASIC PRESTATION ---------- */
 
@@ -598,14 +587,8 @@ foreach ($activity_family_field as $activity_family_iteration){
                     '<h2 class="activity-page-label">MOTS DE MEMORY :</h2>' .
                     '<div>' .
                     $activity_memory_opinion .
-                    '</div>'
-            ;
-
-            if( isset($activity_memory_opinion_video) ){
-                echo '<iframe src="' . $activity_memory_opinion_video . '?modestbranding=0&amp;html5=1&amp;rel=0&amp;wmode=opaque&amp;loop=0&amp;controls=1&amp;autohide=0&amp;showinfo=0&amp;theme=dark&amp;color=red&amp;enablejsapi=0" width="100%" height="500" class="video-filter video-youtube" frameborder="0" allowfullscreen="true"></iframe>';
-            }
-
-            echo '</div>';
+                    '</div>' .
+                '</div>';
         }
         ?>
     </div>
