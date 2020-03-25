@@ -2,7 +2,7 @@
     global $base_url;
     module_load_include('inc', 'pathauto', 'pathauto'); // Include pathauto to clean a string for use in URLs in order to compare with the current URL
 
-    drupal_set_message("Destinations page");
+//    drupal_set_message("Destinations page");
 
     if(isset($_GET["category"]) && !empty($_GET["category"])){ // Get category TID (EVG, EVJF...) coming from intermediate page
       $is_category_target = true;
@@ -73,7 +73,7 @@
           $activity_family_term = taxonomy_term_load($activity_family);
 
           $activity_family_color_field = field_get_items('taxonomy_term', $activity_family_term, 'field_color');
-          $activity_family_color = $activity_family_color_field[0]["value"];
+          $activity_family_color = $activity_family_color_field[0]["rgb"];
 
           $array_activity_family["name"] = $activity_family_term->name;
           $array_activity_family["color"] = $activity_family_color;
