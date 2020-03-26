@@ -85,10 +85,6 @@
             }
           }
 
-          echo "------------------------------------";
-          echo "<pre>" . print_r($array_activity_family, true) . "</pre>";
-          echo "\n";
-
           $activity_image = field_get_items('node', $node, 'field_img_activite');
           $activity_price = field_get_items('node', $node, 'field_price_prestation');
 
@@ -113,7 +109,7 @@
         }
       }
     } catch (Exception $e) {
-      print "Exception reçue : " .  $e->getMessage();
+      drupal_set_message("Exception reçue : " .  $e->getMessage());
     }
 
 //drupal_set_message("<pre>" . print_r($cnt, true) . "</pre>");

@@ -346,21 +346,32 @@ foreach ($activity_family_field as $activity_family_iteration){
           ){
             $prestation_base_price = "<div class=\"prestation-price-container\">";
 
-            if( !empty($activity_basic_prest_price_prefix) )
-              $prestation_base_price =
-                $prestation_base_price .
-                "<p class=\"prestation-price-prefix\">" . $activity_basic_prest_price_prefix . "</p>";
+            if(
+              !empty($activity_basic_prest_price_prefix) ||
+              !empty($activity_basic_prest_price)
+            ){
+              $prestation_base_price .= "<div class=\"prestation-price-first\">";
 
-            if( !empty($activity_basic_prest_price) )
-              $prestation_base_price =
-                $prestation_base_price .
-                "<p class=\"prestation-price\">" . $activity_basic_prest_price . " €</p>" .
-                "<button class=\"cont-add-cart\" type=\"button\"><i class=\"fa fa-cart-plus\" aria-hidden=\"true\"></i></button>";
+              if( !empty($activity_basic_prest_price_prefix) )
+                $prestation_base_price =
+                  $prestation_base_price .
+                  "<p class=\"prestation-price-prefix\">" . $activity_basic_prest_price_prefix . "</p>";
+
+              if( !empty($activity_basic_prest_price) )
+                $prestation_base_price =
+                  $prestation_base_price .
+                  "<p class=\"prestation-price\">" . $activity_basic_prest_price . " €</p>" .
+                  "<button class=\"cont-add-cart\" type=\"button\"><i class=\"fa fa-cart-plus\" aria-hidden=\"true\"></i></button>";
+
+              $prestation_base_price .= "</div>";
+            }
 
             if( !empty($activity_basic_prest_price_precision) )
               $prestation_base_price =
                 $prestation_base_price .
-                "<p class=\"prestation-price-precision\">" . $activity_basic_prest_price_precision . "</p>";
+                "<div class=\"prestation-price-second\">" .
+                  "<p class=\"prestation-price-precision\">" . $activity_basic_prest_price_precision . "</p>" .
+                "</div>";
 
             $prestation_base_price = $prestation_base_price . "</div>";
           }
@@ -481,21 +492,32 @@ foreach ($activity_family_field as $activity_family_iteration){
                   ){
                     $prestation_price = "<div class=\"prestation-price-container\">";
 
-                    if( !empty($activity_options[$i]["price_prefix"]) )
-                      $prestation_price =
-                        $prestation_price .
-                        "<p class=\"prestation-price-prefix\">" . $activity_options[$i]["price_prefix"] . "</p>";
+                    if(
+                      !empty($activity_options[$i]["price_prefix"]) ||
+                      !empty($activity_options[$i]["price"])
+                    ){
+                      $prestation_price .= "<div class=\"prestation-price-first\">";
 
-                    if( !empty($activity_options[$i]["price"]) )
-                      $prestation_price =
-                        $prestation_price .
-                        "<p class=\"prestation-price\">" . $activity_options[$i]["price"] . " €</p>" .
-                        "<button class=\"cont-add-cart\" type=\"button\"><i class=\"fa fa-cart-plus\" aria-hidden=\"true\"></i></button>";
+                      if( !empty($activity_options[$i]["price_prefix"]) )
+                        $prestation_price =
+                          $prestation_price .
+                          "<p class=\"prestation-price-prefix\">" . $activity_options[$i]["price_prefix"] . "</p>";
+
+                      if( !empty($activity_options[$i]["price"]) )
+                        $prestation_price =
+                          $prestation_price .
+                          "<p class=\"prestation-price\">" . $activity_options[$i]["price"] . " €</p>" .
+                          "<button class=\"cont-add-cart\" type=\"button\"><i class=\"fa fa-cart-plus\" aria-hidden=\"true\"></i></button>";
+
+                      $prestation_price .= "</div>";
+                    }
 
                     if( !empty($activity_options[$i]["price_precision"]) )
                       $prestation_price =
                         $prestation_price .
-                        "<p class=\"prestation-price-precision\">" . $activity_options[$i]["price_precision"] . "</p>";
+                        "<div class=\"prestation-price-second\">" .
+                          "<p class=\"prestation-price-precision\">" . $activity_options[$i]["price_precision"] . "</p>" .
+                        "</div>";
 
                     $prestation_price = $prestation_price . "</div>";
                   }

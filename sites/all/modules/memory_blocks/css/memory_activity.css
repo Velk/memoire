@@ -79,6 +79,8 @@ div#activity-page-main > div:nth-child(even) {
   flex-direction: column;
   width: 100%;
   justify-content: space-between;
+  padding-right: 25px;
+  box-sizing: border-box;
 }
 .prestation-header h2 {
   margin: 0;
@@ -93,33 +95,30 @@ div#activity-page-main > div:nth-child(even) {
   font-style: italic;
   margin: 0;
 }
-div.prestation-price-container {
-  width: 225px;
-  display: grid;
-  grid-template-areas: "a b d" "c c c";
-  align-content: center;
-  align-items: center;
-  grid-template-columns: 1fr 1fr min-content;
-  position: relative;
-  padding: 0;
-  margin: 0 0 0 25px;
-  box-sizing: border-box;
+
+.prestation-price-container {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  max-width: 250px;
 }
-div.prestation-price-container > * {
-  margin: 0;
+.prestation-price-first {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: stretch;
+  margin: 0 0 10px 0;
 }
 p.prestation-price-prefix {
-  grid-area: a;
   padding: 0;
   font-size: 12px;
   font-style: italic;
   color: #21acbe;
   text-align: left;
   box-sizing: border-box;
-  width: fit-content;
+  margin: 0;
 }
 p.prestation-price {
-  grid-area: b;
   font-size: 20px;
   font-weight: bold;
   line-height: 1;
@@ -127,11 +126,11 @@ p.prestation-price {
   text-align: center;
   padding: 0 5px;
   box-sizing: border-box;
-  position: relative;
-  width: max-content;
+  flex: 1;
+  margin: 0;
 }
 p.prestation-price-precision {
-  grid-area: c;
+  /*grid-area: c;*/
   margin: 10px 0 0 0;
   font-size: 12px;
   font-style: italic;
