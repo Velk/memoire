@@ -36,71 +36,84 @@
 
     $cnt = array();
 
-    foreach ($nids as $nid) {
-      $node = node_load($nid);
+    try {
 
-      $activity_category_field = field_get_items("node", $node, "field_activity_category");
-      $is_node_to_display = false;
+      foreach ($nids as $nid) {
 
-      if($is_category_target){ // Mean we need to filter by the activity category targeted (EVG, EVJF...)
+        $node = node_load($nid);
 
-        foreach ($activity_category_field as $activity_category){
+        $activity_category_field = field_get_items("node", $node, "field_activity_category");
+        $is_node_to_display = false;
 
-          if($activity_category["tid"] == $_GET["category"]){
-            $is_node_to_display = true;
+        if($is_category_target){ // Mean we need to filter by the activity category targeted (EVG, EVJF...)
+
+          foreach ($activity_category_field as $activity_category){
+
+            if($activity_category["tid"] == $_GET["category"]){
+              $is_node_to_display = true;
+            }
           }
-        }
-      }else{
-        $is_node_to_display = true;
-      }
-
-      if($is_node_to_display){
-
-        $activity_tid_field = field_get_items('node', $node, 'field_acti_cont_cat');
-        $activity_tid = $activity_tid_field[0]["tid"];
-
-        $activity_weight_field = field_get_items('node', $node, 'field_weight');
-        $activity_weight = ( empty($activity_weight_field[0]["value"]) ) ? 0 : $activity_weight_field[0]["value"];
-
-        $activity_custom_title_field = field_get_items('node', $node, 'field_activity_title');
-        $activity_custom_title = $activity_custom_title_field[0]["value"];
-
-        $activity_family_field = field_get_items('node', $node, 'field_activity_family');
-        $activity_family = $activity_family_field[0]["tid"];
-
-        $array_activity_family = array();
-        if(isset($activity_family)){
-          $activity_family_term = taxonomy_term_load($activity_family);
-
-          $activity_family_color_field = field_get_items('taxonomy_term', $activity_family_term, 'field_color');
-          $activity_family_color = $activity_family_color_field[0]["rgb"];
-
-          $array_activity_family["name"] = $activity_family_term->name;
-          $array_activity_family["color"] = $activity_family_color;
-        }
-
-        $activity_image = field_get_items('node', $node, 'field_img_activite');
-        $activity_price = field_get_items('node', $node, 'field_price_prestation');
-
-        // Set the category if exist in order to retrieve activities from the right category (EVG, EVJF...) in the switch activities button (previous, next)
-        if(isset($_GET["category"]) && !empty($_GET["category"])){
-          $redirection_path = $base_url . "/" . drupal_get_path_alias('node/'.$node->nid) . "?category=" . $_GET["category"];
         }else{
-          $redirection_path = $base_url . "/" . drupal_get_path_alias('node/'.$node->nid);
+          $is_node_to_display = true;
         }
 
-        $cnt[$activity_tid][$activity_weight][$node->nid] = array(
-          'custom_title' => $activity_custom_title,
-          'node_nid' => $node->nid,
-          'path' => $redirection_path,
-          'price' => $activity_price[0]["value"],
-//          'weight' => $activity_weight,
-          'group_act_cat' => $activity_tid,
-          'img_uri' => image_style_url("large", $activity_image[0]["uri"]),
-          'img_name' => $activity_image[0]['filename'],
-          'activity_family' => $array_activity_family,
-        );
+        if($is_node_to_display){
+
+          $activity_tid_field = field_get_items('node', $node, 'field_acti_cont_cat');
+          $activity_tid = $activity_tid_field[0]["tid"];
+
+          $activity_weight_field = field_get_items('node', $node, 'field_weight');
+          $activity_weight = ( empty($activity_weight_field[0]["value"]) ) ? 0 : $activity_weight_field[0]["value"];
+
+          $activity_custom_title_field = field_get_items('node', $node, 'field_activity_title');
+          $activity_custom_title = $activity_custom_title_field[0]["value"];
+
+          $activity_family_field = field_get_items('node', $node, 'field_activity_family');
+          $array_activity_family = array();
+          foreach ($activity_family_field as $activity_family){
+
+            if(!empty($activity_family)){
+              $activity_family_term = taxonomy_term_load($activity_family["tid"]);
+
+              $activity_family_color_field = field_get_items('taxonomy_term', $activity_family_term, 'field_color');
+              $activity_family_color = $activity_family_color_field[0]["rgb"];
+
+              array_push($array_activity_family, array(
+                "name" => $activity_family_term->name,
+                "color" => $activity_family_color,
+              ));
+            }
+          }
+
+          echo "------------------------------------";
+          echo "<pre>" . print_r($array_activity_family, true) . "</pre>";
+          echo "\n";
+
+          $activity_image = field_get_items('node', $node, 'field_img_activite');
+          $activity_price = field_get_items('node', $node, 'field_price_prestation');
+
+          // Set the category if exist in order to retrieve activities from the right category (EVG, EVJF...) in the switch activities button (previous, next)
+          if(isset($_GET["category"]) && !empty($_GET["category"])){
+            $redirection_path = $base_url . "/" . drupal_get_path_alias('node/'.$node->nid) . "?category=" . $_GET["category"];
+          }else{
+            $redirection_path = $base_url . "/" . drupal_get_path_alias('node/'.$node->nid);
+          }
+
+          $cnt[$activity_tid][$activity_weight][$node->nid] = array(
+            'custom_title' => $activity_custom_title,
+            'node_nid' => $node->nid,
+            'path' => $redirection_path,
+            'price' => $activity_price[0]["value"],
+  //          'weight' => $activity_weight,
+            'group_act_cat' => $activity_tid,
+            'img_uri' => image_style_url("large", $activity_image[0]["uri"]),
+            'img_name' => $activity_image[0]['filename'],
+            'activity_family' => $array_activity_family,
+          );
+        }
       }
+    } catch (Exception $e) {
+      print "Exception reçue : " .  $e->getMessage();
     }
 
 //drupal_set_message("<pre>" . print_r($cnt, true) . "</pre>");
@@ -210,11 +223,24 @@
                             <p class="cont-price"><?php print $cnt_act_sorted['price'] ?><?php isset($cnt_act_sorted['price']) ? print "€" : ""; ?></p>
                             <a href="<?php print $cnt_act_sorted['path'] ?>" class="cont-readmore"></a>
                             <?php
-                            if(sizeof($cnt_act_sorted["activity_family"]) !== 0)
-                              echo
-                                "<div class='banner-category' style='background-color:" .
-                                $cnt_act_sorted["activity_family"]["color"] .
-                                ";'><p>" . $cnt_act_sorted["activity_family"]["name"] . "</p></div>";
+                            if(sizeof($cnt_act_sorted["activity_family"]) !== 0){
+
+                              echo "<div class='banner-category-container'>";
+
+                              foreach ($cnt_act_sorted["activity_family"] as $family){
+
+                                if(sizeof($family) !== 0){
+
+                                  echo
+                                    "<div class='banner-category' style='background-color:" . $family["color"] . ";'>" .
+                                    "<p>" . $family["name"] . "</p>" .
+                                    "</div>"
+                                  ;
+                                }
+                              }
+
+                              echo "</div>";
+                            }
                             ?>
                           </div>
                         </div>
