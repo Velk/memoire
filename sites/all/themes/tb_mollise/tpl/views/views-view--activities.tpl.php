@@ -2,7 +2,7 @@
 global $base_url;
 module_load_include('inc', 'pathauto', 'pathauto'); // Include pathauto to clean a string for use in URLs in order to compare with the current URL
 
-//drupal_set_message("Intermediate page");
+// drupal_set_message("Intermediate page");
 
 if(isset($_GET["category"]) && !empty($_GET["category"])){ // Get category TID (EVG, EVJF...) coming from intermediate page
   $is_category_target = true;
@@ -61,17 +61,20 @@ foreach ($results as $result) {
     // Get the destination where we can do the activity
     $activity_destination_field = field_get_items('node', $node, 'field_acti_content_desti');
 
-    // Get taxonomy (destination) data
-    $taxonomy = taxonomy_term_load($activity_destination_field[0]["tid"]);
+    if(!empty($activity_destination_field[0]["tid"])){
 
-    $destination_image_field = field_get_items('taxonomy_term', $taxonomy, 'field_dst_image');
-    $destination_image_field_ip_img = file_load($destination_image_field[0]["fid"]);
-    $destination_image = image_style_url("large", $destination_image_field_ip_img->uri);
+      // Get taxonomy (destination) data
+      $taxonomy = taxonomy_term_load($activity_destination_field[0]["tid"]);
 
-    $array_destination[$node->nid]["nid"] = $node->nid;
-    $array_destination[$node->nid]["destination_image"] = $destination_image;
-    $array_destination[$node->nid]["destination_name"] = $taxonomy->name;
-    $array_destination[$node->nid]["destination_path"] = drupal_get_path_alias("taxonomy/term/" . $activity_destination_field[0]["tid"]);
+      $destination_image_field = field_get_items('taxonomy_term', $taxonomy, 'field_dst_image');
+      $destination_image_field_ip_img = file_load($destination_image_field[0]["fid"]);
+      $destination_image = image_style_url("large", $destination_image_field_ip_img->uri);
+
+      $array_destination[$node->nid]["nid"] = $node->nid;
+      $array_destination[$node->nid]["destination_image"] = $destination_image;
+      $array_destination[$node->nid]["destination_name"] = $taxonomy->name;
+      $array_destination[$node->nid]["destination_path"] = drupal_get_path_alias("taxonomy/term/" . $activity_destination_field[0]["tid"]);
+    }
   }
 }
 ?>
