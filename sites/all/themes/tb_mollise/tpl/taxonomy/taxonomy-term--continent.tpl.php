@@ -78,9 +78,13 @@
               $activity_family_color_field = field_get_items('taxonomy_term', $activity_family_term, 'field_color');
               $activity_family_color = $activity_family_color_field[0]["rgb"];
 
+              $activity_family_font_color_field = field_get_items('taxonomy_term', $activity_family_term, 'field_font_color');
+              $activity_family_font_color = $activity_family_font_color_field[0]["rgb"];
+
               array_push($array_activity_family, array(
                 "name" => $activity_family_term->name,
                 "color" => $activity_family_color,
+                "font-color" => $activity_family_font_color,
               ));
             }
           }
@@ -229,7 +233,7 @@
 
                                   echo
                                     "<div class='banner-category' style='background-color:" . $family["color"] . ";'>" .
-                                    "<p>" . $family["name"] . "</p>" .
+                                    "<p style='color:" . $family["font-color"] . "'>" . $family["name"] . "</p>" .
                                     "</div>"
                                   ;
                                 }
