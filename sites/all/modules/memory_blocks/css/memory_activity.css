@@ -101,6 +101,7 @@ div#activity-page-main > div:nth-child(even) {
   flex-direction: column;
   width: fit-content;
   max-width: 250px;
+  min-width: 200px;
 }
 .prestation-price-first {
   display: flex;
