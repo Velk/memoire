@@ -1818,7 +1818,7 @@ function memory_blocks_activity_families_admin_form($form, &$form_state){
       '<th>Ville</th>' .
       '<th>Famille</th>' .
       '</tr>'
-  ,
+    ,
   );
 
   $previous_values = array();
@@ -1836,13 +1836,29 @@ function memory_blocks_activity_families_admin_form($form, &$form_state){
     $activity_destination = $activity_destination_field[0]["tid"];
 
     $activity_family_field = field_get_items('node', $node, 'field_activity_family');
-    $activity_family = $activity_family_field[0]["tid"];
-    $key_activity_family = "_none";
-    if(isset($activity_family)){
-      $activity_family_term = taxonomy_term_load($activity_family);
-      $key_activity_family = array_search($activity_family_term->name, $array_activity_families);
 
-      $previous_values[$node->nid] = $activity_family_term->tid;
+    $key_activity_family = [];
+    $temp_array_families = array();
+    foreach ($activity_family_field as $activity_family) {
+
+      if (isset($activity_family)) {
+
+        $activity_family_term = taxonomy_term_load($activity_family["tid"]);
+
+        $key_activity_family[array_search($activity_family_term->name, $array_activity_families)] = array_search($activity_family_term->name, $array_activity_families);
+
+        array_push($temp_array_families, $activity_family_term->tid);
+      }
+    }
+
+    if(sizeof($temp_array_families) != 0){
+      $previous_values[$node->nid] = $temp_array_families;
+    }else{
+      $previous_values[$node->nid] = ["_none"];
+    }
+
+    if(sizeof($key_activity_family) == 0){
+      $key_activity_family = ["_none"];
     }
 
     $taxonomy = taxonomy_term_load($activity_destination);
@@ -1869,6 +1885,7 @@ function memory_blocks_activity_families_admin_form($form, &$form_state){
 
     $form["category_" . $result->nid] = array(
       '#type' => 'select',
+      '#multiple' => TRUE,
       '#options' => $array_activity_families,
       '#default_value' => $key_activity_family,
     );
@@ -1895,30 +1912,63 @@ function memory_blocks_activity_families_admin_form($form, &$form_state){
     '#weight' => 10,
   );
 
-  $form['reload_cache']['submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Vider le cache'),
-    '#description' => t('Reload cache when every changes are OK.'),
-    '#weight' => 11,
-  );
-
   $form["previous_values"] = array(
     '#type' => 'value',
     '#value' => $previous_values,
   );
 
+  $form['activity_families']['submit']['#validate'][] = 'memory_blocks_activity_families_admin_form_validate';
   $form['activity_families']['submit']['#submit'][] = 'memory_blocks_activity_families_admin_form_submit';
-  $form['reload_cache']['submit']['#submit'][] = 'memory_blocks_activity_families_admin_form_reload_chache';
 
   return $form;
 }
 
-function memory_blocks_activity_families_admin_form_reload_chache($form, &$form_state){
-  drupal_flush_all_caches();
-  drupal_set_message(t('Le cache a été vidé.'));
+/**
+ * @param $form
+ * @param $form_state
+ * @throws Exception
+ */
+function memory_blocks_activity_families_admin_form_validate($form, &$form_state){
+
+  foreach ($form_state['values'] as $key => $value){
+
+    if(strpos($key, "category_") !== false) {
+
+      $el_count = 0;
+
+      foreach ($value as $new_el) {
+
+        if($new_el != "_none"){
+
+          $el_count++;
+        }
+      }
+
+      if($el_count > 2){
+
+        $activity_nid = explode("category_", $key)[1];
+
+        try {
+          $node = node_load($activity_nid);
+
+          $activity_custom_title_field = field_get_items("node", $node, "field_activity_title");
+          $activity_custom_title = $activity_custom_title_field[0]["value"];
+
+          $activity_destination_field = field_get_items("node", $node, "field_acti_content_desti");
+          $activity_destination = $activity_destination_field[0]["tid"];
+
+          $taxonomy = taxonomy_term_load($activity_destination);
+
+          form_set_error($key, "L'activité " . $activity_custom_title . " localisée à " . $taxonomy->name . " contient plus de 2 familles d'activités.");
+        } catch (Exception $e) {
+          form_set_error($key, "L'activité " . $activity_nid . " contient plus de 2 familles d'activités.");
+        }
+      }
+    }
+  }
 }
 
-  /**
+/**
  * @param $form
  * @param $form_state
  * @throws Exception
@@ -1931,11 +1981,21 @@ function memory_blocks_activity_families_admin_form_submit($form, &$form_state){
 
     if(strpos($key, "category_") !== false){
 
-      $isChangeMade = true;
       $activity_nid = explode("category_", $key)[1];
 
-      if($value == "_none"){ // Delete field in db
+      $isActivityFamiliesChanged = false;
 
+      foreach ($value as $new_el){
+
+        if(!in_array($new_el, $form_state['values']['previous_values'][$activity_nid])){ // Check for new elements
+
+          $isActivityFamiliesChanged = true;
+        }
+      }
+
+      if($isActivityFamiliesChanged){
+
+        /* Delete all activity families related to the node */
         // Delete Data Field
         db_delete('field_data_field_activity_family')
           ->condition('entity_id', intval($activity_nid))
@@ -1945,39 +2005,35 @@ function memory_blocks_activity_families_admin_form_submit($form, &$form_state){
         db_delete('field_revision_field_activity_family')
           ->condition('entity_id', intval($activity_nid))
           ->execute();
-      }else{ // Update or insert field in db
 
-        // Check if field is to insert or to update
-        $isAlreadySet = false;
+        /* Add new activity families related to the node */
+        $delta = 0;
+        foreach ($value as $new_el){
 
-        foreach ($form_state["values"]["previous_values"] as $key_previous => $value_previous){
-          if(intval($key_previous) == intval($activity_nid)){
-            $isAlreadySet = true;
-          }
-        }
+          if($new_el != "_none"){
 
-        if($isAlreadySet){ // Update field in db
+            $isChangeMade = true;
 
-          // Update Data Field
-          db_update('field_data_field_activity_family')
-            ->fields(array(
-              'field_activity_family_tid' => intval($value),
-            ))
-            ->condition('entity_id', intval($activity_nid))
-            ->execute();
+//            drupal_set_message("New element : " . $new_el);
 
-          // Update Revision Field
-          db_update('field_revision_field_activity_family')
-            ->fields(array(
-              'field_activity_family_tid' => intval($value),
-            ))
-            ->condition('entity_id', intval($activity_nid))
-            ->execute();
-        }else{ // Insert field in db
+            // Insert Data Field
+            db_insert('field_data_field_activity_family')
+              ->fields(
+                array(
+                  'entity_type' => 'node',
+                  'bundle' => 'activite',
+                  'deleted' => 0,
+                  'entity_id' => intval($activity_nid),
+                  'revision_id' => intval($activity_nid),
+                  'language' => 'und',
+                  'delta' => $delta,
+                  'field_activity_family_tid' => intval($new_el),
+                )
+              )
+              ->execute();
 
-          // Insert Data Field
-          db_insert('field_data_field_activity_family')
-            ->fields(
+            // Insert Data Field
+            db_insert('field_revision_field_activity_family')->fields(
               array(
                 'entity_type' => 'node',
                 'bundle' => 'activite',
@@ -1985,33 +2041,23 @@ function memory_blocks_activity_families_admin_form_submit($form, &$form_state){
                 'entity_id' => intval($activity_nid),
                 'revision_id' => intval($activity_nid),
                 'language' => 'und',
-                'delta' => 0,
-                'field_activity_family_tid' => intval($value),
+                'delta' => $delta,
+                'field_activity_family_tid' => intval($new_el),
               )
             )
-            ->execute();
+              ->execute();
 
-          // Insert Data Field
-          db_insert('field_revision_field_activity_family')->fields(
-            array(
-              'entity_type' => 'node',
-              'bundle' => 'activite',
-              'deleted' => 0,
-              'entity_id' => intval($activity_nid),
-              'revision_id' => intval($activity_nid),
-              'language' => 'und',
-              'delta' => 0,
-              'field_activity_family_tid' => intval($value),
-            )
-          )
-            ->execute();
+            $delta++;
+          }
         }
       }
     }
   }
 
   if($isChangeMade){
-    drupal_set_message(t('Les données ont été modifiées.'));
+    drupal_flush_all_caches();
+    drupal_set_message(t('1) Les données ont été modifiées.'));
+    drupal_set_message(t('2) Le cache a été vidé.'));
   }
 }
 
