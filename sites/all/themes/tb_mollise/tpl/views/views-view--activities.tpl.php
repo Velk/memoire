@@ -70,13 +70,16 @@ foreach ($results as $result) {
       $destination_image_field_ip_img = file_load($destination_image_field[0]["fid"]);
       $destination_image = image_style_url("large", $destination_image_field_ip_img->uri);
 
+      $array_destination[$node->nid]["destination_name"] = $taxonomy->name;
       $array_destination[$node->nid]["nid"] = $node->nid;
       $array_destination[$node->nid]["destination_image"] = $destination_image;
-      $array_destination[$node->nid]["destination_name"] = $taxonomy->name;
       $array_destination[$node->nid]["destination_path"] = drupal_get_path_alias("taxonomy/term/" . $activity_destination_field[0]["tid"]);
     }
   }
 }
+
+// Sort by destinations name (alphabetic)
+asort($array_destination);
 ?>
 
 <div id="container">
