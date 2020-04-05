@@ -33,6 +33,8 @@ if($isActivityPage) {
 }else if($isDestinationPage) {
   $cart_class = "destination-page";
 }
+
+if (!path_is_admin(current_path())) {
 ?>
 <div id="cart-container" class="<?=$cart_class?>">
   <div style="display:none;">
@@ -137,7 +139,7 @@ if($isActivityPage) {
       <button type="button" id="validate-cart">Demander un devis</button>
     </form>
   </div>
-  <?php
+<?php
 //  if(!drupal_is_front_page()){
   echo
   "<button type=\"button\" class=\"toggle-user-cart\">" .
@@ -146,5 +148,6 @@ if($isActivityPage) {
   "</button>"
   ;
 //  }
-  ?>
+}
+?>
 </div>
