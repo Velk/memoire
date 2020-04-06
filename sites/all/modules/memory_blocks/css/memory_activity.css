@@ -93,7 +93,7 @@ div#activity-page-main > div:nth-child(even) {
 .prestation-header p.prestation-quote {
   font-size: 14px;
   font-style: italic;
-  margin: 0;
+  margin: 15px 0 0 0;
 }
 
 .prestation-price-container {
