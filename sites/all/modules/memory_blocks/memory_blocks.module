@@ -2245,8 +2245,8 @@ function memory_blocks_form_alter(&$form, &$form_state, $form_id) {
       $form['title']['#title'] = "Titre Drupal";
       $form['title']['#description'] = "Titre non affiché, mais utilisé pour les pages intermédiaires et la page toutes nos activités.";
 
-      $form['field_img_activite']['#title'] = "Image de l'activité";
-      $form['field_img_activite']['#required'] = TRUE;
+      $form['field_img_activite'][LANGUAGE_NONE][0]['#title'] = "Image de l'activité";
+      $form['field_img_activite'][LANGUAGE_NONE][0]['#required'] = TRUE;
 
       break;
   }
