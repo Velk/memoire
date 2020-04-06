@@ -310,7 +310,7 @@ foreach ($activity_family_field as $activity_family_iteration){
         if( isset($description) ){
           echo
             '<div id="description-container">' .
-              '<h2 class="activity-page-label">DESCRIPTIF: </h2>' .
+              '<h2 class="activity-page-label">DESCRIPTIF : </h2>' .
               '<div>' . $description . '</div>' .
             '</div>'
           ;
@@ -378,7 +378,7 @@ foreach ($activity_family_field as $activity_family_iteration){
 
           // Construct the section : Quote
           if( !empty($activity_basic_prest_quote) )
-            $prestation_base_quote = "<p class=\"prestation-quote\">\"" . $activity_basic_prest_quote . "\"</p>";
+            $prestation_base_quote = "<p class=\"prestation-quote\">« " . $activity_basic_prest_quote . " »</p>";
 
           // Construct the section : Image
           if( !empty($activity_basic_prest_image) )
@@ -524,7 +524,7 @@ foreach ($activity_family_field as $activity_family_iteration){
 
                   // Construct the section : Quote
                   if( !empty($activity_options[$i]["quote"]) )
-                    $prestation_quote = "<p class=\"prestation-quote\">\"" . $activity_options[$i]["quote"] . "\"</p>";
+                    $prestation_quote = "<p class=\"prestation-quote\">« " . $activity_options[$i]["quote"] . " »</p>";
 
                   // Construct the section : Image
                   if( !empty($activity_options[$i]["image"]) )

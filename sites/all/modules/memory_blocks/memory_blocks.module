@@ -2231,3 +2231,24 @@ function memory_blocks_intermediate_page_admin_form($form, &$form_state){
 
     return system_settings_form($form);
 }
+
+function memory_blocks_form_alter(&$form, &$form_state, $form_id) {
+
+  switch ($form_id)  {
+    case 'activite_node_form':
+
+//      drupal_set_message($form_id);  // print form ID to messages
+//      drupal_set_message(print_r($form, TRUE));  // print array to messages
+
+      $form['language']['#required'] = TRUE;
+
+      $form['title']['#title'] = "Titre Drupal";
+      $form['title']['#description'] = "Titre non affiché, mais utilisé pour les pages intermédiaires et la page toutes nos activités.";
+
+      $form['field_img_activite']['#title'] = "Image de l'activité";
+      $form['field_img_activite']['#required'] = TRUE;
+
+      break;
+  }
+}
+
