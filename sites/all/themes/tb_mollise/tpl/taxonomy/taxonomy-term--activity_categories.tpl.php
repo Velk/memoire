@@ -284,4 +284,3 @@ function getSpecialFiltersHTML($ordered_activity_categories){
   return $filter_structure;
 }
 ?>
->>>>>>> preprod

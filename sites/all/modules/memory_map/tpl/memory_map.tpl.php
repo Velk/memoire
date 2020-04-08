@@ -122,4 +122,3 @@ if(!empty($world_map_title) && !empty($world_map_description)){
         </div>
     </div>
 </div>
->>>>>>> preprod

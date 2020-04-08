@@ -6,8 +6,6 @@
 
 require_once drupal_get_path('theme', 'tb_mollise') . '/inc/preprocess_functions.inc';
 require_once drupal_get_path('theme', 'tb_mollise') . '/inc/theme_function_overrides.inc';
-<<<<<<< HEAD
-=======
 
 function tb_mollise_preprocess_html(&$vars) {
 
@@ -42,4 +40,3 @@ function tb_mollise_preprocess_html(&$vars) {
     'group' => JS_THEME,
   ));
 }
->>>>>>> preprod

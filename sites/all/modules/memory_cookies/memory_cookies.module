@@ -196,4 +196,3 @@ function memory_cookies_block_view($delta = '') {
 
     return $block;
 }
->>>>>>> preprod

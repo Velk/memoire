@@ -442,4 +442,3 @@ function memory_cart_block_view($delta = '') {
 
     return $block;
 }
->>>>>>> preprod
