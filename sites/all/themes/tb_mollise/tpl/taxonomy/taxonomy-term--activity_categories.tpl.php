@@ -3,7 +3,7 @@ global $base_url;
 global $user;
 module_load_include('inc', 'pathauto', 'pathauto');
 
-//drupal_set_message("Page activity category (EVG, EVJF...)");
+// drupal_set_message("Page activity category (EVG, EVJF...)");
 
 /* ------------------------------------- SPECIAL FILTERS & INTERMEDIATE PAGE ------------------------------------- */
 
@@ -15,9 +15,16 @@ $taxonomy_tid = explode("taxonomy/term/", $current_path)[1];
 $nids = taxonomy_select_nodes($taxonomy_tid, FALSE);
 
 // Retrieve the boolean value of special filters
-$bool_is_special_filters = $content['field_is_special_filters']['#items'][0]['value'];
+if (!empty($content['field_is_special_filters']))
+  $bool_is_special_filters = $content['field_is_special_filters']['#items'][0]['value'];
+else
+  $bool_is_special_filters = 1;
+
 // Retrieve the boolean value of intermediate page
-$bool_is_intermediate_page = $content['field_is_intermediate_page']['#items'][0]['value'];
+if (!empty($content['field_is_intermediate_page']))
+  $bool_is_intermediate_page = $content['field_is_intermediate_page']['#items'][0]['value'];
+else
+  $bool_is_intermediate_page = 1;
 
 /* -------------------------------------------------- CONTENT -------------------------------------------------- */
 
@@ -51,14 +58,21 @@ foreach ($nids as $nid) {
   $activity_weight_field = field_get_items('node', $node, 'field_weight');
   $activity_weight = ( empty($activity_weight_field[0]["value"]) ) ? 0 : $activity_weight_field[0]["value"];
 
-  $activity_image = field_get_items('node', $node, 'field_img_activite');
+  // Image of activity
+  //$activity_image = field_get_items('node', $node, 'field_img_activite');
+  $file_ip_img = "";
+  $intermediate_page_admin_config = variable_get("fieldset_" . pathauto_cleanstring($node->title), array());
+  if($intermediate_page_admin_config["ip_image"] !== 0){ // Get the image for the intermediate page
+    $file_ip_img = file_load($intermediate_page_admin_config['ip_image']);
+  }
 
   $cnt[$activity_tid][$node->title] = array(
     'title' => $node->title,
-    'img_uri' => image_style_url("large", $activity_image[0]["uri"]),
+//    'img_uri' => image_style_url("large", $activity_image[0]["uri"]),
+    'img_uri' => image_style_url("large", $file_ip_img->uri),
     'price' => $activity_price,
     'path' => $base_url . "/" . drupal_get_path_alias('node/' . $node->vid),
-    'intermediate_path' => $base_url . "/activites/" . drupal_encode_path($node->title) . "?category=" . $tid,
+    'intermediate_path' => $base_url . "/activites/" . drupal_encode_path($node->title) . "?category=" . $taxonomy_tid,
   );
 }
 
