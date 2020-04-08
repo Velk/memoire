@@ -61,8 +61,8 @@ ul.pager li a {
   -webkit-border-radius : 5px 5px 0 0;
 }
 
-.tabs, ul.primary li a,
-ul.secondary li a {
-  border-radius: 5px 5px 0 0;
-  -webkit-border-radius : 5px 5px 0 0;
-}
+/*.tabs, ul.primary li a,*/
+/*ul.secondary li a {*/
+/*  border-radius: 5px 5px 0 0;*/
+/*  -webkit-border-radius : 5px 5px 0 0;*/
+/*}*/

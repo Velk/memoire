@@ -3,20 +3,21 @@ global $base_url;
 global $user;
 module_load_include('inc', 'pathauto', 'pathauto');
 
+//drupal_set_message("Page activity category (EVG, EVJF...)");
+
 /* ------------------------------------- SPECIAL FILTERS & INTERMEDIATE PAGE ------------------------------------- */
+
 // Get the current path of the page : taxonomy/term/[tid]
 $current_path = current_path();
 // Retrieve the tid
 $taxonomy_tid = explode("taxonomy/term/", $current_path)[1];
-// Load the taxonomy term by its tid
-$taxonomy_term_load = taxonomy_term_load($taxonomy_tid);
+// Retrieve an array containing nodes ID belonging to the activity category
+$nids = taxonomy_select_nodes($taxonomy_tid, FALSE);
+
 // Retrieve the boolean value of special filters
 $bool_is_special_filters = $content['field_is_special_filters']['#items'][0]['value'];
 // Retrieve the boolean value of intermediate page
 $bool_is_intermediate_page = $content['field_is_intermediate_page']['#items'][0]['value'];
-
-$bool_is_special_filters = (!isset($bool_is_special_filters)) ? 0 : 1;
-$bool_is_intermediate_page = (!isset($bool_is_intermediate_page)) ? 0 : 1;
 
 /* -------------------------------------------------- CONTENT -------------------------------------------------- */
 
@@ -24,364 +25,263 @@ if (!empty($content['field_category_activities_img'])) {
   $img_head_url = file_create_url($content['field_category_activities_img']['#items'][0]['file']->uri);
 }
 
-// Retrieve the taxonomy ID
-$tid = key(taxonomy_get_term_by_name($term_name));
-
-// Retrieve an array containing nodes ID belonging to the activity category
-$nids = taxonomy_select_nodes($tid, FALSE);
-
-/* Get activities filters depending on activite taxonomy */
-$vocabulary = taxonomy_vocabulary_machine_name_load('activite');
-$v_activities = entity_load('taxonomy_term', FALSE, array('vid' => $vocabulary->vid));
-
-$nb_act = count($v_activities);
-$activities = array();
-$count = 0;
-for ($i = 0; $count < $nb_act; $i++) {
-  if (!empty($v_activities[$i])){
-    if ($v_activities[$i]->weight == $count) {
-      $activities[$i] = $v_activities[$i];
-      $count++;
-      $i = 0;
-    }
-  }
-}
-
+$array_activity_types = array();
 $cnt = array();
 
 foreach ($nids as $nid) {
 
   $node = node_load($nid);
 
-  $activity_weight = ( empty($node->field_weight['und']['0']['value']) ) ? 0 : $node->field_weight['und']['0']['value'];
-  $img_url = file_create_url($node->field_img_activite['und']['0']['uri']);
+  if($bool_is_special_filters == 1){ // Get the activity type filters are enabled
 
-  if($bool_is_special_filters == 1) {
+    $activity_type_field = field_get_items('node', $node, 'field_acti_cont_cat');
+    $activity_type = $activity_type_field[0]["tid"];
 
-    if($bool_is_intermediate_page == 1){
-
-      // Page WITH special filters & WITH intermediate page
-
-      // Clean the title of the node (activity) to use as a part of the URL
-      $clean_string_to_url = pathauto_cleanstring($node->field_activity_title['und']['0']['value']);
-
-      $group_activity_tid = $node->field_acti_cont_cat['und']['0']['tid'];
-      $cnt[$group_activity_tid][$activity_weight][$node->field_activity_title['und']['0']['value']] = array(
-        'title' => $node->field_activity_title['und']['0']['value'],
-        // 'title_cleaned' => pathauto_cleanstring($node->field_activity_title['und']['0']['value']),
-        'img_name' => $node->field_img_activite['und']['0']['filename'],
-        'img_uri' => $img_url,
-        'price' => $node->field_price_prestation['und']['0']['value'],
-        'node' => $node->vid,
-        'path' => $base_url . "/" . drupal_get_path_alias('node/' . $node->vid),
-        'weight' => $activity_weight,
-        'intermediate_path' => $base_url . "/activites/" . $clean_string_to_url,
-      );
-
-    }else{
-
-      // Page WITH special filters & WITHOUT intermediate page
-      $group_activity_tid = $node->field_acti_cont_cat['und']['0']['tid'];
-      $cnt[$group_activity_tid][$activity_weight][$node->field_activity_title['und']['0']['value']] = array(
-        'title' => $node->field_activity_title['und']['0']['value'],
-        // 'title_cleaned' => pathauto_cleanstring($node->field_activity_title['und']['0']['value']),
-        'img_name' => $node->field_img_activite['und']['0']['filename'],
-        'img_uri' => $img_url,
-        'price' => $node->field_price_prestation['und']['0']['value'],
-        'node' => $node->vid,
-        'path' => $base_url . "/" . drupal_get_path_alias('node/' . $node->vid),
-        'weight' => $activity_weight,
-      );
-    }
-  }else{
-
-    if($bool_is_intermediate_page == 1){
-
-      // Page WITHOUT special filters & WITH intermediate page
-
-      // Clean the title of the node (activity) to use as a part of the URL
-      $clean_string_to_url = pathauto_cleanstring($node->field_activity_title['und']['0']['value']);
-
-      $cnt[$activity_weight][$node->field_activity_title['und']['0']['value']] = array(
-        'title' => $node->field_activity_title['und']['0']['value'],
-        'title_cleaned' => pathauto_cleanstring($node->field_activity_title['und']['0']['value']),
-        'img_alt_text' => $node->field_img_activite['und'][0]['field_file_image_alt_text']['und'][0]['value'],
-        'img_name' => $node->field_img_activite['und']['0']['filename'],
-        'img_uri' => $img_url,
-        'price' => $node->field_price_prestation['und']['0']['value'],
-        'node' => $node->vid,
-        'path' => $base_url."/".drupal_get_path_alias('node/'.$node->vid),
-        'weight' => $activity_weight,
-        'intermediate_path' => $base_url . "/activites/" . $clean_string_to_url,
-      );
-
-    }else{
-
-      // Page WITHOUT special filters & WITHOUT intermediate page
-      $cnt[$activity_weight][$node->field_activity_title['und']['0']['value']] = array(
-        'title' => $node->field_activity_title['und']['0']['value'],
-        'title_cleaned' => pathauto_cleanstring($node->field_activity_title['und']['0']['value']),
-        'img_alt_text' => $node->field_img_activite['und'][0]['field_file_image_alt_text']['und'][0]['value'],
-        'img_name' => $node->field_img_activite['und']['0']['filename'],
-        'img_uri' => $img_url,
-        'price' => $node->field_price_prestation['und']['0']['value'],
-        'node' => $node->vid,
-        'path' => $base_url."/".drupal_get_path_alias('node/'.$node->vid),
-        'weight' => $activity_weight,
-      );
+    if(!in_array($activity_type, $array_activity_types) && !empty($activity_type)){
+      array_push($array_activity_types, $activity_type);
     }
   }
+
+  $activity_tid_field = field_get_items('node', $node, 'field_acti_cont_cat');
+  $activity_tid = $activity_tid_field[0]["tid"];
+
+  $activity_price_field = field_get_items('node', $node, 'field_price_prestation');
+  $activity_price = $activity_price_field[0]["value"];
+
+  $activity_weight_field = field_get_items('node', $node, 'field_weight');
+  $activity_weight = ( empty($activity_weight_field[0]["value"]) ) ? 0 : $activity_weight_field[0]["value"];
+
+  $activity_image = field_get_items('node', $node, 'field_img_activite');
+
+  $cnt[$activity_tid][$node->title] = array(
+    'title' => $node->title,
+    'img_uri' => image_style_url("large", $activity_image[0]["uri"]),
+    'price' => $activity_price,
+    'path' => $base_url . "/" . drupal_get_path_alias('node/' . $node->vid),
+    'intermediate_path' => $base_url . "/activites/" . drupal_encode_path($node->title) . "?category=" . $tid,
+  );
 }
 
+// Order filters
+$ordered_activity_categories = array();
+
+foreach ($array_activity_types as $activity_type){
+
+  $taxonomy = taxonomy_term_load($activity_type);
+
+  $ordered_activity_categories[$taxonomy->weight] = $activity_type;
+}
+
+ksort($ordered_activity_categories);
 ?>
+
+<div id="act-cat">
+  <div class="act-cat-head">
+    <?php
+    if( isset($img_head_url) || isset($content['field_category_activities_title']['#items'][0]['value']) ){
+
+      $image_style = "";
+      if(isset($img_head_url)){
+        $image_style = "style=\"background-image:url(" . $img_head_url . "); background-size:cover;background-position:center;\"";
+      }
+
+      echo '<div id="act-cat-head-img-container" ' . $image_style .'>';
+
+      if( isset($img_head_url) ){
+        echo '<div id="memory-img-filter"></div>';
+      }
+      if( isset($content['field_category_activities_title']['#items'][0]['value']) ){
+        echo '<h2 class="act-cat-head-title">' . $content['field_category_activities_title']['#items'][0]['value'] . '</h2>';
+      }
+
+      echo '</div>';
+    }
+
+    if( isset($content['description']['#markup']) ){
+      echo
+        '<div id="act-cat-head-desc">' .
+        $content['description']['#markup'] .
+        '</div>'
+      ;
+    }
+    ?>
+  </div>
+
+  <?php if(sizeof($array_activity_types) != 0){ echo getSpecialFiltersHTML($ordered_activity_categories); } ?>
+
+  <div id="act-cat-main">
+    <?php
+    if($bool_is_intermediate_page == 1){ // Intermediate page
+
+      if($bool_is_special_filters == 1){ // Special filters
+        echo getMainContentWithFilters($ordered_activity_categories, $cnt, $bool_is_intermediate_page);
+      }else{ // Not special filters
+        echo getMainContentWithoutFilters($cnt, $bool_is_intermediate_page);
+      }
+    }else{ //  Not intermediate page
+
+      if($bool_is_special_filters == 1){ // Special filters
+        echo getMainContentWithFilters($ordered_activity_categories, $cnt, $bool_is_intermediate_page);
+      }else{ // Not special filters
+        echo getMainContentWithoutFilters($cnt, $bool_is_intermediate_page);
+      }
+    } ?>
+  </div>
+</div>
 
 <?php
-if($bool_is_special_filters == 1){
-  ?>
-  <div id="act-cat">
-    <div class="act-cat-head">
-      <div id="act-cat-head-img-container">
-        <h2 class="act-cat-head-title"><?php print $content['field_category_activities_title']['#items'][0]['value']; ?></h2>
-        <?php if(!empty($content['field_category_activities_img'])): ?>
-          <img src="<?php print $img_head_url;?>"
-               alt="<?php print $content['field_category_activities_img']['#items'][0]['filename']?>"
-               class="act-cat-head-img"
-               style="width:100%;"
-          />
-        <?php endif; ?>
-      </div>
-      <div id="act-cat-head-desc">
-        <?php print $content['description']['#markup']; ?>
-      </div>
-    </div>
-    <div id="act-cat-filters">
-      <div class="act-cat-filter">
-        <p><i class="fa fa-th" aria-hidden="true"></i>Toutes nos Activités</p>
-      </div>
-      <?php
-      foreach($activities as $activity){
-        if( isset( $cnt[$activity->tid] ) ) {
-          echo '<div class="act-cat-filter">';
-          switch ($activity->name) {
-            case "Activités de jour" :
-              print '<p><i class="fa fa-sun-o" aria-hidden="true"></i>' . $activity->name . '</p>';
-              break;
-            case "Activités de nuit" :
-              print '<p><i class="fa fa-moon-o" aria-hidden="true"></i>' . $activity->name . '</p>';
-              break;
-            case "Transferts" :
-              print '<p><i class="fa fa-bus" aria-hidden="true"></i>' . $activity->name . '</p>';
-              break;
-            case "Hébergements" :
-              print '<p><i class="fa fa-home" aria-hidden="true"></i>' . $activity->name . '</p>';
-              break;
-            case "Nos packs" :
-              print '<p><i class="fa fa-globe" aria-hidden="true"></i>' . $activity->name . '</p>';
-              break;
-          }
-          echo '</div>';
-        }
-      }
-      ?>
-    </div>
-    <div id="act-cat-main">
-      <?php foreach($activities as $activity): ?>
-        <?php if( isset( $cnt[$activity->tid] ) ){ ?>
-          <div id="act-cat-<?php print $activity->tid ?>" class="act-cat-container">
-            <?php
-            switch($activity->name){
-              case "Activités de jour" :
-                print '<h2><i class="fa fa-sun-o" aria-hidden="true"></i>' . $activity->name . '</h2>';
-                break;
-              case "Activités de nuit" :
-                print '<h2><i class="fa fa-moon-o" aria-hidden="true"></i>' . $activity->name . '</h2>';
-                break;
-              case "Transferts" :
-                print '<h2><i class="fa fa-bus" aria-hidden="true"></i>' . $activity->name . '</h2>';
-                break;
-              case "Hébergements" :
-                print '<h2><i class="fa fa-home" aria-hidden="true"></i>' . $activity->name . '</h2>';
-                break;
-              case "Nos packs" :
-                print '<h2><i class="fa fa-globe" aria-hidden="true"></i>' . $activity->name . '</h2>';
-                break;
-            }
-            ?>
-            <div class="act-cat-activities-container">
-              <?php
+// Get the HTML structure of the main content with filter categories
+function getMainContentWithFilters($ordered_activity_categories, $cnt, $bool_is_intermediate_page){
 
-              // Sort array by activity weight
-              ksort($cnt[$activity->tid]);
+  $main_content = "";
 
-              foreach ($cnt[$activity->tid] as $cnt_weight_sorted){
+  foreach($ordered_activity_categories as $activity_category):
 
-                // Sort array by activity name
-                ksort($cnt_weight_sorted);
+    if( isset( $cnt[$activity_category] ) ){
 
-                foreach ($cnt_weight_sorted as $cnt_act_sorted) {
-                  ?>
-                  <div class="act-cat-scop act-cat-scop-<?php print $activity->tid ?>">
-                    <img src="<?php print $cnt_act_sorted['img_uri']?>"
-                         alt="<?php print $cnt_act_sorted['img_name']?>"
-                         class="act-cat-vign-img"
-                    />
-                    <div class="act-cat-datas-container">
-                      <h3 class="act-cat-stick-title"><?php print $cnt_act_sorted['title'] ?></h3>
-                      <p class="act-cat-price"><?php print $cnt_act_sorted['price']?> <?php isset($cnt_act_sorted['price']) ? print "€" : ""; ?></p>
-                      <a href="<?php print ($bool_is_intermediate_page == 1) ? $cnt_act_sorted['intermediate_path'] : $cnt_act_sorted['path'] ?>" class="act-cat-readmore"></a>
-                      <?php
-
-//                      drupal_set_message($cnt_act_sorted['title']);
-//                      drupal_set_message("<pre>" . print_r($cnt_act_sorted, true) . "</pre>");
-
-                      $query = db_select('node', 'n');
-                      $query->fields('n', array('nid', 'title'));
-                      $query->condition('n.type', 'activite', '=');
-                      $query->condition('n.nid', $cnt_act_sorted['node'], '=');
-                      $query->condition('n.title', $cnt_act_sorted['title'], '=');
-                      $query->orderBy('n.title', 'asc');
-                      $query->distinct();
-                      $results = $query->execute();
-
-                      foreach( $results as $result ){
-
-                        if( $cnt_act_sorted['title'] == $result->title ){
-
-                          $admin_var_get_category = variable_get("category_" . $result->nid);
-
-                          switch($admin_var_get_category){
-                            case "0" :
-                              $isCategory = false;
-                              break;
-                            case "1" :
-                              $isCategory = true;
-                              $color = "#F42C1C";
-                              $text = "Volcan";
-                              break;
-                            case "2" :
-                              $isCategory = true;
-                              $color = "#F42C1C";
-                              $text = "Aventure";
-                              break;
-                            case "3" :
-                              $isCategory = true;
-                              $color = "#046C5C";
-                              $text = "Survie";
-                              break;
-                            case "4" :
-                              $isCategory = true;
-                              $color = "#046C5C";
-                              $text = "Nature";
-                              break;
-                            case "5" :
-                              $isCategory = true;
-                              $color = "#6C3C5C";
-                              $text = "EVG";
-                              break;
-                            case "6" :
-                              $isCategory = true;
-                              $color = "#EF648A";
-                              $text = "EVJF";
-                              break;
-                            case "7" :
-                              $isCategory = true;
-                              $color = "#FC6404";
-                              $text = "Team<br>Building";
-                              break;
-                            case "8" :
-                              $isCategory = true;
-                              $color = "#FC6404";
-                              $text = "Anniversaire";
-                              break;
-                            case "9" :
-                              $isCategory = true;
-                              $color = "#FC6404";
-                              $text = "Vie<br>étudiante";
-                              break;
-                            case "10" :
-                              $isCategory = true;
-                              $color = "#8CDCFB";
-                              $text = "Mariage";
-                              break;
-                            case "11" :
-                              $isCategory = true;
-                              $color = "#8CDCFB";
-                              $text = "Demande<br>en mariage";
-                              break;
-                          }
-drupal_set_message("ISCATEGORY : " . $isCategory);
-                          if( $isCategory ){
-drupal_set_message("OKKK");
-                            print "<div class='act-cat-banner-category' style='background-color:$color;'><p>" . $text . "</p></div>";
-                          }
-                        }
-                      }
-                      drupal_set_message("-------------------------------------------------------------------------");
-                      ?>
-                    </div>
-                  </div>
-                  <?php
-                }
-              }
-              ?>
-            </div>
-          </div>
-        <?php } ?>
-      <?php endforeach; ?>
-    </div>
-  </div>
-  <?php
-}else{
-  ?>
-  <div id="act-cat">
-    <div class="act-cat-head">
-      <div id="act-cat-head-img-container">
-        <h2 class="act-cat-head-title"><?php print $content['field_category_activities_title']['#items'][0]['value']; ?></h2>
-        <?php if(!empty($content['field_category_activities_img'])): ?>
-          <img src="<?php print $img_head_url;?>"
-               alt="<?php print $content['field_category_activities_img']['#items'][0]['filename']?>"
-               class="act-cat-head-img"
-               style="width:100%;"
-          />
-        <?php endif; ?>
-      </div>
-      <div id="act-cat-head-desc">
-        <?php print $content['description']['#markup']; ?>
-      </div>
-    </div>
-    <div id="act-cat-main">
-      <div class="act-cat-activities-container">
-        <?php
-
-        // Sort array by activity weight
-        ksort($cnt);
-
-        foreach ($cnt as $act_weight_sorted){
+      $main_content .=
+        "<div id=\"act-cat-" . $activity_category . "\" class=\"act-cat-container\">" .
+        getCategoriesHTML($activity_category) .
+        "<div class=\"act-cat-activities-container\">";
 
           // Sort array by activity name
-          ksort($act_weight_sorted);
+          ksort($cnt[$activity_category]);
 
-          foreach ($act_weight_sorted as $act_sorted) {
+          foreach ($cnt[$activity_category] as $cnt_act_sorted){
 
-            ?>
-            <div class="act-cat-scop">
-              <img src="<?php print $act_sorted['img_uri']?>"
-                   alt="<?php print $act_sorted['img_alt_text']?>"
-                   class="act-cat-vign-img"
-              />
-              <div class="act-cat-datas-container">
-                <h3 class="act-cat-stick-title"><?php print $act_sorted['title'] ?></h3>
-                <p class="act-cat-price"><?php print $act_sorted['price']?> <?php isset($act_sorted['price']) ? print "€" : ""; ?></p>
-                <a href="<?php print ($bool_is_intermediate_page == 1) ? $act_sorted['intermediate_path'] : $act_sorted['path'] ?>" class="act-cat-readmore"></a>
-              </div>
-            </div>
-            <?php
+            $main_content .=
+              "<div class=\"act-cat-scop act-cat-scop-" . $activity_category . "\" style=\"background-image:url('" . $cnt_act_sorted['img_uri'] . "'); background-size:cover;background-position:center;\">" .
+                "<div class=\"act-cat-datas-container\">" .
+                  "<h3 class=\"act-cat-stick-title\">" . $cnt_act_sorted['title'] . "</h3>" .
+                  "<p class=\"act-cat-price\">" . $cnt_act_sorted['price'] . (isset($cnt_act_sorted['price']) ? ' €' : '') . "</p>" .
+                  "<a href=\"" . (($bool_is_intermediate_page == 1) ? $cnt_act_sorted['intermediate_path'] : $cnt_act_sorted['path']) . "\" class=\"act-cat-readmore\"></a>" .
+                "</div>" .
+              "</div>"
+            ;
           }
-        }
-        ?>
-      </div>
-    </div>
-  </div>
-  <?php
+      $main_content .=
+        "</div>" .
+      "</div>"
+      ;
+    }
+  endforeach;
+
+  return $main_content;
+}
+
+// Get the HTML structure of the main content without filter categories
+function getMainContentWithoutFilters($cnt, $bool_is_intermediate_page){
+
+  // Sort array by activity weight
+  ksort($cnt);
+
+  $main_content = "<div class=\"act-cat-activities-container\">";
+
+  foreach ($cnt as $act_weight_sorted){
+
+    // Sort array by activity name
+    ksort($act_weight_sorted);
+
+    foreach ($act_weight_sorted as $act_sorted) {
+
+      $main_content .=
+        "<div class=\"act-cat-scop\" style=\"background-image:url('" . $act_sorted['img_uri'] . "'); background-size:cover;background-position:center;\">" .
+          "<div class=\"act-cat-datas-container\">" .
+            "<h3 class=\"act-cat-stick-title\">" . $act_sorted['title'] . "</h3>" .
+            "<p class=\"act-cat-price\">" . $act_sorted['price'] . (isset($act_sorted['price']) ? ' €' : '') . "</p>" .
+            "<a href=\"" . (($bool_is_intermediate_page == 1) ? $act_sorted['intermediate_path'] : $act_sorted['path']) . "\" class=\"act-cat-readmore\"></a>" .
+          "</div>" .
+        "</div>"
+      ;
+    }
+  }
+
+  $main_content .= "</div>";
+
+  return $main_content;
+}
+
+// Get category
+function getCategoriesHTML($activity_category){
+
+  $taxonomy = taxonomy_term_load($activity_category);
+
+  switch ($taxonomy->name){
+    case "Activités de jour" :
+      $icon = "fa-sun-o";
+      break;
+    case "Activités de nuit" :
+      $icon = "fa-moon-o";
+      break;
+    case "Transferts" :
+      $icon = "fa-bus";
+      break;
+    case "Hébergements" :
+      $icon = "fa-home";
+      break;
+    case "Nos packs" :
+      $icon = "fa-globe";
+      break;
+  }
+
+  $category_structure =
+    "<h2>" .
+      "<i class=\"fa " . $icon . "\" aria-hidden=\"true\"></i>" .
+      $taxonomy->name .
+    "</h2>"
+  ;
+
+  return $category_structure;
+}
+
+// Get the HTML structure for special filters
+function getSpecialFiltersHTML($ordered_activity_categories){
+
+  // HTML Structure of filters
+  $filter_structure =
+    "<div id=\"act-cat-filters\">" .
+      "<div class=\"act-cat-filter\">" .
+        "<p><i class=\"fa fa-th\" aria-hidden=\"true\"></i>Toutes nos Activités</p>" .
+      "</div>"
+  ;
+
+  foreach ($ordered_activity_categories as $filter){
+
+    $taxonomy = taxonomy_term_load($filter);
+
+    switch ($taxonomy->name){
+      case "Activités de jour" :
+        $icon = "fa-sun-o";
+        break;
+      case "Activités de nuit" :
+        $icon = "fa-moon-o";
+        break;
+      case "Transferts" :
+        $icon = "fa-bus";
+        break;
+      case "Hébergements" :
+        $icon = "fa-home";
+        break;
+      case "Nos packs" :
+        $icon = "fa-globe";
+        break;
+    }
+
+    $filter_structure .=
+      "<div class=\"act-cat-filter\">" .
+        "<p>" .
+          "<i class=\"fa " . $icon . "\" aria-hidden=\"true\"></i>" .
+          $taxonomy->name .
+        "</p>" .
+      "</div>"
+    ;
+  }
+
+  $filter_structure .=
+    "</div>"
+  ;
+
+  return $filter_structure;
 }
 ?>
+>>>>>>> preprod

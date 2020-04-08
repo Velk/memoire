@@ -8,18 +8,10 @@
 function memory_cart_menu() {
     $items = array();
 
-//    $items['map'] = array(
-//        'title' => t('Memory map'),
-//        'description' => t('Memory - map'),
-//        'page callback' => 'memory_map_block_view',
-//        'access callback' => TRUE,
-//        'type' => MENU_NORMAL_ITEM,
-//    );
-
-    // Ajax Callback to display activities thumbnails in all activities page.
-    $items['destinations/ajax/cart'] = array(
+    // Ajax Callback intended to send quotation ask
+    $items['ajax/cart/quotation'] = array(
         'title' => 'Ajax callback',
-        'page callback' => 'ajax_add_activity_to_cart',
+        'page callback' => 'ajax_cart_send_quotation_by_email',
         'access arguments' => array('access content'),
         'type' => MENU_CALLBACK,
     );
@@ -27,43 +19,343 @@ function memory_cart_menu() {
     return $items;
 }
 
-function ajax_add_activity_to_cart(){
+function ajax_cart_send_quotation_by_email(){
 
-    global $base_url;
+  $destination_email = variable_get('global_parameter_email');
 
-    $activity_nid = $_POST['actNid'];
-    $activity_title = $_POST['actTitle'];
+  $array_result_callback = array();
 
-    $node_load = node_load($activity_nid);
+  if(empty($destination_email)){
+    $array_result_callback["message"] = "La demande de devis n'a pas abouti. Veuillez réessayer ultérieurement.";
+  }else{
 
-    /*
-    Check authenticity of the asked activity.
-    If the title get by the nid isn't the same as the thumbnail title send by ajax,
-    it will say that the user change either the nid either the title
-    */
-    if( $node_load->title == $activity_title ){
+    $cart_global = json_decode($_POST['cartGlobalData']);
+    $cart_activities = json_decode($_POST['cartActivitiesData']);
+    $express_quotation = json_decode($_POST['expressQuotation']);
 
-        // Get the Destination field value of the activity
-        $activity_field_img = field_get_items("node", $node_load, "field_img_activite");
-        // Get the destination TID
-        $activity_img_url = file_create_url($activity_field_img[0]["uri"]);
-        ;
+    // E-mail parameters
+    $to = $destination_email;
+    $from = $destination_email;
+    $body = "";
 
-        $arrayCartActivity = array(
-            "nid" => $node_load->nid,
-            "title" => $node_load->title,
-            "image" => $activity_img_url,
-        );
+    if($express_quotation){
 
-//        drupal_set_message("<pre>" . print_r($arrayCartActivity, true) . "</pre>");
+      $subject = "#RAPPELEZ-MOI : " . $cart_global->lastname . " " . $cart_global->firstname; // Subject of the mail
 
-        drupal_json_output($arrayCartActivity);
+      $body .= "Memory - Demande de devis EXPRESS";
+      $body .= "\n\n";
+      $body .= "------------------------------------------------------------------------";
+      $body .= "\n\n";
+      $body .= "Informations sur l'utilisateur : " . "\n\n";
+      $body .= "Nom : " . $cart_global->lastname . "\n";
+      $body .= "Prénom : " . $cart_global->firstname . "\n";
+      $body .= "E-mail : " . $cart_global->email . "\n";
+      $body .= "Téléphone : " . $cart_global->phone . "\n";
+
+      $params = array(
+        'subject' => $subject,
+        'body' => $body,
+      );
+
+      drupal_mail('memory_cart', '10', $to, "fr", $params, $from);
+
+      $array_result_callback["destinationEmail"] = $destination_email;
+      $array_result_callback["message"] = "Votre demande de devis expresse a été transmise à l'équipe Memory. Nous vous recontacterons dans les plus brefs délais.";
     }else{
 
-        drupal_json_output("Les données demandées ne sont pas intègres");
+      $subject = "#DEMANDE DE DEVIS : " . $cart_global->lastname . " " . $cart_global->firstname; // Subject of the mail
+
+      $body .= "Memory - Demande de devis";
+      $body .= "\n\n";
+      $body .= "------------------------------------------------------------------------";
+      $body .= "\n\n";
+      $body .= "Informations sur l'utilisateur : " . "\n\n";
+      $body .= "Nom : " . $cart_global->lastname . "\n";
+      $body .= "Prénom : " . $cart_global->firstname . "\n";
+      $body .= "E-mail : " . $cart_global->email . "\n";
+      $body .= "Téléphone : " . $cart_global->phone . "\n";
+      $body .= "\n";
+      $body .= "------------------------------------------------------------------------";
+      $body .= "\n\n";
+      $body .= "Informations sur le séjour : " . "\n\n";
+      $body .= "Lieu de départ : " . (($cart_global->location === null) ? "Non renseigné" : $cart_global->location) . "\n";
+      $body .= "Nombre de participants : " . (($cart_global->participants === null) ? "Non renseigné" : $cart_global->participants) . "\n";
+      $body .= "Date de départ : " . getDateValue($cart_global->departureDate) . "\n";
+      $body .= "Date de retour : " . getDateValue($cart_global->returnDate) . "\n";
+      $body .= "Budget : " . getBudgetValue($cart_global->budget) . "\n";
+      $body .= "Transport : " . getTransportValue($cart_global->transport) . "\n";
+      $body .= "Commentaire : " . (($cart_global->wish === null) ? "Non renseigné" : $cart_global->wish) . "\n";
+      $body .= "\n";
+      $body .= "------------------------------------------------------------------------";
+      $body .= "\n\n";
+      $body .= "Détails des activités : " . "\n\n";
+
+      $destination_name = explode("⫼", $cart_activities->city);
+      $body .= "Destination : " . "\n";
+      $body .= "\t- Pays : " . $destination_name[0] . "\n";
+      $body .= "\t- Ville : " . $destination_name[1] . "\n\n";
+
+      $body_memory =
+        $body .
+        formatActivitiesToEmailText($cart_activities, $cart_global, false)
+      ;
+
+      $body_providers =
+        $body .
+        formatActivitiesToEmailText($cart_activities, $cart_global, true)
+      ;
+
+      // Call mail function
+      $params_memory = array(
+        'subject' => $subject,
+        'body' => $body_memory,
+      );
+      $params_providers = array(
+        'subject' => $subject,
+        'body' => $body_providers,
+      );
+
+      drupal_mail('memory_cart', '10', $to, "fr", $params_memory, $from);
+      drupal_mail('memory_cart', '10', $to, "fr", $params_providers, $from);
+
+      $array_result_callback["destinationEmail"] = $destination_email;
+      $array_result_callback["message"] = "Votre demande de devis a été transmise à l'équipe Memory. Nous vous recontacterons dans les plus brefs délais.";
+    }
+  }
+
+  drupal_json_output($array_result_callback);
+}
+
+function formatActivitiesToEmailText($cart_activities, $cart_global, $is_for_providers){
+
+  $body = "------------------------------ Transfers ------------------------------" . "\n\n";
+
+  foreach ($cart_activities->transfers as $key => $value){ // Add transfer activities
+
+    $transfer_direction = (($key === 0) ? "aller" : "retour");
+
+    if($value === null){
+      $body .= "- Transfert " . $transfer_direction . " : Non définie" . "\n";
+    }else{
+      $body .= "- Transfert " . $transfer_direction . " : " . "\n";
+      $body .= getActivityDetails($value, $is_for_providers) . "\n";
+    }
+  }
+  $body .= "\n";
+
+  $body .= "------------------------------ Activities ------------------------------" . "\n\n";
+
+  $departure_date_timestamp = $cart_global->departureDate/1000;
+  $max_days_number = 1;
+  foreach ($cart_activities->activities as $key => $value){
+    $max_days_number = $key;
+  }
+
+  foreach($cart_activities->activities as $key => $value){ // Add activities and accommodations
+
+    $body_activities = "";
+
+    if($cart_global->departureDate !== null && $cart_global->returnDate !== null){
+      $activity_header = date("l d F Y", $departure_date_timestamp) . " : " . "\n";
+    }else{
+      $activity_header = "Jour n°" . $key . " : " . "\n";
     }
 
+    $departure_date_timestamp = $departure_date_timestamp+(24*3600); // Increment day by 1
 
+    if(count($value) === 0){ // No activities in the day
+      $body_activities .= "\t- Activités : Non définie" . "\n\n";
+    }else{
+      foreach($value as $keyAct => $valueAct){ // Browse through each activities in the same day
+        $body_activities .= "\t- Activité n°" . ($keyAct + 1) . " : " . "\n";
+        $body_activities .= getActivityDetails($valueAct, $is_for_providers) . "\n";
+      }
+    }
+
+    if($max_days_number !== $key){ // No hosting for the last day
+
+      if(!empty($cart_activities->accommodations[0])){
+        $body_activities .= "\t- Hébergement : " . "\n";
+        $body_activities .= getActivityDetails($cart_activities->accommodations[0], $is_for_providers) . "\n";
+      }else{
+        $body_activities .= "\t- Hébergement :  Non défini" . "\n\n";
+      }
+
+      $body_activities .= "---------------\n\n";
+    }
+
+    $body .= $activity_header . $body_activities;
+  }
+
+  return $body;
+}
+
+function getActivityDetails($activity, $is_for_providers){
+
+  global $base_url;
+
+  $activity_details = "\t\t- Titre : " . $activity->activityTitle . "\n";
+  $activity_details .= "\t\t- Option : " . $activity->optionTitle . "\n";
+  if(!$is_for_providers){
+    $activity_details .= "\t\t- Prix : " . $activity->optionPrice . "\n";
+  }
+  $activity_details .= "\t\t- Url : " . $base_url . "/" . drupal_get_path_alias("node/" . $activity->activityNid) . "\n";
+
+  return $activity_details;
+}
+
+function getDateValue($timestamp){
+
+  if($timestamp === null){
+    $date = "Non définie";
+  }else{
+
+    $date_day = date("l", $timestamp/1000);
+    $date_day_number = date("d", $timestamp/1000);
+    $date_month = date("F", $timestamp/1000);
+    $date_year = date("Y", $timestamp/1000);
+
+    switch (strtolower($date_day)){ // French days correspondance
+      case "monday" :
+        $date_day = "Lundi";
+        break;
+      case "tuesday" :
+        $date_day = "Mardi";
+        break;
+      case "wednesday" :
+        $date_day = "Mercredi";
+        break;
+      case "thursday" :
+        $date_day = "Jeudi";
+        break;
+      case "friday" :
+        $date_day = "Vendredi";
+        break;
+      case "saturday" :
+        $date_day = "Samedi";
+        break;
+      case "sunday" :
+        $date_day = "Dimanche";
+        break;
+    }
+
+    switch (strtolower($date_month)){ // French months correspondance
+      case "january" :
+        $date_month = "Janvier";
+        break;
+      case "february" :
+        $date_month = "Février";
+        break;
+      case "march" :
+        $date_month = "Mars";
+        break;
+      case "april" :
+        $date_month = "Avril";
+        break;
+      case "may" :
+        $date_month = "Mai";
+        break;
+      case "june" :
+        $date_month = "Juin";
+        break;
+      case "july" :
+        $date_month = "Juillet";
+        break;
+      case "august" :
+        $date_month = "Août";
+        break;
+      case "september" :
+        $date_month = "Septembre";
+        break;
+      case "october" :
+        $date_month = "Octobre";
+        break;
+      case "november" :
+        $date_month = "Novembre";
+        break;
+      case "december" :
+        $date_month = "Décembre";
+        break;
+    }
+
+    $date = $date_day . " " . $date_day_number  . " " . $date_month . " " . $date_year;
+  }
+
+  return $date;
+}
+
+function getBudgetValue($budget_id){
+
+  switch ($budget_id){
+    case null :
+      $budgetValue = "Non communiqué";
+      break;
+    case 0 :
+      $budgetValue = "- de 100€";
+      break;
+    case 1 :
+      $budgetValue = "100-200€";
+      break;
+    case 2 :
+      $budgetValue = "200-300€";
+      break;
+    case 3 :
+      $budgetValue = "300-400€";
+      break;
+    case 4 :
+      $budgetValue = "400-500€";
+      break;
+    case 5 :
+      $budgetValue = "+ de 500€";
+      break;
+    default :
+      $budgetValue = "Non communiqué";
+  }
+
+  return $budgetValue;
+}
+
+function getTransportValue($transport_id){
+
+  switch ($transport_id){
+    case null :
+      $transportValue = "Non communiqué";
+      break;
+    case 0 :
+      $transportValue = "Oui, j’en ai besoin";
+      break;
+    case 1 :
+      $transportValue = "Non je voyage par mes propres moyens";
+      break;
+    case 2 :
+      $transportValue = "Je ne sais pas encore";
+      break;
+    default :
+      $transportValue = "Non communiqué";
+  }
+
+  return $transportValue;
+}
+
+/**
+ * Implementation of hook_mail().
+ *
+ * A very simple hook_mail() implementation, for module "memory_cart".
+ * This implementation expects to receive a $body, $subject, and $headers
+ * inside the $params sent from drupal_mail(), rather than construct
+ * those here in the hook.
+ * @param $key
+ * @param $message
+ * @param $params
+ * @see drupal_mail()
+ */
+function memory_cart_mail($key, &$message, $params) {
+  switch ($key) {
+    case '10':
+      $message['subject'] = $params['subject'];
+      $message['body'][] = $params['body'];
+      break;
+  }
 }
 
 /**
@@ -95,8 +387,8 @@ function memory_cart_block_info() {
         'weight' => 1,
         'status' => 1,
         'region' => 'content',
-        'visibility' => BLOCK_VISIBILITY_LISTED,
-        'pages' => 'destinations/*',
+        'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+        'pages' => 'contact\radmin/*\rmedia/*\rnode/*/edit',
     );
 
     return $blocks;
@@ -114,20 +406,34 @@ function memory_cart_block_view($delta = '') {
     switch ($delta) {
         case 'memory_cart':
 
-            $data['title'] = "Memory - World cart";
-
             // Link the template
-            $block['content']['#markup'] = theme('tpl_memory_cart', $data);
+            $block['content']['#markup'] = theme('tpl_memory_cart');
 
             // Link a css file
             $block['content']['#attached']['css'][] = array(
-                'data' => drupal_get_path('module', 'memory_cart').'/css/memory_cart.css',
-                'type' => 'file'
+              'data' => drupal_get_path('module', 'memory_cart').'/css/memory_cart.css',
+              'type' => 'file'
             );
 
             // Link a js file
             $block['content']['#attached']['js'][] = array(
-                'data' => drupal_get_path('module', 'memory_cart').'/js/memory_cart.js',
+              'data' => drupal_get_path('module', 'memory_cart').'/js/memory_cart.js',
+              'type' => 'file'
+            );
+            $block['content']['#attached']['js'][] = array(
+                'data' => drupal_get_path('module', 'memory_cart').'/js/memory_cart_form.js',
+                'type' => 'file'
+            );
+            $block['content']['#attached']['js'][] = array(
+                'data' => drupal_get_path('module', 'memory_cart').'/js/memory_cart_advanced_form.js',
+                'type' => 'file'
+            );
+            $block['content']['#attached']['js'][] = array(
+                'data' => drupal_get_path('module', 'memory_cart').'/js/memory_cart_move_activities.js',
+                'type' => 'file'
+            );
+            $block['content']['#attached']['js'][] = array(
+                'data' => drupal_get_path('module', 'memory_cart').'/js/memory_cart_ajax_request.js',
                 'type' => 'file'
             );
 
@@ -136,3 +442,4 @@ function memory_cart_block_view($delta = '') {
 
     return $block;
 }
+>>>>>>> preprod

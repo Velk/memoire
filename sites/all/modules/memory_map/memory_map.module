@@ -8,14 +8,6 @@
 function memory_map_menu() {
     $items = array();
 
-//    $items['map'] = array(
-//        'title' => t('Memory map'),
-//        'description' => t('Memory - map'),
-//        'page callback' => 'memory_map_block_view',
-//        'access callback' => TRUE,
-//        'type' => MENU_NORMAL_ITEM,
-//    );
-
     $items['admin/memory/map-manager'] = array(
         'title' => t('Memory - World map'),
         'description' => t('Memory - World map manager'),
@@ -26,11 +18,6 @@ function memory_map_menu() {
     );
 
     return $items;
-}
-
-function memory_map_init(){
-//    drupal_add_library('system','ui.dialog');
-//    drupal_add_js(drupal_get_path('module', 'memory_map') . '/js/jquery-ui-1.12.1/jquery-ui.js');
 }
 
 /**
@@ -64,7 +51,6 @@ function memory_map_block_info() {
         'region' => 'content',
         'visibility' => BLOCK_VISIBILITY_LISTED,
         'pages' => '<front>',
-//        'pages' => 'map',
     );
 
     return $blocks;
@@ -1227,19 +1213,16 @@ function memory_blocks_world_map_admin_form($form, &$form_state){
 
         $form['countries_list']['country_'.$increment]['id'] = array(
             '#type' => 'hidden',
-//            '#type' => 'textfield',
             '#value' => $country["id"],
             '#weight' => 0,
         );
         $form['countries_list']['country_'.$increment]['name'] = array(
             '#type' => 'hidden',
-//            '#type' => 'textfield',
             '#value' => $country["name"],
             '#weight' => 1,
         );
         $form['countries_list']['country_'.$increment]['svg_pattern'] = array(
             '#type' => 'hidden',
-//            '#type' => 'textfield',
             '#value' => $country["svg_pattern"],
             '#maxlength' => 512,
             '#weight' => 2,
@@ -1259,3 +1242,4 @@ function memory_blocks_world_map_admin_form($form, &$form_state){
 
     return system_settings_form($form);
 }
+>>>>>>> preprod

@@ -1,0 +1,73 @@
+<?php
+
+
+/**
+ * Implement hook_theme()
+ *
+ * @param $existing
+ * @param $type
+ * @param $theme
+ * @param $path
+ * @return array
+ */
+function memory_blocks_theme($existing, $type, $theme, $path) {
+  return array(
+    'tpl_memory_bug_report' => array(
+      'template' => 'tpl/memory_bug_report',
+      'path' => drupal_get_path('module', 'memory_blocks'),
+      'variables' => array('infos' => NULL),
+    ),
+  );
+}
+
+
+/**
+ * @return mixed
+ */
+function memory_blocks_block_info() {
+
+  $blocks['memory_bug_report'] = array(
+    'info' => t('Memory Bug Report'),
+    'weight' => 6,
+    'status' => 1,
+    'region' => 'content',
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'pages' => 'admin/*\rmedia/*\rnode/*/edit',
+  );
+
+  return $blocks;
+}
+
+
+/**
+ * @param string $delta
+ * @return array
+ * @throws Exception
+ */
+function memory_blocks_block_view($delta = '') {
+
+  $block = array();
+
+  switch ($delta) {
+    case 'memory_bug_report':
+
+      // Link the template
+      $block['content']['#markup'] = theme('tpl_memory_bug_report');
+
+      // Link a css file
+      $block['content']['#attached']['css'][] = array(
+        'data' => drupal_get_path('module', 'memory_blocks') . '/css/memory_bug_report.css',
+        'type' => 'file'
+      );
+
+      // Link a js file
+      $block['content']['#attached']['js'][] = array(
+        'data' => drupal_get_path('module', 'memory_blocks') . '/js/memory_bug_report.js',
+        'type' => 'file'
+      );
+
+      break;
+  }
+
+  return $block;
+}

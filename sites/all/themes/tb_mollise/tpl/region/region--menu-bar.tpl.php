@@ -7,32 +7,49 @@
     $vocabulary = taxonomy_vocabulary_machine_name_load('continent');
     $tree = taxonomy_get_tree($vocabulary->vid);
 
-    $tab_continent = array();
-    $tab_pays = array();
-    $tab_ville = array();
-    foreach ($tree as $term) {
-        if($term->depth === 0) {
-            $tab_continent[$term->tid] = array($term->name,$term->tid,);
-        } elseif($term->depth === 1) {
-            $tab_pays[$term->tid] = array($term->name,$term->tid,$term->parents[0]);
-        } elseif($term->depth === 2) {
-            $tab_ville[$term->tid] = array($term->name,$term->tid,$term->parents[0]);
-        }
+    $array_continent = array();
+
+    foreach ($tree as $continent){ // Get continents
+
+      if($continent->depth == 0){
+
+        $array_continent[$continent->tid] = array(
+          "weight" => $continent->weight,
+          "name" => $continent->name,
+          "countries" => array(),
+        );
+      }
     }
 
-    asort($tab_continent);
-    asort($tab_pays);
-    asort($tab_ville);
+    $array_countries = array();
 
-    foreach ($tab_ville as $city) {
-        $tab_pays[$city[2]]['city'][] = array($city[0], $city[1]);
+    foreach ($tree as $countries){ // Get countries
+
+      if($countries->depth == 1){
+
+        $array_countries[$countries->tid] = array(
+          "weight" => $countries->weight,
+          "name" => $countries->name,
+          "parent_tid" => $countries->parents[0],
+          "cities" => array(),
+        );
+      }
     }
-    foreach ($tab_pays as $country) {
-        if (!empty($country['city'])) {
-            $tab_continent[$country[2]]['country'][] = array($country[0], $country[1], $country['city']);
-        } else {
-            $tab_continent[$country[2]]['country'][] = array($country[0], $country[1]);
-        }
+
+    foreach ($tree as $cities){ // Get cities
+
+      if($cities->depth == 2){
+
+        $array_countries[$cities->parents[0]]["cities"][$cities->tid] = array(
+          "weight" => $cities->weight,
+          "name" => $cities->name,
+          "tid" => $cities->tid,
+        );
+      }
+    }
+
+    foreach ($array_countries as $key => $value) { // Add countries to continent
+      $array_continent[$value["parent_tid"]]["countries"][$key] = $value;
     }
 
     /* Activities tab */
@@ -69,16 +86,14 @@
         $datas_global_category = taxonomy_term_load($global_category[1]);
 
         // Retrieve the fid (image ID) of the global category
-        $fid_global_category = $datas_global_category->field_category_activities_img['und'][0]['fid'];
+        $activity_image_field = field_get_items('taxonomy_term', $datas_global_category, 'field_category_activities_img');
+        $activity_image_field_ip_img = file_load($activity_image_field[0]["fid"]);
+        $activity_image = image_style_url("large", $activity_image_field_ip_img->uri);
 
-        if( isset($fid_global_category) ){
-
-            // Load image by its fid
-            $file = file_load($fid_global_category);
-            $img_url_global_category = file_create_url($file->uri);
+        if( !empty($activity_image) ){
 
             // Set the url of the image in the array
-            $tab_global_categories[$global_category[1]]['img_url'] = $img_url_global_category;
+            $tab_global_categories[$global_category[1]]['img_url'] = $activity_image;
         }
     }
 
@@ -106,7 +121,10 @@ $ip_data = @json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip="
 
 if($ip_data && $ip_data->geoplugin_countryName != null){
 
-    $user_location['country'] = strtolower($ip_data->geoplugin_countryCode);
+    // To allow getting phone number by user IP address
+    $user_location['country'] = strtolower($ip_data->geoplugin_countryCode); // Uncomment this line
+//    $user_location['country'] = ""; // Comment this line
+
     $user_location['city'] = $ip_data->geoplugin_city;
 }
 ?>
@@ -115,13 +133,13 @@ if($ip_data && $ip_data->geoplugin_countryName != null){
 /* PHONE */
 
 // Function countries_list() is declare in memory_phone.module
-$array_countries = countries_list();
+$array_countries_phone = countries_list();
 
 $countries_phone_datas = array();
 
 $countries_container = variable_get('countries_container', array());
 
-foreach ($array_countries as $country){
+foreach ($array_countries_phone as $country){
 
 //        $country_datas = variable_get("countries_list_" . $country["id"], array());
 
@@ -134,8 +152,9 @@ foreach ($array_countries as $country){
   }
 }
 ?>
-
+<div id="memory-menu-responsive"><i class="fa fa-bars" aria-hidden="true"></i></div>
 <div id="memory-menu">
+  <div>
     <?php foreach($main_menu as $menu): ?>
 
         <div class="memory-menu-tabs <?php ( $menu['identifier'] == "main-menu_connexion:node/13" || $menu['title'] == "Nous contacter" ) ? print 'menu-pos-right' : print '' ?> <?php ( $menu['title'] == "Nous contacter" ) ? print 'menu-contact-link' : print '' ?>">
@@ -152,52 +171,53 @@ foreach ($array_countries as $country){
                                 <a href="<?php print $base_url; ?>/destinations">Toutes nos destinations</a>
                             </div>
                         </div>
-                        <hr>
-                        <?php foreach($tab_continent as $cont): ?>
-                        <div class="continent-menu">
-                            <h3><?php print $cont[0] ?></h3>
-                            <?php if(!empty($cont['country'])): ?>
-                                <?php foreach($cont['country'] as $cntry): ?>
-                                    <ul class="country-menu">
-                                        <li>
-                                            <?php if(!empty($cntry[2]) && count($cntry[2]) == 1){
-                                                foreach($cntry[2] as $onlyOneCity){
+                        <hr/>
+                        <div id="destination-menu-container">
+                          <?php foreach($array_continent as $continent): ?>
+                          <div class="continent-menu">
+                              <h3><?php print $continent["name"] ?></h3>
+                              <?php foreach($continent['countries'] as $country): ?>
+                                  <ul class="country-menu">
+                                      <li>
+                                          <?php if(!empty($country["cities"]) && count($country["cities"]) == 1){
+                                              foreach($country["cities"] as $onlyOneCity){
 
-                                                    // Get dynamically the path alias when there is only 1 city
-                                                    $destination_path_alias = drupal_get_path_alias("taxonomy/term/" . $onlyOneCity[1]);
+                                                  // Get dynamically the path alias when there is only 1 city
+                                                  $destination_path_alias = drupal_get_path_alias("taxonomy/term/" . $onlyOneCity["tid"]);
 
-                                                    print
-                                                        "<a href=" . strtolower($base_url."/".$destination_path_alias) . ">" .
-                                                        $cntry[0] . " - " . $onlyOneCity[0] .
-                                                        "</a>"
-                                                    ;
-                                                }
-                                            }else{
-                                                print $cntry[0];
-                                            } ?>
-                                        </li>
-                                        <?php if(!empty($cntry[2]) && count($cntry[2]) > 1): ?>
-                                            <ul class="city-menu">
-                                                <?php foreach($cntry[2] as $place){
+                                                  print
+                                                      "<a href=" . strtolower($base_url."/".$destination_path_alias) . ">" .
+                                                      $country["name"] . "<span>" . $onlyOneCity["name"] . "</span>" .
+                                                      "</a>"
+                                                  ;
+                                              }
+                                          }else{
+                                              print $country["name"];
+                                          } ?>
+                                      </li>
+                                      <?php if(!empty($country["cities"]) && count($country["cities"]) > 1): ?>
+                                          <ul class="city-menu">
+                                              <?php foreach($country["cities"] as $place){
 
-                                                    // Get dynamically the path alias when there is more than 1 city
-                                                    $destination_path_alias = drupal_get_path_alias("taxonomy/term/" . $place[1]);
+                                                  // Get dynamically the path alias when there is more than 1 city
+                                                  $destination_path_alias = drupal_get_path_alias("taxonomy/term/" . $place["tid"]);
 
-                                                    print
-                                                        "<li>" .
-                                                            "<a href=" . strtolower($base_url."/".$destination_path_alias) . ">" .
-                                                            "- " . $place[0] .
-                                                            "</a>" .
-                                                        "</li>"
-                                                    ;
-                                                } ?>
-                                            </ul>
-                                        <?php endif; ?>
-                                    </ul>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
+                                                  print
+                                                      "<li>" .
+                                                          "<a href=" . strtolower($base_url."/".$destination_path_alias) . ">" .
+                                                            "<i class=\"fa fa-circle\" aria-hidden=\"true\"></i>" .
+                                                            "<span>" . $place["name"] . "</span>" .
+                                                          "</a>" .
+                                                      "</li>"
+                                                  ;
+                                              } ?>
+                                          </ul>
+                                      <?php endif; ?>
+                                  </ul>
+                              <?php endforeach; ?>
+                          </div>
+                          <?php endforeach; ?>
                         </div>
-                        <?php endforeach; ?>
                     </div>
                 </div>
             <!-- End destination menu part -->
@@ -215,13 +235,12 @@ foreach ($array_countries as $country){
                                     <a href="<?php print $base_url; ?>/activity-categories">Toutes nos activités</a>
                                 </div>
                             </div>
-                            <hr>
+                            <hr/>
                             <div id="activity-menu-container">
                                 <?php
                                 foreach($tab_global_categories as $global_category){
                                     // Load taxonomy term by its tid
                                     $tax_global_activity_category = taxonomy_term_load($global_category[1]);
-//                                    drupal_set_message("<pre>" . print_r($tax_global_activity_category,true) . "</pre>");
                                 ?>
                                     <div class="activity-menu">
                                         <?php if(!empty($global_category['img_url'])) :?>
@@ -310,7 +329,15 @@ foreach ($array_countries as $country){
                         <i class="fa fa-chevron-down" aria-hidden="true" <?php print((sizeof($countries_phone_datas) <= 1) ? "style='display:none;'" : "")?>></i>
                     </div>
                 </div>
-                <a href="<?php print $base_url . '/contact'; ?>" id="memory-contact-link">Votre demande de devis</a>
+                <a href="<?php print $base_url . '/contact'; ?>" id="memory-contact-link">Besoin d’un conseil ?</a>
+                <?php if(drupal_get_path_alias(current_path()) != "contact" && module_exists("memory_cart")){
+                  echo
+                    "<button type=\"button\" class=\"toggle-user-cart\" id=\"menu-tab-cart\">" .
+                      "<i class=\"fa fa-shopping-cart\" aria-hidden=\"true\"></i>" .
+                    "</button>"
+                  ;
+
+                } ?>
             </div>
             <!-- End Connexion menu part -->
 
@@ -324,4 +351,6 @@ foreach ($array_countries as $country){
             <?php endif; ?>
         </div>
     <?php endforeach; ?>
+  </div>
 </div>
+>>>>>>> preprod

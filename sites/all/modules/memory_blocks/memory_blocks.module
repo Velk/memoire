@@ -10,9 +10,9 @@ function memory_blocks_menu() {
 
     $items['admin/memory'] = array(
         'title' => t('Memory'),
-        'description' => t('Memory - Tab'),
+        'description' => t('Memory - Global parameters'),
         'page callback' => 'drupal_get_form',
-        'page arguments' => array('memory_blocks_admin_redirect'),
+        'page arguments' => array('memory_blocks_admin_global_parameters'),
         'access arguments' => array('administer site configuration'),
         'type' => MENU_NORMAL_ITEM,
     );
@@ -62,15 +62,6 @@ function memory_blocks_menu() {
         'type' => MENU_NORMAL_ITEM,
     );
 
-    $items['admin/memory/footer-manager'] = array(
-        'title' => t('Memory - Footer'),
-        'description' => t('Memory - Footer manager'),
-        'page callback' => 'drupal_get_form',
-        'page arguments' => array('memory_blocks_footer_admin_form'),
-        'access arguments' => array('administer site configuration'),
-        'type' => MENU_NORMAL_ITEM,
-    );
-
     $items['admin/memory/slider-manager'] = array(
         'title' => t('Memory - Slider'),
         'description' => t('Memory - Slider manager'),
@@ -81,12 +72,12 @@ function memory_blocks_menu() {
     );
 
     $items['admin/memory/activity-families-manager'] = array(
-        'title' => t('Memory - Families of activity'),
-        'description' => t('Memory - Families of activity'),
-        'page callback' => 'drupal_get_form',
-        'page arguments' => array('memory_blocks_activity_families_admin_form'),
-        'access arguments' => array('administer site configuration'),
-        'type' => MENU_NORMAL_ITEM,
+      'title' => t('Memory - Families of activity'),
+      'description' => t('Memory - Families of activity'),
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('memory_blocks_activity_families_admin_form'),
+      'access arguments' => array('administer site configuration'),
+      'type' => MENU_NORMAL_ITEM,
     );
 
     $items['admin/memory/3-columns-block-manager'] = array(
@@ -125,122 +116,124 @@ function memory_blocks_menu() {
         'type' => MENU_NORMAL_ITEM,
     );
 
-    // Ajax Callback to display activities thumbnails in all activities page.
-    $items['activity-categories/ajax'] = array(
-        'title' => 'Ajax callback',
-        'page callback' => 'ajax_load_more_activities_thumbnails',
-        'access arguments' => array('access content'),
-        'type' => MENU_CALLBACK,
-    );
+//    // Ajax Callback to display activities thumbnails in all activities page.
+//    $items['activity-categories/ajax'] = array(
+//        'title' => 'Ajax callback',
+//        'page callback' => 'ajax_load_more_activities_thumbnails',
+//        'access arguments' => array('access content'),
+//        'type' => MENU_CALLBACK,
+//    );
 
     return $items;
 }
 
-function ajax_load_more_activities_thumbnails(){
-
-    global $base_url;
-
-    // Include pathauto to clean a string for use in URLs
-    module_load_include('inc', 'pathauto', 'pathauto');
-
-    /* Load taxonomy to get the destination of the activity */
-    $vocabulary = taxonomy_vocabulary_machine_name_load('continent');
-    $taxonomy_tree = taxonomy_get_tree($vocabulary->vid);
-
-    $array_taxonomy_tree = array();
-    foreach ($taxonomy_tree as $tax_tree){
-        $array_taxonomy_tree[$tax_tree->tid]["tid"] = $tax_tree->tid;
-        $array_taxonomy_tree[$tax_tree->tid]["name"] = $tax_tree->name;
-        $array_taxonomy_tree[$tax_tree->tid]["path_alias"] = drupal_get_path_alias("taxonomy/term/".$tax_tree->tid);
-    }
-
-
-    /* Load node datas corresponding to activities */
-    // Query to retrieve every node with the type "activite"
-    $query = new EntityFieldQuery();
-    $entities = $query->entityCondition('entity_type', 'node')
-        ->propertyCondition('type', 'activite')
-        ->propertyCondition('status', 1)
-        ->propertyOrderBy('title', 'ASC')
-        ->execute();
-
-    // Array intended to contain every node ID
-    $nids = [];
-
-    foreach ($entities as $entity) {
-
-        foreach ($entity as $node){
-
-            // Retrieve and set into array each node ID with type "activite"
-            array_push($nids, $node->nid);
-        }
-    }
-
-    $activities_count = [];
-
-    for($i = 0 ; $i < count($nids) ; $i++){
-
-        // Retrieve all content of the node belonging to the activity category
-        $node = node_load($nids[$i]);
-
-        // Retrieve the fid (image ID) of the activity
-        $fid_activity = $node->field_img_activite['und'][0]['fid'];
-
-        if( isset($fid_activity) ){
-
-            // Load image by its fid
-            $file = file_load($fid_activity);
-            $img_url_activity = file_create_url($file->uri);
-        }
-
-        // Clean the title of the node (activity) to use as a part of the URL
-        $clean_string_to_url = pathauto_cleanstring($node->field_activity_title['und'][0]['value']);
-
-        $activities_count[$node->field_activity_title['und'][0]['value']]["title"] = $node->field_activity_title['und'][0]['value'];
-        $activities_count[$node->field_activity_title['und'][0]['value']]["count"] += 1;
-        $activities_count[$node->field_activity_title['und'][0]['value']]["img_alt_text"] = $node->field_img_activite['und'][0]['field_file_image_alt_text']['und'][0]['value'];
-        $activities_count[$node->field_activity_title['und'][0]['value']]["img_uri"] = $img_url_activity;
-        $activities_count[$node->field_activity_title['und'][0]['value']]["price"] = $node->field_price_prestation['und'][0]['value'];
-        $activities_count[$node->field_activity_title['und'][0]['value']]["vid"] = $node->vid;
-        $activities_count[$node->field_activity_title['und'][0]['value']]["path"] = $base_url."/".drupal_get_path_alias('node/'.$node->vid);
-        $activities_count[$node->field_activity_title['und'][0]['value']]["destination"] = $array_taxonomy_tree[$node->field_acti_content_desti['und'][0]['tid']]["name"];
-        $activities_count[$node->field_activity_title['und'][0]['value']]["destination_path"] = $array_taxonomy_tree[$node->field_acti_content_desti['und'][0]['tid']]["path_alias"];
-        $activities_count[$node->field_activity_title['und'][0]['value']]["intermediate_path"] = $clean_string_to_url;
-    }
-
-    $actualNbThumbnails = $_POST['actualNbThumbnails'];
-
-    $totalNbThumbnails = sizeof($activities_count);
-
-    $arrayThumbnailsToAjax = [];
-    $counterNbThumbnails = 0;
-
-    foreach ($activities_count as $activity_count){
-
-        if($counterNbThumbnails == (variable_get('all_act_nb_thumbnails') + $actualNbThumbnails)){
-            break;
-        }else{
-
-            $arrayThumbnailsToAjax[$activity_count['title']]['title'] = $activity_count['title'];
-            $arrayThumbnailsToAjax[$activity_count['title']]['img_alt_text'] = $activity_count['img_alt_text'];
-            $arrayThumbnailsToAjax[$activity_count['title']]['img_uri'] = $activity_count['img_uri'];
-            $arrayThumbnailsToAjax[$activity_count['title']]['intermediate_path'] = $activity_count['intermediate_path'];
-            $arrayThumbnailsToAjax[$activity_count['title']]['base_url'] = $base_url;
-
-            if($totalNbThumbnails <= (variable_get('all_act_nb_thumbnails') + $actualNbThumbnails)){
-                $arrayThumbnailsToAjax[$activity_count['title']]['is_every_thumbnails_loaded'] = true;
-            }else{
-                $arrayThumbnailsToAjax[$activity_count['title']]['is_every_thumbnails_loaded'] = false;
-            }
-        }
-
-        $counterNbThumbnails++;
-    }
-
-    drupal_json_output($arrayThumbnailsToAjax);
-}
+//function ajax_load_more_activities_thumbnails(){
+//
+//    global $base_url;
+//
+//    // Include pathauto to clean a string for use in URLs
+//    module_load_include('inc', 'pathauto', 'pathauto');
+//
+//    /* Load taxonomy to get the destination of the activity */
+//    $vocabulary = taxonomy_vocabulary_machine_name_load('continent');
+//    $taxonomy_tree = taxonomy_get_tree($vocabulary->vid);
+//
+//    $array_taxonomy_tree = array();
+//    foreach ($taxonomy_tree as $tax_tree){
+//        $array_taxonomy_tree[$tax_tree->tid]["tid"] = $tax_tree->tid;
+//        $array_taxonomy_tree[$tax_tree->tid]["name"] = $tax_tree->name;
+//        $array_taxonomy_tree[$tax_tree->tid]["path_alias"] = drupal_get_path_alias("taxonomy/term/".$tax_tree->tid);
+//    }
+//
+//
+//    /* Load node datas corresponding to activities */
+//    // Query to retrieve every node with the type "activite"
+//    $query = new EntityFieldQuery();
+//    $entities = $query->entityCondition('entity_type', 'node')
+//        ->propertyCondition('type', 'activite')
+//        ->propertyCondition('status', 1)
+//        ->propertyOrderBy('title', 'ASC')
+//        ->execute();
+//
+//    // Array intended to contain every node ID
+//    $nids = [];
+//
+//    foreach ($entities as $entity) {
+//
+//        foreach ($entity as $node){
+//
+//            // Retrieve and set into array each node ID with type "activite"
+//            array_push($nids, $node->nid);
+//        }
+//    }
+//
+//    $activities_count = [];
+//
+//    for($i = 0 ; $i < count($nids) ; $i++){
+//
+//        // Retrieve all content of the node belonging to the activity category
+//        $node = node_load($nids[$i]);
+//
+//        // Retrieve the fid (image ID) of the activity
+//        $fid_activity = $node->field_img_activite['und'][0]['fid'];
+//
+//        if( isset($fid_activity) ){
+//
+//            // Load image by its fid
+//            $file = file_load($fid_activity);
+//            $img_url_activity = file_create_url($file->uri);
+//        }
+//
+//        // Clean the title of the node (activity) to use as a part of the URL
+//        $clean_string_to_url = pathauto_cleanstring($node->field_activity_title['und'][0]['value']);
+//
+//        $activities_count[$node->field_activity_title['und'][0]['value']]["title"] = $node->field_activity_title['und'][0]['value'];
+//        $activities_count[$node->field_activity_title['und'][0]['value']]["count"] += 1;
+//        $activities_count[$node->field_activity_title['und'][0]['value']]["img_alt_text"] = $node->field_img_activite['und'][0]['field_file_image_alt_text']['und'][0]['value'];
+//        $activities_count[$node->field_activity_title['und'][0]['value']]["img_uri"] = $img_url_activity;
+//        $activities_count[$node->field_activity_title['und'][0]['value']]["price"] = $node->field_price_prestation['und'][0]['value'];
+//        $activities_count[$node->field_activity_title['und'][0]['value']]["vid"] = $node->vid;
+//        $activities_count[$node->field_activity_title['und'][0]['value']]["path"] = $base_url."/".drupal_get_path_alias('node/'.$node->vid);
+//        $activities_count[$node->field_activity_title['und'][0]['value']]["destination"] = $array_taxonomy_tree[$node->field_acti_content_desti['und'][0]['tid']]["name"];
+//        $activities_count[$node->field_activity_title['und'][0]['value']]["destination_path"] = $array_taxonomy_tree[$node->field_acti_content_desti['und'][0]['tid']]["path_alias"];
+//        $activities_count[$node->field_activity_title['und'][0]['value']]["intermediate_path"] = $clean_string_to_url;
+//    }
+//
+//    $actualNbThumbnails = $_POST['actualNbThumbnails'];
+//
+//    $totalNbThumbnails = sizeof($activities_count);
+//
+//    $arrayThumbnailsToAjax = [];
+//    $counterNbThumbnails = 0;
+//
+//    foreach ($activities_count as $activity_count){
+//
+//        if($counterNbThumbnails == (variable_get('all_act_nb_thumbnails') + $actualNbThumbnails)){
+//            break;
+//        }else{
+//
+//            $arrayThumbnailsToAjax[$activity_count['title']]['title'] = $activity_count['title'];
+//            $arrayThumbnailsToAjax[$activity_count['title']]['img_alt_text'] = $activity_count['img_alt_text'];
+//            $arrayThumbnailsToAjax[$activity_count['title']]['img_uri'] = $activity_count['img_uri'];
+//            $arrayThumbnailsToAjax[$activity_count['title']]['intermediate_path'] = $activity_count['intermediate_path'];
+//            $arrayThumbnailsToAjax[$activity_count['title']]['base_url'] = $base_url;
+//
+//            if($totalNbThumbnails <= (variable_get('all_act_nb_thumbnails') + $actualNbThumbnails)){
+//                $arrayThumbnailsToAjax[$activity_count['title']]['is_every_thumbnails_loaded'] = true;
+//            }else{
+//                $arrayThumbnailsToAjax[$activity_count['title']]['is_every_thumbnails_loaded'] = false;
+//            }
+//        }
+//
+//        $counterNbThumbnails++;
+//    }
+//
+//    drupal_json_output($arrayThumbnailsToAjax);
+//}
 
 function memory_blocks_init() {
+
+    drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/memory_basic_forms.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
 
     drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/memory_menu.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
     drupal_add_js(drupal_get_path('module', 'memory_blocks') . '/js/memory_menu.js', array('group' => JS_DEFAULT, 'every_page' => TRUE));
@@ -275,15 +268,12 @@ function memory_blocks_init() {
 
     // If user click on activities tab, link css and js file
     if(preg_match("/^.*\/activity-categories/", $_SERVER['REQUEST_URI'])){
-
         drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/memory-all-activities.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
-        drupal_add_js(drupal_get_path('module', 'memory_blocks') . '/js/memory-all-activities.js', array('group' => JS_DEFAULT, 'every_page' => TRUE));
     }
 
     // If user is on activities intermediate page, link css and js file
     if(preg_match("/^.*\/activites\/.*$/", $_SERVER['REQUEST_URI'])){
         drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/memory-act-dest.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
-        drupal_add_js(drupal_get_path('module', 'memory_blocks') . '/js/memory-act-dest.js', array('group' => JS_DEFAULT, 'every_page' => TRUE));
     }
 
     // Add style and javascript for destinations page containing activities thumbnails
@@ -292,15 +282,30 @@ function memory_blocks_init() {
 
     // Add style and javascript for activities page containing activities thumbnails
     drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/memory_activities.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
-    drupal_add_js(drupal_get_path('module', 'memory_blocks') . '/js/memory_activities.js', array('group' => JS_DEFAULT, 'every_page' => TRUE));
 
+    drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/memory_responsive.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
+    drupal_add_js(drupal_get_path('module', 'memory_blocks') . '/js/memory_responsive.js', array('group' => JS_DEFAULT, 'every_page' => TRUE));
+
+    // Add JS file to manage activity filters (Pack, Activité de jour, de nuit, transfert et hébergement)
+    drupal_add_js(drupal_get_path('module', 'memory_blocks') . '/js/memory_activity_filters.js', array('group' => JS_DEFAULT, 'every_page' => TRUE));
 }
 
 /**
- * Implements memory_blocks_admin_redirect()
+ * Implements memory_blocks_admin_global_parameters()
  */
-function memory_blocks_admin_redirect(){
-    drupal_goto("admin/Memory/social-networks-manager");
+function memory_blocks_admin_global_parameters(){
+    // drupal_goto("admin/Memory/social-networks-manager");
+
+    $form['global_parameter_email'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Panier utilisateur - E-mail'),
+      '#description' => t('E-mail d\'envoi du panier utilisateur.'),
+      '#default_value' => variable_get('global_parameter_email'),
+      '#maxlength' => 512,
+      '#weight' => 1,
+    );
+
+    return system_settings_form($form);
 }
 
 /**
@@ -538,11 +543,6 @@ function memory_blocks_theme($existing, $type, $theme, $path) {
             'path' => drupal_get_path('module', 'memory_blocks'),
             'variables' => array('infos' => NULL),
         ),
-        'tpl_memory_reviews' => array(
-            'template' => 'tpl/memory_reviews',
-            'path' => drupal_get_path('module', 'memory_blocks'),
-            'variables' => array('infos' => NULL),
-        ),
         'tpl_memory_top_destinations' => array(
             'template' => 'tpl/memory_top_destinations',
             'path' => drupal_get_path('module', 'memory_blocks'),
@@ -553,11 +553,6 @@ function memory_blocks_theme($existing, $type, $theme, $path) {
             'path' => drupal_get_path('module', 'memory_blocks'),
             'variables' => array('infos' => NULL),
         ),
-        'tpl_memory_footer' => array(
-            'template' => 'tpl/memory_footer',
-            'path' => drupal_get_path('module', 'memory_blocks'),
-            'variables' => array('infos' => NULL),
-        ),
         'tpl_memory_slider' => array(
             'template' => 'tpl/memory_slider',
             'path' => drupal_get_path('module', 'memory_blocks'),
@@ -565,11 +560,6 @@ function memory_blocks_theme($existing, $type, $theme, $path) {
         ),
         'tpl_memory_go_top_page' => array(
             'template' => 'tpl/memory_go_top_page',
-            'path' => drupal_get_path('module', 'memory_blocks'),
-            'variables' => array('infos' => NULL),
-        ),
-        'tpl_memory_bug_report' => array(
-            'template' => 'tpl/memory_bug_report',
             'path' => drupal_get_path('module', 'memory_blocks'),
             'variables' => array('infos' => NULL),
         ),
@@ -602,15 +592,6 @@ function memory_blocks_block_info() {
       'pages' => '<front>',
     );
 
-    $blocks['memory_reviews'] = array(
-      'info' => t('Memory Reviews'),
-      'weight' => 2,
-      'status' => 1,
-      'region' => 'content',
-      'visibility' => BLOCK_VISIBILITY_LISTED,
-      'pages' => '<front>',
-    );
-
     $blocks['memory_top_destinations'] = array(
       'info' => t('Memory Top Destinations'),
       'weight' => 3,
@@ -629,14 +610,6 @@ function memory_blocks_block_info() {
       'pages' => '<front>',
     );
 
-    $blocks['memory_footer'] = array(
-      'info' => t('Memory Footer'),
-      'weight' => 1,
-      'status' => 1,
-      'region' => 'footer',
-      'visibility' => BLOCK_VISIBILITY_NOTLISTED,
-    );
-
     $blocks['memory_slider'] = array(
       'info' => t('Memory Slider'),
       'weight' => 1,
@@ -649,14 +622,6 @@ function memory_blocks_block_info() {
     $blocks['memory_go_top_page'] = array(
       'info' => t('Memory Go Top Page'),
       'weight' => 5,
-      'status' => 1,
-      'region' => 'content',
-      'visibility' => BLOCK_VISIBILITY_NOTLISTED,
-    );
-
-    $blocks['memory_bug_report'] = array(
-      'info' => t('Memory Bug Report'),
-      'weight' => 6,
       'status' => 1,
       'region' => 'content',
       'visibility' => BLOCK_VISIBILITY_NOTLISTED,
@@ -709,65 +674,45 @@ function memory_blocks_block_view($delta = '') {
             );
 
             break;
-        case 'memory_reviews':
-
-            // Link the template
-            $block['content']['#markup'] = theme('tpl_memory_reviews');
-
-            // Link a css file
-            $block['content']['#attached']['css'][] = array(
-                'data' => drupal_get_path('module', 'memory_blocks') . '/css/memory_reviews.css',
-                'type' => 'file'
-            );
-
-            break;
         case 'memory_top_destinations':
 
             $data['title'] = variable_get("top_destinations_title");
             $description = variable_get("top_destinations_description");
             $data['description'] = $description['value'];
 
-            /* Initialize Top destination variables */
-            $top_destinations_1 = variable_get('top_destinations_1', array());
-            $top_destinations_2 = variable_get('top_destinations_2', array());
-            $top_destinations_3 = variable_get('top_destinations_3', array());
-            $top_destinations_4 = variable_get('top_destinations_4', array());
-            $top_destinations_5 = variable_get('top_destinations_5', array());
-            $top_destinations_6 = variable_get('top_destinations_6', array());
-            $top_destinations_7 = variable_get('top_destinations_7', array());
-            $top_destinations_8 = variable_get('top_destinations_8', array());
-            $top_destinations_9 = variable_get('top_destinations_9', array());
+            $arrayAllDestinations = array();
 
-            $arrayAll = array();
+            for ($i = 1; $i <= variable_get('top_destinations_nb'); $i++) {
 
-            for ($i = 1; $i <= 9; $i++) {
+              $arrayTopDestinations = variable_get('top_destinations_' . $i, array());
 
-                $stringArrayName = "top_destinations_" . $i;
+              if($arrayTopDestinations["display"] == 0){ // Display = published
 
-                // Check if the array is set
-                if (isset($$stringArrayName)) {
+                if (
+                  !empty($arrayTopDestinations['name']) &&
+                  !empty($arrayTopDestinations['image']) &&
+                  !empty($arrayTopDestinations['url'])
+                ){
+                  /*
+                   * $arrayName['image'] correspond to the fid
+                   * Load the file by its fid.
+                   * Create the URL file by using the file URI
+                   */
+                  $file = file_load($arrayTopDestinations['image']);
+                  $url = image_style_url("large", $file->uri);
+                  $arrayTopDestinations['image'] = $url;
 
-                    // If the array is set, copy the variable to use its values
-                    $arrayName = $$stringArrayName;
-
-                    // Check if all of its values are filled
-                    if (!empty($arrayName['name']) && !empty($arrayName['image']) && !empty($arrayName['url'])) {
-
-                        /*
-                         * $arrayName['image'] correspond to the fid
-                         * Load the file by its fid.
-                         * Create the URL file by using the file URI
-                         */
-                        $file = file_load($arrayName['image']);
-                        $url = file_create_url($file->uri);
-                        $arrayName['image'] = $url;
-
-                        array_push($arrayAll, $arrayName);
-                    }
+                  array_push($arrayAllDestinations, $arrayTopDestinations);
                 }
+              }
             }
 
-            $data['arrayAllDatas'] = $arrayAll;
+            // Order array by weight
+            usort($arrayAllDestinations, function($a, $b) {
+              return $b['weight'] <=> $a['weight'];
+            });
+
+            $data['arrayAllDestinations'] = $arrayAllDestinations;
 
             // Link the template
             $block['content']['#markup'] = theme('tpl_memory_top_destinations', $data);
@@ -785,50 +730,39 @@ function memory_blocks_block_view($delta = '') {
             $description = variable_get("top_activities_description");
             $data['description'] = $description['value'];
 
-            /* Initialize Top activities variables */
-            $top_activities_1 = variable_get('top_activities_1', array());
-            $top_activities_2 = variable_get('top_activities_2', array());
-            $top_activities_3 = variable_get('top_activities_3', array());
-            $top_activities_4 = variable_get('top_activities_4', array());
-            $top_activities_5 = variable_get('top_activities_5', array());
-            $top_activities_6 = variable_get('top_activities_6', array());
-            $top_activities_7 = variable_get('top_activities_7', array());
-            $top_activities_8 = variable_get('top_activities_8', array());
-            $top_activities_9 = variable_get('top_activities_9', array());
-            $top_activities_10 = variable_get('top_activities_10', array());
-            $top_activities_11 = variable_get('top_activities_11', array());
-            $top_activities_12 = variable_get('top_activities_12', array());
+            $arrayAllActivities = array();
 
-            $arrayAll = array();
+            for ($i = 1; $i <= variable_get('top_activities_nb'); $i++) {
 
-            for ($i = 1; $i <= 12; $i++) {
+              $arrayTopActivities = variable_get('top_activities_' . $i, array());
 
-                $stringArrayName = "top_activities_" . $i;
+              if($arrayTopActivities["display"] == 0){ // Display = published
 
-                // Check if the array is set
-                if (isset($$stringArrayName)) {
+                if (
+                  !empty($arrayTopActivities['name']) &&
+                  !empty($arrayTopActivities['image']) &&
+                  !empty($arrayTopActivities['url'])
+                ){
+                  /*
+                   * $arrayName['image'] correspond to the fid
+                   * Load the file by its fid.
+                   * Create the URL file by using the file URI
+                   */
+                  $file = file_load($arrayTopActivities['image']);
+                  $url = image_style_url("large", $file->uri);
+                  $arrayTopActivities['image'] = $url;
 
-                    // If the array is set, copy the variable to use its values
-                    $arrayName = $$stringArrayName;
-
-                    // Check if all of its values are filled
-                    if (!empty($arrayName['name']) && !empty($arrayName['image']) && !empty($arrayName['url'])) {
-
-                        /*
-                         * $arrayName['image'] correspond to the fid
-                         * Load the file by its fid.
-                         * Create the URL file by using the file URI
-                         */
-                        $file = file_load($arrayName['image']);
-                        $url = file_create_url($file->uri);
-                        $arrayName['image'] = $url;
-
-                        array_push($arrayAll, $arrayName);
-                    }
+                  array_push($arrayAllActivities, $arrayTopActivities);
                 }
+              }
             }
 
-            $data['arrayAllDatas'] = $arrayAll;
+            // Order array by weight
+            usort($arrayAllActivities, function($a, $b) {
+              return $b['weight'] <=> $a['weight'];
+            });
+
+            $data['arrayAllActivities'] = $arrayAllActivities;
 
             // Link the template
             $block['content']['#markup'] = theme('tpl_memory_top_activities', $data);
@@ -836,79 +770,6 @@ function memory_blocks_block_view($delta = '') {
             // Link a css file
             $block['content']['#attached']['css'][] = array(
                 'data' => drupal_get_path('module', 'memory_blocks') . '/css/memory_top_activities.css',
-                'type' => 'file'
-            );
-
-            break;
-        case 'memory_footer':
-
-            /* Footer Column Society */
-            $data['footer_column_1'] = variable_get("footer_column_1", array());
-            $data['footer_column_1'] = $data['footer_column_1']['society']['value'];
-
-            /* Footer Column Contact */
-            $data['footer_column_2'] = variable_get("footer_column_2", array());
-            $data['footer_column_2'] = $data['footer_column_2']['contact']['value'];
-
-            /* Footer Column Communication */
-            $data['footer_column_3'] = variable_get("footer_column_3", array());
-            $data['footer_column_3'] = $data['footer_column_3']['communication']['value'];
-
-            /* Footer Column You and Us */
-            $data['footer_column_4'] = variable_get("footer_column_4", array());
-            $data['footer_column_4'] = $data['footer_column_4']['youandus']['value'];
-
-            /* Footer Column Certifications */
-            $data['footer_column_5'] = variable_get("footer_column_5", array());
-            $data['footer_column_5'] = $data['footer_column_5']['certifications']['value'];
-
-            /* Facebook */
-            $data['facebook'] = variable_get('facebook', array());
-            $data['facebook_url'] = $data['facebook']['url'];
-            $facebook_display_type = $data['facebook']['display_type'];
-
-            if ($facebook_display_type == 0) {
-
-                $data['facebook_display_type'] = "button";
-            } else {
-
-                $data['facebook_display_type'] = "button_count";
-            }
-            $data['facebook_display_height'] = "30";
-
-            /* Twitter */
-            $data['twitter'] = variable_get('twitter', array());
-            $data['twitter_url'] = $data['twitter']['url'];
-            $data['twitter_display_height'] = "30";
-
-            /* Social networks */
-            $footer_social_networks = variable_get('footer_social_networks', array());
-
-            $data["array_size_snl"] = sizeof($footer_social_networks);
-
-            for ($i = 1; $i <= sizeof($footer_social_networks); $i++) {
-
-                $data["social_networks_" . $i . "_name"] = $footer_social_networks["social_networks_" . $i]["name"];
-                $data["social_networks_" . $i . "_url"] = $footer_social_networks["social_networks_" . $i]["url"];
-                $data["social_networks_" . $i . "_icon"] = $footer_social_networks["social_networks_" . $i]["icon"];
-            }
-
-            /* Partners */
-            $data['footer_partners'] = variable_get('footer_partners', array());
-            $data['footer_partners'] = $data['footer_partners']['partners']['value'];
-
-            // Link the template
-            $block['content']['#markup'] = theme('tpl_memory_footer', $data);
-
-            // Link a css file
-            $block['content']['#attached']['css'][] = array(
-                'data' => drupal_get_path('module', 'memory_blocks') . '/css/memory_footer.css',
-                'type' => 'file'
-            );
-
-            // Link a js file
-            $block['content']['#attached']['js'][] = array(
-                'data' => drupal_get_path('module', 'memory_blocks') . '/js/memory_footer.js',
                 'type' => 'file'
             );
 
@@ -957,7 +818,6 @@ function memory_blocks_block_view($delta = '') {
                 $data['video_autoplay'] = $video['autoplay'];
                 $data['video_controls'] = $video['controls'];
                 $data['video_loop'] = $video['loop'];
-                $data['video_muted'] = $video['muted'];
                 $data['video_poster'] = $video['poster'];
                 $data['video_redirection_link'] = $video['redirection_link'];
 
@@ -1028,24 +888,6 @@ function memory_blocks_block_view($delta = '') {
             );
 
             break;
-        case 'memory_bug_report':
-
-            // Link the template
-            $block['content']['#markup'] = theme('tpl_memory_bug_report');
-
-            // Link a css file
-            $block['content']['#attached']['css'][] = array(
-                'data' => drupal_get_path('module', 'memory_blocks') . '/css/memory_bug_report.css',
-                'type' => 'file'
-            );
-
-            // Link a js file
-            $block['content']['#attached']['js'][] = array(
-                'data' => drupal_get_path('module', 'memory_blocks') . '/js/memory_bug_report.js',
-                'type' => 'file'
-            );
-
-            break;
         case 'memory_3_columns_block':
 
             $data['mcb_title'] = variable_get('mcb_title');
@@ -1063,6 +905,7 @@ function memory_blocks_block_view($delta = '') {
             $url = file_create_url($file->uri);
             $data['mcb_column_1_picto'] = $url;
 
+            $data['mcb_column_1_height'] = $mcb_column_1['mcb_height'];
             $data['mcb_column_1_text'] = $mcb_column_1['mcb_text']['value'];
 
             // Bloc 2
@@ -1076,6 +919,7 @@ function memory_blocks_block_view($delta = '') {
             $url = file_create_url($file->uri);
             $data['mcb_column_2_picto'] = $url;
 
+            $data['mcb_column_2_height'] = $mcb_column_2['mcb_height'];
             $data['mcb_column_2_text'] = $mcb_column_2['mcb_text']['value'];
 
             // Bloc 3
@@ -1089,6 +933,7 @@ function memory_blocks_block_view($delta = '') {
             $url = file_create_url($file->uri);
             $data['mcb_column_3_picto'] = $url;
 
+            $data['mcb_column_3_height'] = $mcb_column_3['mcb_height'];
             $data['mcb_column_3_text'] = $mcb_column_3['mcb_text']['value'];
 
             $mcb_text_2 = variable_get('mcb_text_2', array());
@@ -1106,45 +951,132 @@ function memory_blocks_block_view($delta = '') {
             break;
         case 'memory_switch_activities':
 
+            $vocabulary = taxonomy_vocabulary_machine_name_load('activite');
+            $v_activities = entity_load('taxonomy_term', FALSE, array('vid' => $vocabulary->vid));
+
+            // Ascendant sorting of group of activities ("Activités de nuits", "Transfert", "Nos packs"...) depending on their weight
+            $nb_act = count($v_activities);
+            $activities = array();
+            $count = 0;
+            for ($i = 0; $count < $nb_act; $i++) {
+              if (!empty($v_activities[$i])){
+                if ($v_activities[$i]->weight == $count) {
+                  $activities[$i] = $v_activities[$i];
+                  $count++;
+                  $i = 0;
+                }
+              }
+            }
+
+            if(isset($_GET["category"]) && !empty($_GET["category"])){ // Get category TID (EVG, EVJF...) coming from intermediate page
+              $is_category_target = true;
+            }
+
             /* ------------------------------- Retrieve the destination of the activity ------------------------------- */
-            $activity_nid = explode("/", current_path())[1];
+            $activity_nid = explode("node/", current_path())[1];
             $activity_node_load = node_load($activity_nid);
 
             // Get the Destination field value of the activity
             $activity_field_dest = field_get_items("node", $activity_node_load, "field_acti_content_desti");
-
             // Get the destination TID
             $dest_tid = $activity_field_dest[0]["tid"];
 
-            $query = db_select('field_data_field_acti_content_desti', 'acd');
-            $query->fields('acd', array('entity_id'));
-            $query->condition('acd.field_acti_content_desti_tid', $dest_tid, '=');
+            // Get the Category field value of the activity (Activité de jour, Activité de nuit...)
+//            $activity_field_act_cat = field_get_items("node", $activity_node_load, "field_acti_cont_cat");
+//            $act_cat_tid = $activity_field_act_cat[0]["tid"];
+
+            $query = new EntityFieldQuery();
+            $query->entityCondition('entity_type', 'node')
+              ->entityCondition('bundle', 'activite')
+              ->propertyCondition('status', 1)
+              ->fieldCondition('field_acti_content_desti', 'tid', $dest_tid, '=');
+//              ->fieldCondition('field_acti_cont_cat', 'tid', $act_cat_tid, '=');
             $results = $query->execute();
 
             $array_activities = array();
 
-            foreach ($results as $result) {
+            foreach ($results["node"] as $result) {
 
-                array_push($array_activities, $result->entity_id);
+              $node = node_load($result->nid);
+
+              $activity_category_field = field_get_items("node", $node, "field_activity_category");
+              $is_node_to_display = false;
+
+              if($is_category_target){ // Mean we need to filter by the activity category targeted (EVG, EVJF...)
+
+                foreach ($activity_category_field as $activity_category){
+
+                  if($activity_category["tid"] == $_GET["category"]){
+                    $is_node_to_display = true;
+                  }
+                }
+              }else{
+                $is_node_to_display = true;
+              }
+
+              if($is_node_to_display){
+
+                $activity_tid_field = field_get_items('node', $node, 'field_acti_cont_cat');
+                $activity_tid = $activity_tid_field[0]["tid"];
+
+                $activity_weight_field = field_get_items('node', $node, 'field_weight');
+                $activity_weight = ( empty($activity_weight_field[0]["value"]) ) ? 0 : $activity_weight_field[0]["value"];
+
+                $activity_custom_title_field = field_get_items('node', $node, 'field_activity_title');
+                $activity_custom_title = $activity_custom_title_field[0]["value"];
+
+                $array_activities[$activities[$activity_tid]->weight][$activity_weight][$node->nid] = array(
+                  'custom_title' => $activity_custom_title,
+                  'node_nid' => $node->nid,
+                );
+              }
             }
 
+            // Sort array by activity category weight
+            ksort($array_activities);
+
+            foreach ($activities as $activity) {
+
+              // Sort array by activity weight
+              krsort($array_activities[$activity->weight]);
+            }
+
+            // Construct good array
+            $array_activities_refactored = array();
+
+            foreach ($array_activities as $array_activity_weight){
+
+              foreach($array_activity_weight as $array_activity){
+
+                // Sort by activities name alphabetically
+                asort($array_activity);
+
+                foreach($array_activity as $array_activity_nid){
+
+                  array_push($array_activities_refactored, $array_activity_nid["node_nid"]);
+                }
+              }
+            }
+
+//          drupal_set_message("<pre>" . print_r($array_activities_refactored, true) . "</pre>");
+
             // Get the index position of the current activity
-            $current_activity_index = array_search($activity_nid, $array_activities);
+            $current_activity_index = array_search($activity_nid, $array_activities_refactored);
 
             if ($current_activity_index == 0) {
 
-                $previous_activity_nid = $array_activities[sizeof($array_activities) - 1];
-                $next_activity_nid = $array_activities[$current_activity_index + 1];
+                $previous_activity_nid = $array_activities_refactored[sizeof($array_activities_refactored) - 1];
+                $next_activity_nid = $array_activities_refactored[$current_activity_index + 1];
 
-            } elseif ($current_activity_index == (sizeof($array_activities) - 1)){
+            } elseif ($current_activity_index == (sizeof($array_activities_refactored) - 1)){
 
-                $previous_activity_nid = $array_activities[$current_activity_index - 1];
-                $next_activity_nid = $array_activities[0];
+                $previous_activity_nid = $array_activities_refactored[$current_activity_index - 1];
+                $next_activity_nid = $array_activities_refactored[0];
 
             }else{
 
-                $previous_activity_nid = $array_activities[$current_activity_index - 1];
-                $next_activity_nid = $array_activities[$current_activity_index + 1];
+                $previous_activity_nid = $array_activities_refactored[$current_activity_index - 1];
+                $next_activity_nid = $array_activities_refactored[$current_activity_index + 1];
             }
 
             // Set the previous activity PATH
@@ -1204,7 +1136,6 @@ function memory_blocks_3_columns_block_admin_form($form, &$form_state){
         '#type' => 'text_format',
         '#format' => 'wysiwyg',
         '#default_value' => $mcb_text_1['value'],
-//        '#default_value' => $footer_column_1['society']['value'],
         '#title' => t('Texte n°1'),
         '#weight' => 1,
     );
@@ -1229,10 +1160,6 @@ function memory_blocks_3_columns_block_admin_form($form, &$form_state){
         '#media_options' => array(
             'global' => array(
                 'file_directory'  => 'icons_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
                 'file_extensions' => 'png gif jpg jpeg',
                 'max_filesize'    => '2 MB',
                 'uri_scheme'      => 'public',
@@ -1245,12 +1172,23 @@ function memory_blocks_3_columns_block_admin_form($form, &$form_state){
         '#weight' => 1,
     );
 
+    $form['mcb_column_1']['mcb_height'] = array(
+      '#type' => 'textfield',
+      '#attributes' => array(
+        ' type' => 'number', // insert space before attribute name
+        ' min' => '0',
+      ),
+      '#default_value' => $mcb_column_1['mcb_height'],
+      '#title' => t('Height of the pictogram'),
+      '#weight' => 2,
+    );
+
     $form['mcb_column_1']['mcb_text'] = array(
         '#type' => 'text_format',
         '#format' => 'wysiwyg',
         '#default_value' => $mcb_column_1['mcb_text']['value'],
         '#title' => t('Bloc 1 - Texte'),
-        '#weight' => 2,
+        '#weight' => 3,
     );
 
     /* Column 2 */
@@ -1273,10 +1211,6 @@ function memory_blocks_3_columns_block_admin_form($form, &$form_state){
         '#media_options' => array(
             'global' => array(
                 'file_directory'  => 'icons_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
                 'file_extensions' => 'png gif jpg jpeg',
                 'max_filesize'    => '2 MB',
                 'uri_scheme'      => 'public',
@@ -1289,12 +1223,23 @@ function memory_blocks_3_columns_block_admin_form($form, &$form_state){
         '#weight' => 1,
     );
 
+    $form['mcb_column_2']['mcb_height'] = array(
+      '#type' => 'textfield',
+      '#attributes' => array(
+        ' type' => 'number', // insert space before attribute name
+        ' min' => '0',
+      ),
+      '#default_value' => $mcb_column_2['mcb_height'],
+      '#title' => t('Height of the pictogram'),
+      '#weight' => 2,
+    );
+
     $form['mcb_column_2']['mcb_text'] = array(
         '#type' => 'text_format',
         '#format' => 'wysiwyg',
         '#default_value' => $mcb_column_2['mcb_text']['value'],
         '#title' => t('Bloc 2 - Texte'),
-        '#weight' => 2,
+        '#weight' => 3,
     );
 
     /* Column 3 */
@@ -1317,10 +1262,6 @@ function memory_blocks_3_columns_block_admin_form($form, &$form_state){
         '#media_options' => array(
             'global' => array(
                 'file_directory'  => 'icons_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
                 'file_extensions' => 'png gif jpg jpeg',
                 'max_filesize'    => '2 MB',
                 'uri_scheme'      => 'public',
@@ -1333,12 +1274,23 @@ function memory_blocks_3_columns_block_admin_form($form, &$form_state){
         '#weight' => 1,
     );
 
+    $form['mcb_column_3']['mcb_height'] = array(
+      '#type' => 'textfield',
+      '#attributes' => array(
+        ' type' => 'number', // insert space before attribute name
+        ' min' => '0',
+      ),
+      '#default_value' => $mcb_column_3['mcb_height'],
+      '#title' => t('Height of the pictogram'),
+      '#weight' => 2,
+    );
+
     $form['mcb_column_3']['mcb_text'] = array(
         '#type' => 'text_format',
         '#format' => 'wysiwyg',
         '#default_value' => $mcb_column_3['mcb_text']['value'],
         '#title' => t('Bloc 3 - Texte'),
-        '#weight' => 2,
+        '#weight' => 3,
     );
 
     $mcb_text_2 = variable_get('mcb_text_2', array());
@@ -1358,11 +1310,24 @@ function memory_blocks_top_destinations_admin_form($form, &$form_state) {
 
     global $base_url;
 
+    $form['top_destinations_nb'] = array(
+      '#type' => 'textfield',
+      '#attributes' => array(
+        ' type' => 'number', // insert space before attribute name
+        ' min' => '0',
+      ),
+      '#default_value' => variable_get('top_destinations_nb', 9),
+      '#title' => t('Number of Top Destinations'),
+      '#description' => t('By default the number of Top Destinations equals to 9 but if you can change this number filling this field then save the configuration.'),
+      '#required' => TRUE,
+      '#weight' => 1,
+    );
+
     $form['top_destinations_title'] = array(
         '#type' => 'textfield',
         '#default_value' => variable_get('top_destinations_title', 'Top destinations'),
         '#title' => t('Titre'),
-        '#weight' => 1,
+        '#weight' => 3,
         '#required' => TRUE,
     );
 
@@ -1373,22 +1338,29 @@ function memory_blocks_top_destinations_admin_form($form, &$form_state) {
         '#format' => 'wysiwyg',
         '#default_value' => $description['value'],
         '#title' => t('Description'),
-        '#weight' => 2,
+        '#weight' => 4,
     );
 
     /* Top destination */
-    for( $i = 1 ; $i < 10 ; $i++ ){
+    for( $i = 1 ; $i <= variable_get('top_destinations_nb') ; $i++ ){
+
+        $top_destinations_nbr = variable_get('top_destinations_' . $i, array());
 
         $form['top_destinations_' . $i] = array(
             '#type' => 'fieldset',
-            '#title' => t('Destination n°' . $i),
-            '#weight' => 2 + $i,
+            '#title' => (!empty($top_destinations_nbr['name'])) ? t('Destination - ' . $top_destinations_nbr['name']) : t('Destination'),
+            '#weight' => 4 + $i,
             '#collapsible' => TRUE,
-            '#collapsed' => FALSE,
-            '#tree' => TRUE
+            '#collapsed' => TRUE,
+            '#tree' => TRUE,
+            '#prefix' =>
+              '<div style="position:relative;">' .
+                '<p style="position: absolute;top: 7px;right: 10px;height: auto;margin: 0;display: flex;flex-direction: row;align-items: center;">' .
+                  $top_destinations_nbr['weight'] .
+                  '&nbsp<span style="display: block;width: 15px;height: 15px;border-radius: 50px;background-color:' . (($top_destinations_nbr['display'] == 0) ? '#46D00E' : '#ECAD1D') . '"></span>' .
+                '</p>',
+            '#suffix' => '</div>',
         );
-
-        $top_destinations_nbr = variable_get('top_destinations_' . $i, array());
 
         $form['top_destinations_' . $i]['name'] = array(
             '#type' => 'textfield',
@@ -1400,14 +1372,9 @@ function memory_blocks_top_destinations_admin_form($form, &$form_state) {
             '#title'         => 'Image',
             '#theme'         => 'media_widget', // Without that, you only get text input
             '#default_value' => $top_destinations_nbr['image'], //The fid
-//        '#default_value' => variable_get('image_saved', NULL), //The fid
             '#media_options' => array(
                 'global' => array(
                     'file_directory'  => 'image_folder',
-                    'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                        'upload',
-                        'media_default--media_browser_my_files'
-                    ),
                     'file_extensions' => 'png gif jpg jpeg',
                     'max_filesize'    => '2 MB',
                     'uri_scheme'      => 'public',
@@ -1425,6 +1392,21 @@ function memory_blocks_top_destinations_admin_form($form, &$form_state) {
             '#default_value' => $top_destinations_nbr['url'],
             '#maxlength' => 512,
         );
+
+        $form['top_destinations_' . $i]['display'] = array(
+          '#type' => 'radios',
+          '#title' => t('Affichage'),
+          '#default_value' => (isset($top_destinations_nbr['display'])) ? $top_destinations_nbr['display'] : 1,
+          '#options' => array(0 => "Publié", 1 => "Non publié"),
+        );
+
+        $form['top_destinations_' . $i]['weight'] = array(
+          '#type' => 'weight',
+          '#title' => t('Weight'),
+          '#default_value' => $top_destinations_nbr['weight'],
+          '#delta' => 25,
+          '#description' => 'Destination with the higher weight will be display in first.',
+        );
     }
 
     return system_settings_form($form);
@@ -1439,11 +1421,24 @@ function memory_blocks_top_activities_admin_form($form, &$form_state) {
 
     global $base_url;
 
+    $form['top_activities_nb'] = array(
+      '#type' => 'textfield',
+      '#attributes' => array(
+        ' type' => 'number', // insert space before attribute name
+        ' min' => '0',
+      ),
+      '#default_value' => variable_get('top_activities_nb', 9),
+      '#title' => t('Number of Top Activities'),
+      '#description' => t('By default the number of Top Activities equals to 9 but if you can change this number filling this field then save the configuration.'),
+      '#required' => TRUE,
+      '#weight' => 1,
+    );
+
     $form['top_activities_title'] = array(
         '#type' => 'textfield',
         '#default_value' => variable_get('top_activities_title', 'Top activités'),
         '#title' => t('Titre'),
-        '#weight' => 1,
+        '#weight' => 2,
         '#required' => TRUE,
     );
 
@@ -1454,23 +1449,29 @@ function memory_blocks_top_activities_admin_form($form, &$form_state) {
         '#format' => 'wysiwyg',
         '#default_value' => $description['value'],
         '#title' => t('Description'),
-        '#weight' => 2,
+        '#weight' => 3,
     );
 
-
     /* Top activity */
-    for( $i = 1 ; $i < 13 ; $i++ ){
+    for( $i = 1 ; $i <= variable_get('top_activities_nb') ; $i++ ){
+
+        $top_activities_nbr = variable_get('top_activities_' . $i, array());
 
         $form['top_activities_' . $i] = array(
             '#type' => 'fieldset',
-            '#title' => t('Activity n°' . $i),
-            '#weight' => 2 + $i,
+            '#title' => (!empty($top_activities_nbr['name'])) ? t('Activity - ' . $top_activities_nbr['name']) : t('Activity'),
+            '#weight' => 3 + $i,
             '#collapsible' => TRUE,
-            '#collapsed' => FALSE,
-            '#tree' => TRUE
+            '#collapsed' => TRUE,
+            '#tree' => TRUE,
+            '#prefix' =>
+              '<div style="position:relative;">' .
+              '<p style="position: absolute;top: 7px;right: 10px;height: auto;margin: 0;display: flex;flex-direction: row;align-items: center;">' .
+              $top_activities_nbr['weight'] .
+              '&nbsp<span style="display: block;width: 15px;height: 15px;border-radius: 50px;background-color:' . (($top_activities_nbr['display'] == 0) ? '#46D00E' : '#ECAD1D') . '"></span>' .
+              '</p>',
+            '#suffix' => '</div>',
         );
-
-        $top_activities_nbr = variable_get('top_activities_' . $i, array());
 
         $form['top_activities_' . $i]['name'] = array(
             '#type' => 'textfield',
@@ -1483,14 +1484,9 @@ function memory_blocks_top_activities_admin_form($form, &$form_state) {
             '#title'         => 'Image',
             '#theme'         => 'media_widget', // Without that, you only get text input
             '#default_value' => $top_activities_nbr['image'], //The fid
-    //        '#default_value' => variable_get('image_saved', NULL), //The fid
             '#media_options' => array(
                 'global' => array(
                     'file_directory'  => 'image_folder',
-    //                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-    //                    'upload',
-    //                    'media_default--media_browser_my_files'
-    //                ),
                     'file_extensions' => 'png gif jpg jpeg',
                     'max_filesize'    => '2 MB',
                     'uri_scheme'      => 'public',
@@ -1508,235 +1504,22 @@ function memory_blocks_top_activities_admin_form($form, &$form_state) {
             '#default_value' => $top_activities_nbr['url'],
             '#maxlength' => 512,
         );
-    }
 
-    return system_settings_form($form);
-}
-
-function memory_blocks_footer_admin_form($form, &$form_state) {
-
-    /* Society Column */
-    $form['footer_column_1'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Colonne Société'),
-        '#weight' => 1,
-        '#collapsible' => TRUE,
-        '#collapsed' => TRUE,
-        '#tree' => TRUE
-    );
-
-    $footer_column_1 = variable_get('footer_column_1', array());
-
-    $form['footer_column_1']['society'] = array(
-        '#type' => 'text_format',
-        '#format' => 'wysiwyg',
-        '#default_value' => $footer_column_1['society']['value'],
-        '#title' => t('Société'),
-        '#weight' => 1,
-    );
-
-    /* Contact Column */
-    $form['footer_column_2'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Colonne Contact'),
-        '#weight' => 2,
-        '#collapsible' => TRUE,
-        '#collapsed' => TRUE,
-        '#tree' => TRUE
-    );
-
-    $footer_column_2 = variable_get('footer_column_2', array());
-
-    $form['footer_column_2']['contact'] = array(
-        '#type' => 'text_format',
-        '#format' => 'wysiwyg',
-        '#default_value' => $footer_column_2['contact']['value'],
-        '#title' => t('Contact'),
-        '#weight' => 1,
-    );
-
-    /* Communication Column */
-    $form['footer_column_3'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Colonne Communication'),
-        '#weight' => 3,
-        '#collapsible' => TRUE,
-        '#collapsed' => TRUE,
-        '#tree' => TRUE
-    );
-
-    $footer_column_3 = variable_get('footer_column_3', array());
-
-    $form['footer_column_3']['communication'] = array(
-        '#type' => 'text_format',
-        '#format' => 'wysiwyg',
-        '#default_value' => $footer_column_3['communication']['value'],
-        '#title' => t('Communication'),
-        '#weight' => 1,
-    );
-
-    /* You and Us Column */
-    $form['footer_column_4'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Colonne Vous et Nous'),
-        '#weight' => 4,
-        '#collapsible' => TRUE,
-        '#collapsed' => TRUE,
-        '#tree' => TRUE
-    );
-
-    $footer_column_4 = variable_get('footer_column_4', array());
-
-    $form['footer_column_4']['youandus'] = array(
-        '#type' => 'text_format',
-        '#format' => 'wysiwyg',
-        '#default_value' => $footer_column_4['youandus']['value'],
-        '#title' => t('Vous et Nous'),
-        '#weight' => 1,
-    );
-
-    /* Certifications Column */
-    $form['footer_column_5'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Colonne Certifications'),
-        '#weight' => 5,
-        '#collapsible' => TRUE,
-        '#collapsed' => TRUE,
-        '#tree' => TRUE
-    );
-
-    $footer_column_5 = variable_get('footer_column_5', array());
-
-    $form['footer_column_5']['certifications'] = array(
-        '#type' => 'text_format',
-        '#format' => 'wysiwyg',
-        '#default_value' => $footer_column_5['certifications']['value'],
-        '#title' => t('Certifications'),
-        '#weight' => 1,
-    );
-
-    /* Facebook Likes and Shares */
-    $form['facebook'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Facebook'),
-        '#weight' => 6,
-        '#collapsible' => TRUE,
-        '#collapsed' => TRUE,
-        '#tree' => TRUE
-    );
-
-    $facebook = variable_get('facebook', array());
-
-    $form['facebook']['url'] = array(
-        '#type' => 'textfield',
-        '#default_value' => $facebook['url'],
-        '#title' => t('URL'),
-        '#description' => t('Renseignez la partie de l\'URL correspondant à votre page Facebook.<br>Exemple : Pour l\'URL https://www.facebook.com/FacebookFrance/ , renseignez seulement FacebookFrance'),
-        '#weight' => 1,
-    );
-
-    $form['facebook']['display_type'] = array(
-        '#type' => 'radios',
-        '#title' => t('Type d\'affichage'),
-        '#default_value' => $facebook['display_type'],
-        '#options' => array(
-            0 => t('Sans le nombre de likes'),
-            1 => t('Avec le nombre de likes')
-        ),
-        '#description' => t('Choix de l\'affichage pour le bouton j\'aime de Facebook.'),
-        '#weight' => 2,
-    );
-
-    /* Twitter Tweets */
-    $form['twitter'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Twitter'),
-        '#weight' => 7,
-        '#collapsible' => TRUE,
-        '#collapsed' => TRUE,
-        '#tree' => TRUE
-    );
-
-    $twitter = variable_get('twitter', array());
-
-    $form['twitter']['url'] = array(
-        '#type' => 'textfield',
-        '#default_value' => $twitter['url'],
-        '#title' => t('URL'),
-        '#description' => t('Renseignez la partie de l\'URL correspondant à votre page Twitter.<br>Exemple : Pour l\'URL https://twitter.com/twitter , renseignez seulement twitter'),
-        '#weight' => 1,
-    );
-
-    /* Social networks */
-    $form['footer_social_networks'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Social networks'),
-        '#weight' => 8,
-        '#collapsible' => TRUE,
-        '#collapsed' => TRUE,
-        '#tree' => TRUE
-    );
-
-    $footer_social_networks = variable_get('footer_social_networks', array());
-
-    for( $i = 1 ; $i <= 5 ; $i++ ){
-
-        $form['footer_social_networks']['social_networks_'.$i] = array(
-            '#type' => 'fieldset',
-            '#title' => t('Social networks n°'.$i),
-            '#weight' => $i,
-            '#collapsible' => TRUE,
-            '#collapsed' => TRUE,
-            '#tree' => TRUE
+        $form['top_activities_' . $i]['display'] = array(
+          '#type' => 'radios',
+          '#title' => t('Affichage'),
+          '#default_value' => (isset($top_activities_nbr['display'])) ? $top_activities_nbr['display'] : 1,
+          '#options' => array(0 => "Publié", 1 => "Non publié"),
         );
 
-        $form['footer_social_networks']['social_networks_'.$i]['name'] = array(
-            '#type' => 'textfield',
-            '#title' => t('Nom'),
-            '#default_value' => $footer_social_networks['social_networks_'.$i]['name'],
-            '#weight' => 1,
-        );
-
-        $form['footer_social_networks']['social_networks_'.$i]['url'] = array(
-            '#type' => 'textfield',
-            '#title' => t('URL ou adresse e-mail'),
-            '#default_value' => $footer_social_networks['social_networks_'.$i]['url'],
-            '#weight' => 2,
-        );
-
-        $form['footer_social_networks']['social_networks_'.$i]['icon'] = array(
-            '#type' => 'textfield',
-            '#title' => t('Icône'),
-            '#description' => t(
-                'Choississez l\'icône représentant votre média sur : '.
-                '<em>https://fontawesome.com/v4.7.0/icons</em>'.
-                '<br> Puis renseigné le nom de l\'icône. '.
-                '<em>Exemple : fa-facebook</em>'
-            ),
-            '#default_value' => $footer_social_networks['social_networks_'.$i]['icon'],
-            '#weight' => 3,
+        $form['top_activities_' . $i]['weight'] = array(
+          '#type' => 'weight',
+          '#title' => t('Weight'),
+          '#default_value' => $top_activities_nbr['weight'],
+          '#delta' => 25,
+          '#description' => 'Activity with the higher weight will be display in first.',
         );
     }
-
-    /* Partners */
-    $form['footer_partners'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Partners'),
-        '#weight' => 9,
-        '#collapsible' => TRUE,
-        '#collapsed' => TRUE,
-        '#tree' => TRUE
-    );
-
-    $footer_partners = variable_get('footer_partners', array());
-
-    $form['footer_partners']['partners'] = array(
-        '#type' => 'text_format',
-        '#format' => 'wysiwyg',
-        '#default_value' => $footer_partners['partners']['value'],
-        '#title' => t('Partenaires'),
-        '#weight' => 1,
-    );
 
     return system_settings_form($form);
 }
@@ -1822,10 +1605,6 @@ function memory_blocks_slider_admin_form($form, &$form_state){
             '#media_options' => array(
                 'global' => array(
                     'file_directory'  => 'image_folder',
-                    'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                        'upload',
-                        'media_default--media_browser_my_files'
-                    ),
                     'file_extensions' => 'png gif jpg jpeg',
                     'max_filesize'    => '2 MB',
                     'uri_scheme'      => 'public',
@@ -1867,10 +1646,6 @@ function memory_blocks_slider_admin_form($form, &$form_state){
         '#media_options' => array(
             'global' => array(
                 'file_directory'  => 'videos',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
                 'file_extensions' => 'mov mp4',
                 'max_filesize'    => '200 MB',
                 'uri_scheme'      => 'public',
@@ -1890,14 +1665,6 @@ function memory_blocks_slider_admin_form($form, &$form_state){
         '#weight' => 1,
     );
 
-//    $form['video']['url_intern'] = array(
-//        '#type' => 'textfield',
-//        '#title' => t('URL Interne'),
-//        '#default_value' => $video['url_intern'],
-//        '#description' => t("Exemple d'URL interne : http://localhost/memory_website/memoire/sites/default/files/videos/<b>[nom_video].[extension]</b>"),
-//        '#weight' => 2,
-//    );
-
     $form['video']['autoplay'] = array(
         '#type' => 'radios',
         '#title' => t('Autoplay'),
@@ -1906,7 +1673,7 @@ function memory_blocks_slider_admin_form($form, &$form_state){
             0 => t('Désactiver'),
             1 => t('Activer'),
         ),
-        '#description' => t("L'autoplay permet de jouer automatiquement la vidéo lorsque l'utilisateur visite la page sur laquelle elle se trouve."),
+        '#description' => t("L'autoplay permet de jouer automatiquement la vidéo lorsque l'utilisateur visite la page sur laquelle elle se trouve.<br>A noter que les navigateurs tels que Safari et Chrome, ne permettent plus de lancer automatiquement une vidéo avec du son."),
         '#weight' => 3,
     );
 
@@ -1934,18 +1701,6 @@ function memory_blocks_slider_admin_form($form, &$form_state){
         '#weight' => 5,
     );
 
-    $form['video']['muted'] = array(
-        '#type' => 'radios',
-        '#title' => t('Muted'),
-        '#default_value' => $video['muted'],
-        '#options' => array(
-            0 => t('Désactiver'),
-            1 => t('Activer'),
-        ),
-        '#description' => t("L'audio de la vidéo est mutée."),
-        '#weight' => 6,
-    );
-
     $form['video']['poster'] = array(
         '#type' => 'radios',
         '#title' => t('Poster'),
@@ -1966,10 +1721,6 @@ function memory_blocks_slider_admin_form($form, &$form_state){
         '#media_options' => array(
             'global' => array(
                 'file_directory'  => 'image_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
                 'file_extensions' => 'png gif jpg jpeg',
                 'max_filesize'    => '2 MB',
                 'uri_scheme'      => 'public',
@@ -2017,10 +1768,6 @@ function memory_blocks_slider_admin_form($form, &$form_state){
         '#media_options' => array(
             'global' => array(
                 'file_directory'  => 'image_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
                 'file_extensions' => 'png gif jpg jpeg',
                 'max_filesize'    => '2 MB',
                 'uri_scheme'      => 'public',
@@ -2046,126 +1793,316 @@ function memory_blocks_slider_admin_form($form, &$form_state){
 
 function memory_blocks_activity_families_admin_form($form, &$form_state){
 
-    $query = db_select('node', 'n');
-    $query->fields('n', array('nid', 'title'));
-    $query->condition('n.type', 'activite', '=');
-    $query->orderBy('n.title', 'asc');
-    $query->distinct();
-    $results = $query->execute();
+  $vocabulary = taxonomy_vocabulary_machine_name_load("activity_families");
+  $terms = entity_load('taxonomy_term', FALSE, array('vid' => $vocabulary->vid));
+  $array_activity_families = array(
+    "_none" => t('- Aucun(e) -')
+  );
+  foreach ($terms as $term){
+    $array_activity_families[$term->tid] = $term->name;
+  }
 
-    $form["markup_table_top"] = array(
-        '#type' => 'markup',
-        '#markup' =>
-            '<table>' .
-                '<tr>' .
-                    '<th>Titre</th>' .
-                    '<th>Famille</th>' .
-                '</tr>'
-        ,
-    );
+  $query = db_select('node', 'n');
+  $query->fields('n', array('nid', 'title'));
+  $query->condition('n.type', 'activite', '=');
+  $query->orderBy('n.title', 'asc');
+  $query->distinct();
+  $results = $query->execute();
 
-    foreach( $results as $result ){
+  $form["markup_table_top"] = array(
+    '#type' => 'markup',
+    '#markup' =>
+      '<table>' .
+      '<tr>' .
+      '<th>Titre</th>' .
+      '<th>Ville</th>' .
+      '<th>Famille</th>' .
+      '</tr>'
+    ,
+  );
 
-        $form["markup_top_" . $result->nid] = array(
-            '#type' => 'markup',
-            '#markup' => '<tr>',
-        );
+  $previous_values = array();
 
-        $form["title_" . $result->nid] = array(
-            '#type' => 'markup',
-            '#markup' => '<td>' . $result->title . '</td>',
-        );
+  foreach( $results as $result ){
 
-        $form["category_markup_top" . $result->nid] = array(
-            '#type' => 'markup',
-            '#markup' => '<td>',
-        );
+    $node = node_load($result->nid);
 
-        $form["category_" . $result->nid] = array(
-            '#type' => 'select',
-            '#options' => array(
-                0 => t('Aucune'),
-                1 => t('Volcan'),
-                2 => t('Aventure'),
-                3 => t('Survie'),
-                4 => t('Nature'),
-                5 => t('EVG'),
-                6 => t('EVJF'),
-                7 => t('Team Building'),
-                8 => t('Anniversaire'),
-                9 => t('Vie étudiante'),
-                10 => t('Mariage'),
-                11 => t('Demande en mariage'),
-            ),
-            '#default_value' => variable_get("category_" . $result->nid),
-        );
+//      drupal_set_message("<pre>" . print_r($node, true) . "</pre>");
 
-        $form["category_markup_bottom" . $result->nid] = array(
-            '#type' => 'markup',
-            '#markup' => '</td>',
-        );
+    $activity_custom_title_field = field_get_items("node", $node, "field_activity_title");
+    $activity_custom_title = $activity_custom_title_field[0]["value"];
 
-        $form["markup_bottom_" . $result->nid] = array(
-            '#type' => 'markup',
-            '#markup' => '</tr>',
-        );
+    $activity_destination_field = field_get_items("node", $node, "field_acti_content_desti");
+    $activity_destination = $activity_destination_field[0]["tid"];
+
+    $activity_family_field = field_get_items('node', $node, 'field_activity_family');
+
+    $key_activity_family = [];
+    $temp_array_families = array();
+    foreach ($activity_family_field as $activity_family) {
+
+      if (isset($activity_family)) {
+
+        $activity_family_term = taxonomy_term_load($activity_family["tid"]);
+
+        $key_activity_family[array_search($activity_family_term->name, $array_activity_families)] = array_search($activity_family_term->name, $array_activity_families);
+
+        array_push($temp_array_families, $activity_family_term->tid);
+      }
     }
 
-    $form["markup_table_bottom"] = array(
-        '#type' => 'markup',
-        '#markup' => '</table>' ,
+    if(sizeof($temp_array_families) != 0){
+      $previous_values[$node->nid] = $temp_array_families;
+    }else{
+      $previous_values[$node->nid] = ["_none"];
+    }
+
+    if(sizeof($key_activity_family) == 0){
+      $key_activity_family = ["_none"];
+    }
+
+    $taxonomy = taxonomy_term_load($activity_destination);
+
+    $form["markup_top_" . $result->nid] = array(
+      '#type' => 'markup',
+      '#markup' => '<tr>',
     );
 
-    return system_settings_form($form);
+    $form["title_" . $result->nid] = array(
+      '#type' => 'markup',
+      '#markup' => '<td>' . $activity_custom_title . '</td>',
+    );
+
+    $form["city_" . $result->nid] = array(
+      '#type' => 'markup',
+      '#markup' => '<td>' . $taxonomy->name . '</td>',
+    );
+
+    $form["category_markup_top" . $result->nid] = array(
+      '#type' => 'markup',
+      '#markup' => '<td>',
+    );
+
+    $form["category_" . $result->nid] = array(
+      '#type' => 'select',
+      '#multiple' => TRUE,
+      '#options' => $array_activity_families,
+      '#default_value' => $key_activity_family,
+    );
+
+    $form["category_markup_bottom" . $result->nid] = array(
+      '#type' => 'markup',
+      '#markup' => '</td>',
+    );
+
+    $form["markup_bottom_" . $result->nid] = array(
+      '#type' => 'markup',
+      '#markup' => '</tr>',
+    );
+  }
+
+  $form["markup_table_bottom"] = array(
+    '#type' => 'markup',
+    '#markup' => '</table>' ,
+  );
+
+  $form['activity_families']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Enregistrer'),
+    '#weight' => 10,
+  );
+
+  $form["previous_values"] = array(
+    '#type' => 'value',
+    '#value' => $previous_values,
+  );
+
+  $form['activity_families']['submit']['#validate'][] = 'memory_blocks_activity_families_admin_form_validate';
+  $form['activity_families']['submit']['#submit'][] = 'memory_blocks_activity_families_admin_form_submit';
+
+  return $form;
+}
+
+/**
+ * @param $form
+ * @param $form_state
+ * @throws Exception
+ */
+function memory_blocks_activity_families_admin_form_validate($form, &$form_state){
+
+  foreach ($form_state['values'] as $key => $value){
+
+    if(strpos($key, "category_") !== false) {
+
+      $el_count = 0;
+
+      foreach ($value as $new_el) {
+
+        if($new_el != "_none"){
+
+          $el_count++;
+        }
+      }
+
+      if($el_count > 2){
+
+        $activity_nid = explode("category_", $key)[1];
+
+        try {
+          $node = node_load($activity_nid);
+
+          $activity_custom_title_field = field_get_items("node", $node, "field_activity_title");
+          $activity_custom_title = $activity_custom_title_field[0]["value"];
+
+          $activity_destination_field = field_get_items("node", $node, "field_acti_content_desti");
+          $activity_destination = $activity_destination_field[0]["tid"];
+
+          $taxonomy = taxonomy_term_load($activity_destination);
+
+          form_set_error($key, "L'activité " . $activity_custom_title . " localisée à " . $taxonomy->name . " contient plus de 2 familles d'activités.");
+        } catch (Exception $e) {
+          form_set_error($key, "L'activité " . $activity_nid . " contient plus de 2 familles d'activités.");
+        }
+      }
+    }
+  }
+}
+
+/**
+ * @param $form
+ * @param $form_state
+ * @throws Exception
+ */
+function memory_blocks_activity_families_admin_form_submit($form, &$form_state){
+
+  $isChangeMade = false;
+
+  foreach ($form_state['values'] as $key => $value){
+
+    if(strpos($key, "category_") !== false){
+
+      $activity_nid = explode("category_", $key)[1];
+
+      $isActivityFamiliesChanged = false;
+
+      foreach ($value as $new_el){
+
+        if(!in_array($new_el, $form_state['values']['previous_values'][$activity_nid])){ // Check for new elements
+
+          $isActivityFamiliesChanged = true;
+        }
+      }
+
+      if($isActivityFamiliesChanged){
+
+        /* Delete all activity families related to the node */
+        // Delete Data Field
+        db_delete('field_data_field_activity_family')
+          ->condition('entity_id', intval($activity_nid))
+          ->execute();
+
+        // Delete Revision Field
+        db_delete('field_revision_field_activity_family')
+          ->condition('entity_id', intval($activity_nid))
+          ->execute();
+
+        /* Add new activity families related to the node */
+        $delta = 0;
+        foreach ($value as $new_el){
+
+          if($new_el != "_none"){
+
+            $isChangeMade = true;
+
+//            drupal_set_message("New element : " . $new_el);
+
+            // Insert Data Field
+            db_insert('field_data_field_activity_family')
+              ->fields(
+                array(
+                  'entity_type' => 'node',
+                  'bundle' => 'activite',
+                  'deleted' => 0,
+                  'entity_id' => intval($activity_nid),
+                  'revision_id' => intval($activity_nid),
+                  'language' => 'und',
+                  'delta' => $delta,
+                  'field_activity_family_tid' => intval($new_el),
+                )
+              )
+              ->execute();
+
+            // Insert Data Field
+            db_insert('field_revision_field_activity_family')->fields(
+              array(
+                'entity_type' => 'node',
+                'bundle' => 'activite',
+                'deleted' => 0,
+                'entity_id' => intval($activity_nid),
+                'revision_id' => intval($activity_nid),
+                'language' => 'und',
+                'delta' => $delta,
+                'field_activity_family_tid' => intval($new_el),
+              )
+            )
+              ->execute();
+
+            $delta++;
+          }
+        }
+      }
+    }
+  }
+
+  if($isChangeMade){
+    drupal_flush_all_caches();
+    drupal_set_message(t('1) Les données ont été modifiées.'));
+    drupal_set_message(t('2) Le cache a été vidé.'));
+  }
 }
 
 function memory_blocks_all_destinations_page_admin_form($form, &$form_state){
 
-    $form['all_dest_image'] = array(
-        '#type'          => 'media',
-        '#title' => t('Image'),
-        '#theme'         => 'media_widget', // Without that, you only get text input
-        '#default_value' => variable_get('all_dest_image'), // The fid
-        '#media_options' => array(
-            'global' => array(
-                'file_directory'  => 'image_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
-                'file_extensions' => 'png gif jpg jpeg',
-                'max_filesize'    => '2 MB',
-                'uri_scheme'      => 'public',
-                'types'           => array('image'),
-                'schemes'         => array(
-                    'public' => 'public',
-                ),
-            ),
+  $form['all_dest_image'] = array(
+    '#type'          => 'media',
+    '#title' => t('Image'),
+    '#theme'         => 'media_widget', // Without that, you only get text input
+    '#default_value' => variable_get('all_dest_image'), // The fid
+    '#media_options' => array(
+      'global' => array(
+        'file_directory'  => 'image_folder',
+        'file_extensions' => 'png gif jpg jpeg',
+        'max_filesize'    => '2 MB',
+        'uri_scheme'      => 'public',
+        'types'           => array('image'),
+        'schemes'         => array(
+          'public' => 'public',
         ),
-        '#weight' => 1,
-    );
+      ),
+    ),
+    '#weight' => 1,
+  );
 
-    $form['all_dest_title'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Title'),
-        '#default_value' => variable_get('all_dest_title'),
-        '#maxlength' => 512,
-        '#weight' => 2,
-    );
+  $form['all_dest_title'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Title'),
+    '#default_value' => variable_get('all_dest_title'),
+    '#maxlength' => 512,
+    '#weight' => 2,
+  );
 
-    $all_dest_description = variable_get('all_dest_description', array());
+  $all_dest_description = variable_get('all_dest_description', array());
 
-    $form['all_dest_description'] = array(
-        '#type' => 'text_format',
-        '#format' => 'wysiwyg',
-        '#title' => t('Description'),
-        '#default_value' => $all_dest_description['value'],
-        '#weight' => 3,
-    );
+  $form['all_dest_description'] = array(
+    '#type' => 'text_format',
+    '#format' => 'wysiwyg',
+    '#title' => t('Description'),
+    '#default_value' => $all_dest_description['value'],
+    '#weight' => 3,
+  );
 
-    return system_settings_form($form);
+  return system_settings_form($form);
 }
-
 
 function memory_blocks_all_activities_page_admin_form($form, &$form_state){
 
@@ -2177,10 +2114,6 @@ function memory_blocks_all_activities_page_admin_form($form, &$form_state){
         '#media_options' => array(
             'global' => array(
                 'file_directory'  => 'image_folder',
-                'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                    'upload',
-                    'media_default--media_browser_my_files'
-                ),
                 'file_extensions' => 'png gif jpg jpeg',
                 'max_filesize'    => '2 MB',
                 'uri_scheme'      => 'public',
@@ -2211,17 +2144,6 @@ function memory_blocks_all_activities_page_admin_form($form, &$form_state){
         '#weight' => 3,
     );
 
-    $form['all_act_nb_thumbnails'] = array(
-        '#type' => 'textfield',
-        '#attributes' => array(
-            ' type' => 'number',
-        ),
-        '#title' => 'Nombre de vignettes à afficher',
-        '#required' => true,
-        '#default_value' => variable_get("all_act_nb_thumbnails"),
-        '#weight' => 4,
-    );
-
     return system_settings_form($form);
 }
 
@@ -2230,27 +2152,51 @@ function memory_blocks_intermediate_page_admin_form($form, &$form_state){
     // Include pathauto to clean a string for use in URLs in order to compare with the current URL
     module_load_include('inc', 'pathauto', 'pathauto');
 
+//    $limit = 20;
+
+//    $query = db_select('node', 'n')->extend('PagerDefault');
     $query = db_select('node', 'n');
-    $query->fields('n', array('nid', 'title'));
-    $query->condition('n.type', 'activite', '=');
-    $query->orderBy('n.title', 'asc');
-    $query->distinct();
-    $results = $query->execute();
+    $query->fields('n', array('nid', 'title'))
+//      ->limit($limit)
+      ->condition('n.type', 'activite', '=')
+      ->orderBy('n.title', 'asc')
+      ->distinct();
+    $results = $query->execute()->fetchAllKeyed(0, 1);
+
+//    $pager = theme('pager', array("quantity" => 5));
 
     foreach( $results as $result ) {
 
-        $cleaned_title = pathauto_cleanstring($result->title);
+        $nid = array_search($result, $results);
+        $node = node_load($nid);
+
+        $activity_img_field = field_get_items("node", $node, "field_img_activite");
+        $activity_img_fid = $activity_img_field[0]["fid"];
+
+//        drupal_set_message("-------------------------------");
+//        drupal_set_message("Nom : " . $result);
+//        drupal_set_message("Image ID : " . $activity_img_fid);
+
+        $cleaned_title = pathauto_cleanstring($result);
 
         /* Video */
         $form["fieldset_" . $cleaned_title] = array(
             '#type' => 'fieldset',
-            '#title' => $result->title,
+            '#title' => $result,
             '#collapsible' => TRUE,
             '#collapsed' => TRUE,
             '#tree' => TRUE
         );
 
         $intermediate_page = variable_get("fieldset_" . $cleaned_title, array());
+
+//        drupal_set_message("<pre>" . print_r($intermediate_page, true) . "</pre>");
+//        drupal_set_message($intermediate_page["ip_image"]);
+
+        // Define default image if it is not set
+        if(empty($intermediate_page['ip_image'])){
+          $intermediate_page['ip_image'] = $activity_img_fid;
+        }
 
         $form["fieldset_" . $cleaned_title]["ip_image"] = array(
             '#type'          => 'media',
@@ -2260,10 +2206,6 @@ function memory_blocks_intermediate_page_admin_form($form, &$form_state){
             '#media_options' => array(
                 'global' => array(
                     'file_directory'  => 'image_folder',
-                    'enabledPlugins'  => array( // Not needed if you want to enable all the plugins
-                        'upload',
-                        'media_default--media_browser_my_files'
-                    ),
                     'file_extensions' => 'png gif jpg jpeg',
                     'max_filesize'    => '2 MB',
                     'uri_scheme'      => 'public',
@@ -2283,5 +2225,31 @@ function memory_blocks_intermediate_page_admin_form($form, &$form_state){
         );
     }
 
+//    $form['pager'] = array(
+//      '#markup' => $pager,
+//    );
+
     return system_settings_form($form);
 }
+
+function memory_blocks_form_alter(&$form, &$form_state, $form_id) {
+
+  switch ($form_id)  {
+    case 'activite_node_form':
+
+//      drupal_set_message($form_id);  // print form ID to messages
+//      drupal_set_message(print_r($form, TRUE));  // print array to messages
+
+      $form['language']['#required'] = TRUE;
+
+      $form['title']['#title'] = "Titre Drupal";
+      $form['title']['#description'] = "Titre non affiché, mais utilisé pour les pages intermédiaires et la page toutes nos activités.";
+
+      $form['field_img_activite'][LANGUAGE_NONE][0]['#title'] = "Image de l'activité";
+      $form['field_img_activite'][LANGUAGE_NONE][0]['#required'] = TRUE;
+
+      break;
+  }
+}
+
+>>>>>>> preprod

@@ -1,7 +1,6 @@
 div#mcb-container > h2 {
     text-align: center;
     font-size: 25px;
-    color: #424242;
     font-family: oswaldregular;
     font-weight: normal;
     margin: 0 0 25px 0;
@@ -27,13 +26,22 @@ div#mcb-blocks-container .mcb-block {
     text-align: center;
 }
 div#mcb-blocks-container .mcb-block > img {
-    width: 75px;
-    height: auto;
+  width: auto;
+  /*height: 175px;*/
 }
-div#mcb-blocks-container .mcb-block > div {
-    margin-top: 25px;
+div#mcb-blocks-container .mcb-block .mcb-img-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+div#mcb-blocks-container .mcb-block .mcb-text-container {
+    margin: 25px 0 0 0;
     text-align: center;
 }
 div#mcb-blocks-container .mcb-block > div p {
     margin: 0;
+    color: #000;
 }
+
+>>>>>>> preprod

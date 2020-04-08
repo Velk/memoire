@@ -17,6 +17,15 @@ div#act-cat-head-img-container {
     overflow: hidden;
 }
 
+div#memory-img-filter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
 div#act-cat-head-img-container > h2 {
     position: absolute;
     display: block;
@@ -28,6 +37,9 @@ div#act-cat-head-img-container > h2 {
     color: #fff;
     z-index: 20;
     text-align: center;
+  background-color: #00000075;
+  padding: 3px 20px;
+  box-sizing: border-box;
 }
 
 div#act-cat-head-img-container > img {
@@ -46,10 +58,10 @@ div#act-cat-head-desc {
 div#act-cat-filters {
     position: relative;
     width: 75%;
-    margin: auto;
+    margin: 75px auto;
     display: grid;
     grid-template-columns: repeat(6, 16.66%);
-    box-shadow: 1px 1px 5px #e9e9e9;
+    box-shadow: 1px 1px 5px #b6b6b6;
 }
 
 .act-cat-filter {
@@ -69,6 +81,9 @@ div#act-cat-filters {
     font-size: 14px;
     text-transform: uppercase;
     line-height: 1.25;
+}
+.act-cat-filter:hover > p {
+  color: #ff8f00;
 }
 
 .act-cat-filter > p > i {
@@ -94,7 +109,7 @@ div#act-cat-main {
     margin: 0 0 25px 0;
     text-transform: uppercase;
     font-size: 20px;
-    color: #424242;
+    color: #16889b;
 }
 
 .act-cat-container > h2 > i {
@@ -123,6 +138,11 @@ div#act-cat-main {
     height: 100%;
     background-image: linear-gradient(180deg, rgba(0,0,0,0.4), rgba(255,255,255,0));
     background-image: -webkit-linear-gradient(-90deg, rgba(0,0,0,0.4), rgba(255,255,255,0));
+  cursor: pointer;
+  box-sizing: border-box;
+}
+.act-cat-datas-container:hover {
+  border: 4px solid #ff8f00;
 }
 
 h3.act-cat-stick-title {
@@ -177,7 +197,7 @@ a.act-cat-readmore {
     box-sizing: border-box;
     right: 0;
     transform: rotate(45deg) translateY(-25px) translateX(40px);
-    z-index: 50;
+    z-index: 38;
 }
 
 .act-cat-banner-category > p {
@@ -185,3 +205,4 @@ a.act-cat-readmore {
     margin: 0;
     font-size: 10px;
 }
+>>>>>>> preprod

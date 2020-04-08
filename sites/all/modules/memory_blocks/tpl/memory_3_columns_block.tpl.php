@@ -19,19 +19,26 @@
     ){
         print '<div id="mcb-blocks-container">';
 
+        $max_pictogram_height = max($mcb_column_1_height, $mcb_column_2_height, $mcb_column_3_height);
+
         for ( $i = 1 ; $i < 4 ; $i++ ){
 
             $mcb_picto = "mcb_column_" . $i . "_picto";
+            $mcb_height = "mcb_column_" . $i . "_height";
             $mcb_text = "mcb_column_" . $i . "_text";
 
             if( isset($$mcb_picto) || isset($$mcb_text) ){
                 print '<div class="mcb-block">';
 
                 if( isset($$mcb_picto) ){
-                    print '<img src="' . $$mcb_picto . '" />';
+                    print
+                      '<div class="mcb-img-container" style="height:' . (empty($max_pictogram_height) ? 175 : $max_pictogram_height) . 'px;">' .
+                        '<img src="' . $$mcb_picto . '" height="' . ((empty($$mcb_height)) ? 175 : $$mcb_height) . '"/>' .
+                      '</div>'
+                    ;
                 }
                 if( isset($$mcb_text) ){
-                    print '<div>' . $$mcb_text . '</div>';
+                    print '<div class="mcb-text-container">' . $$mcb_text . '</div>';
                 }
 
                 print '</div>';
@@ -64,3 +71,4 @@
 //
 //    ?>
 </div>
+>>>>>>> preprod

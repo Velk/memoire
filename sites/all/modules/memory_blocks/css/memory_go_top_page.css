@@ -4,7 +4,7 @@ div#block-memory-blocks-memory-go-top-page {
     right: 45px;
     margin: 0;
     padding: 0;
-    z-index: 999;
+    z-index: 39;
     display: inline-block;
     width: auto;
 }
@@ -33,5 +33,6 @@ button#go-top-page > i {
 }
 
 button#go-top-page > i:hover {
-    color: #26C6DA;
+    color: #ff8f00;
 }
+>>>>>>> preprod

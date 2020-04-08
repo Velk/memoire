@@ -141,27 +141,22 @@
             /* -------------------------------------------------- Video - Set sound behavior ---------------------------------------------------- */
             /* ---------------------------------------------------------------------------------------------------------------------------------- */
 
-            function changeIconSetSound(className){
-
-                // Change icon depending on the actual setting
-                if( className === "fa-volume-off" ){
-                    $("#set-sound > i").removeClass("fa-volume-off").addClass("fa-volume-up");
-                }else if( className === "fa-volume-up" ){
-                    $("#set-sound > i").removeClass("fa-volume-up").addClass("fa-volume-off");
-                }
-            }
-
             if( Drupal.settings.memory_blocks.slider_type === "1"){
 
-                $("#set-sound > i").click(function(){
-                    changeIconSetSound($(this).attr('class').split(' ')[1]);
+                $("#set-sound").click(function(){
 
-                    // Checked if the video sound is muted
-                    if( $("#slider-container video").attr('muted') ) {
-                        $("#slider-container video").attr('muted', false);
-                    }else {
-                        $("#slider-container video").attr('muted', true);
-                    }
+                  if($(this).find("i").attr("class").indexOf("fa-volume-off") >= 0){
+
+                    $("#slider-container video").get(0).muted = false;
+                    $("#slider-container video").get(0).play();
+
+                    $("#set-sound > i").removeClass("fa-volume-off").addClass("fa-volume-up");
+                  }else{
+
+                    $("#slider-container video").get(0).muted = true;
+
+                    $("#set-sound > i").removeClass("fa-volume-up").addClass("fa-volume-off");
+                  }
                 });
 
                 $("#slider-container video").click(function(){
@@ -172,6 +167,19 @@
                         window.location = url;
                     }
                 });
+
+              // Video resizing
+              if($("#slider-container").height() > $("#slider-container video").height()){
+                $("#slider-container video").css({
+                  "height":"100%",
+                  "width":"auto",
+                });
+              }else{
+                $("#slider-container video").css({
+                  "height":"auto",
+                  "width":"100%",
+                });
+              }
             }
 
             /* ---------------------------------------------------------------------------------------------------------------------------------- */
@@ -188,3 +196,4 @@
         }
     };
 }(jQuery));
+>>>>>>> preprod

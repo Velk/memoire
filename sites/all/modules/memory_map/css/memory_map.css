@@ -12,7 +12,7 @@
 div#block-memory-map-memory-map {
     position: relative;
     width: 100%;
-    padding: 0;
+    padding-bottom: 0;
 }
 
 div#block-memory-map-memory-map > .block-inner {
@@ -25,14 +25,15 @@ div#block-memory-map-memory-map > .block-inner {
 div#map-header {
     padding: 0 25px;
     max-width: 1000px;
-    margin: 35px auto;
+    margin: 0 auto 35px auto;
     box-sizing: border-box;
 }
 
 div#world-map-container {
-    background-image: url("../../../../../sites/default/files/image_folder/airport_info_board.jpg");
+    background-image: url("/sites/default/files/image_folder/airport_info_board.jpg");
     background-size: cover;
     background-repeat: no-repeat;
+    background-position: center;
     padding: 35px 0;
     box-sizing: border-box;
 }
@@ -43,21 +44,32 @@ div#world-map-container > div {
     margin: auto;
 }
 
+/*#world-map {*/
+/*    position: relative;*/
+/*    display: block;*/
+/*    !*width: 90%;*!*/
+/*    width: 100%;*/
+/*    max-width: 1000px;*/
+/*    height: 70vh;*/
+/*    margin: auto;*/
+/*    overflow: hidden;*/
+/*    box-shadow: inset 0px 0px 5px #d8d8d8;*/
+/*    !*background-color: #ffffff75;*!*/
+/*    background-color: #ffffffeb;*/
+/*}*/
 #world-map {
-    position: relative;
-    display: block;
-    /*width: 90%;*/
-    width: 100%;
-    max-width: 1000px;
-    height: 70vh;
-    margin: auto;
-    overflow: hidden;
-    box-shadow: inset 0px 0px 5px #d8d8d8;
-    /*background-color: #ffffff75;*/
-    background-color: #ffffffeb;
+  position: relative;
+  display: flex;
+  width: 100%;
+  max-width: 1000px;
+  height: auto;
+  margin: auto;
+  overflow: hidden;
+  box-shadow: inset 0px 0px 5px #d8d8d8;
+  background-color: #ffffffeb;
 }
 
-h1#title {
+h2#memory-map-title {
     font-family: oswaldregular;
     font-size: 25px;
     text-align: center;
@@ -65,17 +77,26 @@ h1#title {
     font-weight: normal;
 }
 
+/*svg#svg-container {*/
+/*    position: relative;*/
+/*    width: auto;*/
+/*    height: 100%;*/
+/*    margin: auto;*/
+/*    display: block;*/
+/*    !*transform: translateX(-50%) scale(1);*!*/
+/*    !*transform: translateX(-53%) translateY(2%) scale(1);*!*/
+/*    margin-left: 50%;*/
+/*    cursor: move;*/
+/*    !* transform-origin: center; *!*/
+/*}*/
 svg#svg-container {
-    position: relative;
-    width: auto;
-    height: 100%;
-    margin: auto;
-    display: block;
-    /*transform: translateX(-50%) scale(1);*/
-    transform: translateX(-53%) translateY(2%) scale(1);
-    margin-left: 50%;
-    cursor: move;
-    /* transform-origin: center; */
+  position: relative;
+  width: 100%;
+  height: 100%;
+  /*height: auto;*/
+  margin: auto;
+  display: block;
+  cursor: move;
 }
 
 svg#svg-container path {
@@ -94,7 +115,7 @@ div#info-map {
     top: 0;
     left: 0;
     width: auto;
-    background-color: #26C6DA;
+    background-color: #ff8f00;
     border: 1px solid #fff;
     z-index: 999;
     padding: 7px 25px;
@@ -111,7 +132,7 @@ div#info-map > p {
 }
 
 svg#svg-container path.country-redirection {
-    fill: #26C6DA;
+    fill: #ff8f00;
 }
 
 /* Map menu */
@@ -143,13 +164,13 @@ div#menu-map > div > button {
     border-bottom: 1px solid transparent;
     background: none;
     padding: 5px 0;
-    color: #424242;
+    color: #000;
     cursor: pointer;
     line-height: 1;
 }
 div#menu-map > div > button:hover {
-    border-bottom: 1px solid #26C6DA;
-    color: #26C6DA;
+    border-bottom: 1px solid #ff8f00;
+    color: #ff8f00;
     /*text-decoration: underline;*/
 }
 
@@ -175,3 +196,4 @@ div#zoom-out:active {
     box-shadow: #d1d1d1 0px 0px 3px inset;
     background-color: #e9e9e9;
 }
+>>>>>>> preprod

@@ -5,7 +5,7 @@ div#top-destinations-grid {
     width: 100%;
 }
 
-div#top-destinations-container > h1 {
+div#top-destinations-container > h2 {
     font-family: oswaldregular;
     font-size: 25px;
     text-align: center;
@@ -36,31 +36,24 @@ div#top-destinations-container > #description {
 }
 
 p.td-name {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%) translateX(-50%);
-    margin: 0;
-    left: 50%;
-    font-size: 20px;
-    text-transform: uppercase;
-    font-weight: bold;
-    z-index: 10;
-    color: #fff;
-    border: 1px solid transparent;
-    padding: 3px 10px;
-    box-sizing: border-box;
-    text-align: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%) translateX(-50%);
+  margin: 0;
+  left: 50%;
+  font-size: 20px;
+  text-transform: uppercase;
+  font-weight: bold;
+  z-index: 10;
+  color: #fff;
+  border: 1px solid transparent;
+  padding: 3px 20px;
+  box-sizing: border-box;
+  text-align: center;
+  background-color: #00000075;
 }
 #top-destinations-grid > div > a:hover > p.td-name {
-    border: 1px solid #fff;
-
+    border: 1px solid #ff8f00;
+    color: #ff8f00;
 }
-
-img.td-img {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 100%;
-    z-index: 0;
-    transform: translateY(-50%);
-}
+>>>>>>> preprod

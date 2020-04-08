@@ -14,22 +14,31 @@ div#memory-switch-act-container {
 }
 
 div.memory-switch-act {
-    background-color: #26c6da;
+    display: flex;
+    align-items: center;
+    background-color: #21acbe;
+  border: 1px solid #21acbe;
     border-radius: 0;
     position: relative;
     text-transform: uppercase;
     font-weight: bold;
     box-shadow: 0px 2px 5px #cacaca;
+  box-sizing: border-box;
 }
 div.memory-switch-act:hover {
-    background-color: #1d8a98;
+    background-color: #fff;
+  border: 1px solid #21acbe;
     cursor: pointer;
+}
+div.memory-switch-act:hover * {
+  color: #21acbe;
 }
 
 div.memory-switch-act > a {
+    display: flex;
+    align-items: center;
     color: #fff;
     font-size: 12px;
-    display: block;
     padding: 7px 15px;
 }
 
@@ -60,3 +69,4 @@ div#memory-next-act {
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
 }
+>>>>>>> preprod

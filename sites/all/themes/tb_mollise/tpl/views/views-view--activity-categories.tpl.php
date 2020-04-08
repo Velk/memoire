@@ -1,5 +1,8 @@
 <?php
   global $base_url;
+  module_load_include('inc', 'pathauto', 'pathauto'); // Include pathauto to clean a string for use in URLs
+
+//  drupal_set_message("\"Toutes nos activités\" page");
 
   /* ---------------- All activities page - Admin settings ---------------- */
 
@@ -16,12 +19,7 @@
   $all_act_description_array = variable_get('all_act_description', array());
   $all_act_description = $all_act_description_array['value'];
 
-  $all_act_nb_thumbnails = variable_get('all_act_nb_thumbnails');
-
   /* ---------------- All activities page - Activities ---------------- */
-
-  // Include pathauto to clean a string for use in URLs
-  module_load_include('inc', 'pathauto', 'pathauto');
 
   /* Load taxonomy to get the destination of the activity */
   $vocabulary = taxonomy_vocabulary_machine_name_load('continent');
@@ -45,6 +43,7 @@
 
   // Array intended to contain every node ID
   $nids = [];
+  $array_activity_types = array();
 
   foreach ($entities as $entity) {
 
@@ -59,57 +58,54 @@
 
   for($i = 0 ; $i < count($nids) ; $i++){
 
-      // Retrieve all content of the node belonging to the activity category
-      $node = node_load($nids[$i]);
+    // Retrieve all content of the node belonging to the activity category
+    $node = node_load($nids[$i]);
 
-      // Retrieve the fid (image ID) of the activity
-      $fid_activity = $node->field_img_activite['und'][0]['fid'];
+    // Add TID in order to display Filters
+    $activity_type_field = field_get_items('node', $node, 'field_acti_cont_cat');
+    $activity_type = $activity_type_field[0]["tid"];
 
-      if( isset($fid_activity) ){
+    if(!in_array($activity_type, $array_activity_types) && !empty($activity_type)){
+      array_push($array_activity_types, $activity_type);
+    }
 
-          // Load image by its fid
-          $file = file_load($fid_activity);
-          $img_url_activity = file_create_url($file->uri);
-      }
+    $activity_tid_field = field_get_items('node', $node, 'field_acti_cont_cat');
+    $activity_tid = $activity_tid_field[0]["tid"];
 
-      // Clean the title of the node (activity) to use as a part of the URL
-      $clean_string_to_url = pathauto_cleanstring($node->field_activity_title['und'][0]['value']);
+    $activity_image = field_get_items('node', $node, 'field_img_activite');
 
-      $activities_count[$node->field_activity_title['und'][0]['value']]["title"] = $node->field_activity_title['und'][0]['value'];
-      $activities_count[$node->field_activity_title['und'][0]['value']]["count"] += 1;
-      $activities_count[$node->field_activity_title['und'][0]['value']]["img_alt_text"] = $node->field_img_activite['und'][0]['field_file_image_alt_text']['und'][0]['value'];
-      $activities_count[$node->field_activity_title['und'][0]['value']]["img_uri"] = $img_url_activity;
-      $activities_count[$node->field_activity_title['und'][0]['value']]["price"] = $node->field_price_prestation['und'][0]['value'];
-      $activities_count[$node->field_activity_title['und'][0]['value']]["vid"] = $node->vid;
-      $activities_count[$node->field_activity_title['und'][0]['value']]["path"] = $base_url."/".drupal_get_path_alias('node/'.$node->vid);
-      $activities_count[$node->field_activity_title['und'][0]['value']]["destination"] = $array_taxonomy_tree[$node->field_acti_content_desti['und'][0]['tid']]["name"];
-      $activities_count[$node->field_activity_title['und'][0]['value']]["destination_path"] = $array_taxonomy_tree[$node->field_acti_content_desti['und'][0]['tid']]["path_alias"];
-      $activities_count[$node->field_activity_title['und'][0]['value']]["intermediate_path"] = $clean_string_to_url;
-
-  //    $activities_content[$node->field_activity_title['und'][0]['value']][$node->vid] = array(
-  //        'title' => $node->field_activity_title['und'][0]['value'],
-  //        'img_alt_text' => $node->field_img_activite['und'][0]['field_file_image_alt_text']['und'][0]['value'],
-  //        'img_uri' => $img_url_activity,
-  //        'price' => $node->field_price_prestation['und'][0]['value'],
-  //        'vid' => $node->vid,
-  //        'path' => $base_url."/".drupal_get_path_alias('node/'.$node->vid),
-  //        'destination' => $array_taxonomy_tree[$node->field_acti_content_desti['und'][0]['tid']]["name"],
-  //        'destination_path' => $array_taxonomy_tree[$node->field_acti_content_desti['und'][0]['tid']]["path_alias"],
-  //    );
+    $activities[$activity_tid][strtolower($node->title)] = array(
+      'title' => $node->title,
+      'img_uri' => image_style_url("large", $activity_image[0]["uri"]),
+      'intermediate_path' => $base_url . "/activites/" . drupal_encode_path($node->title),
+    );
   }
 
-  $maxThumbnailsToDisplay = (!empty($all_act_nb_thumbnails)) ? $all_act_nb_thumbnails : 20;
-  $maxThumbnailsCounter = 0;
+  // Order filters
+  $ordered_activity_categories = array();
+
+  foreach ($array_activity_types as $activity_type){
+
+    $taxonomy = taxonomy_term_load($activity_type);
+
+    $ordered_activity_categories[$taxonomy->weight] = $activity_type;
+  }
+
+  ksort($ordered_activity_categories);
 ?>
 
 <div id="container">
     <?php
     if( isset($all_act_image) || isset($all_act_title) ){
 
-        echo '<div id="img-container">';
+        $image_style = "";
+        if(isset($all_act_image)){
+          $image_style = "style=\"background-image:url(" . $all_act_image . "); background-size:cover;background-position:center;\"";
+        }
+
+        echo '<div id="img-container" ' . $image_style .'>';
 
         if( isset($all_act_image) ){
-            echo '<img src="' . $all_act_image . '">';
             echo '<div id="memory-img-filter"></div>';
         }
         if( isset($all_act_title) ){
@@ -127,31 +123,123 @@
         ;
     }
     ?>
-    <div id="all-activities-main">
-        <div class="all-activities-container">
-            <?php
-            foreach ($activities_count as $activity_count){
 
-                if( $maxThumbnailsCounter == $maxThumbnailsToDisplay){
-                    break;
-                }else {
-            ?>
-                    <div class="all-act-scop">
-                        <img src="<?php print $activity_count['img_uri'] ?>"
-                             alt="<?php print $activity_count['img_alt_text'] ?>"
-                             class="all-act-vign-img"
-                        />
-                        <div class="all-act-datas-container">
-                            <h3 class="all-act-stick-title"><?php print $activity_count['title'] ?></h3>
-                            <a href="<?php print $base_url . "/activites/" . $activity_count['intermediate_path'] ?>"
-                               class="all-act-readmore"></a>
+    <?php if(sizeof($array_activity_types) != 0){ echo getSpecialFiltersHTML($ordered_activity_categories); } ?>
+
+    <div id="all-activities-main">
+
+        <?php foreach($ordered_activity_categories as $activity_category): ?>
+        <?php if( isset( $activities[$activity_category] ) ){ ?>
+        <div id="act-cat-<?php print $activity_category ?>" class="act-cat-container">
+
+          <?= getCategoriesHTML($activity_category); ?>
+
+            <div class="all-activities-container">
+                <?php
+                // Sort array by activity name
+                ksort($activities[$activity_category]);
+
+                foreach ($activities[$activity_category] as $activity){
+                ?>
+                        <div class="all-act-scop" style="background-image:url('<?php print $activity['img_uri'] ?>'); background-size:cover;background-position:center;">
+                            <div class="all-act-datas-container">
+                                <h3 class="all-act-stick-title"><?php print $activity['title'] ?></h3>
+                                <a href="<?php print $activity['intermediate_path'] ?>"
+                                   class="all-act-readmore"></a>
+                            </div>
                         </div>
-                    </div>
-            <?php
+                <?php
                 }
-                $maxThumbnailsCounter++;
-            }
-            ?>
+                ?>
+            </div>
         </div>
+        <?php }
+        endforeach;?>
     </div>
 </div>
+
+<?php
+// Get category
+function getCategoriesHTML($activity_category){
+
+  $taxonomy = taxonomy_term_load($activity_category);
+
+  switch ($taxonomy->name){
+    case "Activités de jour" :
+      $icon = "fa-sun-o";
+      break;
+    case "Activités de nuit" :
+      $icon = "fa-moon-o";
+      break;
+    case "Transferts" :
+      $icon = "fa-bus";
+      break;
+    case "Hébergements" :
+      $icon = "fa-home";
+      break;
+    case "Nos packs" :
+      $icon = "fa-globe";
+      break;
+  }
+
+  $category_structure =
+    "<h2>" .
+    "<i class=\"fa " . $icon . "\" aria-hidden=\"true\"></i>" .
+    $taxonomy->name .
+    "</h2>"
+  ;
+
+  return $category_structure;
+}
+
+// Get the HTML structure for special filters
+function getSpecialFiltersHTML($ordered_activity_categories){
+
+  // HTML Structure of filters
+  $filter_structure =
+    "<div id=\"act-cat-filters\">" .
+    "<div class=\"act-cat-filter\">" .
+    "<p><i class=\"fa fa-th\" aria-hidden=\"true\"></i>Toutes nos Activités</p>" .
+    "</div>"
+  ;
+
+  foreach ($ordered_activity_categories as $filter){
+
+    $taxonomy = taxonomy_term_load($filter);
+
+    switch ($taxonomy->name){
+      case "Activités de jour" :
+        $icon = "fa-sun-o";
+        break;
+      case "Activités de nuit" :
+        $icon = "fa-moon-o";
+        break;
+      case "Transferts" :
+        $icon = "fa-bus";
+        break;
+      case "Hébergements" :
+        $icon = "fa-home";
+        break;
+      case "Nos packs" :
+        $icon = "fa-globe";
+        break;
+    }
+
+    $filter_structure .=
+      "<div class=\"act-cat-filter\">" .
+      "<p>" .
+      "<i class=\"fa " . $icon . "\" aria-hidden=\"true\"></i>" .
+      $taxonomy->name .
+      "</p>" .
+      "</div>"
+    ;
+  }
+
+  $filter_structure .=
+    "</div>"
+  ;
+
+  return $filter_structure;
+}
+?>
+>>>>>>> preprod

@@ -52,15 +52,20 @@
     <?php
     if( isset($all_dest_image) || isset($all_dest_title) ){
 
-        echo '<div id="img-container">';
+        $image_style = "";
+        if(isset($all_dest_image)){
+          $image_style = "style=\"background-image:url(" . $all_dest_image . "); background-size:cover;background-position:center;\"";
+        }
 
-            if( isset($all_dest_image) ){
-                echo '<img src="' . $all_dest_image . '">';
-                echo '<div id="memory-img-filter"></div>';
-            }
-            if( isset($all_dest_title) ){
-                echo '<h2>' . $all_dest_title . '</h2>';
-            }
+        echo '<div id="img-container" ' . $image_style .'>';
+
+        if( isset($all_dest_image) ){
+          echo '<div id="memory-img-filter"></div>';
+        }
+
+        if( isset($all_dest_title) ){
+            echo '<h2>' . $all_dest_title . '</h2>';
+        }
 
         echo '</div>';
     }
@@ -72,25 +77,26 @@
         '</div>'
         ;
     }
+//    drupal_set_message("<pre>" . print_r($tab_continent, true) . "</pre>");
     ?>
-    <div>
+    <div id="destinations-main-container">
         <div id="destinations-container">
             <?php foreach($tab_continent as $cont): ?>
                 <div class="continent-container">
                     <h3><?php print $cont[0] ?></h3>
                     <?php if(!empty($cont['country'])): ?>
                         <?php foreach($cont['country'] as $cntry): ?>
+                          <div>
+                            <?php
+                            $country_flag = flags($cntry[0]);
+                            if(isset($country_flag)):
+                            ?>
+                            <div>
+                              <img src="<?=$base_url?>/sites/default/files/flags/<?= flags($cntry[0])?>.png"/>
+                            </div>
+                            <?php endif; ?>
                             <ul class="country-container">
-                                <li>
-                                    <?php
-                                    $country_flag = flags($cntry[0]);
-                                    if( isset($country_flag) ){
-                                        echo '<img src="' . $base_url . '/sites/default/files/flags/' . flags($cntry[0]) . '.png"/>';
-
-                                    }
-                                    print $cntry[0];
-                                    ?>
-                                </li>
+                                <li><?= $cntry[0]; ?></li>
                                 <?php if(!empty($cntry[2])): ?>
                                     <ul class="city">
                                         <?php foreach($cntry[2] as $place): ?>
@@ -100,11 +106,19 @@
                                             // Get the path alias for the place
                                             $city_path = drupal_get_path_alias("taxonomy/term/" . $city_term_tid);
                                             ?>
-                                            <li><a href=<?php print strtolower($base_url . '/' . $city_path); ?>><?php print $place[0] ?></a></li>
+                                            <li>
+                                              <a href=<?php print strtolower($base_url . '/' . $city_path); ?>>
+                                                <?php if(sizeof($cntry[2]) > 1): ?>
+                                                <i class="fa fa-circle" aria-hidden="true"></i>
+                                                <?php endif; ?>
+                                                <?= trim($place[0]) ?>
+                                              </a>
+                                            </li>
                                         <?php endforeach; ?>
                                     </ul>
                                 <?php endif; ?>
                             </ul>
+                          </div>
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </div>

@@ -53,48 +53,27 @@
     <!-- QT ChatBot -->
     <!-- Script start -->
     <script>
-      !function(a,b,c,d,e,f,o){
-         a._qt=a._qt||{},a._qt.options=o||{},a._qt.license=e,a._qt.lang=f,
-         g=b.createElement(c),g.type="text/javascript",g.async=!0,
-         g.src=("https:"==b.location.protocol?"https://":"http://")+d,
-         h=b.getElementsByTagName(c)[0],h.parentNode.insertBefore(g,h)
-      }(window,document,"script","cdn.quicktext.im/qt.min.js","8xlDg-WCUJ",null,{tags: []});
+    jQuery( document ).ready(function() {
+      function displayChatBot(){
+        !function(a,b,c,d,e,f,o){
+          a._qt=a._qt||{},a._qt.options=o||{},a._qt.license=e,a._qt.lang=f,
+            g=b.createElement(c),g.type="text/javascript",g.async=!0,
+            g.src=("https:"==b.location.protocol?"https://":"http://")+d,
+            h=b.getElementsByTagName(c)[0],h.parentNode.insertBefore(g,h)
+        }(window,document,"script","cdn.quicktext.im/qt.min.js","8xlDg-WCUJ",null,{tags: []});
+      }
+
+      // Hide QuickText Chatbot when cookies banner is display in order to avoid ChatBot over the banner
+      if(jQuery("#block-memory-cookies-memory-cookies").length === 1){
+        jQuery("#cookies-accept").click(function(){
+          displayChatBot();
+        });
+      }else{
+        displayChatBot();
+      }
+    });
     </script>
     <!-- Script end -->
-
-    <!-- Acquero GTAG compaign -->
-	<!-- Global site tag (gtag.js) - Google Ads: 684294559 -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=AW-684294559"></script>
-	<script>
-	  window.dataLayer = window.dataLayer || [];
-	  function gtag(){dataLayer.push(arguments);}
-	  gtag('js', new Date());
-	  gtag('config', 'AW-684294559');
-	</script>
-	<!-- End of global js tag -->
-
-	<!-- Specific tag for contact form -->
-	<?php $node = menu_get_object(); ?>
-	<?php if($node->vid == 129): ?>
-	  <!-- Event snippet for Demande de devis conversion page
-	  In your html page, add the snippet and call gtag_report_conversion when someone clicks on the chosen link or button. -->
-	  <script>
-	  function gtag_report_conversion(url) {
-	    var callback = function () {
-	      if (typeof(url) != 'undefined') {
-	        window.location = url;
-	      }
-	    };
-	    gtag('event', 'conversion', {
-	      'send_to': 'AW-684294559/mwTKCJnx2rgBEJ-DpsYC',
-	      'event_callback': callback
-	    });
-	    return false;
-	  }
-	</script>
-    <?php endif; ?>
-	<!-- End of specific tag for conteact form -->
-    <!-- End of Acquero Campaign -->
   </head>
 
   <body class="<?php print $classes; ?>"<?php print $attributes;?>>

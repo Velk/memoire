@@ -32,6 +32,10 @@ div#img-container > h2 {
     font-size: 35px;
     color: #fff;
     z-index: 20;
+    text-align: center;
+  background-color: #00000075;
+  padding: 3px 20px;
+  box-sizing: border-box;
 }
 
 div#description-container {
@@ -67,6 +71,11 @@ div#act-dest-main {
     height: 100%;
     background-image: linear-gradient(180deg, rgba(0,0,0,0.4), rgba(255,255,255,0));
     background-image: -webkit-linear-gradient(-90deg, rgba(0,0,0,0.4), rgba(255,255,255,0));
+  cursor: pointer;
+  box-sizing: border-box;
+}
+.act-dest-datas-container:hover {
+  border: 4px solid #ff8f00;
 }
 
 h3.act-dest-stick-title {
@@ -80,7 +89,7 @@ h3.act-dest-stick-title {
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     z-index: 2;
-    color: #fff;
+    color: #fff !important;
 }
 .act-dest-vign-img {
     position: absolute;
@@ -112,3 +121,4 @@ a.act-dest-readmore {
     width: 100%;
     z-index: 3;
 }
+>>>>>>> preprod

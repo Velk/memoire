@@ -4,7 +4,7 @@
 
 
             $(".toggle-display-countries").click(function(){
-              console.log("click");
+
               $("#other-countries").toggle();
 
               var menuHeight = $("#header-wrapper").height();
@@ -27,3 +27,4 @@
         }
     };
 }(jQuery));
+>>>>>>> preprod

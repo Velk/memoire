@@ -2,21 +2,20 @@
     Drupal.behaviors.memory_blocks_script = {
         attach: function (context, settings) {
 
-
             /* Autocomplete Destination title */
+            function setDestinationTitle(){
+
+              var nameText = $(".form-item-name #edit-name").val();
+
+              $(".field-name-field-destination-title input").val(nameText);
+            }
+
             if(
                 window.location.pathname.match(/^.*\/taxonomy\/term\/[0-9]*\/edit$/) &&
                 window.location.search === "?destination=admin/structure/taxonomy/continent"
             ) {
 
                 setDestinationTitle();
-            }
-
-            function setDestinationTitle(){
-
-                var nameText = $(".form-item-name #edit-name").val();
-
-                $(".field-name-field-destination-title input").val(nameText);
             }
 
             /* Autocomplete activity title while writing */
@@ -33,6 +32,13 @@
             /* ------------------------------------------------------------------------------------------------------ */
 
             /* Autocomplete activity title */
+            function setActivityTitle(){
+
+              var nameText = $(".form-item-title #edit-title").val();
+
+              $(".field-name-field-activity-title input").val(nameText);
+            }
+
             if(
                 (window.location.pathname.match(/^.*\/node\/[0-9]*\/edit$/) &&
                 window.location.search === "?destination=admin/content") ||
@@ -40,13 +46,6 @@
             ) {
 
                 setActivityTitle();
-            }
-
-            function setActivityTitle(){
-
-                var nameText = $(".form-item-title #edit-title").val();
-
-                $(".field-name-field-activity-title input").val(nameText);
             }
 
             /* Autocomplete activity title while writing */
@@ -64,7 +63,7 @@
             $(".node-activite .node-content .field-name-field-price-prestation .field-item").each(function(){
 
                 // Get price and split to retrieve only the price and excluding prefix (€)
-                var priceVignette = $(this).text().split(' ')[0];
+                var priceVignette = $(this).text().split(" ")[0];
                 // Remove the two last decimal digits and also the dot separator
                 priceVignette = priceVignette.slice(0, -3);
                 // Change text of the price
@@ -75,7 +74,7 @@
             $(".node-activite .node-content .field-name-field-prix-option .field-item").each(function(){
 
                 // Get price and split to retrieve only the price and excluding prefix (€)
-                var priceVignette = $(this).text().split(' ')[0];
+                var priceVignette = $(this).text().split(" ")[0];
                 // Remove the two last decimal digits and also the dot separator
                 priceVignette = priceVignette.slice(0, -3);
                 // Change text of the price
@@ -84,14 +83,15 @@
 
             /* Hide title when menu's element is hovered */
             var attrTitle = "";
-            $('.tb-megamenu-main-menu a').mouseenter(function(){
+            $(".tb-megamenu-main-menu a").mouseenter(function(){
                 attrTitle = "";
                 attrTitle = $(this).attr("title");
                 $(this).attr("title", "");
             });
-            $('.tb-megamenu-main-menu a').mouseleave(function(){
+            $(".tb-megamenu-main-menu a").mouseleave(function(){
                 $(this).attr("title", attrTitle);
             });
         }
     };
 }(jQuery));
+>>>>>>> preprod

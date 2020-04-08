@@ -1,15 +1,22 @@
 <?php
     global $base_url;
+    module_load_include('inc', 'pathauto', 'pathauto'); // Include pathauto to clean a string for use in URLs in order to compare with the current URL
 
-    // Include pathauto to clean a string for use in URLs in order to compare with the current URL
-    module_load_include('inc', 'pathauto', 'pathauto');
+//    drupal_set_message("Destinations page");
+
+    if(isset($_GET["category"]) && !empty($_GET["category"])){ // Get category TID (EVG, EVJF...) coming from intermediate page
+      $is_category_target = true;
+    }
 
     if (!empty($content['field_dst_image'])) {
         $img_head_url = file_create_url($content['field_dst_image']['#items'][0]['uri']);
     }
 
-    $tid = key(taxonomy_get_term_by_name($term_name));
-    $nids = taxonomy_select_nodes($tid, FALSE);
+    // Get the current path of the page : taxonomy/term/[tid]
+    $current_path = current_path();
+    // Retrieve the tid
+    $taxonomy_tid = explode("taxonomy/term/", $current_path)[1];
+    $nids = taxonomy_select_nodes($taxonomy_tid, FALSE);
     $vocabulary = taxonomy_vocabulary_machine_name_load('activite');
     $v_activities = entity_load('taxonomy_term', FALSE, array('vid' => $vocabulary->vid));
 
@@ -29,41 +36,118 @@
 
     $cnt = array();
 
-    foreach ($nids as $nid) {
+    try {
+
+      foreach ($nids as $nid) {
+
         $node = node_load($nid);
 
-        $group_activity_tid = $node->field_acti_cont_cat['und']['0']['tid'];
-        $activity_weight = ( empty($node->field_weight['und']['0']['value']) ) ? 0 : $node->field_weight['und']['0']['value'];
-        $img_url = file_create_url($node->field_img_activite['und']['0']['uri']);
+        $activity_category_field = field_get_items("node", $node, "field_activity_category");
+        $is_node_to_display = false;
 
-        $cnt[$group_activity_tid][$activity_weight][$node->field_activity_title['und']['0']['value']] = array(
-            'title' => $node->field_activity_title['und']['0']['value'],
-            'title_cleaned' => pathauto_cleanstring($node->field_activity_title['und']['0']['value']),
-            'img_name' => $node->field_img_activite['und']['0']['filename'],
-            'img_uri' => $img_url,
-            'price' => $node->field_price_prestation['und']['0']['value'],
-            'node_vid' => $node->vid,
-            'path' => $base_url."/".drupal_get_path_alias('node/'.$node->vid),
-            'weight' => $activity_weight,
-            'group_act_cat' => $group_activity_tid,
-        );
+        if($is_category_target){ // Mean we need to filter by the activity category targeted (EVG, EVJF...)
+
+          foreach ($activity_category_field as $activity_category){
+
+            if($activity_category["tid"] == $_GET["category"]){
+              $is_node_to_display = true;
+            }
+          }
+        }else{
+          $is_node_to_display = true;
+        }
+
+        if($is_node_to_display){
+
+          $activity_tid_field = field_get_items('node', $node, 'field_acti_cont_cat');
+          $activity_tid = $activity_tid_field[0]["tid"];
+
+          $activity_weight_field = field_get_items('node', $node, 'field_weight');
+          $activity_weight = ( empty($activity_weight_field[0]["value"]) ) ? 0 : $activity_weight_field[0]["value"];
+
+          $activity_custom_title_field = field_get_items('node', $node, 'field_activity_title');
+          $activity_custom_title = $activity_custom_title_field[0]["value"];
+
+          $activity_family_field = field_get_items('node', $node, 'field_activity_family');
+          $array_activity_family = array();
+          foreach ($activity_family_field as $activity_family){
+
+            if(!empty($activity_family)){
+              $activity_family_term = taxonomy_term_load($activity_family["tid"]);
+
+              $activity_family_color_field = field_get_items('taxonomy_term', $activity_family_term, 'field_color');
+              $activity_family_color = $activity_family_color_field[0]["rgb"];
+
+              $activity_family_font_color_field = field_get_items('taxonomy_term', $activity_family_term, 'field_font_color');
+              $activity_family_font_color = $activity_family_font_color_field[0]["rgb"];
+
+              array_push($array_activity_family, array(
+                "name" => $activity_family_term->name,
+                "color" => $activity_family_color,
+                "font-color" => $activity_family_font_color,
+              ));
+            }
+          }
+
+          $activity_image = field_get_items('node', $node, 'field_img_activite');
+          $activity_price = field_get_items('node', $node, 'field_price_prestation');
+
+          // Set the category if exist in order to retrieve activities from the right category (EVG, EVJF...) in the switch activities button (previous, next)
+          if(isset($_GET["category"]) && !empty($_GET["category"])){
+            $redirection_path = $base_url . "/" . drupal_get_path_alias('node/'.$node->nid) . "?category=" . $_GET["category"];
+          }else{
+            $redirection_path = $base_url . "/" . drupal_get_path_alias('node/'.$node->nid);
+          }
+
+          $cnt[$activity_tid][$activity_weight][$node->nid] = array(
+            'custom_title' => $activity_custom_title,
+            'node_nid' => $node->nid,
+            'path' => $redirection_path,
+            'price' => $activity_price[0]["value"],
+  //          'weight' => $activity_weight,
+            'group_act_cat' => $activity_tid,
+            'img_uri' => image_style_url("large", $activity_image[0]["uri"]),
+            'img_name' => $activity_image[0]['filename'],
+            'activity_family' => $array_activity_family,
+          );
+        }
+      }
+    } catch (Exception $e) {
+      drupal_set_message("Exception reçue : " .  $e->getMessage());
     }
+
+//drupal_set_message("<pre>" . print_r($cnt, true) . "</pre>");
 ?>
 <div id="continent">
     <div class="cont-head">
-        <div id="cont-head-img-container">
-            <h2 class="cont-head-title"><?php print $content['field_destination_title']['#items'][0]['value']; ?></h2>
-            <?php if(!empty($content['field_dst_image'])): ?>
-                <img src="<?php print $img_head_url;?>"
-                     alt="<?php print $content['field_dst_image']['#items'][0]['filename']?>"
-                     class="cont-head-img"
-                     style="width:100%;"
-                />
-            <?php endif; ?>
-        </div>
-        <div id="cont-head-desc">
-            <?php print $content['description']['#markup']; ?>
-        </div>
+      <?php
+      if( isset($img_head_url) || isset($content['field_destination_title']['#items'][0]['value']) ){
+
+        $image_style = "";
+        if(isset($img_head_url)){
+          $image_style = "style=\"background-image:url(" . $img_head_url . "); background-size:cover;background-position:center;\"";
+        }
+
+        echo '<div id="cont-head-img-container" ' . $image_style .'>';
+
+        if( isset($img_head_url) ){
+          echo '<div id="memory-img-filter"></div>';
+        }
+        if( isset($content['field_destination_title']['#items'][0]['value']) ){
+          echo '<h2 class="cont-head-title">' . $content['field_destination_title']['#items'][0]['value'] . '</h2>';
+        }
+
+        echo '</div>';
+      }
+
+      if( isset($content['description']['#markup']) ){
+        echo
+          '<div id="cont-head-desc">' .
+          $content['description']['#markup'] .
+          '</div>'
+        ;
+      }
+      ?>
     </div>
     <div id="cont-filters">
         <div class="cont-filter">
@@ -72,7 +156,7 @@
         <?php
         foreach($activities as $activity){
             if( isset( $cnt[$activity->tid] ) ) {
-                echo '<div class="cont-filter cont-filter-' . $activity->tid . '">';
+                echo '<div class="cont-filter filter-' . $activity->tid . '">';
                 switch ($activity->name) {
                     case "Activités de jour" :
                         print '<p><i class="fa fa-sun-o" aria-hidden="true"></i>' . $activity->name . '</p>';
@@ -98,7 +182,7 @@
     <div id="cont-main">
         <?php foreach($activities as $activity): ?>
             <?php if( isset( $cnt[$activity->tid] ) ){ ?>
-            <div id="cont-<?php print $activity->tid ?>" class="cont-container">
+            <div id="filter-<?php print $activity->tid ?>" class="cont-container">
                 <?php
                 switch($activity->name){
                     case "Activités de jour" :
@@ -120,127 +204,48 @@
                 ?>
                 <div class="cont-activities-container">
                     <?php
-
                     // Sort array by activity weight
-                    ksort($cnt[$activity->tid]);
+                    krsort($cnt[$activity->tid], 6);
 
                     foreach ($cnt[$activity->tid] as $cnt_weight_sorted){
 
-                        // Sort array by activity name
-                        ksort($cnt_weight_sorted);
+                      // Sort array by activity name
+                      asort($cnt_weight_sorted);
 
-                        foreach ($cnt_weight_sorted as $cnt_act_sorted) {
+                      foreach ($cnt_weight_sorted as $cnt_act_sorted) {
+                      ?>
+                        <div class="cont-scop cont-scop-<?php print $activity->tid ?>" style="background-image:url('<?php print $cnt_act_sorted['img_uri'] ?>'); background-size:cover;background-position:center;">
 
-                    ?>
-                            <div class="cont-scop cont-scop-<?php print $activity->tid ?>">
-                                <img src="<?php print $cnt_act_sorted['img_uri'] ?>"
-                                     alt="<?php print $cnt_act_sorted['img_name'] ?>"
-                                     class="cont-vign-img"
-                                />
-                                <div class="cont-datas-container" id="<?php print $cnt_act_sorted['title_cleaned'] ?>">
-                                    <input type="hidden" class="cont-act-nid" value="<?php print $cnt_act_sorted['node_vid'] ?>">
-                                    <input type="hidden" class="cont-act-cat" value="<?php print $cnt_act_sorted['group_act_cat'] ?>">
-                                    <h3 class="cont-stick-title"><?php print $cnt_act_sorted['title'] ?></h3>
-                                    <p class="cont-price"><?php print $cnt_act_sorted['price'] ?><?php isset($cnt_act_sorted['price']) ? print "€" : ""; ?></p>
-				<!-- 
-					CONTEXT : LEGAL DESACTIVATION
-                                    <?php
-                                    if( isset($cnt_act_sorted['price']) ){
-                                    ?>
-                                        <button class="cont-add-cart" type="button">
-                                            <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                                        </button>
-                                    <?php
-                                    }
-                                    ?>
-				-->
-                                    <a href="<?php print $cnt_act_sorted['path'] ?>" class="cont-readmore"></a>
-                                    <?php
-                                    $query = db_select('node', 'n');
-                                    $query->fields('n', array('nid', 'title'));
-                                    $query->condition('n.type', 'activite', '=');
-                                    $query->orderBy('n.title', 'asc');
-                                    $query->distinct();
-                                    $results = $query->execute();
+                          <div class="cont-datas-container" id="<?php print $cnt_act_sorted['node_nid'] ?>">
+                            <input type="hidden" class="cont-act-nid" value="<?php print $cnt_act_sorted['node_nid'] ?>">
+                            <input type="hidden" class="cont-act-cat" value="<?php print $cnt_act_sorted['group_act_cat'] ?>">
+                            <h3 class="cont-stick-title"><?php print $cnt_act_sorted['custom_title'] ?></h3>
+                            <p class="cont-price"><?php print $cnt_act_sorted['price'] ?><?php isset($cnt_act_sorted['price']) ? print "€" : ""; ?></p>
+                            <a href="<?php print $cnt_act_sorted['path'] ?>" class="cont-readmore"></a>
+                            <?php
+                            if(sizeof($cnt_act_sorted["activity_family"]) !== 0){
 
-                                    foreach ($results as $result) {
+                              echo "<div class='banner-category-container'>";
 
-                                        if ($cnt_act_sorted['title'] == $result->title) {
+                              foreach ($cnt_act_sorted["activity_family"] as $family){
 
-                                            $admin_var_get_category = variable_get("category_" . $result->nid);
+                                if(sizeof($family) !== 0){
 
-                                            switch ($admin_var_get_category) {
-                                                case "0" :
-                                                    $isCategory = false;
-                                                    break;
-                                                case "1" :
-                                                    $isCategory = true;
-                                                    $color = "#F42C1C";
-                                                    $text = "Volcan";
-                                                    break;
-                                                case "2" :
-                                                    $isCategory = true;
-                                                    $color = "#F42C1C";
-                                                    $text = "Aventure";
-                                                    break;
-                                                case "3" :
-                                                    $isCategory = true;
-                                                    $color = "#046C5C";
-                                                    $text = "Survie";
-                                                    break;
-                                                case "4" :
-                                                    $isCategory = true;
-                                                    $color = "#046C5C";
-                                                    $text = "Nature";
-                                                    break;
-                                                case "5" :
-                                                    $isCategory = true;
-                                                    $color = "#6C3C5C";
-                                                    $text = "EVG";
-                                                    break;
-                                                case "6" :
-                                                    $isCategory = true;
-                                                    $color = "#EF648A";
-                                                    $text = "EVJF";
-                                                    break;
-                                                case "7" :
-                                                    $isCategory = true;
-                                                    $color = "#FC6404";
-                                                    $text = "Team<br>Building";
-                                                    break;
-                                                case "8" :
-                                                    $isCategory = true;
-                                                    $color = "#FC6404";
-                                                    $text = "Anniversaire";
-                                                    break;
-                                                case "9" :
-                                                    $isCategory = true;
-                                                    $color = "#FC6404";
-                                                    $text = "Vie<br>étudiante";
-                                                    break;
-                                                case "10" :
-                                                    $isCategory = true;
-                                                    $color = "#8CDCFB";
-                                                    $text = "Mariage";
-                                                    break;
-                                                case "11" :
-                                                    $isCategory = true;
-                                                    $color = "#8CDCFB";
-                                                    $text = "Demande<br>en mariage";
-                                                    break;
-                                            }
+                                  echo
+                                    "<div class='banner-category' style='background-color:" . $family["color"] . ";'>" .
+                                    "<p style='color:" . $family["font-color"] . "'>" . $family["name"] . "</p>" .
+                                    "</div>"
+                                  ;
+                                }
+                              }
 
-                                            if ($isCategory) {
-
-                                                print "<div class='banner-category' style='background-color:$color;'><p>" . $text . "</p></div>";
-                                            }
-                                        }
-                                    }
-                                    ?>
-                                </div>
-                            </div>
+                              echo "</div>";
+                            }
+                            ?>
+                          </div>
+                        </div>
                     <?php
-                        }
+                      }
                     }
                     ?>
                 </div>
@@ -249,3 +254,5 @@
         <?php endforeach; ?>
     </div>
 </div>
+
+>>>>>>> preprod

@@ -5,79 +5,87 @@
             /* Scroll - Resize header menu */
             var sliderHeight = $("#slider-container").height();
             var windowHeight = $(window).height();
+            var adminMenuHeight = 0;
 
             // Set basic social networks position
             $("div#block-memory-blocks-social-networks").css("top", "calc(80px + " + sliderHeight + "px/2)");
 
+            // Change display when user scroll down
             $( window ).scroll(function() {
 
-                if($(window).scrollTop() > 0){
+                // Remove this behavior under tablet responsive mode
+                if($(window).width() > 1024) {
 
-                    $("#logo > img").css("height", "50px");
-                    // $("#menu-bar-wrapper").css("padding", "10px 0");
-                    $("div#menu-bar-wrapper > div > div > div > ul > li > a").css("padding", "5px 30px");
-                    // $( "a:contains('Connexion')" ).parent("li").css("transform", "translateY(-13px)");
-                    $("div#page").css("margin-top", "60px");
-                    $(".memory-menu-tabs").css("line-height", "60px");
-                    // $("div#page").css("margin-top", "calc(60px + 34px)");
-                    // $("div#block-memory-blocks-social-networks").css("top", "calc(60px/2 + " + windowHeight + "px/2)");
-                    var topValueScroll = 60/2 + windowHeight/2;
-                    $("div#block-memory-blocks-social-networks").stop().animate({
-                        top: topValueScroll + "px",
-                    });
-                }
-                if($(window).scrollTop() === 0){
+                    if(typeof settings.admin_menu !== "undefined"){ adminMenuHeight = $("#admin-menu").height(); }
 
-                    $("#logo > img").css("height", "70px");
-                    // $("#menu-bar-wrapper").css("padding", "15px 0");
-                    $("div#menu-bar-wrapper > div > div > div > ul > li > a").css("padding", "10px 30px");
-                    // $( "a:contains('Connexion')" ).parent("li").css("transform", "translateY(-15px)");
-                    $("div#page").css("margin-top", "80px");
-                    $(".memory-menu-tabs").css("line-height", "80px");
-                    // $("div#page").css("margin-top", "calc(80px + 34px)");
-                    // $("div#block-memory-blocks-social-networks").css("top", "calc(80px + " + sliderHeight + "px/2)");
-                    var topValue = 80 + sliderHeight/2;
-                    $("div#block-memory-blocks-social-networks").stop().animate({
-                        top: topValue + "px",
-                    });
-                }
+                    if ($(window).scrollTop() > 0) {
 
-            });
+                      $("div#header").css("height", "60px");
+                      $("#logo > img").css("height", "60px");
+                      $("div#menu-bar-wrapper > div > div > div > ul > li > a").css("padding", "5px 30px");
+                      $("div#page").css("margin-top", "60px");
 
-            function setDistanceTabMenu(tabID){
+                      $("div#activities-menu").css("top", "calc(60px + " + adminMenuHeight + "px)");
+                      $("div#destinations-menu").css("top", "calc(60px + " + adminMenuHeight + "px)");
 
-                if( $(tabID).is(":visible") ){
+                      var topValueScroll = 60 / 2 + windowHeight / 2;
+                      $("div#block-memory-blocks-social-networks").stop().animate({
+                          top: topValueScroll + "px",
+                      }, 150);
+                    }
 
-                    if( $("#admin-menu").is(":visible") ) {
+                    if ($(window).scrollTop() === 0) {
 
-                        var adminToolbarHeight = $("#admin-menu").height();
+                        $("div#header").css("height", "80px");
+                        $("#logo > img").css("height", "80px");
+                        $("div#menu-bar-wrapper > div > div > div > ul > li > a").css("padding", "10px 30px");
+                        $("div#page").css("margin-top", "80px");
 
-                        if($(window).scrollTop() > 0){
+                        $("div#activities-menu").css("top", "calc(80px + " + adminMenuHeight + "px)");
+                        $("div#destinations-menu").css("top", "calc(80px + " + adminMenuHeight + "px)");
 
-                            $(tabID).css("top", "calc(60px + " + adminToolbarHeight + "px)");
-                        }
-                        if($(window).scrollTop() === 0) {
-
-                            $(tabID).css("top", "calc(80px + " + adminToolbarHeight + "px)");
-                        }
-                    }else{
-
-                        if($(window).scrollTop() > 0){
-
-                            $(tabID).css("top", "60px");
-                        }
-                        if($(window).scrollTop() === 0){
-
-                            $(tabID).css("top", "80px");
-                        }
+                        var topValue = 80 + sliderHeight / 2;
+                        $("div#block-memory-blocks-social-networks").stop().animate({
+                            top: topValue + "px",
+                        });
                     }
                 }
-            }
+            });
 
-            setInterval(function(){
-                setDistanceTabMenu("#destinations-menu");
-                setDistanceTabMenu("#activities-menu");
-            }, 100);
+            // function setDistanceTabMenu(tabID){
+            //
+            //     if( $(tabID).is(":visible") ){
+            //
+            //         if( $("#admin-menu").is(":visible") ) {
+            //
+            //             var adminToolbarHeight = $("#admin-menu").height();
+            //
+            //             if($(window).scrollTop() > 0){
+            //
+            //                 $(tabID).css("top", "calc(60px + " + adminToolbarHeight + "px)");
+            //             }
+            //             if($(window).scrollTop() === 0) {
+            //
+            //                 $(tabID).css("top", "calc(80px + " + adminToolbarHeight + "px)");
+            //             }
+            //         }else{
+            //
+            //             if($(window).scrollTop() > 0){
+            //
+            //                 $(tabID).css("top", "60px");
+            //             }
+            //             if($(window).scrollTop() === 0){
+            //
+            //                 $(tabID).css("top", "80px");
+            //             }
+            //         }
+            //     }
+            // }
+            //
+            // setInterval(function(){
+            //     setDistanceTabMenu("#destinations-menu");
+            //     setDistanceTabMenu("#activities-menu");
+            // }, 100);
 
             /* ------------------------------------------------------------------------------------------------------------- */
             /* --------------------------------------------- Admin menu ---------------------------------------------------- */
@@ -94,9 +102,10 @@
 
                     $("#header-wrapper").css("margin-top", adminToolbarHeight);
 
-                    var menuHeight = $("#header-wrapper").height();
+                    var menuHeight = $("#header-wrapper").outerHeight(true);
 
-                    $("#page").css("margin-top", (menuHeight + adminToolbarHeight));
+                    // $("#page").css("margin-top", (menuHeight + adminToolbarHeight));
+                    $("#page").css("margin-top", menuHeight);
 
                     clearInterval(adminToolbarVisibility);
                 }
@@ -136,3 +145,4 @@
         }
     };
 }(jQuery));
+>>>>>>> preprod
