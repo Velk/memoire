@@ -72,11 +72,18 @@
     $activity_tid_field = field_get_items('node', $node, 'field_acti_cont_cat');
     $activity_tid = $activity_tid_field[0]["tid"];
 
-    $activity_image = field_get_items('node', $node, 'field_img_activite');
+    // Image of activity
+    //$activity_image = field_get_items('node', $node, 'field_img_activite');
+    $file_ip_img = "";
+    $intermediate_page_admin_config = variable_get("fieldset_" . pathauto_cleanstring($node->title), array());
+    if($intermediate_page_admin_config["ip_image"] !== 0){ // Get the image for the intermediate page
+      $file_ip_img = file_load($intermediate_page_admin_config['ip_image']);
+    }
 
     $activities[$activity_tid][strtolower($node->title)] = array(
       'title' => $node->title,
-      'img_uri' => image_style_url("large", $activity_image[0]["uri"]),
+//      'img_uri' => image_style_url("large", $activity_image[0]["uri"]),
+      'img_uri' => image_style_url("large", $file_ip_img->uri),
       'intermediate_path' => $base_url . "/activites/" . drupal_encode_path($node->title),
     );
   }
