@@ -956,6 +956,17 @@
   .cont-datas-container > .banner-category-container .banner-category > p {
     font-size: 10px !important;
   }
+
+  /* Activity page - Images slider */
+  .carousel-slider-item {
+    width: calc(75vw/2 - 5px);
+  }
+  div#slider-image-zoom-container i {
+    right: 7px;
+    top: 7px;
+    font-size: 14px;
+    padding: 3px 5px;
+  }
 }
 
 @media screen and (max-width: 640px) {
@@ -1171,5 +1182,11 @@
   }
   .cont-datas-container > .banner-category-container .banner-category > p {
     font-size: 8px !important;
+  }
+
+  /* Activity page - Images slider */
+  .carousel-slider-item {
+    width: 75vw;
+    margin: 0;
   }
 }
