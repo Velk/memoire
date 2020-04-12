@@ -616,40 +616,48 @@ foreach ($activity_family_field as $activity_family_iteration){
     </div>
     <?php
     if( sizeof($activity_carousel_images) != 0 ){
+?>
+      <div id="carousel-container">
+        <div id="carousel-slider">
+          <div>
+          <?php
 
-        echo '<div class="activity-slider">';
+          $image_style_last_image = "style=\"background-image:url(" . $activity_carousel_images[(sizeof($activity_carousel_images) - 1)]["image"] . "); background-size:cover;background-position:center;\"";
 
-            if( isset($activity_carousel_title) ){
-                echo
-                    '<div class="activity-slider-title">' .
-                        '<h2 class="activity-page-label">' . $activity_carousel_title . '</h2>' .
-                    '</div>'
-                ;
-            }
+          echo
+            "<div class=\"carousel-slider-item\" " . $image_style_last_image . " data-slider-image=\"" . (sizeof($activity_carousel_images) - 1) . "\"></div>"
+          ;
 
-            echo '<div class="activity-slider-wrapper">';
+          for($i = 0 ; $i < (sizeof($activity_carousel_images) - 1) ; $i++) {
 
-                for($i = 0 ; $i < sizeof($activity_carousel_images) ; $i++){
-                    echo
-                        '<div class="activity-carousel">' .
-                            '<span class="ac-title">' .
-                            $activity_carousel_images[$i]["title"] .
-                            '</span>' .
-                            '<img src="' . $activity_carousel_images[$i]["image"] . '" class="ac-picture">' .
-                        '</div>'
-                    ;
-                }
-
-            echo '</div>';
+            $image_class = ($i == 0) ? "active-slider-image" : "";
+            $image_style = "style=\"background-image:url(" . $activity_carousel_images[$i]["image"] . "); background-size:cover;background-position:center;\"";
 
             echo
-                '<div id="activity-slider-actions">' .
-                    '<i class="fa fa-chevron-left" aria-hidden="true"></i>' .
-                    '<i class="fa fa-chevron-right" aria-hidden="true"></i>' .
-                '</div>'
+              "<div class=\"carousel-slider-item " . $image_class . "\" " . $image_style . " data-slider-image=\"" . $i . "\"></div>"
             ;
+          }
+          ?>
+          </div>
+        </div>
+        <button class="carousel-button" id="carousel-button-prev">
+          <i class="fa fa-chevron-left"></i>
+        </button>
+        <button class="carousel-button" id="carousel-button-next">
+          <i class="fa fa-chevron-right"></i>
+        </button>
+        <div id="carousel-dots">
+          <?php
+          for($i = 0 ; $i < sizeof($activity_carousel_images) ; $i++) {
 
-        echo '</div>';
+            $dotClass = ($i == 0) ? "fa-circle" : "fa-circle-thin";
+
+            echo "<i class=\"fa " . $dotClass . "\" aria-hidden=\"true\" data-slider-image-dot=\"" . $i . "\"></i>";
+          }
+          ?>
+        </div>
+      </div>
+<?php
     }
     ?>
     <?php
