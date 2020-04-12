@@ -2,6 +2,24 @@
     Drupal.behaviors.memory_blocks_activities = {
         attach: function (context, settings) {
 
+          /* ---------------------------------------------------------------------------------------------------------------------------------- */
+          /* --------------------------------------------------------- OPTION FOLDING --------------------------------------------------------- */
+          /* ---------------------------------------------------------------------------------------------------------------------------------- */
+          $("#activity-prestations").on("click",".option-more", function() {
+            $(this).parent().children(".prestation-main").addClass("prestation-show").removeClass("prestation-hide");
+            $(this).addClass("option-less").removeClass("option-more");
+            $(this).html("<i class=\"fa fa-caret-up\" aria-hidden=\"true\"></i>Voir moins");
+          });
+
+          $("#activity-prestations").on("click",".option-less", function() {
+            $(this).parent().children(".prestation-main").addClass("prestation-hide").removeClass("prestation-show");
+            $(this).addClass("option-more").removeClass("option-less");
+            $(this).html("<i class=\"fa fa-caret-down\" aria-hidden=\"true\"></i>Voir plus");
+          });
+
+          /* ---------------------------------------------------------------------------------------------------------------------------------- */
+          /* --------------------------------------------------------- IMAGES SLIDER --------------------------------------------------------- */
+          /* ---------------------------------------------------------------------------------------------------------------------------------- */
           var nbImages = $(".carousel-slider-item").length - 1;
 
           if(nbImages === 0){
@@ -134,7 +152,7 @@
 
             $("div#slider-image-zoom-container").click(function(e) {
 
-              if($(e.target).is('img')){
+              if($(e.target).is("img")){
                 e.preventDefault();
                 return;
               }
@@ -142,7 +160,6 @@
               $("#slider-image-zoom-container").remove();
             });
           });
-
         }
     };
 }(jQuery));
