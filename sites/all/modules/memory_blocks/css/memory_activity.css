@@ -50,9 +50,20 @@ h2.activity-page-label {
 div#activity-page-main {
   width: 100%;
 }
-div#activity-page-main > div:nth-child(even) {
+
+div#description-container,
+div#activity-memory-opinion,
+div#carousel-container {
+  background-color: #fff;
+}
+div#activity-prestations {
   box-shadow: 0px -1px 5px #e9e9e9;
   background-color: #f1f1f1;
+}
+
+div#description-container p:last-of-type,
+div#activity-memory-opinion p:last-of-type {
+  margin-bottom: 0;
 }
 
 .activity-prestation-container {
@@ -89,6 +100,7 @@ div#activity-page-main > div:nth-child(even) {
   font-size: 16px;
   text-transform: uppercase;
   font-weight: bold;
+  text-align: left;
 }
 .prestation-header p.prestation-quote {
   font-size: 14px;
@@ -262,13 +274,16 @@ div#activity-memory-opinion ul {
 /* ACTIVITY PAGE - SLIDER */
 div#carousel-container {
   position: relative;
-  width: 75vw;
-  margin: 50px auto 100px auto;
+  width: 75%;
+  padding: 0 calc(25%/2) 50px calc(25%/2);
+}
+div#carousel-container > div {
+  position: relative;
 }
 div#carousel-slider {
   position: relative;
   width: 100%;
-  height: 200px;
+  /*height: 200px;*/
   overflow: hidden;
 }
 div#carousel-slider > div {
@@ -291,7 +306,7 @@ div#carousel-slider img {
 }
 button.carousel-button {
   position: absolute;
-  top: 100px;
+  /*top: 100px;*/
   transform: translateY(-50%);
   border: 1px solid rgba(33, 172, 190, 0.75);
   outline: none;
@@ -336,7 +351,7 @@ div#slider-image-zoom-container {
   justify-content: center;
 }
 div#slider-image-zoom-container i {
-  position: absolute;
+  position: fixed;
   color: #fff;
   right: 10px;
   top: 10px;
@@ -352,15 +367,18 @@ div#slider-image-zoom-container i:hover {
 }
 div#slider-image-zoom-container > div {
   width: 90%;
-  max-height: 85%;
-  overflow: hidden;
+  height: 85%;
+  position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
 }
 div#slider-image-zoom-container img {
-  width: 100%;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 /* ACTIVITY PAGE - BUTTON ADD TO CART */

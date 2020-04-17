@@ -140,7 +140,7 @@
         echo '</div>';
     }
 
-    if( isset($all_act_description) ){
+    if( isset($all_act_description) && !empty($all_act_description) ){
         echo
             '<div id="description-container">' .
             $all_act_description .

@@ -27,121 +27,122 @@
                 }
             }
 
-            if( Drupal.settings.memory_blocks.slider_type === "0"){
+            if( Drupal.settings.memory_blocks.slider_home_page.slider_type === "0"){
 
-                // Display only the first image
-                $("div.slider-img-container").css("display", "none");
-                $("div.slider-img-container:nth-child(1)").css("display", "block");
+              // Display only the first image
+              $("div.slider-img-container").css("display", "none");
+              $("div.slider-img-container:nth-child(1)").css("display", "block");
 
-                // Call the function sliderChangeImage() every 'x' millisecond
-                // Note that Drupal.settings.memory_blocks.slider_time_interval call slider_time_interval in the define in the memory_block module
-                setInterval(sliderChangeImage, Drupal.settings.memory_blocks.slider_time_interval);
+              // Call the function sliderChangeImage() every 'x' millisecond
+              // Note that Drupal.settings.memory_blocks.slider_time_interval call slider_time_interval in the define in the memory_block module
+              setInterval(sliderChangeImage, Drupal.settings.memory_blocks.slider_home_page.scroll_time_interval);
 
-                // Previous or next images - Icons behavior
-                $("#slider-actions > i.fa-chevron-left").click(function(){
+              // Previous or next images - Icons behavior
+              $("#slider-actions > i.fa-chevron-left").click(function(){
 
-                    var arrayIndex = [];
+                  var arrayIndex = [];
 
-                    $("div.slider-img-container").each(function(){
+                  $("div.slider-img-container").each(function(){
 
-                        // If image container direct child is the image
-                        if( $(this).children("img").length > 0 ){
+                      // If image container direct child is the image
+                      if( $(this).children("img").length > 0 ){
 
-                            // Retrieve every index of image containers except the one who's displayed
-                            if( $( this ).index( $(this).is(":visible") ) !== -1 ){
+                          // Retrieve every index of image containers except the one who's displayed
+                          if( $( this ).index( $(this).is(":visible") ) !== -1 ){
 
-                                arrayIndex.push($( this ).index( $(this).is(":visible") ));
-                            }
+                              arrayIndex.push($( this ).index( $(this).is(":visible") ));
+                          }
 
-                        }
-                        // If image container direct child is the <a> markup then the image
-                        if( $(this).children("a").length > 0 ){
+                      }
+                      // If image container direct child is the <a> markup then the image
+                      if( $(this).children("a").length > 0 ){
 
-                            // Retrieve every index of image containers except the one who's displayed
-                            if( $( this ).index( $(this).is(":visible") ) !== -1 ){
+                          // Retrieve every index of image containers except the one who's displayed
+                          if( $( this ).index( $(this).is(":visible") ) !== -1 ){
 
-                                arrayIndex.push($( this ).index( $(this).is(":visible") ));
-                            }
-                        }
-                    });
+                              arrayIndex.push($( this ).index( $(this).is(":visible") ));
+                          }
+                      }
+                  });
 
-                    var indexActualImage = 0;
+                  var indexActualImage = 0;
 
-                    for(var i = 0 ; i < arrayIndex.length ; i++){
+                  for(var i = 0 ; i < arrayIndex.length ; i++){
 
-                        // Check index of images retrieved then define the actual index of the image displayed
-                        if( arrayIndex[i] === indexActualImage ){
-                            indexActualImage++;
-                        }
-                    }
+                      // Check index of images retrieved then define the actual index of the image displayed
+                      if( arrayIndex[i] === indexActualImage ){
+                          indexActualImage++;
+                      }
+                  }
 
-                    if( indexActualImage === 0 ){
+                  if( indexActualImage === 0 ){
 
-                        $("div.slider-img-container").css("display", "none");
-                        $("div.slider-img-container:nth-child(" + nbChildren + ")").css("display", "block");
-                    }else{
+                      $("div.slider-img-container").css("display", "none");
+                      $("div.slider-img-container:nth-child(" + nbChildren + ")").css("display", "block");
+                  }else{
 
-                        $("div.slider-img-container").css("display", "none");
-                        $("div.slider-img-container:nth-child(" + indexActualImage + ")").css("display", "block");
-                    }
-                });
-                $("#slider-actions > i.fa-chevron-right").click(function(){
+                      $("div.slider-img-container").css("display", "none");
+                      $("div.slider-img-container:nth-child(" + indexActualImage + ")").css("display", "block");
+                  }
+              });
 
-                    var arrayIndex = [];
+              $("#slider-actions > i.fa-chevron-right").click(function(){
 
-                    $("div.slider-img-container").each(function(){
+                  var arrayIndex = [];
 
-                        // If image container direct child is the image
-                        if( $(this).children("img").length > 0 ){
+                  $("div.slider-img-container").each(function(){
 
-                            // Retrieve every index of image containers except the one who's displayed
-                            if( $( this ).index( $(this).is(":visible") ) !== -1 ){
+                      // If image container direct child is the image
+                      if( $(this).children("img").length > 0 ){
 
-                                arrayIndex.push($( this ).index( $(this).is(":visible") ));
-                            }
+                          // Retrieve every index of image containers except the one who's displayed
+                          if( $( this ).index( $(this).is(":visible") ) !== -1 ){
 
-                        }
-                        // If image container direct child is the <a> markup then the image
-                        if( $(this).children("a").length > 0 ){
+                              arrayIndex.push($( this ).index( $(this).is(":visible") ));
+                          }
 
-                            // Retrieve every index of image containers except the one who's displayed
-                            if( $( this ).index( $(this).is(":visible") ) !== -1 ){
+                      }
+                      // If image container direct child is the <a> markup then the image
+                      if( $(this).children("a").length > 0 ){
 
-                                arrayIndex.push($( this ).index( $(this).is(":visible") ));
-                            }
-                        }
-                    });
+                          // Retrieve every index of image containers except the one who's displayed
+                          if( $( this ).index( $(this).is(":visible") ) !== -1 ){
 
-                    var indexActualImage = 0;
+                              arrayIndex.push($( this ).index( $(this).is(":visible") ));
+                          }
+                      }
+                  });
 
-                    for(var i = 0 ; i < arrayIndex.length ; i++){
+                  var indexActualImage = 0;
 
-                        // Check index of images retrieved then define the actual index of the image displayed
-                        if( arrayIndex[i] === indexActualImage ){
-                            indexActualImage++;
-                        }
-                    }
+                  for(var i = 0 ; i < arrayIndex.length ; i++){
 
-                    if( indexActualImage === (nbChildren-1) ){
+                      // Check index of images retrieved then define the actual index of the image displayed
+                      if( arrayIndex[i] === indexActualImage ){
+                          indexActualImage++;
+                      }
+                  }
 
-                        // If the index (start at 0) of the actual image equals the number of children minus 1 (to fit with the index
-                        // It would say that it is the last image so display the first image of the slider
-                        $("div.slider-img-container").css("display", "none");
-                        $("div.slider-img-container:nth-child(1)").css("display", "block");
-                    }else{
+                  if( indexActualImage === (nbChildren-1) ){
 
-                        // Set indexActualImage + 2 in order to get the next child image
-                        $("div.slider-img-container").css("display", "none");
-                        $("div.slider-img-container:nth-child(" + (indexActualImage+2) + ")").css("display", "block");
-                    }
-                });
+                      // If the index (start at 0) of the actual image equals the number of children minus 1 (to fit with the index
+                      // It would say that it is the last image so display the first image of the slider
+                      $("div.slider-img-container").css("display", "none");
+                      $("div.slider-img-container:nth-child(1)").css("display", "block");
+                  }else{
+
+                      // Set indexActualImage + 2 in order to get the next child image
+                      $("div.slider-img-container").css("display", "none");
+                      $("div.slider-img-container:nth-child(" + (indexActualImage+2) + ")").css("display", "block");
+                  }
+              });
             }
 
             /* ---------------------------------------------------------------------------------------------------------------------------------- */
             /* -------------------------------------------------- Video - Set sound behavior ---------------------------------------------------- */
             /* ---------------------------------------------------------------------------------------------------------------------------------- */
 
-            if( Drupal.settings.memory_blocks.slider_type === "1"){
+            if(Drupal.settings.memory_blocks.slider_home_page.slider_type === "1"){
 
                 $("#set-sound").click(function(){
 
@@ -164,22 +165,33 @@
                     if( $.type($("#slider-container video").data("href")) !== "undefined" ){
 
                         var url = $(this).data("href");
-                        window.location = url;
+                        window.open(url, "_blank");
                     }
                 });
 
               // Video resizing
-              if($("#slider-container").height() > $("#slider-container video").height()){
-                $("#slider-container video").css({
-                  "height":"100%",
-                  "width":"auto",
-                });
-              }else{
-                $("#slider-container video").css({
-                  "height":"auto",
-                  "width":"100%",
-                });
-              }
+              document.onreadystatechange = function () {
+
+                if (document.readyState === "complete") {
+
+                  var ratioWidth = $("#slider-container").width()/$("#slider-container video").width();
+                  var ratioHeight = $("#slider-container").height()/$("#slider-container video").height();
+
+                  if(ratioWidth > 1){
+                    $("#slider-container video").css({
+                      "height":"auto",
+                      "width":"100%",
+                    });
+                  }
+
+                  if(ratioHeight > 1){
+                    $("#slider-container video").css({
+                      "height":"100%",
+                      "width":"auto",
+                    });
+                  }
+                }
+              };
             }
 
             /* ---------------------------------------------------------------------------------------------------------------------------------- */
