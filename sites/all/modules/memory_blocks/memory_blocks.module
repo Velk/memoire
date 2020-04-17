@@ -822,51 +822,6 @@ function memory_blocks_block_view($delta = '') {
 //
 //                drupal_add_js(array('memory_blocks' => array('slider_time_interval' => variable_get("slider_time_interval"))), array('type' => 'setting'));
 //            }
-//
-//            /* Vidéo */
-//            if (variable_get('slider_type') == "1") {
-//
-//                $video = variable_get('video', array());
-//                $video_name = $video['name'];
-//                $data['video_url_intern'] = $video['url_intern'];
-//                $data['video_autoplay'] = $video['autoplay'];
-//                $data['video_controls'] = $video['controls'];
-//                $data['video_loop'] = $video['loop'];
-//                $data['video_poster'] = $video['poster'];
-//                $data['video_redirection_link'] = $video['redirection_link'];
-//
-//                if ($video['video'] != 0) {
-//
-//                    $file = file_load($video['video']);
-//                    $url = file_create_url($file->uri);
-//                    $data['video_video'] = $url;
-//                }
-//
-//                if ($video['poster_image'] != 0) {
-//
-//                    $file = file_load($video['poster_image']);
-//                    $url = file_create_url($file->uri);
-//                    $data['video_poster_image'] = $url;
-//                }
-//            }
-//
-//            /* Still image */
-//            if (variable_get('slider_type') == "2") {
-//
-//                $still_img = variable_get('still_img', array());
-//                $data['still_img_name'] = $still_img['name'];
-//
-//                /*
-//                 * $arrayName['image'] correspond to the fid
-//                 * Load the file by its fid.
-//                 * Create the URL file by using the file URI
-//                 */
-//                $file = file_load($still_img['image']);
-//                $url = file_create_url($file->uri);
-//                $data['still_img_image'] = $url;
-//
-//                $data['still_img_redirection_link'] = $still_img['redirection_link'];
-//            }
 
             // Link the template
             $block['content']['#markup'] = theme('tpl_memory_slider', $data);
@@ -882,10 +837,13 @@ function memory_blocks_block_view($delta = '') {
                 'data' => drupal_get_path('module', 'memory_blocks') . '/js/memory_slider.js',
                 'type' => 'file'
             );
+
             drupal_add_js(
               array(
                 'memory_blocks' => array(
-                  'slider_type' => $slider_home_page['display_type']
+                  'slider_home_page' => array(
+                    'slider_type' => $slider_home_page['display_type']
+                  )
                 )
               ),
               array('type' => 'setting')
@@ -1602,7 +1560,6 @@ function memory_blocks_slider_admin_form($form, &$form_state){
 
   $slider_home_page_values['slider_image']['nb_images'] = (empty($slider_home_page_values['slider_image']['nb_images'])) ? 5 : $slider_home_page_values['slider_image']['nb_images'];
   $slider_home_page_values['slider_image']["scroll_time_interval"] = (empty($slider_home_page_values['slider_image']["scroll_time_interval"])) ? 10000 : $slider_home_page_values['slider_image']["scroll_time_interval"];
-  $slider_home_page_values['slider_image']["scroll_speed"] = (empty($slider_home_page_values['slider_image']["scroll_speed"])) ? 2000 : $slider_home_page_values['slider_image']["scroll_speed"];
 
   $form['slider_home_page']['slider_image']['nb_images'] = array(
     '#type' => 'textfield',
@@ -1630,25 +1587,12 @@ function memory_blocks_slider_admin_form($form, &$form_state){
     '#weight' => 2,
   );
 
-  $form['slider_home_page']['slider_image']['scroll_speed'] = array(
-    '#type' => 'textfield',
-    '#attributes' => array(
-      ' type' => 'number',
-    ),
-    '#default_value' => $slider_home_page_values['slider_image']["scroll_speed"],
-    '#title' => t('Vitesse'),
-    '#description' => t('Vitesse de défilement du slider. Le temps est exprimé en millisecondes (ms).'),
-    '#maxlength' => 6,
-    '#required' => TRUE,
-    '#weight' => 3,
-  );
-
   for($i = 1; $i <= $slider_home_page_values['slider_image']['nb_images']; $i++){
 
     $form['slider_home_page']['slider_image']['image_container_'.$i] = array(
       '#type' => 'fieldset',
       '#title' => t('Image n°'.$i),
-      '#weight' => 3+$i,
+      '#weight' => 2+$i,
       '#collapsible' => TRUE,
       '#collapsed' => FALSE,
       '#tree' => TRUE

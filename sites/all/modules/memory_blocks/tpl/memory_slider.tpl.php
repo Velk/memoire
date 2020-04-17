@@ -1,16 +1,45 @@
 <?php
-
-drupal_set_message("slider_home_page");
-drupal_set_message($slider_home_page_height);
-drupal_set_message("<pre>" . print_r($slider_home_page_data, true) . "</pre>");
-
 // Build slider of images
 function getSliderImage($slider_home_page_data)
 {
 
+  $image_html_structure = "";
+
+  for ($i = 1; $i <= $slider_home_page_data['nb_images']; $i++)
+  {
+    // Pass variables to JS file
+    drupal_add_js(
+      array(
+        'memory_blocks' => array(
+          'slider_home_page' => array(
+            'scroll_time_interval' => $slider_home_page_data['scroll_time_interval']
+          )
+        )
+      ),
+      array('type' => 'setting')
+    );
+
+    if (
+      $slider_home_page_data['image_container_' . $i]['image'] != 0 &&
+      !empty($slider_home_page_data['image_container_' . $i]['image'])
+    ) {
+      $file = file_load($slider_home_page_data['image_container_' . $i]['image']);
+      $url = file_create_url($file->uri);
+      $image = $url;
+
+      $image_html_structure .=
+        "<div class=\"slider-img-container\">" .
+          "<a href=" . $slider_home_page_data['image_container_' . $i]['redirection_link'] . " target=\"_blank\">" .
+            "<img src=" . $image . " alt=\"Homepage slider of images\" />" .
+          "</a>" .
+        "</div>"
+      ;
+    }
+  }
 
   return
   "<div id=\"slider-img-container\">" .
+  $image_html_structure .
   "</div>" .
   "<div id=\"slider-actions\">" .
     "<i class=\"fa fa-chevron-left\" aria-hidden=\"true\"></i>" .
@@ -80,9 +109,9 @@ function getFixedImage($slider_home_page_data)
   }
 
   return
-  "<div id=\"still-img\">" .
+  "<div id=\"fixed-image\">" .
       "<a href=\"" . $redirection_link . "\" target=\"_blank\">" .
-        "<img src=\"" . $image . "\" alt=\"Homepage image\" class=\"slider-img\" />" .
+        "<img src=\"" . $image . "\" alt=\"Homepage fixed image\" />" .
       "</a>" .
   "</div>"
   ;
