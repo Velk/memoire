@@ -776,83 +776,97 @@ function memory_blocks_block_view($delta = '') {
             break;
         case 'memory_slider':
 
-            /* Slider - Global options */
-            $data['slider_height'] = variable_get('slider_height');
+            $slider_home_page = variable_get('slider_home_page', array());
 
-            $data['slider_type'] = variable_get('slider_type');
+            $data['slider_home_page_height'] = $slider_home_page['height'];
 
-            drupal_add_js(array('memory_blocks' => array('slider_type' => variable_get("slider_type"))), array('type' => 'setting'));
-
-            /* Slider images */
-            if (variable_get('slider_type') == "0") {
-
-                $slider = variable_get('slider', array());
-
-                $data["array_size_slider"] = sizeof($slider);
-
-                for ($i = 1; $i <= sizeof($slider); $i++) {
-
-                    $data["slider_" . $i . "_name"] = $slider['image_container_' . $i]['name'];
-
-                    /*
-                     * $arrayName['image'] correspond to the fid
-                     * Load the file by its fid.
-                     * Create the URL file by using the file URI
-                     */
-                    $file = file_load($slider['image_container_' . $i]['image']);
-                    $url = file_create_url($file->uri);
-                    $data["slider_" . $i . "_image"] = $url;
-
-                    $data["slider_" . $i . "_redirection_link"] = $slider['image_container_' . $i]['redirection_link'];
-                }
-
-                drupal_add_js(array('memory_blocks' => array('slider_time_interval' => variable_get("slider_time_interval"))), array('type' => 'setting'));
+            switch ($slider_home_page['display_type']){
+              case 0 :
+                $data['slider_home_page_display_type'] = $slider_home_page['display_type'];
+                $data['slider_home_page_data'] = $slider_home_page['slider_image'];
+                break;
+              case 1 :
+                $data['slider_home_page_display_type'] = $slider_home_page['display_type'];
+                $data['slider_home_page_data'] = $slider_home_page['video'];
+                break;
+              case 2 :
+                $data['slider_home_page_display_type'] = $slider_home_page['display_type'];
+                $data['slider_home_page_data'] = $slider_home_page['fixed_image'];
+                break;
             }
 
-            /* Vidéo */
-            if (variable_get('slider_type') == "1") {
-
-                $video = variable_get('video', array());
-                $video_name = $video['name'];
-                $data['video_url_intern'] = $video['url_intern'];
-                $data['video_autoplay'] = $video['autoplay'];
-                $data['video_controls'] = $video['controls'];
-                $data['video_loop'] = $video['loop'];
-                $data['video_poster'] = $video['poster'];
-                $data['video_redirection_link'] = $video['redirection_link'];
-
-                if ($video['video'] != 0) {
-
-                    $file = file_load($video['video']);
-                    $url = file_create_url($file->uri);
-                    $data['video_video'] = $url;
-                }
-
-                if ($video['poster_image'] != 0) {
-
-                    $file = file_load($video['poster_image']);
-                    $url = file_create_url($file->uri);
-                    $data['video_poster_image'] = $url;
-                }
-            }
-
-            /* Still image */
-            if (variable_get('slider_type') == "2") {
-
-                $still_img = variable_get('still_img', array());
-                $data['still_img_name'] = $still_img['name'];
-
-                /*
-                 * $arrayName['image'] correspond to the fid
-                 * Load the file by its fid.
-                 * Create the URL file by using the file URI
-                 */
-                $file = file_load($still_img['image']);
-                $url = file_create_url($file->uri);
-                $data['still_img_image'] = $url;
-
-                $data['still_img_redirection_link'] = $still_img['redirection_link'];
-            }
+//            $data['slider_type'] = variable_get('slider_type');
+//
+//            /* Slider images */
+//            if (variable_get('slider_type') == "0") {
+//
+//                $slider = variable_get('slider', array());
+//
+//                $data["array_size_slider"] = sizeof($slider);
+//
+//                for ($i = 1; $i <= sizeof($slider); $i++) {
+//
+//                    $data["slider_" . $i . "_name"] = $slider['image_container_' . $i]['name'];
+//
+//                    /*
+//                     * $arrayName['image'] correspond to the fid
+//                     * Load the file by its fid.
+//                     * Create the URL file by using the file URI
+//                     */
+//                    $file = file_load($slider['image_container_' . $i]['image']);
+//                    $url = file_create_url($file->uri);
+//                    $data["slider_" . $i . "_image"] = $url;
+//
+//                    $data["slider_" . $i . "_redirection_link"] = $slider['image_container_' . $i]['redirection_link'];
+//                }
+//
+//                drupal_add_js(array('memory_blocks' => array('slider_time_interval' => variable_get("slider_time_interval"))), array('type' => 'setting'));
+//            }
+//
+//            /* Vidéo */
+//            if (variable_get('slider_type') == "1") {
+//
+//                $video = variable_get('video', array());
+//                $video_name = $video['name'];
+//                $data['video_url_intern'] = $video['url_intern'];
+//                $data['video_autoplay'] = $video['autoplay'];
+//                $data['video_controls'] = $video['controls'];
+//                $data['video_loop'] = $video['loop'];
+//                $data['video_poster'] = $video['poster'];
+//                $data['video_redirection_link'] = $video['redirection_link'];
+//
+//                if ($video['video'] != 0) {
+//
+//                    $file = file_load($video['video']);
+//                    $url = file_create_url($file->uri);
+//                    $data['video_video'] = $url;
+//                }
+//
+//                if ($video['poster_image'] != 0) {
+//
+//                    $file = file_load($video['poster_image']);
+//                    $url = file_create_url($file->uri);
+//                    $data['video_poster_image'] = $url;
+//                }
+//            }
+//
+//            /* Still image */
+//            if (variable_get('slider_type') == "2") {
+//
+//                $still_img = variable_get('still_img', array());
+//                $data['still_img_name'] = $still_img['name'];
+//
+//                /*
+//                 * $arrayName['image'] correspond to the fid
+//                 * Load the file by its fid.
+//                 * Create the URL file by using the file URI
+//                 */
+//                $file = file_load($still_img['image']);
+//                $url = file_create_url($file->uri);
+//                $data['still_img_image'] = $url;
+//
+//                $data['still_img_redirection_link'] = $still_img['redirection_link'];
+//            }
 
             // Link the template
             $block['content']['#markup'] = theme('tpl_memory_slider', $data);
@@ -867,6 +881,14 @@ function memory_blocks_block_view($delta = '') {
             $block['content']['#attached']['js'][] = array(
                 'data' => drupal_get_path('module', 'memory_blocks') . '/js/memory_slider.js',
                 'type' => 'file'
+            );
+            drupal_add_js(
+              array(
+                'memory_blocks' => array(
+                  'slider_type' => $slider_home_page['display_type']
+                )
+              ),
+              array('type' => 'setting')
             );
 
             break;
@@ -1526,269 +1548,332 @@ function memory_blocks_top_activities_admin_form($form, &$form_state) {
 
 function memory_blocks_slider_admin_form($form, &$form_state){
 
-    /* Slider - Global options */
-    $form['slider_type'] = array(
-        '#type' => 'radios',
-        '#title' => t('Type d\'affichage'),
-        '#default_value' => variable_get('slider_type', 0),
-        '#options' => array(
-            0 => t('Slider d\'images'),
-            1 => t('Vidéo'),
-            2 => t('Image fixe'),
+  // ---------------------- SLIDER - Home page ----------------------
+  $form['slider_home_page'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Slider - Page d\'accueil'),
+    '#weight' => 1,
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#tree' => TRUE
+  );
+
+  $slider_home_page_values = variable_get('slider_home_page', array());
+
+  $slider_home_page_values["display_type"] = (empty($slider_home_page_values["display_type"])) ? 0 : $slider_home_page_values["display_type"];
+  $slider_home_page_values["height"] = (empty($slider_home_page_values["height"])) ? 550 : $slider_home_page_values["height"];
+
+  $form['slider_home_page']['display_type'] = array(
+    '#type' => 'radios',
+    '#title' => t('Type d\'affichage'),
+    '#default_value' => $slider_home_page_values["display_type"],
+    '#options' => array(
+      0 => t('Slider d\'images'),
+      1 => t('Vidéo'),
+      2 => t('Image fixe'),
+    ),
+    '#description' => t('Choisir le type d\'affichage souhaité pour l\'encart en page d\'accueil.'),
+    '#required' => TRUE,
+    '#weight' => 1,
+  );
+
+  $form['slider_home_page']['height'] = array(
+    '#type' => 'textfield',
+    '#attributes' => array(
+      ' type' => 'number',
+    ),
+    '#default_value' => $slider_home_page_values['height'],
+    '#title' => t('Hauteur'),
+    '#description' => t('Indiquer la hauteur du slider en pixels. Par défaut, la hauteur est de 550px.'),
+    '#maxlength' => 5,
+    '#required' => TRUE,
+    '#weight' => 2,
+  );
+
+  /* Slider Home page - Slider images */
+  $form['slider_home_page']['slider_image'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Slider d\'images'),
+    '#weight' => 5,
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#tree' => TRUE
+  );
+
+  $slider_home_page_values['slider_image']['nb_images'] = (empty($slider_home_page_values['slider_image']['nb_images'])) ? 5 : $slider_home_page_values['slider_image']['nb_images'];
+  $slider_home_page_values['slider_image']["scroll_time_interval"] = (empty($slider_home_page_values['slider_image']["scroll_time_interval"])) ? 10000 : $slider_home_page_values['slider_image']["scroll_time_interval"];
+  $slider_home_page_values['slider_image']["scroll_speed"] = (empty($slider_home_page_values['slider_image']["scroll_speed"])) ? 2000 : $slider_home_page_values['slider_image']["scroll_speed"];
+
+  $form['slider_home_page']['slider_image']['nb_images'] = array(
+    '#type' => 'textfield',
+    '#attributes' => array(
+      ' type' => 'number',
+    ),
+    '#default_value' => $slider_home_page_values['slider_image']['nb_images'],
+    '#title' => t('Nombre d\'images'),
+    '#description' => t('Le nombre d\'images constituant le slider.'),
+    '#maxlength' => 3,
+    '#required' => TRUE,
+    '#weight' => 1,
+  );
+
+  $form['slider_home_page']['slider_image']['scroll_time_interval'] = array(
+    '#type' => 'textfield',
+    '#attributes' => array(
+      ' type' => 'number',
+    ),
+    '#default_value' => $slider_home_page_values['slider_image']["scroll_time_interval"],
+    '#title' => t('Interval de temps'),
+    '#description' => t('Interval de temps pour entre chaque défilement du slider. Le temps est exprimé en millisecondes (ms).'),
+    '#maxlength' => 6,
+    '#required' => TRUE,
+    '#weight' => 2,
+  );
+
+  $form['slider_home_page']['slider_image']['scroll_speed'] = array(
+    '#type' => 'textfield',
+    '#attributes' => array(
+      ' type' => 'number',
+    ),
+    '#default_value' => $slider_home_page_values['slider_image']["scroll_speed"],
+    '#title' => t('Vitesse'),
+    '#description' => t('Vitesse de défilement du slider. Le temps est exprimé en millisecondes (ms).'),
+    '#maxlength' => 6,
+    '#required' => TRUE,
+    '#weight' => 3,
+  );
+
+  for($i = 1; $i <= $slider_home_page_values['slider_image']['nb_images']; $i++){
+
+    $form['slider_home_page']['slider_image']['image_container_'.$i] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Image n°'.$i),
+      '#weight' => 3+$i,
+      '#collapsible' => TRUE,
+      '#collapsed' => FALSE,
+      '#tree' => TRUE
+    );
+
+    $form['slider_home_page']['slider_image']['image_container_'.$i]['image'] = array(
+      '#type'          => 'media',
+      '#title'         => t('Image'),
+      '#theme'         => 'media_widget', // Without that, you only get text input
+      '#default_value' => $slider_home_page_values['slider_image']['image_container_'.$i]['image'], //The fid
+      '#media_options' => array(
+        'global' => array(
+          'file_directory'  => 'icons_folder',
+          'file_extensions' => 'png gif jpg jpeg',
+          'max_filesize'    => '2 MB',
+          'uri_scheme'      => 'public',
+          'types'           => array('image'),
+          'schemes'         => array(
+            'public' => 'public',
+          ),
         ),
-        '#description' => t('Choisir le type d\'affichage souhaité.'),
-        '#required' => TRUE,
-        '#weight' => 1,
+      ),
+      '#weight' => 1,
     );
 
-    $form['slider_height'] = array(
-        '#type' => 'textfield',
-        '#attributes' => array(
-            ' type' => 'number', // insert space before attribute name :)
+    $form['slider_home_page']['slider_image']['image_container_'.$i]['redirection_link'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Lien de redirection'),
+      '#default_value' => $slider_home_page_values['slider_image']['image_container_'.$i]['redirection_link'],
+      '#maxlength' => 512,
+      '#weight' => 2,
+    );
+  }
+
+  /* Slider Home page - Video */
+  $form['slider_home_page']['video'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Vidéo'),
+    '#weight' => 6,
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#tree' => TRUE
+  );
+
+  $form['slider_home_page']['video']['video'] = array(
+    '#type'          => 'media',
+    '#title' => t('Vidéo'),
+    '#theme'         => 'media_widget', // Without that, you only get text input
+    '#default_value' => $slider_home_page_values['video']['video'], // The fid
+    '#media_options' => array(
+      'global' => array(
+        'file_directory'  => 'videos',
+        'file_extensions' => 'mov mp4',
+        'max_filesize'    => '200 MB',
+        'uri_scheme'      => 'public',
+        'types'           => array('video'),
+        'schemes'         => array(
+          'public' => 'public',
         ),
-        '#default_value' => variable_get("slider_height", "550"),
-        '#title' => t('Hauteur du slider'),
-        '#description' => t('Indiquer la hauteur du slider en pixel.'),
-        '#maxlength' => 5,
-        '#required' => TRUE,
-        '#weight' => 2,
-    );
+      ),
+    ),
+    '#weight' => 1,
+  );
 
-    $form['slider_time_interval'] = array(
-        '#type' => 'textfield',
-        '#attributes' => array(
-            ' type' => 'number', // insert space before attribute name :)
+  $slider_home_page_values['video']['autoplay'] = (empty($slider_home_page_values['video']['autoplay'])) ? 0 : $slider_home_page_values['video']['autoplay'];
+  $slider_home_page_values['video']['controls'] = (empty($slider_home_page_values['video']['controls'])) ? 0 : $slider_home_page_values['video']['controls'];
+  $slider_home_page_values['video']['loop'] = (empty($slider_home_page_values['video']['loop'])) ? 0 : $slider_home_page_values['video']['loop'];
+  $slider_home_page_values['video']['poster'] = (empty($slider_home_page_values['video']['poster'])) ? 0 : $slider_home_page_values['video']['poster'];
+
+  $form['slider_home_page']['video']['autoplay'] = array(
+    '#type' => 'radios',
+    '#title' => t('Autoplay'),
+    '#default_value' => $slider_home_page_values['video']['autoplay'],
+    '#options' => array(
+      0 => t('Désactiver'),
+      1 => t('Activer'),
+    ),
+    '#description' => t("Autoplay : Permet de jouer automatiquement la vidéo lorsque l'utilisateur visite la page sur laquelle elle se trouve.<br>A noter que les navigateurs tels que Safari et Chrome, ne permettent plus de lancer automatiquement une vidéo avec du son."),
+    '#weight' => 2,
+  );
+
+  $form['slider_home_page']['video']['controls'] = array(
+    '#type' => 'radios',
+    '#title' => t('Controls'),
+    '#default_value' => $slider_home_page_values['video']['controls'],
+    '#options' => array(
+      0 => t('Désactiver'),
+      1 => t('Activer'),
+    ),
+    '#description' => t("Controls : Affiche les outils de gestion de la vidéo (pause, vidéo suivante, etc.)."),
+    '#weight' => 3,
+  );
+
+  $form['slider_home_page']['video']['loop'] = array(
+    '#type' => 'radios',
+    '#title' => t('Loop'),
+    '#default_value' => $slider_home_page_values['video']['loop'],
+    '#options' => array(
+      0 => t('Désactiver'),
+      1 => t('Activer'),
+    ),
+    '#description' => t("Loop : Permet de jouer la vidéo à l'infini."),
+    '#weight' => 4,
+  );
+
+  $form['slider_home_page']['video']['poster'] = array(
+    '#type' => 'radios',
+    '#title' => t('Poster'),
+    '#default_value' => $slider_home_page_values['video']['poster'],
+    '#options' => array(
+      0 => t('Désactiver'),
+      1 => t('Activer'),
+    ),
+    '#description' => t("Poster : Image a affiché lorsque la vidéo charge."),
+    '#weight' => 5,
+  );
+
+  $form['slider_home_page']['video']['poster_image'] = array(
+    '#type'          => 'media',
+    '#title' => t('Image'),
+    '#theme'         => 'media_widget', // Without that, you only get text input
+    '#default_value' => $slider_home_page_values['video']['poster_image'], // The fid
+    '#media_options' => array(
+      'global' => array(
+        'file_directory'  => 'image_folder',
+        'file_extensions' => 'png gif jpg jpeg',
+        'max_filesize'    => '2 MB',
+        'uri_scheme'      => 'public',
+        'types'           => array('image'),
+        'schemes'         => array(
+          'public' => 'public',
         ),
-        '#default_value' => variable_get("slider_time_interval", "10000"),
-        '#title' => t('Interval de temps du slider'),
-        '#description' => t('Indiquer l\'interval de temps du slider pour lequel l\'image suivante apparaîtra.'),
-        '#maxlength' => 5,
-        '#required' => TRUE,
-        '#weight' => 3,
-    );
+      ),
+    ),
+    '#weight' => 6,
+  );
 
-    /* Slider images */
-    $form['slider'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Slider images'),
-        '#weight' => 4,
-        '#collapsible' => TRUE,
-        '#collapsed' => TRUE,
-        '#tree' => TRUE
-    );
+  $form['slider_home_page']['video']['redirection_link'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Lien de redirection'),
+    '#default_value' => $slider_home_page_values['video']['redirection_link'],
+    '#maxlength' => 512,
+    '#weight' => 7,
+  );
 
-    $slider = variable_get('slider', array());
+  /* Slider Home page - Fixed image */
+  $form['slider_home_page']['fixed_image'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Image fixe'),
+    '#weight' => 7,
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#tree' => TRUE
+  );
 
-    for( $i = 1 ; $i <= 8 ; $i++ ){
-
-        $form['slider']['image_container_'.$i] = array(
-            '#type' => 'fieldset',
-            '#title' => t('Image n°'.$i),
-            '#weight' => $i,
-            '#collapsible' => TRUE,
-            '#collapsed' => TRUE,
-            '#tree' => TRUE
-        );
-
-        $form['slider']['image_container_'.$i]['name'] = array(
-            '#type' => 'textfield',
-            '#title' => t('Nom'),
-            '#default_value' => $slider['image_container_'.$i]['name'],
-            '#weight' => 1,
-        );
-
-        $form['slider']['image_container_'.$i]['image'] = array(
-            '#type'          => 'media',
-            '#title' => t('Image'),
-            '#theme'         => 'media_widget', // Without that, you only get text input
-            '#default_value' => $slider['image_container_'.$i]['image'], // The fid
-            '#media_options' => array(
-                'global' => array(
-                    'file_directory'  => 'image_folder',
-                    'file_extensions' => 'png gif jpg jpeg',
-                    'max_filesize'    => '2 MB',
-                    'uri_scheme'      => 'public',
-                    'types'           => array('image'),
-                    'schemes'         => array(
-                        'public' => 'public',
-                    ),
-                ),
-            ),
-            '#weight' => 2,
-        );
-
-        $form['slider']['image_container_'.$i]['redirection_link'] = array(
-            '#type' => 'textfield',
-            '#title' => t('Lien de redirection'),
-            '#default_value' => $slider['image_container_'.$i]['redirection_link'],
-            '#maxlength' => 512,
-            '#weight' => 3,
-        );
-    }
-
-    /* Video */
-    $form['video'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Vidéo'),
-        '#weight' => 5,
-        '#collapsible' => TRUE,
-        '#collapsed' => TRUE,
-        '#tree' => TRUE
-    );
-
-    $video = variable_get('video', array());
-
-    $form['video']['video'] = array(
-        '#type'          => 'media',
-        '#title' => t('Upload video'),
-        '#theme'         => 'media_widget', // Without that, you only get text input
-        '#default_value' => $video['video'], // The fid
-        '#media_options' => array(
-            'global' => array(
-                'file_directory'  => 'videos',
-                'file_extensions' => 'mov mp4',
-                'max_filesize'    => '200 MB',
-                'uri_scheme'      => 'public',
-                'types'           => array('video'),
-                'schemes'         => array(
-                    'public' => 'public',
-                ),
-            ),
+  $form['slider_home_page']['fixed_image']['image'] = array(
+    '#type'          => 'media',
+    '#title' => t('Image'),
+    '#theme'         => 'media_widget', // Without that, you only get text input
+    '#default_value' => $slider_home_page_values['fixed_image']['image'], // The fid
+    '#media_options' => array(
+      'global' => array(
+        'file_directory'  => 'image_folder',
+        'file_extensions' => 'png gif jpg jpeg',
+        'max_filesize'    => '2 MB',
+        'uri_scheme'      => 'public',
+        'types'           => array('image'),
+        'schemes'         => array(
+          'public' => 'public',
         ),
-        '#weight' => 0,
-    );
+      ),
+    ),
+    '#weight' => 1,
+  );
 
-    $form['video']['name'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Nom'),
-        '#default_value' => $video['name'],
-        '#weight' => 1,
-    );
+  $form['slider_home_page']['fixed_image']['redirection_link'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Lien de redirection'),
+    '#default_value' => $slider_home_page_values['fixed_image']['redirection_link'],
+    '#maxlength' => 512,
+    '#weight' => 2,
+  );
 
-    $form['video']['autoplay'] = array(
-        '#type' => 'radios',
-        '#title' => t('Autoplay'),
-        '#default_value' => $video['autoplay'],
-        '#options' => array(
-            0 => t('Désactiver'),
-            1 => t('Activer'),
-        ),
-        '#description' => t("L'autoplay permet de jouer automatiquement la vidéo lorsque l'utilisateur visite la page sur laquelle elle se trouve.<br>A noter que les navigateurs tels que Safari et Chrome, ne permettent plus de lancer automatiquement une vidéo avec du son."),
-        '#weight' => 3,
-    );
+  // ---------------------- SLIDER - Activity page ----------------------
+  $form['slider_activity_page'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Slider - Page activité'),
+    '#weight' => 1,
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#tree' => TRUE
+  );
 
-    $form['video']['controls'] = array(
-        '#type' => 'radios',
-        '#title' => t('Controls'),
-        '#default_value' => $video['controls'],
-        '#options' => array(
-            0 => t('Désactiver'),
-            1 => t('Activer'),
-        ),
-        '#description' => t("Controls affiche les outils de gestion de la vidéo (pause...)."),
-        '#weight' => 4,
-    );
+  $slider_activity_page_values = variable_get('slider_activity_page', array());
 
-    $form['video']['loop'] = array(
-        '#type' => 'radios',
-        '#title' => t('Loop'),
-        '#default_value' => $video['loop'],
-        '#options' => array(
-            0 => t('Désactiver'),
-            1 => t('Activer'),
-        ),
-        '#description' => t("Loop permet de jouer la vidéo à l'infini."),
-        '#weight' => 5,
-    );
+  $slider_activity_page_values["height"] = (empty($slider_activity_page_values["height"])) ? 200 : $slider_activity_page_values["height"];
+  $slider_activity_page_values["scroll_time_interval"] = (empty($slider_activity_page_values["scroll_time_interval"])) ? 10000 : $slider_activity_page_values["scroll_time_interval"];
 
-    $form['video']['poster'] = array(
-        '#type' => 'radios',
-        '#title' => t('Poster'),
-        '#default_value' => $video['poster'],
-        '#options' => array(
-            0 => t('Désactiver'),
-            1 => t('Activer'),
-        ),
-        '#description' => t("Image a affiché lorsque la vidéo charge."),
-        '#weight' => 7,
-    );
+  $form['slider_activity_page']['height'] = array(
+    '#type' => 'textfield',
+    '#attributes' => array(
+      ' type' => 'number',
+    ),
+    '#default_value' => $slider_activity_page_values["height"],
+    '#title' => t('Hauteur'),
+    '#description' => t('Indiquer la hauteur du slider en pixels. Par défaut, la hauteur est de 200px.'),
+    '#maxlength' => 5,
+    '#required' => TRUE,
+    '#weight' => 1,
+  );
 
-    $form['video']['poster_image'] = array(
-        '#type'          => 'media',
-        '#title' => t('Image'),
-        '#theme'         => 'media_widget', // Without that, you only get text input
-        '#default_value' => $video['poster_image'], // The fid
-        '#media_options' => array(
-            'global' => array(
-                'file_directory'  => 'image_folder',
-                'file_extensions' => 'png gif jpg jpeg',
-                'max_filesize'    => '2 MB',
-                'uri_scheme'      => 'public',
-                'types'           => array('image'),
-                'schemes'         => array(
-                    'public' => 'public',
-                ),
-            ),
-        ),
-        '#weight' => 8,
-    );
+  $form['slider_activity_page']['scroll_time_interval'] = array(
+    '#type' => 'textfield',
+    '#attributes' => array(
+      ' type' => 'number',
+    ),
+    '#default_value' => $slider_activity_page_values["scroll_time_interval"],
+    '#title' => t('Interval de temps'),
+    '#description' => t('Interval de temps pour entre chaque défilement du slider. Le temps est exprimé en millisecondes (ms).'),
+    '#maxlength' => 6,
+    '#required' => TRUE,
+    '#weight' => 2,
+  );
 
-    $form['video']['redirection_link'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Lien de redirection'),
-        '#default_value' => $video['redirection_link'],
-        '#maxlength' => 512,
-        '#weight' => 9,
-    );
-
-    /* Still image */
-    $form['still_img'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Image fixe'),
-        '#weight' => 6,
-        '#collapsible' => TRUE,
-        '#collapsed' => TRUE,
-        '#tree' => TRUE
-    );
-
-    $still_img = variable_get('still_img', array());
-
-    $form['still_img']['name'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Nom'),
-        '#default_value' => $still_img['name'],
-        '#weight' => 1,
-    );
-
-    $form['still_img']['image'] = array(
-        '#type'          => 'media',
-        '#title' => t('Image'),
-        '#theme'         => 'media_widget', // Without that, you only get text input
-        '#default_value' => $still_img['image'], // The fid
-        '#media_options' => array(
-            'global' => array(
-                'file_directory'  => 'image_folder',
-                'file_extensions' => 'png gif jpg jpeg',
-                'max_filesize'    => '2 MB',
-                'uri_scheme'      => 'public',
-                'types'           => array('image'),
-                'schemes'         => array(
-                    'public' => 'public',
-                ),
-            ),
-        ),
-        '#weight' => 2,
-    );
-
-    $form['still_img']['redirection_link'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Lien de redirection'),
-        '#default_value' => $still_img['redirection_link'],
-        '#maxlength' => 512,
-        '#weight' => 3,
-    );
-
-    return system_settings_form($form);
+  return system_settings_form($form);
 }
 
 function memory_blocks_activity_families_admin_form($form, &$form_state){
@@ -2241,6 +2326,9 @@ function memory_blocks_form_alter(&$form, &$form_state, $form_id) {
 
       $form['field_img_activite'][LANGUAGE_NONE][0]['#title'] = "Image de l'activité";
       $form['field_img_activite'][LANGUAGE_NONE][0]['#required'] = TRUE;
+
+      // edit-field-acti-carousel-und-0-actions-remove-button
+//      $form['field-acti-carousel'][LANGUAGE_NONE][0]['actions']['submit']['#value'] = "Supprimer le slider";
 
       break;
   }

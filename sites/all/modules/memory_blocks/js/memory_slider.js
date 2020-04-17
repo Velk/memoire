@@ -164,22 +164,33 @@
                     if( $.type($("#slider-container video").data("href")) !== "undefined" ){
 
                         var url = $(this).data("href");
-                        window.location = url;
+                        window.open(url, "_blank");
                     }
                 });
 
               // Video resizing
-              if($("#slider-container").height() > $("#slider-container video").height()){
-                $("#slider-container video").css({
-                  "height":"100%",
-                  "width":"auto",
-                });
-              }else{
-                $("#slider-container video").css({
-                  "height":"auto",
-                  "width":"100%",
-                });
-              }
+              document.onreadystatechange = function () {
+
+                if (document.readyState === "complete") {
+
+                  var ratioWidth = $("#slider-container").width()/$("#slider-container video").width();
+                  var ratioHeight = $("#slider-container").height()/$("#slider-container video").height();
+
+                  if(ratioWidth > 1){
+                    $("#slider-container video").css({
+                      "height":"auto",
+                      "width":"100%",
+                    });
+                  }
+
+                  if(ratioHeight > 1){
+                    $("#slider-container video").css({
+                      "height":"100%",
+                      "width":"auto",
+                    });
+                  }
+                }
+              };
             }
 
             /* ---------------------------------------------------------------------------------------------------------------------------------- */
