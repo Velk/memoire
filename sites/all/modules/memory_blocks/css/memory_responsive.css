@@ -635,9 +635,9 @@
 
   /* Page - Nos destinations */
   div#description-container {
-    width: 100%;
-    margin: 0;
-    padding: 50px calc(25%/2);
+    width: 75%;
+    padding: 0;
+    margin: 50px auto;
   }
   div#container > #img-container {
     height: 500px;
@@ -967,6 +967,11 @@
     font-size: 14px;
     padding: 3px 5px;
   }
+
+  /* Home page */
+  h2#memory-map-title {
+    margin: 0 0 25px 0 !important;
+  }
 }
 
 @media screen and (max-width: 640px) {
@@ -1011,7 +1016,7 @@
     width: calc(50% - 5px) !important;
     height: 100px !important;
     min-height: 90px !important;
-    margin-bottom: 25px !important;
+    margin-bottom: 10px !important;
   }
   div#top-activities-grid > div:nth-child(n):not(:nth-child(3n)) {
     margin-right: unset;
@@ -1030,7 +1035,7 @@
     width: calc(50% - 5px) !important;
     height: 100px !important;
     min-height: 90px !important;
-    margin-bottom: 25px !important;
+    margin-bottom: 10px !important;
   }
   div#top-destinations-grid > div:nth-child(n):not(:nth-child(3n)) {
     margin-right: unset;
@@ -1074,8 +1079,11 @@
     position: relative;
     width: calc(50% - 5px);
     height: 100px;
-    margin-bottom: 25px;
+    margin-bottom: 10px;
     overflow: hidden;
+  }
+  .cont-container > h2 {
+    margin: 0 0 15px 0;
   }
   .cont-scop:nth-child(n):not(:nth-child(3n)) {
     margin-right: unset;
@@ -1196,5 +1204,11 @@
   }
   div#activity-memory-opinion {
     padding-top: 45px;
+  }
+
+  /* Page "Toutes nos activités" */
+  .all-activities-container {
+    grid-gap: 10px;
+    grid-template-columns: repeat(2, calc(100%/2 - 10px/2));
   }
 }
