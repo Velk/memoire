@@ -1189,4 +1189,12 @@
     width: 75vw;
     margin: 0;
   }
+
+  /* Intermediate page */
+  div#act-dest-main {
+    margin: 30px auto;
+  }
+  div#activity-memory-opinion {
+    padding-top: 45px;
+  }
 }

@@ -75,32 +75,41 @@
             $("#carousel-container .carousel-slider-item[data-slider-image='" + currentImageIndex + "']").removeClass("active-slider-image");
             $("#carousel-container .carousel-slider-item[data-slider-image='" + followingImageIndex + "']").addClass("active-slider-image");
 
-            // var newCurrentImage = $("#carousel-container .active-slider-image").index();
             var newCurrentImageIndex = parseInt($("#carousel-container .active-slider-image").attr("data-slider-image"));
             var imageSliderImage = $("#carousel-slider > div");
 
             // Update image on the center
-            if(newCurrentImageIndex === 0){
+            if(newCurrentImageIndex === nbImages){
 
-              $("#carousel-container .carousel-slider-item[data-slider-image='" + (newCurrentImageIndex + 1) + "']").prependTo($(imageSliderImage));
-              $("#carousel-container .carousel-slider-item[data-slider-image='" + newCurrentImageIndex + "']").prependTo($(imageSliderImage));
-              $("#carousel-container .carousel-slider-item[data-slider-image='" + nbImages + "']").prependTo($(imageSliderImage));
-            }else if(newCurrentImageIndex === nbImages){
-
+              $("#carousel-container .carousel-slider-item[data-slider-image='1']").prependTo($(imageSliderImage));
               $("#carousel-container .carousel-slider-item[data-slider-image='0']").prependTo($(imageSliderImage));
               $("#carousel-container .carousel-slider-item[data-slider-image='" + newCurrentImageIndex + "']").prependTo($(imageSliderImage));
-              $("#carousel-container .carousel-slider-item[data-slider-image='" + (newCurrentImageIndex - 1) + "']").prependTo($(imageSliderImage));
+            }else if(newCurrentImageIndex === (nbImages - 1)){
+
+              $("#carousel-container .carousel-slider-item[data-slider-image='0']").prependTo($(imageSliderImage));
+              $("#carousel-container .carousel-slider-item[data-slider-image='" + nbImages + "']").prependTo($(imageSliderImage));
+              $("#carousel-container .carousel-slider-item[data-slider-image='" + newCurrentImageIndex + "']").prependTo($(imageSliderImage));
             }else{
 
+              $("#carousel-container .carousel-slider-item[data-slider-image='" + (newCurrentImageIndex + 2) + "']").prependTo($(imageSliderImage));
               $("#carousel-container .carousel-slider-item[data-slider-image='" + (newCurrentImageIndex + 1) + "']").prependTo($(imageSliderImage));
-              $("#carousel-container .carousel-slider-item[data-slider-image='" + newCurrentImageIndex + "']").prependTo($(imageSliderImage));
-              $("#carousel-container .carousel-slider-item[data-slider-image='" + (newCurrentImageIndex - 1) + "']").prependTo($(imageSliderImage));
+              $("#carousel-container .carousel-slider-item[data-slider-image='" + (newCurrentImageIndex) + "']").prependTo($(imageSliderImage));
             }
 
             changeDotsSlider(currentImageIndex, followingImageIndex);
           }
 
-          $("#carousel-container #carousel-button-next").click(function(){
+          // Auto Scroll behavior
+          var autoScroll = null;
+          var sliderScrollTimeInterval =
+            (
+              Drupal.settings.memory_blocks.slider_activity_page.scroll_time_interval === 0 ||
+              Drupal.settings.memory_blocks.slider_activity_page.scroll_time_interval === typeof undefined ||
+              Drupal.settings.memory_blocks.slider_activity_page.scroll_time_interval === ""
+            ) ? 2000 : Drupal.settings.memory_blocks.slider_activity_page.scroll_time_interval
+          ;
+
+          function sliderAutoScroll(){
 
             var currentImageIndex = $("#carousel-container .active-slider-image").attr("data-slider-image");
             var followingImageIndex = parseInt(currentImageIndex) + 1;
@@ -108,9 +117,33 @@
             if(followingImageIndex > nbImages){followingImageIndex = 0;}
 
             changeImageSlider(currentImageIndex, followingImageIndex);
+          }
+          function sliderStartAutoScroll(){
+            autoScroll = setInterval(sliderAutoScroll, sliderScrollTimeInterval);
+          }
+          function sliderStopAutoScroll(){
+            window.clearInterval(autoScroll);
+          }
+          sliderStartAutoScroll();
+
+          // User events behavior
+          $("#carousel-container #carousel-button-next").click(function(){
+
+            sliderStopAutoScroll();
+
+            var currentImageIndex = $("#carousel-container .active-slider-image").attr("data-slider-image");
+            var followingImageIndex = parseInt(currentImageIndex) + 1;
+
+            if(followingImageIndex > nbImages){followingImageIndex = 0;}
+
+            changeImageSlider(currentImageIndex, followingImageIndex);
+
+            sliderStartAutoScroll();
           });
 
           $("#carousel-container #carousel-button-prev").click(function(){
+
+            sliderStopAutoScroll();
 
             var currentImageIndex = $("#carousel-container .active-slider-image").attr("data-slider-image");
             var followingImageIndex = parseInt(currentImageIndex) - 1;
@@ -118,18 +151,26 @@
             if(followingImageIndex < 0){followingImageIndex = nbImages;}
 
             changeImageSlider(currentImageIndex, followingImageIndex);
+
+            sliderStartAutoScroll();
           });
 
           $("#carousel-container #carousel-dots > i").click(function(){
+
+            sliderStopAutoScroll();
 
             var currentImageIndex = $("#carousel-container #carousel-dots > i.fa-circle").attr("data-slider-image-dot");
             var followingImageIndex = $(this).attr("data-slider-image-dot");
 
             changeImageSlider(currentImageIndex, followingImageIndex);
+
+            sliderStartAutoScroll();
           });
 
           // Zoom image
           $(".carousel-slider-item").click(function(){
+
+            sliderStopAutoScroll();
 
             var urlImage = $(this).css("background-image").replace("url(","").replace(")","").replace(/\"/gi, "");
 
@@ -148,6 +189,8 @@
 
             $("div#slider-image-zoom-container i").click(function () {
               $("#slider-image-zoom-container").remove();
+
+              sliderStartAutoScroll();
             });
 
             $("div#slider-image-zoom-container").click(function(e) {
@@ -158,6 +201,8 @@
               }
 
               $("#slider-image-zoom-container").remove();
+
+              sliderStartAutoScroll();
             });
           });
         }
