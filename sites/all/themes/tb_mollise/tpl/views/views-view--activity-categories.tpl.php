@@ -54,6 +54,23 @@
       }
   }
 
+  // Get max weight of each activities
+  $activities_weight = array();
+  foreach ($nids as $nid){
+    $node = node_load($nid);
+
+    $activity_weight_field = field_get_items('node', $node, 'field_weight');
+    $activity_weight = ( empty($activity_weight_field[0]["value"]) ) ? 0 : $activity_weight_field[0]["value"];
+
+    if(empty($activities_weight[$node->title]) || !isset($activities_weight[$node->title])){
+      $activities_weight[$node->title] = intval($activity_weight);
+    }else{
+      if(intval($activity_weight) > $activities_weight[$node->title]){
+        $activities_weight[$node->title] = intval($activity_weight);
+      }
+    }
+  }
+
   $activities_count = [];
 
   for($i = 0 ; $i < count($nids) ; $i++){
@@ -71,6 +88,7 @@
 
     $activity_tid_field = field_get_items('node', $node, 'field_acti_cont_cat');
     $activity_tid = $activity_tid_field[0]["tid"];
+<<<<<<< HEAD
 
     $activity_image = field_get_items('node', $node, 'field_img_activite');
 
@@ -91,6 +109,36 @@
     $ordered_activity_categories[$taxonomy->weight] = $activity_type;
   }
 
+=======
+
+    // Image of activity
+    //$activity_image = field_get_items('node', $node, 'field_img_activite');
+    $file_ip_img = "";
+    $intermediate_page_admin_config = variable_get("fieldset-" . pathauto_cleanstring($node->title), array());
+    if($intermediate_page_admin_config["ip_image"] !== 0){ // Get the image for the intermediate page
+      $file_ip_img = file_load($intermediate_page_admin_config['ip_image']);
+    }
+
+    // [$activity_weight]
+    $activities[$activity_tid][$activities_weight[$node->title]][strtolower($node->title)] = array(
+      'title' => $node->title,
+//      'img_uri' => image_style_url("large", $activity_image[0]["uri"]),
+      'img_uri' => image_style_url("large", $file_ip_img->uri),
+      'intermediate_path' => $base_url . "/activites/" . drupal_encode_path($node->title),
+    );
+  }
+
+  // Order filters
+  $ordered_activity_categories = array();
+
+  foreach ($array_activity_types as $activity_type){
+
+    $taxonomy = taxonomy_term_load($activity_type);
+
+    $ordered_activity_categories[$taxonomy->weight] = $activity_type;
+  }
+
+>>>>>>> preprod
   ksort($ordered_activity_categories);
 ?>
 
@@ -115,7 +163,7 @@
         echo '</div>';
     }
 
-    if( isset($all_act_description) ){
+    if( isset($all_act_description) && !empty($all_act_description) ){
         echo
             '<div id="description-container">' .
             $all_act_description .
@@ -136,6 +184,7 @@
 
             <div class="all-activities-container">
                 <?php
+<<<<<<< HEAD
                 // Sort array by activity name
                 ksort($activities[$activity_category]);
 
@@ -149,6 +198,28 @@
                             </div>
                         </div>
                 <?php
+=======
+                // Sort array by activity weight
+                krsort($activities[$activity_category], 6);
+
+                foreach ($activities[$activity_category] as $act_weight_sorted) {
+
+                  // Sort array by activity name
+                  asort($act_weight_sorted);
+
+                  foreach ($act_weight_sorted as $activity) {
+                  ?>
+                    <div class="all-act-scop"
+                         style="background-image:url('<?php print $activity['img_uri'] ?>'); background-size:cover;background-position:center;">
+                      <div class="all-act-datas-container">
+                        <h3 class="all-act-stick-title"><?php print $activity['title'] ?></h3>
+                        <a href="<?php print $activity['intermediate_path'] ?>"
+                           class="all-act-readmore"></a>
+                      </div>
+                    </div>
+                  <?php
+                  }
+>>>>>>> preprod
                 }
                 ?>
             </div>
