@@ -103,7 +103,7 @@
 
         if(cityName === null || cityName === currentCityName){ // If city name is not set or activities are located in the city choosed
 
-          activityContainer = $(this).parent().parent().parent();
+          activityContainer = $(this).parent().parent().parent().parent();
 
           optionImage = activityContainer.children("div.prestation-main").find("div.prestation-image").css("background-image");
           if(typeof optionImage === typeof undefined || optionImage === false){ // If option has not image, set the activity image by default
