@@ -3,11 +3,7 @@ global $base_url;
 global $user;
 module_load_include('inc', 'pathauto', 'pathauto');
 
-<<<<<<< HEAD
-//drupal_set_message("Page activity category (EVG, EVJF...)");
-=======
 // drupal_set_message("Page activity category (EVG, EVJF...)");
->>>>>>> preprod
 
 /* ------------------------------------- SPECIAL FILTERS & INTERMEDIATE PAGE ------------------------------------- */
 
@@ -24,23 +20,18 @@ if (!empty($content['field_is_special_filters']))
 else
   $bool_is_special_filters = 1;
 
-<<<<<<< HEAD
-=======
 // Retrieve the boolean value of intermediate page
 if (!empty($content['field_is_intermediate_page']))
   $bool_is_intermediate_page = $content['field_is_intermediate_page']['#items'][0]['value'];
 else
   $bool_is_intermediate_page = 1;
 
->>>>>>> preprod
 /* -------------------------------------------------- CONTENT -------------------------------------------------- */
 
 if (!empty($content['field_category_activities_img'])) {
   $img_head_url = file_create_url($content['field_category_activities_img']['#items'][0]['file']->uri);
 }
 
-<<<<<<< HEAD
-=======
 // Get max weight of each activities
 $activities_weight = array();
 foreach ($nids as $nid){
@@ -58,7 +49,6 @@ foreach ($nids as $nid){
   }
 }
 
->>>>>>> preprod
 $array_activity_types = array();
 $cnt = array();
 
@@ -85,29 +75,6 @@ foreach ($nids as $nid) {
   $activity_weight_field = field_get_items('node', $node, 'field_weight');
   $activity_weight = ( empty($activity_weight_field[0]["value"]) ) ? 0 : $activity_weight_field[0]["value"];
 
-<<<<<<< HEAD
-  $activity_image = field_get_items('node', $node, 'field_img_activite');
-
-  $cnt[$activity_tid][$node->title] = array(
-    'title' => $node->title,
-    'img_uri' => image_style_url("large", $activity_image[0]["uri"]),
-    'price' => $activity_price,
-    'path' => $base_url . "/" . drupal_get_path_alias('node/' . $node->vid),
-    'intermediate_path' => $base_url . "/activites/" . drupal_encode_path($node->title) . "?category=" . $tid,
-  );
-}
-
-// Order filters
-$ordered_activity_categories = array();
-
-foreach ($array_activity_types as $activity_type){
-
-  $taxonomy = taxonomy_term_load($activity_type);
-
-  $ordered_activity_categories[$taxonomy->weight] = $activity_type;
-}
-
-=======
   // Image of activity
   //$activity_image = field_get_items('node', $node, 'field_img_activite');
   $file_ip_img = "";
@@ -149,7 +116,6 @@ foreach ($array_activity_types as $activity_type){
   $ordered_activity_categories[$taxonomy->weight] = $activity_type;
 }
 
->>>>>>> preprod
 ksort($ordered_activity_categories);
 ?>
 
@@ -161,7 +127,6 @@ ksort($ordered_activity_categories);
       $image_style = "";
       if(isset($img_head_url)){
         $image_style = "style=\"background-image:url(" . $img_head_url . "); background-size:cover;background-position:center;\"";
-<<<<<<< HEAD
       }
 
       echo '<div id="act-cat-head-img-container" ' . $image_style .'>';
@@ -173,19 +138,6 @@ ksort($ordered_activity_categories);
         echo '<h2 class="act-cat-head-title">' . $content['field_category_activities_title']['#items'][0]['value'] . '</h2>';
       }
 
-=======
-      }
-
-      echo '<div id="act-cat-head-img-container" ' . $image_style .'>';
-
-      if( isset($img_head_url) ){
-        echo '<div id="memory-img-filter"></div>';
-      }
-      if( isset($content['field_category_activities_title']['#items'][0]['value']) ){
-        echo '<h2 class="act-cat-head-title">' . $content['field_category_activities_title']['#items'][0]['value'] . '</h2>';
-      }
-
->>>>>>> preprod
       echo '</div>';
     }
 
@@ -232,29 +184,6 @@ function getMainContentWithFilters($ordered_activity_categories, $cnt, $bool_is_
     if( isset( $cnt[$activity_category] ) ){
 
       $main_content .=
-<<<<<<< HEAD
-        "<div id=\"act-cat-" . $activity_category . "\" class=\"act-cat-container\">" .
-        getCategoriesHTML($activity_category) .
-        "<div class=\"act-cat-activities-container\">";
-
-          // Sort array by activity name
-          ksort($cnt[$activity_category]);
-
-          foreach ($cnt[$activity_category] as $cnt_act_sorted){
-
-            $main_content .=
-              "<div class=\"act-cat-scop act-cat-scop-" . $activity_category . "\" style=\"background-image:url('" . $cnt_act_sorted['img_uri'] . "'); background-size:cover;background-position:center;\">" .
-                "<div class=\"act-cat-datas-container\">" .
-                  "<h3 class=\"act-cat-stick-title\">" . $cnt_act_sorted['title'] . "</h3>" .
-                  "<p class=\"act-cat-price\">" . $cnt_act_sorted['price'] . (isset($cnt_act_sorted['price']) ? ' €' : '') . "</p>" .
-                  "<a href=\"" . (($bool_is_intermediate_page == 1) ? $cnt_act_sorted['intermediate_path'] : $cnt_act_sorted['path']) . "\" class=\"act-cat-readmore\"></a>" .
-                "</div>" .
-              "</div>"
-            ;
-          }
-      $main_content .=
-        "</div>" .
-=======
       "<div id=\"act-cat-" . $activity_category . "\" class=\"act-cat-container\">" .
       getCategoriesHTML($activity_category) .
       "<div class=\"act-cat-activities-container\">";
@@ -285,7 +214,6 @@ function getMainContentWithFilters($ordered_activity_categories, $cnt, $bool_is_
 
       $main_content .=
       "</div>" .
->>>>>>> preprod
       "</div>"
       ;
     }
@@ -298,29 +226,6 @@ function getMainContentWithFilters($ordered_activity_categories, $cnt, $bool_is_
 function getMainContentWithoutFilters($cnt, $bool_is_intermediate_page){
 
   // Sort array by activity weight
-<<<<<<< HEAD
-  ksort($cnt);
-
-  $main_content = "<div class=\"act-cat-activities-container\">";
-
-  foreach ($cnt as $act_weight_sorted){
-
-    // Sort array by activity name
-    ksort($act_weight_sorted);
-
-    foreach ($act_weight_sorted as $act_sorted) {
-
-      $main_content .=
-        "<div class=\"act-cat-scop\" style=\"background-image:url('" . $act_sorted['img_uri'] . "'); background-size:cover;background-position:center;\">" .
-          "<div class=\"act-cat-datas-container\">" .
-            "<h3 class=\"act-cat-stick-title\">" . $act_sorted['title'] . "</h3>" .
-            "<p class=\"act-cat-price\">" . $act_sorted['price'] . (isset($act_sorted['price']) ? ' €' : '') . "</p>" .
-            "<a href=\"" . (($bool_is_intermediate_page == 1) ? $act_sorted['intermediate_path'] : $act_sorted['path']) . "\" class=\"act-cat-readmore\"></a>" .
-          "</div>" .
-        "</div>"
-      ;
-    }
-=======
   krsort($cnt, 6);
 
   $main_content = "<div class=\"act-cat-activities-container\">";
@@ -341,7 +246,6 @@ function getMainContentWithoutFilters($cnt, $bool_is_intermediate_page){
           "</div>" .
           "</div>";
       }
->>>>>>> preprod
   }
 
   $main_content .= "</div>";

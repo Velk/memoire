@@ -14,11 +14,7 @@ $url_activity_name = $url_path[1];
 
 $ip_title = $url_activity_name;
 
-<<<<<<< HEAD
-$intermediate_page_admin_config = variable_get("fieldset_" . pathauto_cleanstring($url_activity_name), array());
-=======
 $intermediate_page_admin_config = variable_get("fieldset-" . pathauto_cleanstring($url_activity_name), array());
->>>>>>> preprod
 
 if($intermediate_page_admin_config["ip_image"] !== 0){ // Get the image for the intermediate page
   $file_ip_img = file_load($intermediate_page_admin_config['ip_image']);

@@ -776,66 +776,6 @@ function memory_blocks_block_view($delta = '') {
             break;
         case 'memory_slider':
 
-<<<<<<< HEAD
-            /* Slider - Global options */
-            $data['slider_height'] = variable_get('slider_height');
-
-            $data['slider_type'] = variable_get('slider_type');
-
-            drupal_add_js(array('memory_blocks' => array('slider_type' => variable_get("slider_type"))), array('type' => 'setting'));
-
-            /* Slider images */
-            if (variable_get('slider_type') == "0") {
-
-                $slider = variable_get('slider', array());
-
-                $data["array_size_slider"] = sizeof($slider);
-
-                for ($i = 1; $i <= sizeof($slider); $i++) {
-
-                    $data["slider_" . $i . "_name"] = $slider['image_container_' . $i]['name'];
-
-                    /*
-                     * $arrayName['image'] correspond to the fid
-                     * Load the file by its fid.
-                     * Create the URL file by using the file URI
-                     */
-                    $file = file_load($slider['image_container_' . $i]['image']);
-                    $url = file_create_url($file->uri);
-                    $data["slider_" . $i . "_image"] = $url;
-
-                    $data["slider_" . $i . "_redirection_link"] = $slider['image_container_' . $i]['redirection_link'];
-                }
-
-                drupal_add_js(array('memory_blocks' => array('slider_time_interval' => variable_get("slider_time_interval"))), array('type' => 'setting'));
-            }
-
-            /* Vidéo */
-            if (variable_get('slider_type') == "1") {
-
-                $video = variable_get('video', array());
-                $video_name = $video['name'];
-                $data['video_url_intern'] = $video['url_intern'];
-                $data['video_autoplay'] = $video['autoplay'];
-                $data['video_controls'] = $video['controls'];
-                $data['video_loop'] = $video['loop'];
-                $data['video_poster'] = $video['poster'];
-                $data['video_redirection_link'] = $video['redirection_link'];
-
-                if ($video['video'] != 0) {
-
-                    $file = file_load($video['video']);
-                    $url = file_create_url($file->uri);
-                    $data['video_video'] = $url;
-                }
-
-                if ($video['poster_image'] != 0) {
-
-                    $file = file_load($video['poster_image']);
-                    $url = file_create_url($file->uri);
-                    $data['video_poster_image'] = $url;
-                }
-=======
             $slider_home_page = variable_get('slider_home_page', array());
 
             $data['slider_home_page_height'] = $slider_home_page['height'];
@@ -853,7 +793,6 @@ function memory_blocks_block_view($delta = '') {
                 $data['slider_home_page_display_type'] = $slider_home_page['display_type'];
                 $data['slider_home_page_data'] = $slider_home_page['fixed_image'];
                 break;
->>>>>>> preprod
             }
 
 //            $data['slider_type'] = variable_get('slider_type');
@@ -1077,7 +1016,6 @@ function memory_blocks_block_view($delta = '') {
             ksort($array_activities);
 
             foreach ($activities as $activity) {
-<<<<<<< HEAD
 
               // Sort array by activity weight
               krsort($array_activities[$activity->weight]);
@@ -1100,30 +1038,6 @@ function memory_blocks_block_view($delta = '') {
               }
             }
 
-=======
-
-              // Sort array by activity weight
-              krsort($array_activities[$activity->weight]);
-            }
-
-            // Construct good array
-            $array_activities_refactored = array();
-
-            foreach ($array_activities as $array_activity_weight){
-
-              foreach($array_activity_weight as $array_activity){
-
-                // Sort by activities name alphabetically
-                asort($array_activity);
-
-                foreach($array_activity as $array_activity_nid){
-
-                  array_push($array_activities_refactored, $array_activity_nid["node_nid"]);
-                }
-              }
-            }
-
->>>>>>> preprod
 //          drupal_set_message("<pre>" . print_r($array_activities_refactored, true) . "</pre>");
 
             // Get the index position of the current activity
@@ -1592,21 +1506,6 @@ function memory_blocks_top_activities_admin_form($form, &$form_state) {
 
 function memory_blocks_slider_admin_form($form, &$form_state){
 
-<<<<<<< HEAD
-    /* Slider - Global options */
-    $form['slider_type'] = array(
-        '#type' => 'radios',
-        '#title' => t('Type d\'affichage'),
-        '#default_value' => variable_get('slider_type', 0),
-        '#options' => array(
-            0 => t('Slider d\'images'),
-            1 => t('Vidéo'),
-            2 => t('Image fixe'),
-        ),
-        '#description' => t('Choisir le type d\'affichage souhaité.'),
-        '#required' => TRUE,
-        '#weight' => 1,
-=======
   // ---------------------- SLIDER - Home page ----------------------
   $form['slider_home_page'] = array(
     '#type' => 'fieldset',
@@ -2011,421 +1910,6 @@ function memory_blocks_activity_families_admin_form($form, &$form_state){
     $form["category_markup_top" . $result->nid] = array(
       '#type' => 'markup',
       '#markup' => '<td>',
->>>>>>> preprod
-    );
-
-    $form["category_" . $result->nid] = array(
-      '#type' => 'select',
-      '#multiple' => TRUE,
-      '#options' => $array_activity_families,
-      '#default_value' => $key_activity_family,
-    );
-
-    $form["category_markup_bottom" . $result->nid] = array(
-      '#type' => 'markup',
-      '#markup' => '</td>',
-    );
-
-    $form["markup_bottom_" . $result->nid] = array(
-      '#type' => 'markup',
-      '#markup' => '</tr>',
-    );
-  }
-
-<<<<<<< HEAD
-    $slider = variable_get('slider', array());
-
-    for( $i = 1 ; $i <= 8 ; $i++ ){
-
-        $form['slider']['image_container_'.$i] = array(
-            '#type' => 'fieldset',
-            '#title' => t('Image n°'.$i),
-            '#weight' => $i,
-            '#collapsible' => TRUE,
-            '#collapsed' => TRUE,
-            '#tree' => TRUE
-        );
-
-        $form['slider']['image_container_'.$i]['name'] = array(
-            '#type' => 'textfield',
-            '#title' => t('Nom'),
-            '#default_value' => $slider['image_container_'.$i]['name'],
-            '#weight' => 1,
-        );
-
-        $form['slider']['image_container_'.$i]['image'] = array(
-            '#type'          => 'media',
-            '#title' => t('Image'),
-            '#theme'         => 'media_widget', // Without that, you only get text input
-            '#default_value' => $slider['image_container_'.$i]['image'], // The fid
-            '#media_options' => array(
-                'global' => array(
-                    'file_directory'  => 'image_folder',
-                    'file_extensions' => 'png gif jpg jpeg',
-                    'max_filesize'    => '2 MB',
-                    'uri_scheme'      => 'public',
-                    'types'           => array('image'),
-                    'schemes'         => array(
-                        'public' => 'public',
-                    ),
-                ),
-            ),
-            '#weight' => 2,
-        );
-
-        $form['slider']['image_container_'.$i]['redirection_link'] = array(
-            '#type' => 'textfield',
-            '#title' => t('Lien de redirection'),
-            '#default_value' => $slider['image_container_'.$i]['redirection_link'],
-            '#maxlength' => 512,
-            '#weight' => 3,
-        );
-    }
-=======
-  $form["markup_table_bottom"] = array(
-    '#type' => 'markup',
-    '#markup' => '</table>' ,
-  );
->>>>>>> preprod
-
-  $form['activity_families']['submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Enregistrer'),
-    '#weight' => 10,
-  );
-
-  $form["previous_values"] = array(
-    '#type' => 'value',
-    '#value' => $previous_values,
-  );
-
-<<<<<<< HEAD
-    $form['video']['video'] = array(
-        '#type'          => 'media',
-        '#title' => t('Upload video'),
-        '#theme'         => 'media_widget', // Without that, you only get text input
-        '#default_value' => $video['video'], // The fid
-        '#media_options' => array(
-            'global' => array(
-                'file_directory'  => 'videos',
-                'file_extensions' => 'mov mp4',
-                'max_filesize'    => '200 MB',
-                'uri_scheme'      => 'public',
-                'types'           => array('video'),
-                'schemes'         => array(
-                    'public' => 'public',
-                ),
-            ),
-        ),
-        '#weight' => 0,
-    );
-=======
-  $form['activity_families']['submit']['#validate'][] = 'memory_blocks_activity_families_admin_form_validate';
-  $form['activity_families']['submit']['#submit'][] = 'memory_blocks_activity_families_admin_form_submit';
->>>>>>> preprod
-
-  return $form;
-}
-
-<<<<<<< HEAD
-    $form['video']['autoplay'] = array(
-        '#type' => 'radios',
-        '#title' => t('Autoplay'),
-        '#default_value' => $video['autoplay'],
-        '#options' => array(
-            0 => t('Désactiver'),
-            1 => t('Activer'),
-        ),
-        '#description' => t("L'autoplay permet de jouer automatiquement la vidéo lorsque l'utilisateur visite la page sur laquelle elle se trouve.<br>A noter que les navigateurs tels que Safari et Chrome, ne permettent plus de lancer automatiquement une vidéo avec du son."),
-        '#weight' => 3,
-    );
-=======
-/**
- * @param $form
- * @param $form_state
- * @throws Exception
- */
-function memory_blocks_activity_families_admin_form_validate($form, &$form_state){
-
-  foreach ($form_state['values'] as $key => $value){
->>>>>>> preprod
-
-    if(strpos($key, "category_") !== false) {
-
-      $el_count = 0;
-
-<<<<<<< HEAD
-    $form['video']['poster'] = array(
-        '#type' => 'radios',
-        '#title' => t('Poster'),
-        '#default_value' => $video['poster'],
-        '#options' => array(
-            0 => t('Désactiver'),
-            1 => t('Activer'),
-        ),
-        '#description' => t("Image a affiché lorsque la vidéo charge."),
-        '#weight' => 7,
-    );
-
-    $form['video']['poster_image'] = array(
-        '#type'          => 'media',
-        '#title' => t('Image'),
-        '#theme'         => 'media_widget', // Without that, you only get text input
-        '#default_value' => $video['poster_image'], // The fid
-        '#media_options' => array(
-            'global' => array(
-                'file_directory'  => 'image_folder',
-                'file_extensions' => 'png gif jpg jpeg',
-                'max_filesize'    => '2 MB',
-                'uri_scheme'      => 'public',
-                'types'           => array('image'),
-                'schemes'         => array(
-                    'public' => 'public',
-                ),
-            ),
-        ),
-        '#weight' => 8,
-    );
-=======
-      foreach ($value as $new_el) {
-
-        if($new_el != "_none"){
-
-          $el_count++;
-        }
-      }
->>>>>>> preprod
-
-      if($el_count > 2){
-
-        $activity_nid = explode("category_", $key)[1];
-
-        try {
-          $node = node_load($activity_nid);
-
-          $activity_custom_title_field = field_get_items("node", $node, "field_activity_title");
-          $activity_custom_title = $activity_custom_title_field[0]["value"];
-
-<<<<<<< HEAD
-    $form['still_img']['image'] = array(
-        '#type'          => 'media',
-        '#title' => t('Image'),
-        '#theme'         => 'media_widget', // Without that, you only get text input
-        '#default_value' => $still_img['image'], // The fid
-        '#media_options' => array(
-            'global' => array(
-                'file_directory'  => 'image_folder',
-                'file_extensions' => 'png gif jpg jpeg',
-                'max_filesize'    => '2 MB',
-                'uri_scheme'      => 'public',
-                'types'           => array('image'),
-                'schemes'         => array(
-                    'public' => 'public',
-                ),
-            ),
-        ),
-        '#weight' => 2,
-    );
-=======
-          $activity_destination_field = field_get_items("node", $node, "field_acti_content_desti");
-          $activity_destination = $activity_destination_field[0]["tid"];
->>>>>>> preprod
-
-          $taxonomy = taxonomy_term_load($activity_destination);
-
-          form_set_error($key, "L'activité " . $activity_custom_title . " localisée à " . $taxonomy->name . " contient plus de 2 familles d'activités.");
-        } catch (Exception $e) {
-          form_set_error($key, "L'activité " . $activity_nid . " contient plus de 2 familles d'activités.");
-        }
-      }
-    }
-  }
-}
-
-/**
- * @param $form
- * @param $form_state
- * @throws Exception
- */
-function memory_blocks_activity_families_admin_form_submit($form, &$form_state){
-
-<<<<<<< HEAD
-  $vocabulary = taxonomy_vocabulary_machine_name_load("activity_families");
-  $terms = entity_load('taxonomy_term', FALSE, array('vid' => $vocabulary->vid));
-  $array_activity_families = array(
-    "_none" => t('- Aucun(e) -')
-  );
-  foreach ($terms as $term){
-    $array_activity_families[$term->tid] = $term->name;
-  }
-
-  $query = db_select('node', 'n');
-  $query->fields('n', array('nid', 'title'));
-  $query->condition('n.type', 'activite', '=');
-  $query->orderBy('n.title', 'asc');
-  $query->distinct();
-  $results = $query->execute();
-
-  $form["markup_table_top"] = array(
-    '#type' => 'markup',
-    '#markup' =>
-      '<table>' .
-      '<tr>' .
-      '<th>Titre</th>' .
-      '<th>Ville</th>' .
-      '<th>Famille</th>' .
-      '</tr>'
-    ,
-  );
-
-  $previous_values = array();
-
-  foreach( $results as $result ){
-
-    $node = node_load($result->nid);
-
-//      drupal_set_message("<pre>" . print_r($node, true) . "</pre>");
-
-    $activity_custom_title_field = field_get_items("node", $node, "field_activity_title");
-    $activity_custom_title = $activity_custom_title_field[0]["value"];
-
-    $activity_destination_field = field_get_items("node", $node, "field_acti_content_desti");
-    $activity_destination = $activity_destination_field[0]["tid"];
-
-    $activity_family_field = field_get_items('node', $node, 'field_activity_family');
-
-    $key_activity_family = [];
-    $temp_array_families = array();
-    foreach ($activity_family_field as $activity_family) {
-
-      if (isset($activity_family)) {
-
-        $activity_family_term = taxonomy_term_load($activity_family["tid"]);
-
-        $key_activity_family[array_search($activity_family_term->name, $array_activity_families)] = array_search($activity_family_term->name, $array_activity_families);
-
-        array_push($temp_array_families, $activity_family_term->tid);
-=======
-  $isChangeMade = false;
-
-  foreach ($form_state['values'] as $key => $value){
-
-    if(strpos($key, "category_") !== false){
-
-      $activity_nid = explode("category_", $key)[1];
-
-      $isActivityFamiliesChanged = false;
-
-      foreach ($value as $new_el){
-
-        if(!in_array($new_el, $form_state['values']['previous_values'][$activity_nid])){ // Check for new elements
-
-          $isActivityFamiliesChanged = true;
-        }
-      }
-
-      if($isActivityFamiliesChanged){
-
-        /* Delete all activity families related to the node */
-        // Delete Data Field
-        db_delete('field_data_field_activity_family')
-          ->condition('entity_id', intval($activity_nid))
-          ->execute();
-
-        // Delete Revision Field
-        db_delete('field_revision_field_activity_family')
-          ->condition('entity_id', intval($activity_nid))
-          ->execute();
-
-        /* Add new activity families related to the node */
-        $delta = 0;
-        foreach ($value as $new_el){
-
-          if($new_el != "_none"){
-
-            $isChangeMade = true;
-
-//            drupal_set_message("New element : " . $new_el);
-
-            // Insert Data Field
-            db_insert('field_data_field_activity_family')
-              ->fields(
-                array(
-                  'entity_type' => 'node',
-                  'bundle' => 'activite',
-                  'deleted' => 0,
-                  'entity_id' => intval($activity_nid),
-                  'revision_id' => intval($activity_nid),
-                  'language' => 'und',
-                  'delta' => $delta,
-                  'field_activity_family_tid' => intval($new_el),
-                )
-              )
-              ->execute();
-
-            // Insert Data Field
-            db_insert('field_revision_field_activity_family')->fields(
-              array(
-                'entity_type' => 'node',
-                'bundle' => 'activite',
-                'deleted' => 0,
-                'entity_id' => intval($activity_nid),
-                'revision_id' => intval($activity_nid),
-                'language' => 'und',
-                'delta' => $delta,
-                'field_activity_family_tid' => intval($new_el),
-              )
-            )
-              ->execute();
-
-            $delta++;
-          }
-        }
->>>>>>> preprod
-      }
-    }
-  }
-
-<<<<<<< HEAD
-    if(sizeof($temp_array_families) != 0){
-      $previous_values[$node->nid] = $temp_array_families;
-    }else{
-      $previous_values[$node->nid] = ["_none"];
-    }
-
-    if(sizeof($key_activity_family) == 0){
-      $key_activity_family = ["_none"];
-    }
-
-    $taxonomy = taxonomy_term_load($activity_destination);
-
-    $form["markup_top_" . $result->nid] = array(
-      '#type' => 'markup',
-      '#markup' => '<tr>',
-    );
-
-    $form["title_" . $result->nid] = array(
-      '#type' => 'markup',
-      '#markup' => '<td>' . $activity_custom_title . '</td>',
-    );
-=======
-  if($isChangeMade){
-    drupal_flush_all_caches();
-    drupal_set_message(t('1) Les données ont été modifiées.'));
-    drupal_set_message(t('2) Le cache a été vidé.'));
-  }
-}
->>>>>>> preprod
-
-    $form["city_" . $result->nid] = array(
-      '#type' => 'markup',
-      '#markup' => '<td>' . $taxonomy->name . '</td>',
-    );
-
-<<<<<<< HEAD
-    $form["category_markup_top" . $result->nid] = array(
-      '#type' => 'markup',
-      '#markup' => '<td>',
     );
 
     $form["category_" . $result->nid] = array(
@@ -2649,49 +2133,6 @@ function memory_blocks_all_destinations_page_admin_form($form, &$form_state){
   return system_settings_form($form);
 }
 
-=======
-  $form['all_dest_image'] = array(
-    '#type'          => 'media',
-    '#title' => t('Image'),
-    '#theme'         => 'media_widget', // Without that, you only get text input
-    '#default_value' => variable_get('all_dest_image'), // The fid
-    '#media_options' => array(
-      'global' => array(
-        'file_directory'  => 'image_folder',
-        'file_extensions' => 'png gif jpg jpeg',
-        'max_filesize'    => '2 MB',
-        'uri_scheme'      => 'public',
-        'types'           => array('image'),
-        'schemes'         => array(
-          'public' => 'public',
-        ),
-      ),
-    ),
-    '#weight' => 1,
-  );
-
-  $form['all_dest_title'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Title'),
-    '#default_value' => variable_get('all_dest_title'),
-    '#maxlength' => 512,
-    '#weight' => 2,
-  );
-
-  $all_dest_description = variable_get('all_dest_description', array());
-
-  $form['all_dest_description'] = array(
-    '#type' => 'text_format',
-    '#format' => 'wysiwyg',
-    '#title' => t('Description'),
-    '#default_value' => $all_dest_description['value'],
-    '#weight' => 3,
-  );
-
-  return system_settings_form($form);
-}
-
->>>>>>> preprod
 function memory_blocks_all_activities_page_admin_form($form, &$form_state){
 
     $form['all_act_image'] = array(
@@ -2744,13 +2185,6 @@ function memory_blocks_intermediate_page_admin_form($form, &$form_state){
 
 //    $query = db_select('node', 'n')->extend('PagerDefault');
     $query = db_select('node', 'n');
-<<<<<<< HEAD
-    $query->fields('n', array('nid', 'title'))
-//      ->limit($limit)
-      ->condition('n.type', 'activite', '=')
-      ->orderBy('n.title', 'asc')
-      ->distinct();
-=======
     $query->distinct()
       ->fields('n', array('nid', 'title'))
 //      ->limit($limit)
@@ -2758,7 +2192,6 @@ function memory_blocks_intermediate_page_admin_form($form, &$form_state){
 //      ->condition('n.title', 'Soirée au casino', '=')
       ->groupBy('n.title')
       ->orderBy('n.title', 'asc');
->>>>>>> preprod
     $results = $query->execute()->fetchAllKeyed(0, 1);
 
 //    $pager = theme('pager', array("quantity" => 5));
@@ -2771,13 +2204,6 @@ function memory_blocks_intermediate_page_admin_form($form, &$form_state){
         $activity_img_field = field_get_items("node", $node, "field_img_activite");
         $activity_img_fid = $activity_img_field[0]["fid"];
 
-<<<<<<< HEAD
-//        drupal_set_message("-------------------------------");
-//        drupal_set_message("Nom : " . $result);
-//        drupal_set_message("Image ID : " . $activity_img_fid);
-
-=======
->>>>>>> preprod
         $cleaned_title = pathauto_cleanstring($result);
 
         $form["fieldset-" . $cleaned_title] = array(
@@ -2790,22 +2216,12 @@ function memory_blocks_intermediate_page_admin_form($form, &$form_state){
 
         $intermediate_page = variable_get("fieldset-" . pathauto_cleanstring($result), array());
 
-<<<<<<< HEAD
-//        drupal_set_message("<pre>" . print_r($intermediate_page, true) . "</pre>");
-//        drupal_set_message($intermediate_page["ip_image"]);
-
-=======
->>>>>>> preprod
         // Define default image if it is not set
         if(empty($intermediate_page['ip_image'])){
           $intermediate_page['ip_image'] = $activity_img_fid;
         }
 
-<<<<<<< HEAD
-        $form["fieldset_" . $cleaned_title]["ip_image"] = array(
-=======
         $form["fieldset-" . $cleaned_title]["ip_image"] = array(
->>>>>>> preprod
             '#type'          => 'media',
             '#title' => t('Image'),
             '#theme'         => 'media_widget', // Without that, you only get text input
@@ -2855,11 +2271,6 @@ function memory_blocks_form_alter(&$form, &$form_state, $form_id) {
       $form['field_img_activite'][LANGUAGE_NONE][0]['#title'] = "Image de l'activité";
       $form['field_img_activite'][LANGUAGE_NONE][0]['#required'] = TRUE;
 
-<<<<<<< HEAD
-      break;
-  }
-}
-=======
       // edit-field-acti-carousel-und-0-actions-remove-button
 //      $form['field-acti-carousel'][LANGUAGE_NONE][0]['actions']['submit']['#value'] = "Supprimer le slider";
 
@@ -2867,4 +2278,3 @@ function memory_blocks_form_alter(&$form, &$form_state, $form_id) {
   }
 }
 
->>>>>>> preprod

@@ -142,11 +142,7 @@
             /* -------------------------------------------------- Video - Set sound behavior ---------------------------------------------------- */
             /* ---------------------------------------------------------------------------------------------------------------------------------- */
 
-<<<<<<< HEAD
-            if( Drupal.settings.memory_blocks.slider_type === "1"){
-=======
             if(Drupal.settings.memory_blocks.slider_home_page.slider_type === "1"){
->>>>>>> preprod
 
                 $("#set-sound").click(function(){
 
@@ -174,19 +170,6 @@
                 });
 
               // Video resizing
-<<<<<<< HEAD
-              if($("#slider-container").height() > $("#slider-container video").height()){
-                $("#slider-container video").css({
-                  "height":"100%",
-                  "width":"auto",
-                });
-              }else{
-                $("#slider-container video").css({
-                  "height":"auto",
-                  "width":"100%",
-                });
-              }
-=======
               document.onreadystatechange = function () {
 
                 if (document.readyState === "complete") {
@@ -209,7 +192,6 @@
                   }
                 }
               };
->>>>>>> preprod
             }
 
             /* ---------------------------------------------------------------------------------------------------------------------------------- */

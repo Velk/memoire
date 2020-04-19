@@ -614,44 +614,6 @@ foreach ($activity_family_field as $activity_family_iteration){
         }
         ?>
     </div>
-<<<<<<< HEAD
-    <?php
-    if( sizeof($activity_carousel_images) != 0 ){
-
-        echo '<div class="activity-slider">';
-
-            if( isset($activity_carousel_title) ){
-                echo
-                    '<div class="activity-slider-title">' .
-                        '<h2 class="activity-page-label">' . $activity_carousel_title . '</h2>' .
-                    '</div>'
-                ;
-            }
-
-            echo '<div class="activity-slider-wrapper">';
-
-                for($i = 0 ; $i < sizeof($activity_carousel_images) ; $i++){
-                    echo
-                        '<div class="activity-carousel">' .
-                            '<span class="ac-title">' .
-                            $activity_carousel_images[$i]["title"] .
-                            '</span>' .
-                            '<img src="' . $activity_carousel_images[$i]["image"] . '" class="ac-picture">' .
-                        '</div>'
-                    ;
-                }
-
-            echo '</div>';
-
-            echo
-                '<div id="activity-slider-actions">' .
-                    '<i class="fa fa-chevron-left" aria-hidden="true"></i>' .
-                    '<i class="fa fa-chevron-right" aria-hidden="true"></i>' .
-                '</div>'
-            ;
-
-        echo '</div>';
-=======
 <?php
 if( sizeof($activity_carousel_images) != 0 ){
 
@@ -709,7 +671,6 @@ if( sizeof($activity_carousel_images) != 0 ){
         </div>
       </div>
 <?php
->>>>>>> preprod
     }
     ?>
     <?php
