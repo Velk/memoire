@@ -286,7 +286,7 @@ function memory_blocks_init() {
     drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/memory_responsive.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
     drupal_add_js(drupal_get_path('module', 'memory_blocks') . '/js/memory_responsive.js', array('group' => JS_DEFAULT, 'every_page' => TRUE));
 
-    // Add JS file to manage activity filters (Pack, ActivitÃ© de jour, de nuit, transfert et hÃ©bergement)
+    // Add JS file to manage activity filters (Pack, Activité de jour, de nuit, transfert et hébergement)
     drupal_add_js(drupal_get_path('module', 'memory_blocks') . '/js/memory_activity_filters.js', array('group' => JS_DEFAULT, 'every_page' => TRUE));
 }
 
@@ -381,11 +381,11 @@ function memory_blocks_admin_social_network_add_form($form, &$form_state){
 
     $form['social_networks']['icon'] = array(
         '#type' => 'textfield',
-        '#title' => t('IcÃ´ne'),
+        '#title' => t('Icône'),
         '#description' => t(
-            'Choississez l\'icÃ´ne reprÃ©sentant votre mÃ©dia sur : '.
+            'Choississez l\'icône représentant votre média sur : '.
             '<em>https://fontawesome.com/v4.7.0/icons</em>'.
-            '<br> Puis renseignÃ© le nom de l\'icÃ´ne. '.
+            '<br> Puis renseigné le nom de l\'icône. '.
             '<em>Exemple : fa-facebook</em>'
         ),
         '#weight' => 3,
@@ -427,7 +427,7 @@ function memory_blocks_admin_social_network_add_form_submit($form, &$form_state)
             ->execute();
 
         // Display a message saying that datas are set in database.
-        drupal_set_message(t('Les donnÃ©es renseignÃ©es ont Ã©tÃ© enregistrÃ©es.'));
+        drupal_set_message(t('Les données renseignées ont été enregistrées.'));
     }
 }
 
@@ -470,9 +470,9 @@ function memory_blocks_admin_social_network_form($form, &$form_state){
 
         $form['social_networks']['icon'] = array(
             '#type' => 'textfield',
-            '#title' => t('IcÃ´ne'),
+            '#title' => t('Icône'),
             '#default_value' => $result->icon,
-            '#description' => t('Choississez l\'icÃ´ne reprÃ©sentant votre mÃ©dia sur : https://fontawesome.com/v4.7.0/icons'),
+            '#description' => t('Choississez l\'icône représentant votre média sur : https://fontawesome.com/v4.7.0/icons'),
             '#weight' => 3,
         );
 
@@ -511,7 +511,7 @@ function memory_blocks_admin_social_networks_form_submit($form, &$form_state){
         ))
         ->execute();
 
-    drupal_set_message("Les changements ont Ã©tÃ© pris en compte.");
+    drupal_set_message("Les changements ont été pris en compte.");
 }
 
 /**
@@ -524,7 +524,7 @@ function memory_blocks_admin_social_networks_form_delete($form, &$form_state){
         ->condition('id', $form_state['values']['id'], '=')
         ->execute();
 
-    drupal_set_message("Le mÃ©dia a Ã©tÃ© supprimÃ©.");
+    drupal_set_message("Le média a été supprimé.");
 }
 
 /**
@@ -934,7 +934,7 @@ function memory_blocks_block_view($delta = '') {
             $vocabulary = taxonomy_vocabulary_machine_name_load('activite');
             $v_activities = entity_load('taxonomy_term', FALSE, array('vid' => $vocabulary->vid));
 
-            // Ascendant sorting of group of activities ("ActivitÃ©s de nuits", "Transfert", "Nos packs"...) depending on their weight
+            // Ascendant sorting of group of activities ("Activités de nuits", "Transfert", "Nos packs"...) depending on their weight
             $nb_act = count($v_activities);
             $activities = array();
             $count = 0;
@@ -961,7 +961,7 @@ function memory_blocks_block_view($delta = '') {
             // Get the destination TID
             $dest_tid = $activity_field_dest[0]["tid"];
 
-            // Get the Category field value of the activity (ActivitÃ© de jour, ActivitÃ© de nuit...)
+            // Get the Category field value of the activity (Activité de jour, Activité de nuit...)
 //            $activity_field_act_cat = field_get_items("node", $activity_node_load, "field_acti_cont_cat");
 //            $act_cat_tid = $activity_field_act_cat[0]["tid"];
 
@@ -1105,7 +1105,7 @@ function memory_blocks_3_columns_block_admin_form($form, &$form_state){
 
     $form['mcb_title'] = array(
         '#type' => 'textfield',
-        '#default_value' => variable_get('mcb_title', 'L\'agence de voyage dÃ©jantÃ©e'),
+        '#default_value' => variable_get('mcb_title', 'L\'agence de voyage déjantée'),
         '#title' => t('Titre'),
         '#weight' => 1,
     );
@@ -1116,7 +1116,7 @@ function memory_blocks_3_columns_block_admin_form($form, &$form_state){
         '#type' => 'text_format',
         '#format' => 'wysiwyg',
         '#default_value' => $mcb_text_1['value'],
-        '#title' => t('Texte nÂ°1'),
+        '#title' => t('Texte n°1'),
         '#weight' => 1,
     );
 
@@ -1125,7 +1125,7 @@ function memory_blocks_3_columns_block_admin_form($form, &$form_state){
 
     $form['mcb_column_1'] = array(
         '#type' => 'fieldset',
-        '#title' => t('Column nÂ°1'),
+        '#title' => t('Column n°1'),
         '#weight' => 3,
         '#collapsible' => TRUE,
         '#collapsed' => TRUE,
@@ -1176,7 +1176,7 @@ function memory_blocks_3_columns_block_admin_form($form, &$form_state){
 
     $form['mcb_column_2'] = array(
         '#type' => 'fieldset',
-        '#title' => t('Column nÂ°2'),
+        '#title' => t('Column n°2'),
         '#weight' => 4,
         '#collapsible' => TRUE,
         '#collapsed' => TRUE,
@@ -1227,7 +1227,7 @@ function memory_blocks_3_columns_block_admin_form($form, &$form_state){
 
     $form['mcb_column_3'] = array(
         '#type' => 'fieldset',
-        '#title' => t('Column nÂ°3'),
+        '#title' => t('Column n°3'),
         '#weight' => 5,
         '#collapsible' => TRUE,
         '#collapsed' => TRUE,
@@ -1279,7 +1279,7 @@ function memory_blocks_3_columns_block_admin_form($form, &$form_state){
         '#type' => 'text_format',
         '#format' => 'wysiwyg',
         '#default_value' => $mcb_text_2['value'],
-        '#title' => t('Texte nÂ°2'),
+        '#title' => t('Texte n°2'),
         '#weight' => 6,
     );
 
@@ -1377,7 +1377,7 @@ function memory_blocks_top_destinations_admin_form($form, &$form_state) {
           '#type' => 'radios',
           '#title' => t('Affichage'),
           '#default_value' => (isset($top_destinations_nbr['display'])) ? $top_destinations_nbr['display'] : 1,
-          '#options' => array(0 => "PubliÃ©", 1 => "Non publiÃ©"),
+          '#options' => array(0 => "Publié", 1 => "Non publié"),
         );
 
         $form['top_destinations_' . $i]['weight'] = array(
@@ -1416,7 +1416,7 @@ function memory_blocks_top_activities_admin_form($form, &$form_state) {
 
     $form['top_activities_title'] = array(
         '#type' => 'textfield',
-        '#default_value' => variable_get('top_activities_title', 'Top activitÃ©s'),
+        '#default_value' => variable_get('top_activities_title', 'Top activités'),
         '#title' => t('Titre'),
         '#weight' => 2,
         '#required' => TRUE,
@@ -1489,7 +1489,7 @@ function memory_blocks_top_activities_admin_form($form, &$form_state) {
           '#type' => 'radios',
           '#title' => t('Affichage'),
           '#default_value' => (isset($top_activities_nbr['display'])) ? $top_activities_nbr['display'] : 1,
-          '#options' => array(0 => "PubliÃ©", 1 => "Non publiÃ©"),
+          '#options' => array(0 => "Publié", 1 => "Non publié"),
         );
 
         $form['top_activities_' . $i]['weight'] = array(
@@ -1527,10 +1527,10 @@ function memory_blocks_slider_admin_form($form, &$form_state){
     '#default_value' => $slider_home_page_values["display_type"],
     '#options' => array(
       0 => t('Slider d\'images'),
-      1 => t('VidÃ©o'),
+      1 => t('Vidéo'),
       2 => t('Image fixe'),
     ),
-    '#description' => t('Choisir le type d\'affichage souhaitÃ© pour l\'encart en page d\'accueil.'),
+    '#description' => t('Choisir le type d\'affichage souhaité pour l\'encart en page d\'accueil.'),
     '#required' => TRUE,
     '#weight' => 1,
   );
@@ -1542,7 +1542,7 @@ function memory_blocks_slider_admin_form($form, &$form_state){
     ),
     '#default_value' => $slider_home_page_values['height'],
     '#title' => t('Hauteur'),
-    '#description' => t('Indiquer la hauteur du slider en pixels. Par dÃ©faut, la hauteur est de 550px.'),
+    '#description' => t('Indiquer la hauteur du slider en pixels. Par défaut, la hauteur est de 550px.'),
     '#maxlength' => 5,
     '#required' => TRUE,
     '#weight' => 2,
@@ -1581,7 +1581,7 @@ function memory_blocks_slider_admin_form($form, &$form_state){
     ),
     '#default_value' => $slider_home_page_values['slider_image']["scroll_time_interval"],
     '#title' => t('Interval de temps'),
-    '#description' => t('Interval de temps pour entre chaque dÃ©filement du slider. Le temps est exprimÃ© en millisecondes (ms).'),
+    '#description' => t('Interval de temps pour entre chaque défilement du slider. Le temps est exprimé en millisecondes (ms).'),
     '#maxlength' => 6,
     '#required' => TRUE,
     '#weight' => 2,
@@ -1591,7 +1591,7 @@ function memory_blocks_slider_admin_form($form, &$form_state){
 
     $form['slider_home_page']['slider_image']['image_container_'.$i] = array(
       '#type' => 'fieldset',
-      '#title' => t('Image nÂ°'.$i),
+      '#title' => t('Image n°'.$i),
       '#weight' => 2+$i,
       '#collapsible' => TRUE,
       '#collapsed' => FALSE,
@@ -1630,7 +1630,7 @@ function memory_blocks_slider_admin_form($form, &$form_state){
   /* Slider Home page - Video */
   $form['slider_home_page']['video'] = array(
     '#type' => 'fieldset',
-    '#title' => t('VidÃ©o'),
+    '#title' => t('Vidéo'),
     '#weight' => 6,
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
@@ -1639,7 +1639,7 @@ function memory_blocks_slider_admin_form($form, &$form_state){
 
   $form['slider_home_page']['video']['video'] = array(
     '#type'          => 'media',
-    '#title' => t('VidÃ©o'),
+    '#title' => t('Vidéo'),
     '#theme'         => 'media_widget', // Without that, you only get text input
     '#default_value' => $slider_home_page_values['video']['video'], // The fid
     '#media_options' => array(
@@ -1667,10 +1667,10 @@ function memory_blocks_slider_admin_form($form, &$form_state){
     '#title' => t('Autoplay'),
     '#default_value' => $slider_home_page_values['video']['autoplay'],
     '#options' => array(
-      0 => t('DÃ©sactiver'),
+      0 => t('Désactiver'),
       1 => t('Activer'),
     ),
-    '#description' => t("Autoplay : Permet de jouer automatiquement la vidÃ©o lorsque l'utilisateur visite la page sur laquelle elle se trouve.<br>A noter que les navigateurs tels que Safari et Chrome, ne permettent plus de lancer automatiquement une vidÃ©o avec du son."),
+    '#description' => t("Autoplay : Permet de jouer automatiquement la vidéo lorsque l'utilisateur visite la page sur laquelle elle se trouve.<br>A noter que les navigateurs tels que Safari et Chrome, ne permettent plus de lancer automatiquement une vidéo avec du son."),
     '#weight' => 2,
   );
 
@@ -1679,10 +1679,10 @@ function memory_blocks_slider_admin_form($form, &$form_state){
     '#title' => t('Controls'),
     '#default_value' => $slider_home_page_values['video']['controls'],
     '#options' => array(
-      0 => t('DÃ©sactiver'),
+      0 => t('Désactiver'),
       1 => t('Activer'),
     ),
-    '#description' => t("Controls : Affiche les outils de gestion de la vidÃ©o (pause, vidÃ©o suivante, etc.)."),
+    '#description' => t("Controls : Affiche les outils de gestion de la vidéo (pause, vidéo suivante, etc.)."),
     '#weight' => 3,
   );
 
@@ -1691,10 +1691,10 @@ function memory_blocks_slider_admin_form($form, &$form_state){
     '#title' => t('Loop'),
     '#default_value' => $slider_home_page_values['video']['loop'],
     '#options' => array(
-      0 => t('DÃ©sactiver'),
+      0 => t('Désactiver'),
       1 => t('Activer'),
     ),
-    '#description' => t("Loop : Permet de jouer la vidÃ©o Ã  l'infini."),
+    '#description' => t("Loop : Permet de jouer la vidéo à l'infini."),
     '#weight' => 4,
   );
 
@@ -1703,10 +1703,10 @@ function memory_blocks_slider_admin_form($form, &$form_state){
     '#title' => t('Poster'),
     '#default_value' => $slider_home_page_values['video']['poster'],
     '#options' => array(
-      0 => t('DÃ©sactiver'),
+      0 => t('Désactiver'),
       1 => t('Activer'),
     ),
-    '#description' => t("Poster : Image a affichÃ© lorsque la vidÃ©o charge."),
+    '#description' => t("Poster : Image a affiché lorsque la vidéo charge."),
     '#weight' => 5,
   );
 
@@ -1779,7 +1779,7 @@ function memory_blocks_slider_admin_form($form, &$form_state){
   // ---------------------- SLIDER - Activity page ----------------------
   $form['slider_activity_page'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Slider - Page activitÃ©'),
+    '#title' => t('Slider - Page activité'),
     '#weight' => 1,
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
@@ -1798,7 +1798,7 @@ function memory_blocks_slider_admin_form($form, &$form_state){
     ),
     '#default_value' => $slider_activity_page_values["height"],
     '#title' => t('Hauteur'),
-    '#description' => t('Indiquer la hauteur du slider en pixels. Par dÃ©faut, la hauteur est de 200px.'),
+    '#description' => t('Indiquer la hauteur du slider en pixels. Par défaut, la hauteur est de 200px.'),
     '#maxlength' => 5,
     '#required' => TRUE,
     '#weight' => 1,
@@ -1811,7 +1811,7 @@ function memory_blocks_slider_admin_form($form, &$form_state){
     ),
     '#default_value' => $slider_activity_page_values["scroll_time_interval"],
     '#title' => t('Interval de temps'),
-    '#description' => t('Interval de temps pour entre chaque dÃ©filement du slider. Le temps est exprimÃ© en millisecondes (ms).'),
+    '#description' => t('Interval de temps pour entre chaque défilement du slider. Le temps est exprimé en millisecondes (ms).'),
     '#maxlength' => 6,
     '#required' => TRUE,
     '#weight' => 2,
@@ -1988,9 +1988,9 @@ function memory_blocks_activity_families_admin_form_validate($form, &$form_state
 
           $taxonomy = taxonomy_term_load($activity_destination);
 
-          form_set_error($key, "L'activitÃ© " . $activity_custom_title . " localisÃ©e Ã  " . $taxonomy->name . " contient plus de 2 familles d'activitÃ©s.");
+          form_set_error($key, "L'activité " . $activity_custom_title . " localisée à " . $taxonomy->name . " contient plus de 2 familles d'activités.");
         } catch (Exception $e) {
-          form_set_error($key, "L'activitÃ© " . $activity_nid . " contient plus de 2 familles d'activitÃ©s.");
+          form_set_error($key, "L'activité " . $activity_nid . " contient plus de 2 familles d'activités.");
         }
       }
     }
@@ -2085,8 +2085,8 @@ function memory_blocks_activity_families_admin_form_submit($form, &$form_state){
 
   if($isChangeMade){
     drupal_flush_all_caches();
-    drupal_set_message(t('1) Les donnÃ©es ont Ã©tÃ© modifiÃ©es.'));
-    drupal_set_message(t('2) Le cache a Ã©tÃ© vidÃ©.'));
+    drupal_set_message(t('1) Les données ont été modifiées.'));
+    drupal_set_message(t('2) Le cache a été vidé.'));
   }
 }
 
@@ -2189,7 +2189,7 @@ function memory_blocks_intermediate_page_admin_form($form, &$form_state){
       ->fields('n', array('nid', 'title'))
 //      ->limit($limit)
       ->condition('n.type', 'activite', '=')
-//      ->condition('n.title', 'SoirÃ©e au casino', '=')
+//      ->condition('n.title', 'Soirée au casino', '=')
       ->groupBy('n.title')
       ->orderBy('n.title', 'asc');
     $results = $query->execute()->fetchAllKeyed(0, 1);
@@ -2265,14 +2265,17 @@ function memory_blocks_form_alter(&$form, &$form_state, $form_id) {
 
       $form['language']['#required'] = TRUE;
 
+      // Field : Drupal title
       $form['title']['#title'] = "Titre Drupal";
-      $form['title']['#description'] = "Titre non affichÃ©, mais utilisÃ© pour les pages intermÃ©diaires et la page toutes nos activitÃ©s.";
+      $form['title']['#description'] = "Titre non affiché, mais utilisé pour les pages intermédiaires et la page toutes nos activités.";
 
-      $form['field_img_activite'][LANGUAGE_NONE][0]['#title'] = "Image de l'activitÃ©";
+      // Field : Activity image
+      $form['field_img_activite'][LANGUAGE_NONE][0]['#title'] = "Image de l'activité";
       $form['field_img_activite'][LANGUAGE_NONE][0]['#required'] = TRUE;
 
-      // edit-field-acti-carousel-und-0-actions-remove-button
-//      $form['field-acti-carousel'][LANGUAGE_NONE][0]['actions']['submit']['#value'] = "Supprimer le slider";
+      // Field : Carousel (slider of images)
+      $form['field_acti_carousel'][LANGUAGE_NONE][0]['field_slider_image_activity_wrap'][LANGUAGE_NONE]['add_more']['add_more']['#value'] = "Ajouter une nouvelle image";
+      $form['field_acti_carousel'][LANGUAGE_NONE][0]['actions']['remove_button']['#value'] = "Supprimer le slider";
 
       break;
   }
