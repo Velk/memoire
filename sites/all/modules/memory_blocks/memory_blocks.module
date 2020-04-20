@@ -2265,14 +2265,17 @@ function memory_blocks_form_alter(&$form, &$form_state, $form_id) {
 
       $form['language']['#required'] = TRUE;
 
+      // Field : Drupal title
       $form['title']['#title'] = "Titre Drupal";
       $form['title']['#description'] = "Titre non affiché, mais utilisé pour les pages intermédiaires et la page toutes nos activités.";
 
+      // Field : Activity image
       $form['field_img_activite'][LANGUAGE_NONE][0]['#title'] = "Image de l'activité";
       $form['field_img_activite'][LANGUAGE_NONE][0]['#required'] = TRUE;
 
-      // edit-field-acti-carousel-und-0-actions-remove-button
-//      $form['field-acti-carousel'][LANGUAGE_NONE][0]['actions']['submit']['#value'] = "Supprimer le slider";
+      // Field : Carousel (slider of images)
+      $form['field_acti_carousel'][LANGUAGE_NONE][0]['field_slider_image_activity_wrap'][LANGUAGE_NONE]['add_more']['add_more']['#value'] = "Ajouter une nouvelle image";
+      $form['field_acti_carousel'][LANGUAGE_NONE][0]['actions']['remove_button']['#value'] = "Supprimer le slider";
 
       break;
   }
