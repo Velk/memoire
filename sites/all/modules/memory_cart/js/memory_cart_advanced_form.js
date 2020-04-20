@@ -147,7 +147,7 @@
               break;
             default : // Add activity
 
-              var activityToAddContainer = $(this).parent().parent().parent();
+              var activityToAddContainer = $(this).parent().parent().parent().parent();
               var thisActivityNid = $("#activity-page-container .activity-nid").val();
               var thisActivityTitle = $("#activity-page-container .activity-title").val();
               var thisActivityDestinationPath = $("#activity-page-container .activity-destination-path").val();
