@@ -293,20 +293,20 @@ function memory_blocks_init() {
 /**
  * Implements memory_blocks_admin_global_parameters()
  */
-function memory_blocks_admin_global_parameters(){
-    // drupal_goto("admin/Memory/social-networks-manager");
-
-    $form['global_parameter_email'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Panier utilisateur - E-mail'),
-      '#description' => t('E-mail d\'envoi du panier utilisateur.'),
-      '#default_value' => variable_get('global_parameter_email'),
-      '#maxlength' => 512,
-      '#weight' => 1,
-    );
-
-    return system_settings_form($form);
-}
+//function memory_blocks_admin_global_parameters(){
+//    // drupal_goto("admin/Memory/social-networks-manager");
+//
+//    $form['global_parameter_email'] = array(
+//      '#type' => 'textfield',
+//      '#title' => t('Panier utilisateur - E-mail'),
+//      '#description' => t('E-mail d\'envoi du panier utilisateur.'),
+//      '#default_value' => variable_get('global_parameter_email'),
+//      '#maxlength' => 512,
+//      '#weight' => 1,
+//    );
+//
+//    return system_settings_form($form);
+//}
 
 /**
  * @param $form
