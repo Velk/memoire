@@ -1,0 +1,115 @@
+<?php
+
+function memory_cart_schema() {
+
+  $schema['user_cart_submissions'] = array(
+    'description' => 'Main table for the submissions of the user cart.',
+    'fields' => array(
+      'cart_submission_id' => array(
+        'description' => 'The ID of the user cart submission.',
+        'type' => 'serial',
+        'size' => 'medium',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+      ),
+      'user_lastname' => array(
+          'type' => 'varchar',
+          'length' => 100,
+          'not null' => TRUE,
+          'default' => 'N/A',
+          'description' => 'Lastname of the user who submitted the travel quotation.',
+      ),
+      'user_firstname' => array(
+          'type' => 'varchar',
+          'length' => 100,
+          'not null' => TRUE,
+          'default' => 'N/A',
+          'description' => 'Firstname of the user who submitted the travel quotation.',
+      ),
+      'user_email' => array(
+          'type' => 'varchar',
+          'length' => 200,
+          'not null' => TRUE,
+          'default' => 'N/A',
+          'description' => 'E-mail of the user who submitted the travel quotation.',
+      ),
+      'user_phone' => array(
+          'type' => 'varchar',
+          'length' => 50,
+          'not null' => TRUE,
+          'default' => 'N/A',
+          'description' => 'Phone number of the user who submitted the travel quotation.',
+      ),
+      'departure_location' => array(
+          'type' => 'varchar',
+          'length' => 100,
+          'not null' => FALSE,
+          'default' => 'N/A',
+          'description' => 'Departure location of the user who submitted the travel quotation.',
+      ),
+      'participant_number' => array(
+          'type' => 'varchar',
+          'length' => 50,
+          'not null' => FALSE,
+          'default' => 'N/A',
+          'description' => 'Number of participant for the travel quotation.',
+      ),
+      'departure_date' => array(
+          'type' => 'varchar',
+          'length' => 100,
+          'not null' => FALSE,
+          'default' => 'N/A',
+          'description' => 'Departure date for the travel quotation.',
+      ),
+      'return_date' => array(
+          'type' => 'varchar',
+          'length' => 100,
+          'not null' => FALSE,
+          'default' => 'N/A',
+          'description' => 'Return date for the travel quotation.',
+      ),
+      'budget' => array(
+          'type' => 'varchar',
+          'length' => 200,
+          'not null' => FALSE,
+          'default' => 'N/A',
+          'description' => 'Budget for the travel quotation.',
+      ),
+      'transport' => array(
+          'type' => 'varchar',
+          'length' => 200,
+          'not null' => FALSE,
+          'default' => 'N/A',
+          'description' => 'Transport for the travel quotation.',
+      ),
+      'comment' => array(
+        'type' => 'text',
+        'size' => 'normal',
+        'not null' => FALSE,
+        'description' => 'Comment about the travel quotation.',
+      ),
+      'quotation_detail' => array(
+        'type' => 'text',
+        'size' => 'medium',
+        'not null' => FALSE,
+        'description' => 'The detail of the travel quotation.',
+      ),
+      'submission_date' => array(
+        'mysql_type' => 'timestamp',
+        'pgsql_type' => 'timestamp',
+        'sqlite_type' => 'datetime',
+        'not null' => FALSE,
+        'default' => NULL,
+        'description' => 'Timestamp of the submission of the travel quotation.',
+      ),
+    ),
+    'primary key' => array('cart_submission_id'),
+  );
+  return $schema;
+}
+
+function memory_cart_update_7001() {
+  $schema = memory_cart_schema();
+  if(!db_table_exists('user_cart_submissions'))
+    db_create_table('user_cart_submissions', $schema['user_cart_submissions']);
+}

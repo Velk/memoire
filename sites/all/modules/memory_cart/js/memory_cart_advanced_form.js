@@ -287,32 +287,26 @@
         _advancedFormConfig.anyActivitiesSet(settings);
       });
 
-      // Filters part
-      function autoScrollToRightCategory(activitiesFilter){
+      function addUrlParameters(activityDestinationPath, key, parameter){
 
-        var filterMenuOffsetTop = $("#cont-filters").offset().top - 100;
+        var url = new URL(activityDestinationPath);
+        url.searchParams.append(key, parameter);
 
-        $("html, body").stop().animate(
-          {scrollTop:filterMenuOffsetTop},
-          500,
-          "swing",
-          function(){
-            $("#cont-filters ." + activitiesFilter).trigger("click");
-          }
-        );
+        return url.toString();
       }
 
       // Click on a accommodation button
       $("#trip-global-container").on("click", ".trip-accommodation > button", function() {
 
+        var filterIdentifier = $(this).attr("class");
+
         switch($("#cart-container").attr("class")){
           case "destination-page" :
-            var activitiesFilter = $(this).attr("class");
-            autoScrollToRightCategory(activitiesFilter);
+            _advancedFormConfig.autoScrollToRightCategory(filterIdentifier);
             break;
           case "activity-page" :
-            localStorage.setItem("showAccommodations", JSON.stringify(true));
-            window.location = activityDestinationPath;
+            var new_url = addUrlParameters(activityDestinationPath, "filter", filterIdentifier);
+            window.location = new_url;
             break;
         }
       });
@@ -320,30 +314,51 @@
       // Click on a transfer button
       $("#trip-global-container").on("click", ".trip-transfer > button", function() {
 
+        var filterIdentifier = $(this).attr("class");
+
         switch($("#cart-container").attr("class")){
           case "destination-page" :
-            var activitiesFilter = $(this).attr("class");
-            autoScrollToRightCategory(activitiesFilter);
+            _advancedFormConfig.autoScrollToRightCategory(filterIdentifier);
             break;
           case "activity-page" :
-            localStorage.setItem("showTransfers", JSON.stringify(true));
-            window.location = activityDestinationPath;
+            var new_url = addUrlParameters(activityDestinationPath, "filter", filterIdentifier);
+            window.location = new_url;
             break;
         }
       });
 
-      if(JSON.parse(localStorage.getItem("showAccommodations"))){
-        var accommodationFilter = $("#trip-global-container .trip-accommodation > button").attr("class");
-        autoScrollToRightCategory(accommodationFilter);
-        localStorage.removeItem("showAccommodations");
-      }
-      if(JSON.parse(localStorage.getItem("showTransfers"))){
-        var transferFilter = $("#trip-global-container .trip-transfer > button").attr("class");
-        autoScrollToRightCategory(transferFilter);
-        localStorage.removeItem("showTransfers");
-      }
-
       _advancedFormConfig.initLocalStorage(settings, false, false);
+
+      // Get URL parameter filter to show right activities (transfer or accommodation)
+      var url = new URL(window.location);
+      var filterIdentifier = url.searchParams.get("filter");
+      if(filterIdentifier !== null && filterIdentifier !== ""){
+        _advancedFormConfig.autoScrollToRightCategory(filterIdentifier);
+        _advancedFormConfig.deleteUrlParameter(url);
+      }
+    },
+
+    deleteUrlParameter : function(url){
+
+      url.searchParams.delete("filter");
+
+      if ("pushState" in history){
+        history.pushState("", document.title, url.href);
+      }
+    },
+
+    autoScrollToRightCategory : function(filterIdentifier){
+
+      var filterMenuOffsetTop = $("#cont-filters").offset().top - 100;
+
+      $("html, body").stop().animate(
+        {scrollTop:filterMenuOffsetTop},
+        500,
+        "swing",
+        function(){
+          $("#cont-filters ." + filterIdentifier).trigger("click");
+        }
+      );
     },
 
     // Init localStorage by setting every parameters in there right place
