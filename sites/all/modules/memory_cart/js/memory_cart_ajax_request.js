@@ -69,11 +69,48 @@
         );
       }
 
+      function resetCaptchaState(){
+
+        grecaptcha.reset(); // Reset the state of the captcha
+
+        $("#user-cart-captcha").attr("style", "display: none !important");
+      }
+
+      function checkCaptchaValidation(expressQuotation){
+
+        $("#user-cart-captcha").attr("style", "display: block !important");
+
+        var captchaResponse  = $("#user-cart-captcha #g-recaptcha-response").val();
+
+        if(!captchaResponse) {
+          //alert("Please verify that you are a Human.");
+
+          var captchaTimeout = setTimeout(
+            function(){
+              checkCaptchaValidation(expressQuotation);
+            },
+            2000
+          );
+        }else{
+
+          ajaxSendQuotation(expressQuotation);
+          resetCaptchaState();
+        }
+
+        // Quit Captcha display
+        $("div#user-cart-captcha > i").click(function(){
+
+          clearTimeout(captchaTimeout);
+          $("#user-cart-captcha").attr("style", "display: none !important");
+        });
+      }
+
       $("#validate-cart").click(function(){
         var isContinue = checkMandatoryFields();
 
         if(isContinue){
-          ajaxSendQuotation(false);
+
+          checkCaptchaValidation(false);
         }else{
           displayErrorMessage();
         }
@@ -83,7 +120,12 @@
         var isContinue = checkMandatoryFields();
 
         if(isContinue){
-          ajaxSendQuotation(true);
+
+          checkCaptchaValidation(true);
+          // if(checkCaptchaValidation()){
+          //   ajaxSendQuotation(true);
+          //   resetCaptchaState();
+          // }
         }else{
           displayErrorMessage();
         }

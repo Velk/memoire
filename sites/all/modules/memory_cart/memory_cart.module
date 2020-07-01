@@ -215,11 +215,12 @@ function memory_cart_manager_admin_form(){
       'firstname' => $user_cart_submission->user_firstname,
       'departure_location' => $user_cart_submission->departure_location,
       'departure_date' => $user_cart_submission->departure_date,
+      'return_date' => $user_cart_submission->return_date,
       'operations' => array('data' => array('#type' => 'link', '#title' => t('Consulter'), '#href' => "admin/memory/user-cart-manager/$user_cart_submission->cart_submission_id/edit", '#options' => array('query' => $destination))),
     );
   }
 
-  $form['accounts'] = array(
+  $form['submissions'] = array(
     '#type' => 'tableselect',
     '#header' => $header,
     '#options' => $options,
@@ -641,6 +642,16 @@ function memory_cart_block_info() {
     return $blocks;
 }
 
+function memory_cart_form($form, &$form_state){
+
+  $form['user_cart_recaptcha'] = array(
+    '#type' => 'captcha',
+    '#captcha_type' => 'recaptcha/reCAPTCHA',
+  );
+
+  return $form;
+}
+
 /**
  * @param string $delta
  * @return array
@@ -654,7 +665,9 @@ function memory_cart_block_view($delta = '') {
         case 'memory_cart':
 
             // Link the template
-            $block['content']['#markup'] = theme('tpl_memory_cart');
+            $block['content']['#markup'] = theme('tpl_memory_cart', array(
+              'form' => drupal_get_form('memory_cart_form'),
+            ));
 
             // Link a css file
             $block['content']['#attached']['css'][] = array(

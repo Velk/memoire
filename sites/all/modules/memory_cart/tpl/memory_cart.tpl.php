@@ -150,4 +150,8 @@ if (!path_is_admin(current_path())) {
 //  }
 }
 ?>
+  <div id="user-cart-captcha">
+    <i class="fa fa-times" aria-hidden="true"></i>
+    <?php print drupal_render($form['user_cart_recaptcha']); ?>
+  </div>
 </div>
