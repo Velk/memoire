@@ -198,7 +198,7 @@
           $("aside#qt-app-container").hide(); // Hide chatbot
           
           if($("#responsive-remove-user-cart").length === 0){
-            $("div#cart-container > div").append("<i class=\"fa fa-times\" aria-hidden=\"true\" id=\"responsive-remove-user-cart\"></i>");
+            $("div#cart-container > div:not(#user-cart-captcha)").append("<i class=\"fa fa-times\" aria-hidden=\"true\" id=\"responsive-remove-user-cart\"></i>");
 
             $("#responsive-remove-user-cart").click(function(){
 

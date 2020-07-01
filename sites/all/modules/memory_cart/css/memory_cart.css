@@ -884,3 +884,31 @@ form#devis div#city-name > div p:last-of-type {
   position: fixed !important; /* Need this statement to avoid scrolling on Safari */
   overflow: hidden !important;
 }
+
+/* User cart captcha */
+div#user-cart-captcha {
+  display:none !important;
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  background-color: #000000bf;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+div#user-cart-captcha > *:not(i) {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+div#user-cart-captcha > i{
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 25px;
+  color: #fff;
+  cursor: pointer;
+}
+div#user-cart-captcha > i:hover{
+  color:#ff8f00;
+}
