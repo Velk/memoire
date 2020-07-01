@@ -40,12 +40,20 @@
 
         $( "#departure-datepicker" ).datepicker({
           minDate: new Date(todayDate.getFullYear(), (todayDate.getMonth()), todayDate.getDate()),
-          numberOfMonths: 1
+          numberOfMonths: 1,
+          prevText: "Précédent",
+          nextText: "Suivant",
+          firstDay: 1,
+          dayNamesMin: ["D", "L", "M", "M", "J", "V", "S"]
         });
 
         $( "#return-datepicker" ).datepicker({
           //defaultDate: "+1w",
-          numberOfMonths: 1
+          numberOfMonths: 1,
+          prevText: "Précédent",
+          nextText: "Suivant",
+          firstDay: 1,
+          dayNamesMin: ["D", "L", "M", "M", "J", "V", "S"]
         });
 
         // Set datepicker french language
