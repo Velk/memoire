@@ -76,10 +76,15 @@
     <!-- Script end -->
   </head>
 
+
   <body class="<?php print $classes; ?>"<?php print $attributes;?>>
+    <?php if (preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT']) || preg_match('~Trident/7.0(; Touch)?; rv:11.0~',$_SERVER['HTTP_USER_AGENT'])) : ?>
+	<p><a href="http://letmegooglethat.com/?q=ne+plus+utiliser+internet+explorer"><img alt="" src="/sites/default/files/logos/vade_retro_internet_explorer.png" style="height:100%; width:100%" /></a></p>
+    <?php else : ?>
     <div id="skip-link"><a href="#main-content" class="element-invisible element-focusable"><?php print t('Skip to main content'); ?></a></div>
     <?php print $page_top; ?>
     <?php print $page; ?>
     <?php print $page_bottom; ?>
+    <?php endif; ?>
   </body>
 </html>
