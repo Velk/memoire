@@ -63,8 +63,6 @@
         }
 
         $( "#ui-datepicker-div" ).css("display", "none");
-
-        $( "#ui-datepicker-div" ).appendTo($("#date-fields-container"));
       }
       initDatePicker();
 
@@ -201,6 +199,9 @@
       }
 
       $("#departure-datepicker").click(function() {
+
+        $( "#ui-datepicker-div" ).appendTo($("#date-fields-container"));
+
         lastValueDepartureDate = $(this).datepicker("getDate");
       }).on( "change", function() {
 
@@ -269,6 +270,9 @@
       });
 
       $("#return-datepicker").click(function() {
+
+        $( "#ui-datepicker-div" ).appendTo($("#date-fields-container"));
+
         lastValueReturnDate = $(this).datepicker("getDate");
       }).on( "change", function() {
 
