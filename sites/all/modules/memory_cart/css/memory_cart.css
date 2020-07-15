@@ -597,6 +597,7 @@ div.ui-datepicker {
 
 .ui-datepicker-header {
   display: flex !important;
+  display: -webkit-flex !important;
   flex-direction: row !important;
   flex-wrap: wrap !important;
   text-align: center !important;
@@ -605,6 +606,8 @@ div.ui-datepicker {
   border: none !important;
   background: unset !important;
   background-color: #fff !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
 }
 
 .ui-datepicker-title {
@@ -617,16 +620,16 @@ div.ui-datepicker {
   line-height: normal !important;
 }
 
-a.ui-datepicker-prev,
-a.ui-datepicker-next {
+.ui-datepicker a.ui-datepicker-prev,
+.ui-datepicker a.ui-datepicker-next {
   opacity: unset !important;
   top: unset !important;
   right: unset !important;
   left: unset !important;
   border-radius: 0 !important;
-
   position: relative !important;
-  width: 50% !important;
+  width: auto !important;
+  flex: 0 50%;
   height: auto !important;
   padding: 3px 5px !important;
   cursor: pointer !important;
@@ -637,9 +640,10 @@ a.ui-datepicker-next {
   font-size: 14px !important;
   font-weight: normal !important;
   line-height: normal !important;
+  margin:0 !important;
 }
-a.ui-datepicker-prev:hover,
-a.ui-datepicker-next:hover {
+.ui-datepicker a.ui-datepicker-prev:hover,
+.ui-datepicker a.ui-datepicker-next:hover {
   background-color: #fff !important;
   color: #21acbe !important;
 }
@@ -655,6 +659,9 @@ a.ui-datepicker-next .ui-icon {
   overflow : unset !important;
   background-repeat : unset !important;
   background-image : unset !important;
+}
+.ui-helper-clearfix:before, .ui-helper-clearfix:after{
+  display: none;
 }
 
 a.ui-datepicker-current-day {}
