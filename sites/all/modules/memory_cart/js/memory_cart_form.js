@@ -40,12 +40,20 @@
 
         $( "#departure-datepicker" ).datepicker({
           minDate: new Date(todayDate.getFullYear(), (todayDate.getMonth()), todayDate.getDate()),
-          numberOfMonths: 1
+          numberOfMonths: 1,
+          prevText: "Précédent",
+          nextText: "Suivant",
+          firstDay: 1,
+          dayNamesMin: ["D", "L", "M", "M", "J", "V", "S"]
         });
 
         $( "#return-datepicker" ).datepicker({
           //defaultDate: "+1w",
-          numberOfMonths: 1
+          numberOfMonths: 1,
+          prevText: "Précédent",
+          nextText: "Suivant",
+          firstDay: 1,
+          dayNamesMin: ["D", "L", "M", "M", "J", "V", "S"]
         });
 
         // Set datepicker french language
@@ -55,8 +63,6 @@
         }
 
         $( "#ui-datepicker-div" ).css("display", "none");
-
-        $( "#ui-datepicker-div" ).appendTo($("#date-fields-container"));
       }
       initDatePicker();
 
@@ -193,6 +199,9 @@
       }
 
       $("#departure-datepicker").click(function() {
+
+        $( "#ui-datepicker-div" ).appendTo($("#date-fields-container"));
+
         lastValueDepartureDate = $(this).datepicker("getDate");
       }).on( "change", function() {
 
@@ -261,6 +270,9 @@
       });
 
       $("#return-datepicker").click(function() {
+
+        $( "#ui-datepicker-div" ).appendTo($("#date-fields-container"));
+
         lastValueReturnDate = $(this).datepicker("getDate");
       }).on( "change", function() {
 
