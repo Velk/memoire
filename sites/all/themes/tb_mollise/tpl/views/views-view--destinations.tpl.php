@@ -64,7 +64,7 @@
         }
 
         if( isset($all_dest_title) ){
-            echo '<h2>' . $all_dest_title . '</h2>';
+            echo '<h1>' . $all_dest_title . '</h1>';
         }
 
         echo '</div>';

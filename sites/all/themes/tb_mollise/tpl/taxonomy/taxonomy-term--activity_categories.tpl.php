@@ -135,7 +135,7 @@ ksort($ordered_activity_categories);
         echo '<div id="memory-img-filter"></div>';
       }
       if( isset($content['field_category_activities_title']['#items'][0]['value']) ){
-        echo '<h2 class="act-cat-head-title">' . $content['field_category_activities_title']['#items'][0]['value'] . '</h2>';
+        echo '<h1 class="act-cat-head-title">' . $content['field_category_activities_title']['#items'][0]['value'] . '</h1>';
       }
 
       echo '</div>';

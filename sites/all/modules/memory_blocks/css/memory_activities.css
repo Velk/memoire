@@ -26,17 +26,17 @@ div#memory-img-filter {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-div#act-cat-head-img-container > h2 {
-    position: absolute;
-    display: block;
-    margin: 0;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    font-size: 35px;
-    color: #fff;
-    z-index: 20;
-    text-align: center;
+div#act-cat-head-img-container > h1 {
+  position: absolute;
+  display: block;
+  margin: 0;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  font-size: 35px;
+  color: #fff;
+  z-index: 20;
+  text-align: center;
   background-color: #00000075;
   padding: 3px 20px;
   box-sizing: border-box;
