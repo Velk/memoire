@@ -17,7 +17,7 @@ div#cont-head-img-container {
     overflow: hidden;
 }
 
-div#cont-head-img-container > h2 {
+div#cont-head-img-container > h1 {
     position: absolute;
     display: block;
     margin: 0;

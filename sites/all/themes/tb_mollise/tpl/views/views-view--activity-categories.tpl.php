@@ -134,7 +134,7 @@
             echo '<div id="memory-img-filter"></div>';
         }
         if( isset($all_act_title) ){
-            echo '<h2>' . $all_act_title . '</h2>';
+            echo '<h1>' . $all_act_title . '</h1>';
         }
 
         echo '</div>';

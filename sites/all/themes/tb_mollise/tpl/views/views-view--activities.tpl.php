@@ -97,7 +97,7 @@ asort($array_destination);
             echo '<div id="memory-img-filter"></div>';
         }
         if( isset($ip_title) ){
-            echo '<h2>' . $ip_title . '</h2>';
+            echo '<h1>' . $ip_title . '</h1>';
         }
 
         echo '</div>';

@@ -5,7 +5,7 @@ div#activity-header-container {
   height: 70vh;
   overflow: hidden;
 }
-div#activity-header-container > h2 {
+div#activity-header-container > h1 {
   position: absolute;
   display: block;
   margin: 0;
