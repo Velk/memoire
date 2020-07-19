@@ -174,6 +174,55 @@ function memory_cart_manager_admin_form(){
     '#weight' => 1,
   );
 
+  /* User cart - Text templates */
+  $user_cart_text_templates = variable_get('user_cart_text_templates', array());
+
+  $form['user_cart_text_templates'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Panier utilisateur - Modèle de texte'),
+    '#weight' => 2,
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#tree' => TRUE
+  );
+
+  $form['user_cart_text_templates']['user_cart_confirmation_message_quotation'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Message de confirmation - Demande de devis'),
+    '#description' => t('Le message de confirmation qui est affiché à l\'utilisateur lorsqu\'il soumet une demande de devis.'),
+    '#default_value' => (!empty($user_cart_text_templates["user_cart_confirmation_message_quotation"])) ? $user_cart_text_templates["user_cart_confirmation_message_quotation"] : 'Votre demande de devis a été transmise à l\'équipe Memory. Nous vous recontacterons dans les plus brefs délais.',
+    '#rows' => 2,
+    '#maxlength' => 512,
+    '#weight' => 1,
+  );
+
+  $form['user_cart_text_templates']['user_cart_confirmation_message_express_quotation'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Message de confirmation - Demande de devis expresse'),
+    '#description' => t('Le message de confirmation qui est affiché à l\'utilisateur lorsqu\'il soumet une demande de devis expresse.'),
+    '#default_value' => (!empty($user_cart_text_templates["user_cart_confirmation_message_express_quotation"])) ? $user_cart_text_templates["user_cart_confirmation_message_express_quotation"] : 'Votre demande de devis expresse a été transmise à l\'équipe Memory. Nous vous recontacterons dans les plus brefs délais.',
+    '#rows' => 2,
+    '#maxlength' => 512,
+    '#weight' => 2,
+  );
+
+  $form['user_cart_text_templates']['user_cart_confirmation_email_quotation'] = array(
+    '#type' => 'textarea',
+    '#title' => t('E-mail de confirmation - Demande de devis'),
+    '#description' => t('L\'e-mail de confirmation qui est envoyé à l\'utilisateur lorsqu\'il soumet une demande de devis.<br>Les données à inclure dans le message doivent être entourées par : [<i>data_name</i>].<br>Les données possibles sont : [firstname], [lastname]'),
+    '#default_value' =>
+      (!empty($user_cart_text_templates["user_cart_confirmation_email_quotation"])) ?
+      $user_cart_text_templates["user_cart_confirmation_email_quotation"] :
+      "Bonjour [lastname] [firstname],\n" .
+      "Votre demande de devis a bien été envoyée à l'équipe Memory.\n" .
+      "A bientôt !\n" .
+      "Bien cordialement,\n" .
+      "L'équipe Memory",
+    '#rows' => 5,
+    '#maxlength' => 512,
+    '#weight' => 2,
+  );
+
   // List of submissions
   $header = array(
     'id' => array('data' => t('id'), 'field' => 'ucs.cart_submission_id'),
@@ -268,6 +317,7 @@ function insert_submissions_database($cart_global, $cart_activities){
 function ajax_cart_send_quotation_by_email(){
 
   $destination_email = variable_get('global_parameter_email');
+  $user_cart_text_templates = variable_get('user_cart_text_templates', array());
 
   $array_result_callback = array();
 
@@ -308,7 +358,7 @@ function ajax_cart_send_quotation_by_email(){
       drupal_mail('memory_cart', '10', $to, "fr", $params, $from);
 
       $array_result_callback["destinationEmail"] = $destination_email;
-      $array_result_callback["message"] = "Votre demande de devis expresse a été transmise à l'équipe Memory. Nous vous recontacterons dans les plus brefs délais.";
+      $array_result_callback["message"] = $user_cart_text_templates["user_cart_confirmation_message_express_quotation"];
     }else{
 
       $subject = "#DEMANDE DE DEVIS : " . $cart_global->lastname . " " . $cart_global->firstname; // Subject of the mail
@@ -367,11 +417,28 @@ function ajax_cart_send_quotation_by_email(){
       drupal_mail('memory_cart', '10', $to, "fr", $params_providers, $from);
 
       $array_result_callback["destinationEmail"] = $destination_email;
-      $array_result_callback["message"] = "Votre demande de devis a été transmise à l'équipe Memory. Nous vous recontacterons dans les plus brefs délais.";
+      $array_result_callback["message"] = $user_cart_text_templates["user_cart_confirmation_message_quotation"];
     }
+
+    send_user_confirmation_email($cart_global, $user_cart_text_templates['user_cart_confirmation_email_quotation'], $destination_email);
   }
 
   drupal_json_output($array_result_callback);
+}
+
+function send_user_confirmation_email($cart_global, $user_cart_email_confirmation, $destination_email){
+
+  $body_memory = str_replace("[lastname]", $cart_global->lastname, $user_cart_email_confirmation);
+  $body_memory = str_replace("[firstname]", $cart_global->firstname, $body_memory);
+
+  $subject = "[MEMORY] - Confirmation de demande de devis"; // Subject of the mail
+
+  $params_memory = array(
+    'subject' => $subject,
+    'body' => $body_memory,
+  );
+
+  drupal_mail('memory_cart', '10', $cart_global->email, "fr", $params_memory, $destination_email);
 }
 
 function formatActivitiesToEmailText($cart_activities, $cart_global, $is_for_providers){
