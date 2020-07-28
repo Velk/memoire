@@ -129,6 +129,10 @@ div#reviews-touchable-manager > i {
     width: 100% !important;
     margin: 0 !important;
   }
+  div#memory-reviews-container h2 {
+    font-size: 20px;
+    margin: 0 0 25px 0;
+  }
   div.memory-group-reviews .memory-review:last-child {
     margin: 0 !important;
   }

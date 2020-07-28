@@ -193,6 +193,9 @@ fieldset.webform-component--quote-request > .fieldset-content {
     margin: 0;
     border: 0;
 }
+.webform-component-textarea.webform-component--questions--message {
+  margin-bottom: 0;
+}
 
 /* Fieldset - Questions */
 
@@ -263,5 +266,5 @@ fieldset.contact_fieldset textarea.error {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 25px auto;
+  margin: 30px auto;
 }

@@ -142,21 +142,24 @@ span.button {
 }
 
 span.button input.form-submit {
-  background: #424242;
-  border: 1px solid #424242;
-  color: #fff;
   cursor: pointer;
-  font-size: 0.917em;
-  text-transform: uppercase;
-  padding: 5px 15px;
   vertical-align: middle;
+  line-height: 1;
+  padding: 7px 12px;
+  background-color: #ff8f00;
+  border-radius: 3px !important;
+  color: #fff;
+  border: 1px solid #ff8f00;
+  box-sizing: border-box;
+  width: auto;
+  font-size: 14px;
+  margin: auto;
 }
-
 span.button input.form-submit:hover,
 span.button input.form-submit:focus {
-  background: #fff;
-  border: 1px solid #424242;
-  color: #424242;
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #ff8f00;
 }
 
 /* --- Checkbox --- */

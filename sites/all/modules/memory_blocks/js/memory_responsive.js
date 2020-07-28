@@ -222,14 +222,14 @@
         });
 
         /* Go to top page */
-        $(document).scroll(function() {
-
-          if ($(window).scrollTop() + $(window).height() >= ($(document).height() - 50)) {
-            $("div#block-memory-blocks-memory-go-top-page").attr("style", "bottom: 65px !important");
-          }else{
-            $("div#block-memory-blocks-memory-go-top-page").attr("style", "bottom: 10px !important");
-          }
-        });
+        // $(document).scroll(function() {
+        //
+        //   // if ($(window).scrollTop() + $(window).height() >= ($(document).height() - 50)) {
+        //   //   $("div#block-memory-blocks-memory-go-top-page").attr("style", "bottom: 65px !important");
+        //   // }else{
+        //   //   $("div#block-memory-blocks-memory-go-top-page").attr("style", "bottom: 10px !important");
+        //   // }
+        // });
       }
     }
   };
