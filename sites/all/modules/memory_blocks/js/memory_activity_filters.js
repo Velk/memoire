@@ -3,18 +3,18 @@
     $(document).ready(function($) {
 
         /* Dynamic size of filters menu */
-        var filtersNbTab = $(".act-cat-filter").length;
+        var filtersNbTab = $(".memory-filter").length;
         var filtersTabSize = (100/filtersNbTab);
 
-        $("#act-cat-filters").css("grid-template-columns", "repeat(" + filtersNbTab + ", " + filtersTabSize + "%)");
+        $("#memory-filters-container").css("grid-template-columns", "repeat(" + filtersNbTab + ", " + filtersTabSize + "%)");
 
         /* Dynamic menu display */
         if( filtersNbTab === 1 ){
-            $("#act-cat-filters").hide();
+            $("#memory-filters-container").hide();
         }
 
         /* Filters for destinations page */
-        $(".act-cat-filter").click(function(){
+        $(".memory-filter").click(function(){
 
           console.log("click");
 

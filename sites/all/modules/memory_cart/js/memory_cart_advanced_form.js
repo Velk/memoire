@@ -349,14 +349,14 @@
 
     autoScrollToRightCategory : function(filterIdentifier){
 
-      var filterMenuOffsetTop = $("#cont-filters").offset().top - 100;
+      var filterMenuOffsetTop = $("#memory-filters-container").offset().top - 100;
 
       $("html, body").stop().animate(
         {scrollTop:filterMenuOffsetTop},
         500,
         "swing",
         function(){
-          $("#cont-filters ." + filterIdentifier).trigger("click");
+          $("#memory-filters-container ." + filterIdentifier).trigger("click");
         }
       );
     },

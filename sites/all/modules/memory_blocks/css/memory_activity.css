@@ -21,18 +21,6 @@ div#activity-header-container > h1 {
   box-sizing: border-box;
   min-width: 250px;
 }
-div#memory-img-filter{
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.15);
-  z-index: 15;
-}
-div#description-container {
-  width: 100%;
-  padding: 50px calc(25%/2);
-  box-sizing: border-box;
-}
 div#activity-prestations {
   width: 100%;
   padding: 50px calc(25%/2);
@@ -51,7 +39,6 @@ div#activity-page-main {
   width: 100%;
 }
 
-div#description-container,
 div#activity-memory-opinion,
 div#carousel-container {
   background-color: #fff;
@@ -61,7 +48,6 @@ div#activity-prestations {
   background-color: #f1f1f1;
 }
 
-div#description-container p:last-of-type,
 div#activity-memory-opinion p:last-of-type {
   margin-bottom: 0;
 }

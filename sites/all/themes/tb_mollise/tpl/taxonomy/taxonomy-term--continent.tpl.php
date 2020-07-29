@@ -115,11 +115,9 @@
     } catch (Exception $e) {
       drupal_set_message("Exception reçue : " .  $e->getMessage());
     }
-
-//drupal_set_message("<pre>" . print_r($cnt, true) . "</pre>");
 ?>
-<div id="continent">
-    <div class="cont-head">
+
+<div id="memory-main">
       <?php
       if( isset($img_head_url) || isset($content['field_destination_title']['#items'][0]['value']) ){
 
@@ -128,13 +126,13 @@
           $image_style = "style=\"background-image:url(" . $img_head_url . "); background-size:cover;background-position:center;\"";
         }
 
-        echo '<div id="cont-head-img-container" ' . $image_style .'>';
+        echo '<div id="image-container" ' . $image_style .'>';
 
         if( isset($img_head_url) ){
-          echo '<div id="memory-img-filter"></div>';
+          echo '<div id="image-filter"></div>';
         }
         if( isset($content['field_destination_title']['#items'][0]['value']) ){
-          echo '<h1 class="cont-head-title">' . $content['field_destination_title']['#items'][0]['value'] . '</h1>';
+          echo '<h1>' . $content['field_destination_title']['#items'][0]['value'] . '</h1>';
         }
 
         echo '</div>';
@@ -142,21 +140,21 @@
 
       if( isset($content['description']['#markup']) ){
         echo
-          '<div id="cont-head-desc">' .
+          '<div id="description-container">' .
           $content['description']['#markup'] .
           '</div>'
         ;
       }
       ?>
-    </div>
-    <div id="cont-filters">
-        <div class="cont-filter">
+
+    <div id="memory-filters-container">
+        <div class="memory-filter">
             <p><i class="fa fa-th" aria-hidden="true"></i>Toutes nos Activités</p>
         </div>
         <?php
         foreach($activities as $activity){
             if( isset( $cnt[$activity->tid] ) ) {
-                echo '<div class="cont-filter filter-' . $activity->tid . '">';
+                echo '<div class="memory-filter filter-' . $activity->tid . '">';
                 switch ($activity->name) {
                     case "Activités de jour" :
                         print '<p><i class="fa fa-sun-o" aria-hidden="true"></i>' . $activity->name . '</p>';
@@ -179,7 +177,8 @@
         }
         ?>
     </div>
-    <div id="cont-main">
+
+    <div id="main-thumbnails">
         <?php foreach($activities as $activity): ?>
             <?php if( isset( $cnt[$activity->tid] ) ){ ?>
             <div id="filter-<?php print $activity->tid ?>" class="cont-container">
@@ -202,7 +201,7 @@
                         break;
                 }
                 ?>
-                <div class="cont-activities-container">
+                <div class="thumbnails-container-4x">
                     <?php
                     // Sort array by activity weight
                     krsort($cnt[$activity->tid], 6);
@@ -214,14 +213,14 @@
 
                       foreach ($cnt_weight_sorted as $cnt_act_sorted) {
                       ?>
-                        <div class="cont-scop cont-scop-<?php print $activity->tid ?>" style="background-image:url('<?php print $cnt_act_sorted['img_uri'] ?>'); background-size:cover;background-position:center;">
+                        <div class="thumbnail-container cont-scop-<?php print $activity->tid ?>" style="background-image:url('<?php print $cnt_act_sorted['img_uri'] ?>'); background-size:cover;background-position:center;">
 
-                          <div class="cont-datas-container" id="<?php print $cnt_act_sorted['node_nid'] ?>">
+                          <div id="<?php print $cnt_act_sorted['node_nid'] ?>">
                             <input type="hidden" class="cont-act-nid" value="<?php print $cnt_act_sorted['node_nid'] ?>">
                             <input type="hidden" class="cont-act-cat" value="<?php print $cnt_act_sorted['group_act_cat'] ?>">
-                            <h3 class="cont-stick-title"><?php print $cnt_act_sorted['custom_title'] ?></h3>
-                            <p class="cont-price"><?php print $cnt_act_sorted['price'] ?><?php isset($cnt_act_sorted['price']) ? print "€" : ""; ?></p>
-                            <a href="<?php print $cnt_act_sorted['path'] ?>" class="cont-readmore"></a>
+                            <h3 class="thumbnail-title"><?php print $cnt_act_sorted['custom_title'] ?></h3>
+                            <p class="thumbnail-price"><?php print $cnt_act_sorted['price'] ?><?php isset($cnt_act_sorted['price']) ? print "€" : ""; ?></p>
+                            <a href="<?php print $cnt_act_sorted['path'] ?>" class="thumbnail-link"></a>
                             <?php
                             if(sizeof($cnt_act_sorted["activity_family"]) !== 0){
 
