@@ -107,7 +107,7 @@
 
           optionImage = activityContainer.children("div.prestation-main").find("div.prestation-image").css("background-image");
           if(typeof optionImage === typeof undefined || optionImage === false){ // If option has not image, set the activity image by default
-            optionImage = $("#activity-header-container").css("background-image");
+            optionImage = $("#image-container").css("background-image");
           }
           optionImage = optionImage.split("url(\"")[1].split("\")")[0];
 
@@ -148,9 +148,9 @@
             default : // Add activity
 
               var activityToAddContainer = $(this).parent().parent().parent().parent();
-              var thisActivityNid = $("#activity-page-container .activity-nid").val();
-              var thisActivityTitle = $("#activity-page-container .activity-title").val();
-              var thisActivityDestinationPath = $("#activity-page-container .activity-destination-path").val();
+              var thisActivityNid = $("#memory-main .activity-nid").val();
+              var thisActivityTitle = $("#memory-main .activity-title").val();
+              var thisActivityDestinationPath = $("#memory-main .activity-destination-path").val();
               var thisOptionTitle = activityToAddContainer.find(".prestation-header > div:eq(0) > h2").text();
               var dayIndex = null;
               var activityIndex = null;

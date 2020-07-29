@@ -48,7 +48,7 @@
         }
     }
 ?>
-<div id="container">
+<div id="memory-main">
     <?php
     if( isset($all_dest_image) || isset($all_dest_title) ){
 
@@ -57,10 +57,10 @@
           $image_style = "style=\"background-image:url(" . $all_dest_image . "); background-size:cover;background-position:center;\"";
         }
 
-        echo '<div id="img-container" ' . $image_style .'>';
+        echo '<div id="image-container" ' . $image_style .'>';
 
         if( isset($all_dest_image) ){
-          echo '<div id="memory-img-filter"></div>';
+          echo '<div id="image-filter"></div>';
         }
 
         if( isset($all_dest_title) ){
@@ -72,12 +72,11 @@
 
     if( isset($all_dest_description) ){
         echo
-        '<div id="description-container">' .
+        '<div class="description-container">' .
             $all_dest_description .
         '</div>'
         ;
     }
-//    drupal_set_message("<pre>" . print_r($tab_continent, true) . "</pre>");
     ?>
     <div id="destinations-main-container">
         <div id="destinations-container">

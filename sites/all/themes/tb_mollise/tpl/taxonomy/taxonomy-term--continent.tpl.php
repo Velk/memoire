@@ -140,7 +140,7 @@
 
       if( isset($content['description']['#markup']) ){
         echo
-          '<div id="description-container">' .
+          '<div class="description-container">' .
           $content['description']['#markup'] .
           '</div>'
         ;
@@ -181,7 +181,7 @@
     <div id="main-thumbnails">
         <?php foreach($activities as $activity): ?>
             <?php if( isset( $cnt[$activity->tid] ) ){ ?>
-            <div id="filter-<?php print $activity->tid ?>" class="cont-container">
+            <div class="activity-category">
                 <?php
                 switch($activity->name){
                     case "Activités de jour" :
@@ -213,7 +213,7 @@
 
                       foreach ($cnt_weight_sorted as $cnt_act_sorted) {
                       ?>
-                        <div class="thumbnail-container cont-scop-<?php print $activity->tid ?>" style="background-image:url('<?php print $cnt_act_sorted['img_uri'] ?>'); background-size:cover;background-position:center;">
+                        <div class="thumbnail-container" style="background-image:url('<?php print $cnt_act_sorted['img_uri'] ?>'); background-size:cover;background-position:center;">
 
                           <div id="<?php print $cnt_act_sorted['node_nid'] ?>">
                             <input type="hidden" class="cont-act-nid" value="<?php print $cnt_act_sorted['node_nid'] ?>">

@@ -16,16 +16,14 @@
         /* Filters for destinations page */
         $(".memory-filter").click(function(){
 
-          console.log("click");
-
             var selectedSection = $(this).children("p").text();
 
             if( selectedSection === "Toutes nos Activités" ){
 
-                $(".act-cat-container").css("display", "block");
+                $(".activity-category").css("display", "block");
             }else{
 
-                $(".act-cat-container").each(function(){
+                $(".activity-category").each(function(){
 
                     var section = $(this).children("h2").text();
 

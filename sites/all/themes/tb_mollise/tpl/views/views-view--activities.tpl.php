@@ -105,7 +105,7 @@ asort($array_destination);
 
     if( isset($ip_description) ){
         echo
-            '<div id="description-container">' .
+            '<div class="description-container">' .
             $ip_description .
             '</div>'
         ;

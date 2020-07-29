@@ -1,37 +1,12 @@
 /* ACTIVITY PAGE - HEADER */
-div#activity-header-container {
-  position: relative;
-  width: 100%;
-  height: 70vh;
-  overflow: hidden;
-}
-div#activity-header-container > h1 {
-  position: absolute;
-  display: block;
-  margin: 0;
-  top: 50%;
-  left: 50%;
-  transform: translateX(-50%) translateY(-50%);
-  font-size: 35px;
-  color: #fff;
-  z-index: 20;
-  text-align: center;
-  background-color: #00000075;
-  padding: 3px 20px;
-  box-sizing: border-box;
-  min-width: 250px;
-}
+
+
+
+
 div#activity-prestations {
   width: 100%;
   padding: 50px calc(25%/2);
   box-sizing: border-box;
-}
-h2.activity-page-label {
-  color: #16889b;
-  font-size: 16px;
-  text-transform: uppercase;
-  margin: 0 0 20px 0;
-  font-weight: bold;
 }
 
 /* ACTIVITY PAGE - PRESTATIONS (BASIC and OPTIONS) */
@@ -39,17 +14,12 @@ div#activity-page-main {
   width: 100%;
 }
 
-div#activity-memory-opinion,
 div#carousel-container {
   background-color: #fff;
 }
 div#activity-prestations {
   box-shadow: 0px -1px 5px #e9e9e9;
   background-color: #f1f1f1;
-}
-
-div#activity-memory-opinion p:last-of-type {
-  margin-bottom: 0;
 }
 
 .activity-prestation-container {
@@ -242,19 +212,6 @@ div.prestation-detail > p {
 .activity-prestation-container > button > i {
   margin: 0 10px 0 0;
   font-size: 16px;
-}
-
-/* ACTIVITY PAGE - MEMORY OPINION */
-div#activity-memory-opinion {
-  width: 100%;
-  padding: 50px calc(25%/2);
-  box-sizing: border-box;
-}
-div#activity-memory-opinion > h2{
-  border-bottom: 1px solid #16889b;
-}
-div#activity-memory-opinion ul {
-  margin: 0 0 0 25px;
 }
 
 /* ACTIVITY PAGE - SLIDER */

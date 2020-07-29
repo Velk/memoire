@@ -142,7 +142,7 @@
 
     if( isset($all_act_description) && !empty($all_act_description) ){
         echo
-            '<div id="description-container">' .
+            '<div class="description-container">' .
             $all_act_description .
             '</div>'
         ;
@@ -155,7 +155,7 @@
 
         <?php foreach($ordered_activity_categories as $activity_category): ?>
         <?php if( isset( $activities[$activity_category] ) ){ ?>
-        <div id="act-cat-<?php print $activity_category ?>" class="act-cat-container">
+        <div class="activity-category">
 
           <?= getCategoriesHTML($activity_category); ?>
 
