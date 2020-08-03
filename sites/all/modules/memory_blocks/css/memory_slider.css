@@ -136,3 +136,11 @@ div#go-down > i:hover {
         opacity: 0;
     }
 }
+
+@media screen and (max-width: 1024px){
+
+  /* Slider block */
+  div#slider-container {
+    height: 550px !important;
+  }
+}

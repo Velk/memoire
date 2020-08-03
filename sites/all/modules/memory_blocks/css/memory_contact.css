@@ -268,3 +268,64 @@ fieldset.contact_fieldset textarea.error {
   justify-content: center;
   margin: 30px auto;
 }
+
+@media screen and (max-width: 1024px){
+
+  /* Page - Contact */
+  form.webform-client-form > div {
+    width: 100% !important;
+    padding: 25px 50px !important;
+    box-sizing: border-box !important;
+    max-width: 700px !important;
+  }
+  form.webform-client-form .webform-component select {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+  }
+  fieldset.webform-component--contact-details > .fieldset-content {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .webform-component--contact-details .webform-component > label,
+  .webform-component--questions .webform-component > label,
+  .webform-component--quote-request .webform-component > label {
+    font-size: 12px !important;
+    font-weight: 400 !important;
+  }
+  .form-item, .form-action {
+    margin: 5px 0 0 0 !important;
+  }
+  fieldset.webform-component--quote-request > .fieldset-content {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .webform-datepicker .form-item {
+    all: unset;
+    margin: 0 !important;
+    height: 100%;
+  }
+  .webform-datepicker .form-item > select {
+    all: unset;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    height: 100%;
+    border-right: 1px solid #e9e9e9;
+    text-align: center;
+    background-color: #fff;
+    box-sizing: border-box;
+    padding: 3px 4px;
+  }
+  div#ui-datepicker-div {
+    left: 50% !important;
+    transform: translateX(-50%);
+  }
+}
+
+@media screen and (max-width: 640px){
+
+  /* Page - contact */
+  form.webform-client-form > div {
+    padding: 25px 20px !important;
+  }
+}

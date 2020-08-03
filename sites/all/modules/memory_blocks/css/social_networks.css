@@ -54,3 +54,11 @@ div#block-memory-blocks-social-networks > .block-inner {
     background-color : #ffffffbf;
     color: #007bb5;
 }
+
+@media screen and (max-width: 1024px){
+
+  /* Social networks block */
+  div#block-memory-blocks-social-networks {
+    display: none !important;
+  }
+}

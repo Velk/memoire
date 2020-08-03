@@ -74,13 +74,13 @@ ul.country-container .city a > i {
   margin-top: 5px;
 }
 
-/* Responsive */
 @media screen and (max-width: 1024px) {
 
   div#destinations-main-container {
     background-color: #f1f1f1;
     padding: 35px 0;
   }
+
   div#destinations-container .continent-container {
     padding: 15px 20px;
     box-sizing: border-box;
@@ -88,12 +88,24 @@ ul.country-container .city a > i {
     border-radius: 2px;
     box-shadow: 1px 1px 5px #c7c7c7;
   }
+
   ul.country-container > ul.city > li > a {
     font-weight: bold;
   }
+
   ul.country-container > li {
     pointer-events:none;
     cursor: none;
   }
+}
 
+@media screen and (max-width: 640px) {
+
+  div#destinations-main-container {
+    padding: 25px 0;
+  }
+
+  div#destinations-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }

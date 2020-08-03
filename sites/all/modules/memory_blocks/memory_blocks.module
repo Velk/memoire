@@ -121,6 +121,8 @@ function memory_blocks_menu() {
 
 function memory_blocks_init() {
 
+    drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/memory_top_block.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
+
     drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/memory_basic_forms.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
 
     drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/memory_menu.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
@@ -394,13 +396,8 @@ function memory_blocks_theme($existing, $type, $theme, $path) {
             'path' => drupal_get_path('module', 'memory_blocks'),
             'variables' => array('infos' => NULL),
         ),
-        'tpl_memory_top_destinations' => array(
-            'template' => 'tpl/memory_top_destinations',
-            'path' => drupal_get_path('module', 'memory_blocks'),
-            'variables' => array('infos' => NULL),
-        ),
-        'tpl_memory_top_activities' => array(
-            'template' => 'tpl/memory_top_activities',
+        'tpl_memory_top_block' => array(
+            'template' => 'tpl/memory_top_block',
             'path' => drupal_get_path('module', 'memory_blocks'),
             'variables' => array('infos' => NULL),
         ),
@@ -563,16 +560,10 @@ function memory_blocks_block_view($delta = '') {
               return $b['weight'] <=> $a['weight'];
             });
 
-            $data['arrayAllDestinations'] = $arrayAllDestinations;
+            $data['arrayAllThumbnails'] = $arrayAllDestinations;
 
             // Link the template
-            $block['content']['#markup'] = theme('tpl_memory_top_destinations', $data);
-
-            // Link a css file
-            $block['content']['#attached']['css'][] = array(
-                'data' => drupal_get_path('module', 'memory_blocks') . '/css/memory_top_destinations.css',
-                'type' => 'file'
-            );
+            $block['content']['#markup'] = theme('tpl_memory_top_block', $data);
 
             break;
         case 'memory_top_activities':
@@ -613,16 +604,10 @@ function memory_blocks_block_view($delta = '') {
               return $b['weight'] <=> $a['weight'];
             });
 
-            $data['arrayAllActivities'] = $arrayAllActivities;
+            $data['arrayAllThumbnails'] = $arrayAllActivities;
 
             // Link the template
-            $block['content']['#markup'] = theme('tpl_memory_top_activities', $data);
-
-            // Link a css file
-            $block['content']['#attached']['css'][] = array(
-                'data' => drupal_get_path('module', 'memory_blocks') . '/css/memory_top_activities.css',
-                'type' => 'file'
-            );
+            $block['content']['#markup'] = theme('tpl_memory_top_block', $data);
 
             break;
         case 'memory_slider':
