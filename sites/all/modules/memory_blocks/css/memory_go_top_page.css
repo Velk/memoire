@@ -35,3 +35,17 @@ button#go-top-page > i {
 button#go-top-page > i:hover {
     color: #ff8f00;
 }
+
+@media screen and (max-width: 1024px){
+
+  /* Go to top page block */
+  div#block-memory-blocks-memory-go-top-page {
+    right: 20px !important;
+    bottom: 20px !important;
+    padding: 0 !important;
+  }
+
+  div#block-memory-blocks-memory-go-top-page > .block-inner {
+    padding: 0 !important;
+  }
+}

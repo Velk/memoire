@@ -288,7 +288,7 @@ foreach ($activity_family_field as $activity_family_iteration){
 }
 ?>
 
-<div id="activity-page-container">
+<div id="memory-main">
     <?php
     if( isset($image) || isset($title) ){
 
@@ -297,10 +297,10 @@ foreach ($activity_family_field as $activity_family_iteration){
         $image_style = "style=\"background-image:url(" . $image . "); background-size:cover;background-position:center;\"";
       }
 
-      echo '<div id="activity-header-container" ' . $image_style .'>';
+      echo '<div id="image-container" ' . $image_style .'>';
 
       if( isset($image) ){
-        echo '<div id="memory-img-filter"></div>';
+        echo '<div id="image-filter"></div>';
       }
       if( isset($title) ){
         echo '<h1>' . $title . '</h1>';
@@ -308,18 +308,17 @@ foreach ($activity_family_field as $activity_family_iteration){
 
       echo '</div>';
     }
+
+    if( isset($description) ){
+      echo
+        '<div class="description-container">' .
+          '<h2>DESCRIPTIF : </h2>' .
+          '<div>' . $description . '</div>' .
+        '</div>'
+      ;
+    }
     ?>
     <div id="activity-page-main">
-        <?php
-        if( isset($description) ){
-          echo
-            '<div id="description-container">' .
-              '<h2 class="activity-page-label">DESCRIPTIF : </h2>' .
-              '<div>' . $description . '</div>' .
-            '</div>'
-          ;
-        }
-        ?>
         <div id="activity-prestations">
           <?php
           /* ------------------------------------------ BASIC ACTIVITY -----------------------------------------------*/
@@ -613,18 +612,18 @@ foreach ($activity_family_field as $activity_family_iteration){
           }
           ?>
         </div>
-        <?php
-        if( isset($activity_memory_opinion) ){
-            echo
-                '<div id="activity-memory-opinion">' .
-                    '<h2 class="activity-page-label">MOTS DE MEMORY :</h2>' .
-                    '<div>' .
-                    $activity_memory_opinion .
-                    '</div>' .
-                '</div>';
-        }
-        ?>
     </div>
+    <?php
+    if( isset($activity_memory_opinion) ){
+      echo
+        '<div class="description-container">' .
+        '<h2>MOTS DE MEMORY :</h2>' .
+        '<div>' .
+        $activity_memory_opinion .
+        '</div>' .
+        '</div>';
+    }
+    ?>
 <?php
 if( sizeof($activity_carousel_images) != 0 ){
 

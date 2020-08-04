@@ -1,18 +1,9 @@
-/*div#block-memory-map-memory-map {*/
-    /*background-image: url("../../../../../sites/default/files/image_folder/airport_info_board.jpg");*/
-    /*background-size: cover;*/
-    /*background-repeat: no-repeat;*/
-/*}*/
-
-/*div#block-memory-map-memory-map > .block-inner {*/
-    /*max-width: 90%;*/
-    /*padding: 0;*/
-/*}*/
-
 div#block-memory-map-memory-map {
-    position: relative;
-    width: 100%;
-    padding-bottom: 0;
+  position: relative;
+  width: 100%;
+  padding: 75px 0 0 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 div#block-memory-map-memory-map > .block-inner {
@@ -23,10 +14,11 @@ div#block-memory-map-memory-map > .block-inner {
 }
 
 div#map-header {
-    padding: 0 25px;
-    max-width: 1000px;
-    margin: 0 auto 35px auto;
-    box-sizing: border-box;
+  position: relative;
+  width: 75%;
+  max-width: 1000px;
+  margin: 0 auto 35px auto;
+  padding: 0;
 }
 
 div#world-map-container {
@@ -44,19 +36,6 @@ div#world-map-container > div {
     margin: auto;
 }
 
-/*#world-map {*/
-/*    position: relative;*/
-/*    display: block;*/
-/*    !*width: 90%;*!*/
-/*    width: 100%;*/
-/*    max-width: 1000px;*/
-/*    height: 70vh;*/
-/*    margin: auto;*/
-/*    overflow: hidden;*/
-/*    box-shadow: inset 0px 0px 5px #d8d8d8;*/
-/*    !*background-color: #ffffff75;*!*/
-/*    background-color: #ffffffeb;*/
-/*}*/
 #world-map {
   position: relative;
   display: flex;
@@ -77,18 +56,6 @@ h2#memory-map-title {
     font-weight: normal;
 }
 
-/*svg#svg-container {*/
-/*    position: relative;*/
-/*    width: auto;*/
-/*    height: 100%;*/
-/*    margin: auto;*/
-/*    display: block;*/
-/*    !*transform: translateX(-50%) scale(1);*!*/
-/*    !*transform: translateX(-53%) translateY(2%) scale(1);*!*/
-/*    margin-left: 50%;*/
-/*    cursor: move;*/
-/*    !* transform-origin: center; *!*/
-/*}*/
 svg#svg-container {
   position: relative;
   width: 100%;
@@ -139,12 +106,10 @@ svg#svg-container path.country-redirection {
 div#menu-map {
     position: relative;
     display: block;
-    /*width: 90%;*/
     width: 100%;
     max-width: 1000px;
     margin: auto;
     text-align: center;
-    /*background-color: #ffffffe3;*/
     background-color: #fffffff2;
     padding: 7px 0;
     box-sizing: border-box;
@@ -159,7 +124,6 @@ div#menu-map > div {
 }
 
 div#menu-map > div > button {
-    /*border: 1px solid #858585;*/
     border: none;
     border-bottom: 1px solid transparent;
     background: none;
@@ -171,7 +135,6 @@ div#menu-map > div > button {
 div#menu-map > div > button:hover {
     border-bottom: 1px solid #ff8f00;
     color: #ff8f00;
-    /*text-decoration: underline;*/
 }
 
 /* Zoom */
@@ -195,4 +158,42 @@ div#zoom-in:active,
 div#zoom-out:active {
     box-shadow: #d1d1d1 0px 0px 3px inset;
     background-color: #e9e9e9;
+}
+
+@media screen and (max-width: 1024px){
+
+  div#world-map-container > div {
+    max-width: 750px;
+  }
+
+  div#map-header {
+    width: 85%;
+    max-width: 750px;
+  }
+
+  h2#memory-map-title {
+    font-size: 20px;
+    margin: 0 0 25px 0;
+  }
+
+  div#menu-map {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 5px 10px;
+  }
+  div#menu-map > div {
+    display: block;
+    padding: 3px 20px;
+    box-sizing: border-box;
+  }
+}
+
+@media screen and (max-width: 640px){
+
+  div#block-memory-map-memory-map {
+    padding: 35px 0 0 0;
+  }
 }

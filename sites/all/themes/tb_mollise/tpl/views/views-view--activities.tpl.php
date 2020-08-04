@@ -82,7 +82,7 @@ foreach ($results as $result) {
 asort($array_destination);
 ?>
 
-<div id="container">
+<div id="memory-main">
     <?php
     if( isset($ip_image) || isset($ip_title) ){
 
@@ -91,10 +91,10 @@ asort($array_destination);
           $image_style = "style=\"background-image:url(" . $ip_image . "); background-size:cover;background-position:center;\"";
         }
 
-        echo '<div id="img-container" ' . $image_style .'>';
+        echo '<div id="image-container" ' . $image_style .'>';
 
         if( isset($ip_image) ){
-            echo '<div id="memory-img-filter"></div>';
+            echo '<div id="image-filter"></div>';
         }
         if( isset($ip_title) ){
             echo '<h1>' . $ip_title . '</h1>';
@@ -105,22 +105,23 @@ asort($array_destination);
 
     if( isset($ip_description) ){
         echo
-            '<div id="description-container">' .
+            '<div class="description-container">' .
             $ip_description .
             '</div>'
         ;
     }
     ?>
-    <div id="act-dest-main">
-        <div class="act-dest-container">
+
+    <div id="main-thumbnails">
+        <div class="thumbnails-container-4x">
             <?php foreach ($array_destination as $activity_content){ ?>
-                <div class="act-dest-scop" style="background-image:url('<?php print $activity_content['destination_image'] ?>'); background-size:cover;background-position:center;">
-                    <div class="act-dest-datas-container">
-                        <h3 class="act-dest-stick-title"><?php print $activity_content['destination_name'] ?></h3>
+                <div class="thumbnail-container" style="background-image:url('<?php print $activity_content['destination_image'] ?>'); background-size:cover;background-position:center;">
+                    <div>
+                        <h3 class="thumbnail-title"><?php print $activity_content['destination_name'] ?></h3>
                         <?php if(isset($_GET["category"]) && !empty($_GET["category"])){ ?>
-                        <a href="<?php print $base_url . "/" . $activity_content['destination_path'] . "?category=" . $_GET["category"] . "#" . $activity_content["nid"]; ?>" class="act-dest-readmore"></a>
+                        <a href="<?php print $base_url . "/" . $activity_content['destination_path'] . "?category=" . $_GET["category"] . "#" . $activity_content["nid"]; ?>" class="thumbnail-link"></a>
                         <?php }else{ ?>
-                        <a href="<?php print $base_url . "/" . $activity_content['destination_path'] . "#" . $activity_content["nid"]; ?>" class="act-dest-readmore"></a>
+                        <a href="<?php print $base_url . "/" . $activity_content['destination_path'] . "#" . $activity_content["nid"]; ?>" class="thumbnail-link"></a>
                         <?php } ?>
                     </div>
                 </div>
