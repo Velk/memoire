@@ -1,22 +1,30 @@
 /* SCROLLBAR */
-/* width */
-::-webkit-scrollbar {
+::-webkit-scrollbar { /* width */
   width: 10px;
 }
-
-/* Track */
-::-webkit-scrollbar-track {
+::-webkit-scrollbar-track { /* Track */
   background: transparent;
 }
-
-/* Handle */
-::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb { /* Handle */
   background: #424242;
 }
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover { /* Handle on hover */
   background: #000;
+}
+
+.front-page .region-content .block {
+  position: relative;
+  width: 75%;
+  margin: 0;
+  padding: 75px calc(25%/2);
+}
+.front-page .region-content .block:nth-child(even) {
+  box-shadow: 0px -1px 5px #e9e9e9;
+  background-color: #f1f1f1;
+}
+.front-page .region-content .block .block-inner {
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 @media screen and (max-width: 1024px){
@@ -26,11 +34,17 @@
   }
 
   div#page {
-    margin-top: 50px!important;
+    margin-top: 50px !important;
   }
 
-  .region-content .block {
-    padding: 40px 0 !important;
+  .front-page .region-content .block {
+    width: 85%;
+    max-width: 750px;
+    padding: 75px calc(15%/2);
+  }
+
+  .region-content .block h2.block-title {
+    font-size: 20px !important;
   }
 
   /* Breadcrumb */
@@ -49,85 +63,8 @@
   body p, body a, body li, body button {
     font-size: 12px !important;
   }
+
+  .front-page .region-content .block {
+    padding: 35px calc(15%/2);
+  }
 }
-
-
-
-
-/* RESPONSIVE */
-/*@media screen and (max-width: 1024px) {*/
-
-/*  !* All pages *!*/
-/*  .front-page .block-inner,*/
-/*  div#map-header {*/
-/*    padding: 0 !important;*/
-/*    max-width: 750px !important;*/
-/*    width: 75% !important;*/
-/*  }*/
-
-
-
-/*  !* Other blocks *!*/
-/*  .region-content .block h2.block-title {*/
-/*    font-size: 20px;*/
-/*  }*/
-
-
-/*  !* Activity page - Images slider *!*/
-/*  .carousel-slider-item {*/
-/*    width: calc(75vw/2 - 5px);*/
-/*  }*/
-/*  div#slider-image-zoom-container i {*/
-/*    right: 7px;*/
-/*    top: 7px;*/
-/*    font-size: 14px;*/
-/*    padding: 3px 5px;*/
-/*  }*/
-
-/*  !* Home page *!*/
-/*  h2#memory-map-title {*/
-/*    margin: 0 0 25px 0 !important;*/
-/*    font-size: 20px !important;*/
-/*  }*/
-
-/*  ul.country-container > ul.city {*/
-/*    display: block !important;*/
-/*  }*/
-
-/*}*/
-
-/*@media screen and (max-width: 640px) {*/
-
-
-/*  !*div#img-container > h2 {*!*/
-/*  !*  width: 75%;*!*/
-/*  !*}*!*/
-
-
-/*  !* Homepage *!*/
-/*  div#slider-container {*/
-/*    height: 200px !important;*/
-/*  }*/
-
-/*  .front-page .block-inner,*/
-/*  div#map-header {*/
-/*    padding: 0 50px !important;*/
-/*    width: 100% !important;*/
-/*  }*/
-
-
-
-
-
-
-/*  !* Activity page - Images slider *!*/
-/*  .carousel-slider-item {*/
-/*    width: 75vw;*/
-/*    margin: 0;*/
-/*  }*/
-
-/*  !* Footer *!*/
-/*  div#memory-footer {*/
-/*    padding: 25px 0 65px 0 !important;*/
-/*  }*/
-/*}*/

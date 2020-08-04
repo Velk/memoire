@@ -1,7 +1,9 @@
 div#block-memory-map-memory-map {
-    position: relative;
-    width: 100%;
-    padding-bottom: 0;
+  position: relative;
+  width: 100%;
+  padding: 75px 0 0 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 div#block-memory-map-memory-map > .block-inner {
@@ -12,10 +14,11 @@ div#block-memory-map-memory-map > .block-inner {
 }
 
 div#map-header {
-    padding: 0 25px;
-    max-width: 1000px;
-    margin: 0 auto 35px auto;
-    box-sizing: border-box;
+  position: relative;
+  width: 75%;
+  max-width: 1000px;
+  margin: 0 auto 35px auto;
+  padding: 0;
 }
 
 div#world-map-container {
@@ -159,25 +162,18 @@ div#zoom-out:active {
 
 @media screen and (max-width: 1024px){
 
-  div#block-memory-map-memory-map {
-    padding: 40px 0 0 0;
-    box-sizing: border-box;
-  }
-  div#block-memory-map-memory-map > .block-inner {
-    max-width: none;
-  }
   div#world-map-container > div {
+    max-width: 750px;
+  }
+
+  div#map-header {
+    width: 85%;
     max-width: 750px;
   }
 
   h2#memory-map-title {
     font-size: 20px;
     margin: 0 0 25px 0;
-  }
-  div#map-header {
-    padding: 0;
-    margin: 0 auto 25px auto;
-    width: 75%;
   }
 
   div#menu-map {
@@ -197,7 +193,7 @@ div#zoom-out:active {
 
 @media screen and (max-width: 640px){
 
-  div#map-header {
-    padding: 0 50px;
+  div#block-memory-map-memory-map {
+    padding: 35px 0 0 0;
   }
 }

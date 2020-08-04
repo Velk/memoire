@@ -228,6 +228,9 @@ div#footer-container div#header-partners > hr {
 
 @media screen and (max-width: 640px) {
 
+  div#memory-footer {
+    padding: 25px 0 65px 0;
+  }
   div#footer-container {
     grid-template-areas: "a b" "c d" "e f" "g g" "h h";
     grid-template-columns: repeat(2, calc(100%/2 - 10px/2));

@@ -1,25 +1,22 @@
-/* ACTIVITY PAGE - HEADER */
 
-
-
-
-div#activity-prestations {
-  width: 100%;
-  padding: 50px calc(25%/2);
-  box-sizing: border-box;
-}
 
 /* ACTIVITY PAGE - PRESTATIONS (BASIC and OPTIONS) */
 div#activity-page-main {
   width: 100%;
+  box-shadow: 0px -1px 5px #e9e9e9;
+  background-color: #f1f1f1;
+  padding: 50px 0;
 }
 
 div#carousel-container {
   background-color: #fff;
 }
 div#activity-prestations {
-  box-shadow: 0px -1px 5px #e9e9e9;
-  background-color: #f1f1f1;
+  position: relative;
+  width: 75%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0;
 }
 
 .activity-prestation-container {
@@ -384,7 +381,10 @@ button.cont-add-cart > i {
 
 @media screen and (max-width: 1024px){
 
-  /* Page - Activity */
+  div#activity-prestations {
+    width: 85%;
+    max-width: 750px;
+  }
   .prestation-header {
     display: flex;
     flex-direction: column;
@@ -448,13 +448,23 @@ button.cont-add-cart > i {
     margin: 0 15px !important;
     padding: 0 !important;
   }
+
+  /* Images slider */
+  .carousel-slider-item {
+    width: calc(75vw/2 - 5px);
+  }
+  div#slider-image-zoom-container i {
+    right: 7px;
+    top: 7px;
+    font-size: 14px;
+    padding: 3px 5px;
+  }
 }
 
 @media screen and (max-width: 640px){
 
-  /* Page - Activity */
-  div#activity-prestations {
-    padding: 35px calc(25%/2);
+  div#activity-page-main {
+    padding: 35px 0;
   }
   div#block-memory-blocks-memory-switch-activities {
     margin: 0 auto 35px auto !important;
@@ -463,5 +473,11 @@ button.cont-add-cart > i {
   /* Block - Switch activities */
   div.memory-switch-act > a {
     font-size: 10px !important;
+  }
+
+  /* Images slider */
+  .carousel-slider-item {
+    width: 75vw;
+    margin: 0;
   }
 }

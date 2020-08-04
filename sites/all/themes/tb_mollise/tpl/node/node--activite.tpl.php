@@ -612,18 +612,18 @@ foreach ($activity_family_field as $activity_family_iteration){
           }
           ?>
         </div>
-        <?php
-        if( isset($activity_memory_opinion) ){
-            echo
-                '<div class="description-container">' .
-                    '<h2>MOTS DE MEMORY :</h2>' .
-                    '<div>' .
-                    $activity_memory_opinion .
-                    '</div>' .
-                '</div>';
-        }
-        ?>
     </div>
+    <?php
+    if( isset($activity_memory_opinion) ){
+      echo
+        '<div class="description-container">' .
+        '<h2>MOTS DE MEMORY :</h2>' .
+        '<div>' .
+        $activity_memory_opinion .
+        '</div>' .
+        '</div>';
+    }
+    ?>
 <?php
 if( sizeof($activity_carousel_images) != 0 ){
 

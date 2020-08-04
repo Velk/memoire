@@ -89,6 +89,10 @@ ul.country-container .city a > i {
     box-shadow: 1px 1px 5px #c7c7c7;
   }
 
+  ul.country-container > ul.city {
+    display: block !important;
+  }
+
   ul.country-container > ul.city > li > a {
     font-weight: bold;
   }

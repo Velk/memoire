@@ -43,6 +43,7 @@
 /* Description */
 .description-container {
   width: 75%;
+  max-width: 1000px;
   margin: 50px auto;
   box-sizing: border-box;
   background-color: #fff;
