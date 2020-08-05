@@ -48,14 +48,6 @@ div#world-map-container > div {
   background-color: #ffffffeb;
 }
 
-h2#memory-map-title {
-    font-family: oswaldregular;
-    font-size: 25px;
-    text-align: center;
-    margin: 0 0 50px 0;
-    font-weight: normal;
-}
-
 svg#svg-container {
   position: relative;
   width: 100%;
@@ -169,11 +161,6 @@ div#zoom-out:active {
   div#map-header {
     width: 85%;
     max-width: 750px;
-  }
-
-  h2#memory-map-title {
-    font-size: 20px;
-    margin: 0 0 25px 0;
   }
 
   div#menu-map {

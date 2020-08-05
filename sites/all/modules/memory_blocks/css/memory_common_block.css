@@ -1,0 +1,18 @@
+.region-content .block h2.block-title,
+.memory-block-title {
+  text-align: center;
+  font-size: 25px;
+  font-family: oswaldregular, serif;
+  font-weight: normal;
+  margin: 0 0 50px 0;
+  color: #16889b;
+}
+
+@media screen and (max-width: 1024px) {
+
+  .region-content .block h2.block-title,
+  .memory-block-title {
+    font-size: 20px;
+    margin: 0 0 25px 0;
+  }
+}
