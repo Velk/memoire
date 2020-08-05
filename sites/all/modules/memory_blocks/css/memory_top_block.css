@@ -1,12 +1,4 @@
-.top-blocks-container > h2 {
-  font-family: oswaldregular;
-  font-size: 25px;
-  text-align: center;
-  margin: 0 0 50px 0;
-  font-weight: normal;
-}
-
-.top-blocks-container > .top-blocks-description {
+.top-blocks-description {
   margin: 0 0 50px 0;
   font-size: 14px;
 }
@@ -60,12 +52,7 @@
 
 @media screen and (max-width: 1024px){
 
-  .top-blocks-container > h2 {
-    font-size: 20px;
-    margin: 0 0 25px 0;
-  }
-
-  .top-blocks-container > .top-blocks-description {
+  .top-blocks-description {
     margin: 0 0 25px 0;
   }
 

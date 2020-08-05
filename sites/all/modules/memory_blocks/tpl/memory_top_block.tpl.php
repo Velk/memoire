@@ -1,6 +1,6 @@
 <?php global $base_url; ?>
-<div class="top-blocks-container">
-    <h2><?php echo $title; ?></h2>
+<div>
+    <h2 class="memory-block-title"><?php echo $title; ?></h2>
     <div class="top-blocks-description"><?php echo $description; ?></div>
     <div class="top-blocks-thumbnails">
         <?php

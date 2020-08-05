@@ -155,7 +155,8 @@ function memory_blocks_init() {
     // Add JS file to manage activity filters - Nos packs, Activités de jour, Activités de nuit, Transferts, Hébergements
     drupal_add_js(drupal_get_path('module', 'memory_blocks') . '/js/memory_activity_filters.js', array('group' => JS_DEFAULT, 'every_page' => TRUE));
 
-    drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/memory_common.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
+    drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/memory_common_page.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
+    drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/memory_common_block.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
 
     drupal_add_css(drupal_get_path('module', 'memory_blocks') . '/css/memory_responsive.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
     drupal_add_js(drupal_get_path('module', 'memory_blocks') . '/js/memory_responsive.js', array('group' => JS_DEFAULT, 'every_page' => TRUE));
