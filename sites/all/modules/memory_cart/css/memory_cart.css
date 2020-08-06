@@ -972,3 +972,12 @@ div#user-cart-captcha > i{
 div#user-cart-captcha > i:hover{
   color:#ff8f00;
 }
+
+/* Quotation - Total price */
+p#quotation-total-price {
+  margin: 25px auto 0 auto;
+  text-align: center;
+  font-size: 14px;
+  font-weight: normal;
+  color: #f44336;
+}

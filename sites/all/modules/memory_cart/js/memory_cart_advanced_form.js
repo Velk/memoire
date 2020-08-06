@@ -216,6 +216,8 @@
           _advancedFormConfig.setCityName(settings);
 
           _advancedFormConfig.setLocalStorage(settings);
+
+          Drupal.behaviors.memory_cart_form.checkIfActivityIsSet(settings);
         }else{
           alert("Si vous souhaitez effectuer un séjour sur plusieurs destinations, contactez-nous directement par e-mail.");
         }
@@ -236,7 +238,7 @@
       $("#trip-global-container").on("click", ".btn-remove-transfer", function(){
 
         var transferContainer = $(this).parent().parent();
-        var transferIndex = (transferContainer.index() === 0) ? 0 : 1;
+        var transferIndex = (transferContainer.index() === 1) ? 0 : 1;
 
         // Update Transfers localStorage
         settings.memory_cart_advanced_form.transfers[transferIndex] = null;
@@ -248,6 +250,8 @@
         transferContainer.children("div.transfer").remove();
 
         _advancedFormConfig.anyActivitiesSet(settings);
+
+        Drupal.behaviors.memory_cart_form.checkIfActivityIsSet(settings);
       });
 
       // Remove an accommodation
@@ -263,6 +267,8 @@
         $(".trip-accommodation > div.accommodation").remove();
 
         _advancedFormConfig.anyActivitiesSet(settings);
+
+        Drupal.behaviors.memory_cart_form.checkIfActivityIsSet(settings);
       });
 
       // Remove an activity
@@ -285,6 +291,8 @@
         activityContainer.remove();
 
         _advancedFormConfig.anyActivitiesSet(settings);
+
+        Drupal.behaviors.memory_cart_form.checkIfActivityIsSet(settings);
       });
 
       function addUrlParameters(activityDestinationPath, key, parameter){
