@@ -215,7 +215,10 @@ div.prestation-detail > p {
 div#carousel-container {
   position: relative;
   width: 75%;
-  padding: 0 calc(25%/2) 50px calc(25%/2);
+  max-width: 1000px;
+  margin: 50px auto;
+  box-sizing: border-box;
+  background-color: #fff;
 }
 div#carousel-container > div {
   position: relative;
@@ -228,17 +231,24 @@ div#carousel-slider {
 }
 div#carousel-slider > div {
   height: 100%;
-  width: fit-content;
-  width: -moz-fit-content;
+  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: end;
+  flex-wrap: wrap;
 }
 .carousel-slider-item {
-  width: calc(75vw/3 - 5px*2);
+  width: calc(100%/3 - 30px/3);
   height: 100%;
   cursor: zoom-in;
   margin: 0 15px 0 0;
+}
+
+@media screen and (min-width: 1025px) {
+
+  .carousel-slider-item:nth-child(3) {
+    margin: 0;
+  }
 }
 
 div#carousel-slider img {
@@ -450,8 +460,15 @@ button.cont-add-cart > i {
   }
 
   /* Images slider */
+  div#carousel-container {
+    width: 85%;
+    max-width: 750px;
+  }
   .carousel-slider-item {
-    width: calc(75vw/2 - 5px);
+    width: calc(100%/2 - 15px/2);
+  }
+  .carousel-slider-item:nth-child(2) {
+    margin: 0;
   }
   div#slider-image-zoom-container i {
     right: 7px;
@@ -476,8 +493,19 @@ button.cont-add-cart > i {
   }
 
   /* Images slider */
+  div#carousel-container {
+    margin: 35px auto;
+  }
   .carousel-slider-item {
-    width: 75vw;
+    width: 85vw;
+    margin: 0;
+  }
+
+  /* Video */
+  .description-container iframe.video-filter {
+    height: auto;
+    width: 100%;
+    min-height: 200px;
     margin: 0;
   }
 }

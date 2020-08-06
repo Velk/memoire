@@ -137,6 +137,7 @@ if (!path_is_admin(current_path())) {
           <textarea name="wish" placeholder="Nos agents sont là pour vous : une envie particulière, besoin d’un conseil, faites-le nous savoir… "></textarea>
       </div>
       <button type="button" id="validate-cart">Demandez un devis</button>
+      <p id="quotation-total-price">Prix total du devis : <span></span></p>
     </form>
   </div>
 <?php

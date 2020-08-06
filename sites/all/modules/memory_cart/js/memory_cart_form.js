@@ -470,6 +470,8 @@
           $("#return-date i.clear-input").css("display", "none");
         }
       });
+
+      Drupal.behaviors.memory_cart_form.checkIfActivityIsSet(settings);
     },
 
     // Clean the HTML days container then add the new HTML structure
@@ -558,6 +560,72 @@
       $("#trip-global-container")
         .prepend(transferStructureHTML)
         .append(transferStructureHTML);
+    },
+
+    // Quotation - Total price counter
+    checkIfActivityIsSet : function(settings){
+
+      var quotationTotalPrice = 0;
+      var isAnyActivities = false;
+      var isAnyAccommodations = false;
+      var isAnyTransfers = false;
+      var regex = new RegExp("[0-9]*");
+
+      // Check if any activity is set
+      var activityObject = settings.memory_cart_advanced_form.activities;
+
+      for(var[key, value] of Object.entries(activityObject)) {
+
+        if(activityObject[key].length !== 0){
+
+          isAnyActivities = true;
+
+          var activityPrice = activityObject[key][0].optionPrice;
+
+          if(activityPrice !== null && activityPrice !== "" && activityPrice !== undefined) {
+            quotationTotalPrice += parseInt(activityPrice.match(regex)[0]);
+          }
+        }
+      }
+
+      // Check if any accommodation is set
+      var accommodationObject = settings.memory_cart_advanced_form.accommodations;
+
+      if(accommodationObject.length !== 0){
+
+        isAnyAccommodations = true;
+
+        for(var i = 0; i < accommodationObject.length; i++){
+
+          var accommodationPrice = accommodationObject[i].optionPrice;
+
+          if(accommodationPrice !== null && accommodationPrice !== "" && accommodationPrice !== undefined){
+            quotationTotalPrice += parseInt(accommodationPrice.match(regex)[0]);
+          }
+        }
+      }
+
+      // Check if any transfer is set
+      var transferObject = settings.memory_cart_advanced_form.transfers;
+
+      for(var i = 0; i < transferObject.length; i++){
+        if(transferObject[i] !== null){
+          isAnyTransfers = true;
+
+          var transferPrice = transferObject[i].optionPrice;
+
+          if(transferPrice !== null && transferPrice !== "" && transferPrice !== undefined){
+            quotationTotalPrice += parseInt(transferPrice.match(regex)[0]);
+          }
+        }
+      }
+
+      if(isAnyActivities || isAnyAccommodations || isAnyTransfers){
+        $("#quotation-total-price > span").text(quotationTotalPrice + " €");
+        $("#quotation-total-price").show();
+      }else{
+        $("#quotation-total-price").hide();
+      }
     }
   };
 }(jQuery));

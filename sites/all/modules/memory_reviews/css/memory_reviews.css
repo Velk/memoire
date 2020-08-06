@@ -127,6 +127,16 @@ div#reviews-touchable-manager > i {
   p.review-nature{
     text-align: left !important;
   }
+  div.review-description {
+    height: 200px;
+    max-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow-x: scroll;
+    padding-right: 12px;
+    box-sizing: border-box;
+  }
   div#reviews-touchable-manager {
     margin: 25px 0 0 0 !important;
     display: flex;
