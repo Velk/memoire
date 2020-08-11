@@ -68,6 +68,18 @@ div#mcb-blocks-container .mcb-block > div p {
 
 @media screen and (max-width: 640px){
 
+  .mcb-text:first-of-type > p:last-of-type {
+    margin: 0;
+  }
+  .mcb-text:first-of-type {
+    margin: 25px 0;
+  }
+  .mcb-text:last-of-type {
+    margin: 25px 0 0 0;
+  }
+  div#mcb-blocks-container .mcb-block {
+    margin: 0;
+  }
   div#mcb-blocks-container .mcb-block .mcb-img-container {
     width: 50%;
     height: auto;
@@ -79,6 +91,7 @@ div#mcb-blocks-container .mcb-block > div p {
   }
   div#mcb-blocks-container .mcb-block .mcb-text-container {
     width: 50%;
+    margin: 0;
     padding: 0 0 0 15px;
     box-sizing: border-box;
   }

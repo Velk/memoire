@@ -140,8 +140,8 @@
   position: relative;
   width: 100%;
   height: 100%;
-  background-image: linear-gradient(-45deg, rgba(0,0,0,0.5) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.5) 100%);
-  background-image: -webkit-linear-gradient(-45deg, rgba(0,0,0,0.5) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.5) 100%);
+  background-image: linear-gradient(-45deg, rgba(0,0,0,0.85) -250%, rgba(0,0,0,0.15) 15%, rgba(0,0,0,0.075) 50%, rgba(0,0,0,0.15) 85%, rgba(0,0,0,0.85) 250%);
+  background-image: -webkit-linear-gradient(-45deg, rgba(0,0,0,0.85) -250%, rgba(0,0,0,0.15) 15%, rgba(0,0,0,0.075) 50%, rgba(0,0,0,0.15) 85%, rgba(0,0,0,0.85) 250%);
   cursor: pointer;
   box-sizing: border-box;
 }
