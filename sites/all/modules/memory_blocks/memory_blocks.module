@@ -2035,11 +2035,11 @@ function memory_blocks_intermediate_page_admin_form($form, &$form_state){
 
     foreach( $results as $result ) {
 
-        $nid = array_search($result, $results);
-        $node = node_load($nid);
+//        $nid = array_search($result, $results);
+//        $node = node_load($nid);
 
-        $activity_img_field = field_get_items("node", $node, "field_img_activite");
-        $activity_img_fid = $activity_img_field[0]["fid"];
+//        $activity_img_field = field_get_items("node", $node, "field_img_activite");
+//        $activity_img_fid = $activity_img_field[0]["fid"];
 
         $cleaned_title = pathauto_cleanstring($result);
 
@@ -2054,9 +2054,9 @@ function memory_blocks_intermediate_page_admin_form($form, &$form_state){
         $intermediate_page = variable_get("fieldset-" . pathauto_cleanstring($result), array());
 
         // Define default image if it is not set
-        if(empty($intermediate_page['ip_image'])){
-          $intermediate_page['ip_image'] = $activity_img_fid;
-        }
+//        if(empty($intermediate_page['ip_image'])){
+//          $intermediate_page['ip_image'] = $activity_img_fid;
+//        }
 
         $form["fieldset-" . $cleaned_title]["ip_image"] = array(
             '#type'          => 'media',
@@ -2114,7 +2114,26 @@ function memory_blocks_form_alter(&$form, &$form_state, $form_id) {
       $form['field_acti_carousel'][LANGUAGE_NONE][0]['field_slider_image_activity_wrap'][LANGUAGE_NONE]['add_more']['add_more']['#value'] = "Ajouter une nouvelle image";
       $form['field_acti_carousel'][LANGUAGE_NONE][0]['actions']['remove_button']['#value'] = "Supprimer le slider";
 
+      $form['#submit'][] = 'memory_blocks_form_content_creation_callback';
+
       break;
   }
 }
 
+function memory_blocks_form_content_creation_callback($form, &$form_state){
+
+  // Include pathauto to clean a string for use in URLs in order to compare with the current URL
+  module_load_include('inc', 'pathauto', 'pathauto');
+
+  $activity_language = $form_state['values']['language'];
+  $activity_img_fid = $form_state['values']['field_img_activite'][$activity_language][0]["fid"];
+
+  $cleaned_title = pathauto_cleanstring($form_state['values']['title']);
+  $intermediate_page = variable_get("fieldset-" . $cleaned_title, array());
+
+  // Define default image if it is not set
+  if(empty($intermediate_page['ip_image'])){
+    $intermediate_page['ip_image'] = $activity_img_fid;
+    variable_set("fieldset-" . $cleaned_title, $intermediate_page);
+  }
+}
