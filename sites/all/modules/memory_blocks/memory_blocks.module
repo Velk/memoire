@@ -2097,9 +2097,6 @@ function memory_blocks_form_alter(&$form, &$form_state, $form_id) {
   switch ($form_id)  {
     case 'activite_node_form':
 
-//      drupal_set_message($form_id);  // print form ID to messages
-//      drupal_set_message(print_r($form, TRUE));  // print array to messages
-
       $form['language']['#required'] = TRUE;
 
       // Field : Drupal title
@@ -2125,8 +2122,9 @@ function memory_blocks_form_content_creation_callback($form, &$form_state){
   // Include pathauto to clean a string for use in URLs in order to compare with the current URL
   module_load_include('inc', 'pathauto', 'pathauto');
 
-  $activity_language = $form_state['values']['language'];
-  $activity_img_fid = $form_state['values']['field_img_activite'][$activity_language][0]["fid"];
+//  $activity_language = $form_state['values']['language'];
+
+  $activity_img_fid = $form_state['values']['field_img_activite'][LANGUAGE_NONE][0]["fid"];
 
   $cleaned_title = pathauto_cleanstring($form_state['values']['title']);
   $intermediate_page = variable_get("fieldset-" . $cleaned_title, array());
