@@ -73,6 +73,17 @@
             }
             setInterval(fieldsBehavior, 500);
 
+            /* Contact datepickers */
+            $("input.webform-calendar").click(function(){
+
+              $( "input.webform-calendar" ).datepicker("option", "prevText", "Précédent");
+              $( "input.webform-calendar" ).datepicker("option", "nextText", "Suivant");
+              $( "input.webform-calendar" ).datepicker("option", "dayNamesMin", ["D", "L", "M", "M", "J", "V", "S"]);
+              $( "input.webform-calendar" ).datepicker("option", "firstDay", 1);
+              $( "input.webform-calendar" ).datepicker("option", "numberOfMonths", 1);
+
+              $( "#ui-datepicker-div" ).appendTo($(this).parent("div.webform-datepicker"));
+            });
         }
     };
 }(jQuery));

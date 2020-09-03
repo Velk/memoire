@@ -119,7 +119,7 @@
   ksort($ordered_activity_categories);
 ?>
 
-<div id="container">
+<div id="memory-main">
     <?php
     if( isset($all_act_image) || isset($all_act_title) ){
 
@@ -128,13 +128,13 @@
           $image_style = "style=\"background-image:url(" . $all_act_image . "); background-size:cover;background-position:center;\"";
         }
 
-        echo '<div id="img-container" ' . $image_style .'>';
+        echo '<div id="image-container" ' . $image_style .'>';
 
         if( isset($all_act_image) ){
-            echo '<div id="memory-img-filter"></div>';
+            echo '<div id="image-filter"></div>';
         }
         if( isset($all_act_title) ){
-            echo '<h2>' . $all_act_title . '</h2>';
+            echo '<h1>' . $all_act_title . '</h1>';
         }
 
         echo '</div>';
@@ -142,7 +142,7 @@
 
     if( isset($all_act_description) && !empty($all_act_description) ){
         echo
-            '<div id="description-container">' .
+            '<div class="description-container">' .
             $all_act_description .
             '</div>'
         ;
@@ -151,15 +151,15 @@
 
     <?php if(sizeof($array_activity_types) != 0){ echo getSpecialFiltersHTML($ordered_activity_categories); } ?>
 
-    <div id="all-activities-main">
+    <div id="main-thumbnails">
 
         <?php foreach($ordered_activity_categories as $activity_category): ?>
         <?php if( isset( $activities[$activity_category] ) ){ ?>
-        <div id="act-cat-<?php print $activity_category ?>" class="act-cat-container">
+        <div class="activity-category">
 
           <?= getCategoriesHTML($activity_category); ?>
 
-            <div class="all-activities-container">
+            <div class="thumbnails-container-4x">
                 <?php
                 // Sort array by activity weight
                 krsort($activities[$activity_category], 6);
@@ -171,12 +171,12 @@
 
                   foreach ($act_weight_sorted as $activity) {
                   ?>
-                    <div class="all-act-scop"
+                    <div class="thumbnail-container"
                          style="background-image:url('<?php print $activity['img_uri'] ?>'); background-size:cover;background-position:center;">
-                      <div class="all-act-datas-container">
-                        <h3 class="all-act-stick-title"><?php print $activity['title'] ?></h3>
+                      <div>
+                        <h3 class="thumbnail-title"><?php print $activity['title'] ?></h3>
                         <a href="<?php print $activity['intermediate_path'] ?>"
-                           class="all-act-readmore"></a>
+                           class="thumbnail-link"></a>
                       </div>
                     </div>
                   <?php
@@ -229,10 +229,10 @@ function getSpecialFiltersHTML($ordered_activity_categories){
 
   // HTML Structure of filters
   $filter_structure =
-    "<div id=\"act-cat-filters\">" .
-    "<div class=\"act-cat-filter\">" .
-    "<p><i class=\"fa fa-th\" aria-hidden=\"true\"></i>Toutes nos Activités</p>" .
-    "</div>"
+    "<div id=\"memory-filters-container\">" .
+      "<div class=\"memory-filter\">" .
+        "<p><i class=\"fa fa-th\" aria-hidden=\"true\"></i>Toutes nos Activités</p>" .
+      "</div>"
   ;
 
   foreach ($ordered_activity_categories as $filter){
@@ -258,11 +258,11 @@ function getSpecialFiltersHTML($ordered_activity_categories){
     }
 
     $filter_structure .=
-      "<div class=\"act-cat-filter\">" .
-      "<p>" .
-      "<i class=\"fa " . $icon . "\" aria-hidden=\"true\"></i>" .
-      $taxonomy->name .
-      "</p>" .
+      "<div class=\"memory-filter\">" .
+        "<p>" .
+          "<i class=\"fa " . $icon . "\" aria-hidden=\"true\"></i>" .
+          $taxonomy->name .
+        "</p>" .
       "</div>"
     ;
   }

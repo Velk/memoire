@@ -1,8 +1,7 @@
-<div id="mcb-container">
-
+<div>
     <?php
     if( isset($mcb_title) ){
-        print "<h2>" . $mcb_title . "</h2>";
+        print "<h2 class='memory-block-title'>" . $mcb_title . "</h2>";
     }
     ?>
 

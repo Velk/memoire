@@ -1,5 +1,5 @@
 <div id="memory-reviews-container">
-  <h2><?=$reviews_title;?></h2>
+  <h2 class="memory-block-title"><?=$reviews_title;?></h2>
   <?php if(!empty($reviews_trustpilot)){ ?>
   <div id="reviews-image">
     <img src="<?=$reviews_trustpilot;?>" alt="Trustpilot assessment" <?php if(!empty($reviews_trustpilot_width)) print "width=\"" . $reviews_trustpilot_width . "px\""; ?>>

@@ -7,15 +7,15 @@
   margin: 0;
 }
 
-.front-page .block-inner {
-  padding: 0 25px;
-  max-width: 1000px;
-  margin: auto;
-  box-sizing: border-box;
-}
-.front-page .block-inner {
-  width: 100%;
-}
+/*.front-page .block-inner {*/
+/*  padding: 0 25px;*/
+/*  max-width: 1000px;*/
+/*  margin: auto;*/
+/*  box-sizing: border-box;*/
+/*}*/
+/*.front-page .block-inner {*/
+/*  width: 100%;*/
+/*}*/
 
 .block-title {
   color: #424242;

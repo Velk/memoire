@@ -107,7 +107,7 @@
 
           optionImage = activityContainer.children("div.prestation-main").find("div.prestation-image").css("background-image");
           if(typeof optionImage === typeof undefined || optionImage === false){ // If option has not image, set the activity image by default
-            optionImage = $("#activity-header-container").css("background-image");
+            optionImage = $("#image-container").css("background-image");
           }
           optionImage = optionImage.split("url(\"")[1].split("\")")[0];
 
@@ -148,9 +148,9 @@
             default : // Add activity
 
               var activityToAddContainer = $(this).parent().parent().parent().parent();
-              var thisActivityNid = $("#activity-page-container .activity-nid").val();
-              var thisActivityTitle = $("#activity-page-container .activity-title").val();
-              var thisActivityDestinationPath = $("#activity-page-container .activity-destination-path").val();
+              var thisActivityNid = $("#memory-main .activity-nid").val();
+              var thisActivityTitle = $("#memory-main .activity-title").val();
+              var thisActivityDestinationPath = $("#memory-main .activity-destination-path").val();
               var thisOptionTitle = activityToAddContainer.find(".prestation-header > div:eq(0) > h2").text();
               var dayIndex = null;
               var activityIndex = null;
@@ -216,6 +216,8 @@
           _advancedFormConfig.setCityName(settings);
 
           _advancedFormConfig.setLocalStorage(settings);
+
+          Drupal.behaviors.memory_cart_form.checkIfActivityIsSet(settings);
         }else{
           alert("Si vous souhaitez effectuer un séjour sur plusieurs destinations, contactez-nous directement par e-mail.");
         }
@@ -236,7 +238,7 @@
       $("#trip-global-container").on("click", ".btn-remove-transfer", function(){
 
         var transferContainer = $(this).parent().parent();
-        var transferIndex = (transferContainer.index() === 0) ? 0 : 1;
+        var transferIndex = (transferContainer.index() === 1) ? 0 : 1;
 
         // Update Transfers localStorage
         settings.memory_cart_advanced_form.transfers[transferIndex] = null;
@@ -248,6 +250,8 @@
         transferContainer.children("div.transfer").remove();
 
         _advancedFormConfig.anyActivitiesSet(settings);
+
+        Drupal.behaviors.memory_cart_form.checkIfActivityIsSet(settings);
       });
 
       // Remove an accommodation
@@ -263,6 +267,8 @@
         $(".trip-accommodation > div.accommodation").remove();
 
         _advancedFormConfig.anyActivitiesSet(settings);
+
+        Drupal.behaviors.memory_cart_form.checkIfActivityIsSet(settings);
       });
 
       // Remove an activity
@@ -285,34 +291,30 @@
         activityContainer.remove();
 
         _advancedFormConfig.anyActivitiesSet(settings);
+
+        Drupal.behaviors.memory_cart_form.checkIfActivityIsSet(settings);
       });
 
-      // Filters part
-      function autoScrollToRightCategory(activitiesFilter){
+      function addUrlParameters(activityDestinationPath, key, parameter){
 
-        var filterMenuOffsetTop = $("#cont-filters").offset().top - 100;
+        var url = new URL(activityDestinationPath);
+        url.searchParams.append(key, parameter);
 
-        $("html, body").stop().animate(
-          {scrollTop:filterMenuOffsetTop},
-          500,
-          "swing",
-          function(){
-            $("#cont-filters ." + activitiesFilter).trigger("click");
-          }
-        );
+        return url.toString();
       }
 
       // Click on a accommodation button
       $("#trip-global-container").on("click", ".trip-accommodation > button", function() {
 
+        var filterIdentifier = $(this).attr("class");
+
         switch($("#cart-container").attr("class")){
           case "destination-page" :
-            var activitiesFilter = $(this).attr("class");
-            autoScrollToRightCategory(activitiesFilter);
+            _advancedFormConfig.autoScrollToRightCategory(filterIdentifier);
             break;
           case "activity-page" :
-            localStorage.setItem("showAccommodations", JSON.stringify(true));
-            window.location = activityDestinationPath;
+            var new_url = addUrlParameters(activityDestinationPath, "filter", filterIdentifier);
+            window.location = new_url;
             break;
         }
       });
@@ -320,30 +322,51 @@
       // Click on a transfer button
       $("#trip-global-container").on("click", ".trip-transfer > button", function() {
 
+        var filterIdentifier = $(this).attr("class");
+
         switch($("#cart-container").attr("class")){
           case "destination-page" :
-            var activitiesFilter = $(this).attr("class");
-            autoScrollToRightCategory(activitiesFilter);
+            _advancedFormConfig.autoScrollToRightCategory(filterIdentifier);
             break;
           case "activity-page" :
-            localStorage.setItem("showTransfers", JSON.stringify(true));
-            window.location = activityDestinationPath;
+            var new_url = addUrlParameters(activityDestinationPath, "filter", filterIdentifier);
+            window.location = new_url;
             break;
         }
       });
 
-      if(JSON.parse(localStorage.getItem("showAccommodations"))){
-        var accommodationFilter = $("#trip-global-container .trip-accommodation > button").attr("class");
-        autoScrollToRightCategory(accommodationFilter);
-        localStorage.removeItem("showAccommodations");
-      }
-      if(JSON.parse(localStorage.getItem("showTransfers"))){
-        var transferFilter = $("#trip-global-container .trip-transfer > button").attr("class");
-        autoScrollToRightCategory(transferFilter);
-        localStorage.removeItem("showTransfers");
-      }
-
       _advancedFormConfig.initLocalStorage(settings, false, false);
+
+      // Get URL parameter filter to show right activities (transfer or accommodation)
+      var url = new URL(window.location);
+      var filterIdentifier = url.searchParams.get("filter");
+      if(filterIdentifier !== null && filterIdentifier !== ""){
+        _advancedFormConfig.autoScrollToRightCategory(filterIdentifier);
+        _advancedFormConfig.deleteUrlParameter(url);
+      }
+    },
+
+    deleteUrlParameter : function(url){
+
+      url.searchParams.delete("filter");
+
+      if ("pushState" in history){
+        history.pushState("", document.title, url.href);
+      }
+    },
+
+    autoScrollToRightCategory : function(filterIdentifier){
+
+      var filterMenuOffsetTop = $("#memory-filters-container").offset().top - 100;
+
+      $("html, body").stop().animate(
+        {scrollTop:filterMenuOffsetTop},
+        500,
+        "swing",
+        function(){
+          $("#memory-filters-container ." + filterIdentifier).trigger("click");
+        }
+      );
     },
 
     // Init localStorage by setting every parameters in there right place

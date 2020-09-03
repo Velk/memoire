@@ -1,0 +1,25 @@
+name = CAPTCHA
+description = Base CAPTCHA module for adding challenges to arbitrary forms.
+package = "Spam control"
+core = 7.x
+configure = admin/config/people/captcha
+
+files[] = captcha.module
+files[] = captcha.inc
+files[] = captcha.admin.inc
+files[] = captcha.install
+files[] = captcha.test
+
+<<<<<<< HEAD
+; Information added by Drupal.org packaging script on 2019-10-05
+version = "7.x-1.6"
+core = "7.x"
+project = "captcha"
+datestamp = "1570300087"
+=======
+; Information added by Drupal.org packaging script on 2020-02-21
+version = "7.x-1.7"
+core = "7.x"
+project = "captcha"
+datestamp = "1582293280"
+>>>>>>> preprod

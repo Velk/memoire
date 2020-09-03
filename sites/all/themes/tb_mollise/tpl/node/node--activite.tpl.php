@@ -58,6 +58,10 @@ $activity_basic_prest_title = $activity_basic_prest_title_field[0]["value"];
 $activity_basic_prest_display_type_field = field_get_items('node', $node, 'field_display_type_presta_base');
 $activity_basic_prest_display_type = $activity_basic_prest_display_type_field[0]["value"];
 
+// Retrieve the activity basic prestation display lock
+$activity_basic_prest_display_lock_field = field_get_items('node', $node, 'field_fold_presta_base');
+$activity_basic_prest_display_lock = $activity_basic_prest_display_lock_field[0]["value"];
+
 // Retrieve the activity basic prestation quote
 $activity_basic_prest_quote_field = field_get_items('node', $node, 'field_quote_prestation_base');
 $activity_basic_prest_quote = $activity_basic_prest_quote_field[0]["value"];
@@ -284,7 +288,7 @@ foreach ($activity_family_field as $activity_family_iteration){
 }
 ?>
 
-<div id="activity-page-container">
+<div id="memory-main">
     <?php
     if( isset($image) || isset($title) ){
 
@@ -293,29 +297,28 @@ foreach ($activity_family_field as $activity_family_iteration){
         $image_style = "style=\"background-image:url(" . $image . "); background-size:cover;background-position:center;\"";
       }
 
-      echo '<div id="activity-header-container" ' . $image_style .'>';
+      echo '<div id="image-container" ' . $image_style .'>';
 
       if( isset($image) ){
-        echo '<div id="memory-img-filter"></div>';
+        echo '<div id="image-filter"></div>';
       }
       if( isset($title) ){
-        echo '<h2>' . $title . '</h2>';
+        echo '<h1>' . $title . '</h1>';
       }
 
       echo '</div>';
     }
+
+    if( isset($description) ){
+      echo
+        '<div class="description-container">' .
+          '<h2>DESCRIPTIF : </h2>' .
+          '<div>' . $description . '</div>' .
+        '</div>'
+      ;
+    }
     ?>
     <div id="activity-page-main">
-        <?php
-        if( isset($description) ){
-          echo
-            '<div id="description-container">' .
-              '<h2 class="activity-page-label">DESCRIPTIF : </h2>' .
-              '<div>' . $description . '</div>' .
-            '</div>'
-          ;
-        }
-        ?>
         <div id="activity-prestations">
           <?php
           /* ------------------------------------------ BASIC ACTIVITY -----------------------------------------------*/
@@ -323,16 +326,23 @@ foreach ($activity_family_field as $activity_family_iteration){
           $prestation_base_title = "";
           $prestation_base_display_type = ($activity_basic_prest_display_type == 1) ? "prestation-hide" : "prestation-show";
           $prestation_base_button_display_type = "";
+          $prestation_base_display_lock = ($activity_basic_prest_display_lock == 1) ? true : false;
           $prestation_base_price = "";
           $prestation_base_quote = "";
           $prestation_base_image = "";
           $prestation_base_description = "";
           $prestation_base_details = "";
 
-          if( $activity_basic_prest_display_type == 1 )
-            $prestation_base_button_display_type = "<button class=\"option-more\"><i class=\"fa fa-caret-down\" aria-hidden=\"true\"></i>Voir plus</button>";
-          else
-            $prestation_base_button_display_type = "<button class=\"option-less\"><i class=\"fa fa-caret-up\" aria-hidden=\"true\"></i>Voir moins</button>";
+          if($activity_basic_prest_display_lock == 1) { // Lock
+
+            $prestation_base_display_type = "prestation-show";
+          }else{
+
+            if( $activity_basic_prest_display_type == 1 )
+              $prestation_base_button_display_type = "<button class=\"option-more\"><i class=\"fa fa-caret-down\" aria-hidden=\"true\"></i>Voir plus</button>";
+            else
+              $prestation_base_button_display_type = "<button class=\"option-less\"><i class=\"fa fa-caret-up\" aria-hidden=\"true\"></i>Voir moins</button>";
+          }
 
           // Construct the section : Title
           if( !empty($activity_basic_prest_title) )
@@ -602,18 +612,18 @@ foreach ($activity_family_field as $activity_family_iteration){
           }
           ?>
         </div>
-        <?php
-        if( isset($activity_memory_opinion) ){
-            echo
-                '<div id="activity-memory-opinion">' .
-                    '<h2 class="activity-page-label">MOTS DE MEMORY :</h2>' .
-                    '<div>' .
-                    $activity_memory_opinion .
-                    '</div>' .
-                '</div>';
-        }
-        ?>
     </div>
+    <?php
+    if( isset($activity_memory_opinion) ){
+      echo
+        '<div class="description-container">' .
+        '<h2>MOTS DE MEMORY :</h2>' .
+        '<div>' .
+        $activity_memory_opinion .
+        '</div>' .
+        '</div>';
+    }
+    ?>
 <?php
 if( sizeof($activity_carousel_images) != 0 ){
 
